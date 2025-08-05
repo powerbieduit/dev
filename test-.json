@@ -1,0 +1,35 @@
+{
+  "createdAt": "2025-08-04T18:25:57.012Z",
+  "updatedAt": "2025-08-04T18:38:48.000Z",
+  "id": "aRjKBmpDR1SS1I2u",
+  "name": "test",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "dc6e6fd4-f932-4d1c-ab1f-6c7c63728584",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0268b415-ca4a-4873-bc47-c4e720bd9278",
+      "name": "Webhook",
+      "webhookId": "dc6e6fd4-f932-4d1c-ab1f-6c7c63728584"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "6ed67ac3-16f0-42a1-8736-230809e397b7",
+  "triggerCount": 1,
+  "tags": []
+}
