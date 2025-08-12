@@ -1,0 +1,644 @@
+{
+  "createdAt": "2025-07-25T20:00:54.794Z",
+  "updatedAt": "2025-08-12T15:15:48.000Z",
+  "id": "zi5SJlenVGiNj64Z",
+  "name": "comercial_p_academico_atualizacao_dados_acesso",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Code1').item.json.name }}",
+              "pipeline_id": 6961711,
+              "status_id": 58205935,
+              "loss_reason_id": "=",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":330926,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.CPF.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":330992,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Polo.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":330876,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.RGM.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                  },
+                  {
+                    "data": "{\"id\":330988,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Formação'].raw.values[0].value || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":330990,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Modalidade_Curso2.raw.values[0].value || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":331044,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Turma de Ingresso'].raw.values[0].value || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":330938,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Curso.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":330930,\"type\":\"date\"}",
+                    "value": "={{ $('Code1').item.json.campos['Matrícula'].raw.values[0].value || ''}}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}",
+                          "is_main": false
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        288
+      ],
+      "id": "8523444c-2d14-4fdb-be3f-67d765cc8473",
+      "name": "Cria Lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Code1').item.json.id }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":288546,\"type\":\"multitext\"}",
+                    "value": "={{ $('Code1').item.json.campos['Telefone Comercial'].values[0].value }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        288
+      ],
+      "id": "6d4f39c1-dd0a-4e8b-9783-90320b6af306",
+      "name": "Cria contato",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json._embedded.leads[0].id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "ddfe7e8e-f862-4b82-afdf-54ee403390b3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "986baac2-90b6-48e4-ac4f-c54ebf200c06",
+                    "leftValue": "={{ $json.json }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1232,
+        96
+      ],
+      "id": "6604cb59-56dd-42e2-8fd7-7e9aafc1427d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "06889e10-ecff-478a-8e0a-f1787943cde9",
+              "leftValue": "={{ $json._embedded.leads[0].pipeline_id }}",
+              "rightValue": 6961711,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1008,
+        0
+      ],
+      "id": "bf671784-f9de-4402-a806-2477d646694d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json._embedded.leads[0].id }}",
+              "pipeline_id": 6961711,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "="
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        -96
+      ],
+      "id": "51053e34-ebd1-4a53-8d33-040b8f377946",
+      "name": "atualiza",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "446aab4a-3a2e-42c5-b3d8-4593aed52382",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2128,
+        96
+      ],
+      "id": "11c071ad-8471-4055-ade6-429d144389e6",
+      "name": "Webhook",
+      "webhookId": "446aab4a-3a2e-42c5-b3d8-4593aed52382"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1904,
+        96
+      ],
+      "id": "931ce390-ef20-4081-bfdc-6b430b209a4d",
+      "name": "get lead info comercial",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.campos['Telefone Comercial'].values[0].value }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1456,
+        96
+      ],
+      "id": "0b55f02b-c5cd-4d4f-85cc-3a9336ad16b4",
+      "name": "search leads - acad",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst results = inputData.map(lead => {\n  const campos = {};\n\n  if (lead.custom_fields_values) {\n    lead.custom_fields_values.forEach(field => {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    });\n  }\n\n  // Tenta obter o valor da Matrícula via .raw.values[0].value\n  let matriculaFormatada = null;\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000); // timestamp Unix\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000); // GMT-3\n\n    const pad = n => n.toString().padStart(2, '0');\n    // Apenas data, sem hora\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  return {\n    json: {\n      id: lead.id,\n      name: lead.name,\n      pipeline_id: lead.pipeline_id,\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? null,\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? null,\n      matriculaFormatada // agora somente com a data\n    }\n  };\n});\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1680,
+        96
+      ],
+      "id": "db9b9c17-93fe-403b-8b95-1a0b99634462",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json._embedded.leads[0].id }}",
+              "pipeline_id": 6961711,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        96
+      ],
+      "id": "780d09a4-e1b5-488d-8e74-7e8a85cd5b30",
+      "name": "atualiza1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "DADOS DE ACESSO GERADOS, ENVIAR AO ALUNO. "
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        96
+      ],
+      "id": "f3478b2e-c68a-4356-a4a6-042d8d06b5e4",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -784,
+        96
+      ],
+      "id": "d60863e6-1d47-49d9-a8e5-762dae956adb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1008,
+        288
+      ],
+      "id": "b1cb489f-faa8-4cba-a0b7-56b9e39bd4c7",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -784,
+        288
+      ],
+      "id": "dc4e9eb1-c27c-41be-a46c-143819a09c5a",
+      "name": "Wait",
+      "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+    }
+  ],
+  "connections": {
+    "Cria contato": {
+      "main": [
+        [
+          {
+            "node": "Cria Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "atualiza",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "get lead info comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get lead info comercial": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search leads - acad": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "search leads - acad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "atualiza1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "191",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "6cb4539d-c63b-48a8-85fb-e240c9f3bd53",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19117005",
+            "leads[add][0][status_id]": "142",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/446aab4a-3a2e-42c5-b3d8-4593aed52382",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "38896784-d218-4078-9499-94643a3dbdb5",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-07-25T20:00:36.295Z",
+      "updatedAt": "2025-07-25T20:00:36.295Z",
+      "id": "3759VYd0IlWAtU1B",
+      "name": "COMERCIAL CSV"
+    }
+  ]
+}
