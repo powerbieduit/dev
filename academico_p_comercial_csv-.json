@@ -1,0 +1,544 @@
+{
+  "createdAt": "2025-07-25T20:02:01.729Z",
+  "updatedAt": "2025-07-25T22:40:27.000Z",
+  "id": "muIK4p1V87Rt6NGX",
+  "name": "academico_p_comercial_csv",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Code2').item.json['334080'] }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539240,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":31774,\"type\":\"text\"}",
+                    "value": "={{ $('Code2').item.json['330926'] }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "tags": [
+                  {
+                    "id": [
+                      174587
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        368,
+        640
+      ],
+      "id": "495feb15-b98d-4254-9a2a-94f432aff3b7",
+      "name": "cria lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "225a1617-1c5d-43b2-a831-e5a924bfe4e5",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        448
+      ],
+      "id": "ca81198c-1b1f-4ebd-baf1-0256e61cc198",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Code2').item.json['334080'] }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":15846,\"type\":\"multitext\"}",
+                    "value": "={{ $('Code2').item.json['1003496'] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        160,
+        640
+      ],
+      "id": "dd167895-5a38-4d0d-ae37-d01f7634eef2",
+      "name": "cria contato",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "notesInFlow": false,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -304,
+        640
+      ],
+      "id": "9a0de69e-1598-4222-aaf2-7a5844e2a984",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mantém apenas o item com dados do Set Auxiliar (posição 0 do Merge)\nreturn [items[0]];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        640
+      ],
+      "id": "8385516c-ba26-450d-9751-981330a81dc6",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b55b3f4a-98d7-4da0-9994-ab81edde0011",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1632,
+        448
+      ],
+      "id": "71b84963-1944-4f86-b093-840766713296",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "=https://csvatendimento.kommo.com/api/v4/leads?with=contacts&query={{ $json.body['leads[add][0][id]'] }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "with",
+              "value": "contacts"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImYwZWY1Mjk0ZTRkMzc3NmZiNDk3MjlhNzk1MzVlZWI0ZDVlNDY1NWRjZjBjZWRlYTMwYjQ0MDY1ZTcyOTJmMGUwMjJjYjFhOGRiMGEzYmJmIn0.eyJhdWQiOiI0ZDJhZjJiMS00YjEzLTRiOTktODBkYS04MzA0YTMxYjYwZTMiLCJqdGkiOiJmMGVmNTI5NGU0ZDM3NzZmYjQ5NzI5YTc5NTM1ZWViNGQ1ZTQ2NTVkY2YwY2VkZWEzMGI0NDA2NWU3MjkyZjBlMDIyY2IxYThkYjBhM2JiZiIsImlhdCI6MTc1MzQ3NDYxMSwibmJmIjoxNzUzNDc0NjExLCJleHAiOjE3NzA4NTQ0MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIwMmI0ZDU0MS04NjIzLTRmZGItOWY2Yy0zNjJhMjRhMWMxNjEiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.k6tSQyIUbWJPNWOA5777GNI1PpHCuqwmUBL5tUhcATsk1y5fN-8nowKixEILUs4e6IHqV4c1RBRC0HaJFtdVnWnvbbJP_2UAVj2NfvgaOBrcZm21OWJKCstGRvhtAYUs0wlL0BcQVnab9Ze0omuS4SzZj0rELG7tYKVWKFZbMZuHbZ-Pk0XeddW_lCqshdgd1XXd8fJaA1jd55I_Q-W3qXcF8qetR-ml9IwV12RI5pgAS3x0XkQpdHXQHAuHgiSMWgWAf-49_WXnd0XnIii_jf1wRvmjeeyN6HCg0Xd2pDy5eChX5KbYniwCjz2m-tXxbXyGWGJ6dPQVPFaTRJ_3Vg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1904,
+        448
+      ],
+      "id": "428fb5b5-7f8b-4a20-aa74-c02090e8c8d4",
+      "name": "pega dados leads + contato acad"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - JavaScript\n\n// Entrada do node anterior\nconst item = items[0]; // se houver vários leads, use um loop\n\n// Caminho até os campos customizados\nconst customFields = item.json.data._embedded.leads[0].custom_fields_values;\n\n// Construindo um objeto com { field_id: value }\nconst result = {};\n\nfor (const field of customFields) {\n  const fieldId = field.field_id;\n  const valueArray = field.values;\n\n  // Pega o primeiro valor (ou null se vazio)\n  const value = valueArray.length > 0 ? valueArray[0].value : null;\n\n  result[fieldId] = value;\n}\n\n// Retorna como novo item\nreturn [\n  {\n    json: result\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        448
+      ],
+      "id": "292e80e1-dc72-470a-b015-f90ddf8655c2",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Get list of leads').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "24cd6ce8-3923-4786-a1fe-7d8b4b5184b3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c73e4e9a-e157-4091-88ad-17964487d7ff",
+                    "leftValue": "={{ $('Get list of leads').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -304,
+        304
+      ],
+      "id": "92815695-a7d3-4cd1-ae15-05eaad47dd80",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        400
+      ],
+      "id": "1b3b47c0-fea1-49a1-9c3f-56f2c50a42c4",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539240,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":686789,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              },
+              "request_id": ""
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        0,
+        160
+      ],
+      "id": "39a73c0d-1833-408e-b575-33244751ed7c",
+      "name": "update no lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json['1003496'] }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        448
+      ],
+      "id": "29239adc-2301-4d35-960a-24d7cc3779f1",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\n// Se não houver leads, retorna campos vazios\nif (quantidade_encontrada === 0) {\n  return [{\n    json: {\n      quantidade_encontrada,\n      status_id: null,\n      id: null\n    }\n  }];\n}\n\n// Seleciona o lead com maior ID\nconst leadComMaiorId = leads.reduce((maior, atual) => {\n  return atual.id > maior.id ? atual : maior;\n});\n\n// Retorna a quantidade e o status_id do lead de maior ID\nreturn [{\n  json: {\n    quantidade_encontrada,\n    id: leadComMaiorId.id,\n    status_id: leadComMaiorId.status_id\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -832,
+        448
+      ],
+      "id": "c76157a4-d533-4959-8eca-96bf156afe6e",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "path": "25802bdd-d00e-4643-bed4-6c88176bcd45",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2128,
+        448
+      ],
+      "id": "51c90b2f-69c7-4142-ba5d-b4dbddcf67b3",
+      "name": "Webhook1",
+      "webhookId": "25802bdd-d00e-4643-bed4-6c88176bcd45"
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cria contato": {
+      "main": [
+        [
+          {
+            "node": "cria lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pega dados leads + contato acad": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "update no lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "pega dados leads + contato acad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "864d543e-37f5-4ed0-af6c-922e871326e0",
+  "triggerCount": 1,
+  "tags": []
+}
