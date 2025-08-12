@@ -1,0 +1,525 @@
+{
+  "createdAt": "2025-07-25T19:54:56.570Z",
+  "updatedAt": "2025-08-08T21:39:16.000Z",
+  "id": "0xXKBwF7MRaSJiyu",
+  "name": "robo_consulta_precos",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "precos_robo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2160,
+        112
+      ],
+      "id": "97cba5d1-169d-4d4b-a412-e94559183f64",
+      "name": "Webhook",
+      "webhookId": "2976d903-9ff1-4473-885d-ec4559702c7e"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1AlIWvsqJ5B7BN_34nyWbV-aO-yagHSlsNGe0WgpTxVQ",
+          "mode": "list",
+          "cachedResultName": "Preço_Graduação_CSV",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AlIWvsqJ5B7BN_34nyWbV-aO-yagHSlsNGe0WgpTxVQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AlIWvsqJ5B7BN_34nyWbV-aO-yagHSlsNGe0WgpTxVQ/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Curso",
+              "lookupValue": "={{ $json.Curso }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -544,
+        112
+      ],
+      "id": "4b23bdee-e6c4-45c5-b4cb-5000b70f0be5",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d7825a84-df8e-411f-940d-992bfa7ed5f0",
+              "leftValue": "={{ $json.encontrou }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        112
+      ],
+      "id": "f1fc0b92-efb1-44f4-9a20-058d8b1d6f3f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "const STATUS_VALIDO = 48539246;\n\nconst leads = $json._embedded?.leads || [];\n\nconst resultado = leads.map(lead => {\n  const dados = {};\n  dados[\"LeadID\"] = lead.id;\n  dados[\"status_id\"] = lead.status_id;\n  dados[\"status_correto\"] = lead.status_id === 53917599;\n\n  const customFields = lead.custom_fields_values || [];\n\n  customFields.forEach(field => {\n    const nomeCampo = field.field_name || `campo_${field.field_id}`;\n    const valorCampo = field.values?.[0]?.value || \"\";\n    dados[nomeCampo] = valorCampo;\n  });\n\n  return dados;\n});\n\nreturn resultado;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        112
+      ],
+      "id": "b6f79797-c4a4-4182-bf72-88ef796881b2",
+      "name": "Code"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        336,
+        240
+      ],
+      "id": "1fdb9066-95bd-43b2-8b92-dc59a8b5f2fc",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filtra apenas os itens que têm chaves (ou seja, não são objetos vazios)\nconst dadosValidos = items.filter(item => Object.keys(item.json).length > 0);\n\n// Retorna se encontrou dados válidos ou não\nreturn [\n  {\n    json: {\n      encontrou: dadosValidos.length > 0 // true se houver conteúdo, false se tudo for vazio\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        112
+      ],
+      "id": "36bf6a45-10b8-4ce4-8f76-680037ed2035",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9a73cb5-9b6a-4d03-b3dc-02aab24fbdda",
+              "name": "ID do lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1936,
+        112
+      ],
+      "id": "4d3cb131-579a-4586-83f7-740b91499f2c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -848,
+        112
+      ],
+      "id": "4869ebf2-c6eb-4af7-980c-689db97a21ea",
+      "name": "Wait",
+      "webhookId": "35c5370d-d58a-4bb0-9946-3c3ba5d39de7"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json['ID do lead'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1680,
+        112
+      ],
+      "id": "a708db35-2e93-43b8-a8b5-ca7bff8c83dc",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields').all()[0].json['ID do lead'] }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":690937,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json.Contagem }}"
+                  },
+                  {
+                    "data": "{\"id\":673518,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Área'] }}"
+                  },
+                  {
+                    "data": "{\"id\":690929,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Preço eduit 1'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690911,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Grau site 1'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690931,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Preço eduit 2'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690923,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Tipo 1'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690913,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Grau site 2'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690933,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Preço eduit 3'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690925,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Tipo 2'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690927,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Tipo 3'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690915,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Grau site 3'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":688615,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Turma de Ingresso'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690917,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Semestres'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690919,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Semestres 2'] }}\n"
+                  },
+                  {
+                    "data": "{\"id\":690921,\"type\":\"text\"}",
+                    "value": "={{ $('Get row(s) in sheet').all()[0].json['Semestres 3'] }}\n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        336,
+        32
+      ],
+      "id": "02393296-bd83-4772-8072-6c31c817a99f",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields').item.json['ID do lead'] }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":690935,\"type\":\"text\"}",
+                    "value": "Não Encontrado"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        528,
+        240
+      ],
+      "id": "5f8c69d0-f900-4ed0-b36b-8f4948b5b693",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "da45399d-ac4d-43af-86a1-8ebc6f7fd784",
+              "leftValue": "={{ $json.status_correto }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1136,
+        112
+      ],
+      "id": "c5180bb1-8b8d-4977-9b08-3d75ee3f6ff0",
+      "name": "Filter"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "196",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "500d99d7-985d-469f-b1e6-57c0818776e9",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19126687",
+            "leads[add][0][status_id]": "53917599",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/precos_robo",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "a4d7f8f6-4ece-460f-b855-5922e3884332",
+  "triggerCount": 1,
+  "tags": []
+}
