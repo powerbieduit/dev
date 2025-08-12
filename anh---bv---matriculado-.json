@@ -1,0 +1,487 @@
+{
+  "createdAt": "2025-08-01T17:16:32.451Z",
+  "updatedAt": "2025-08-05T14:56:38.000Z",
+  "id": "bFnxIJ0YiYbtWshX",
+  "name": "ANH - BV - MATRICULADO",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e81e7018-b4a3-40c3-b52b-df71200bdaa7",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        -48
+      ],
+      "id": "8a5f4343-f86d-42b1-86c7-479e493d1e4f",
+      "name": "Webhook",
+      "webhookId": "e81e7018-b4a3-40c3-b52b-df71200bdaa7"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Code1').item.json.name }}",
+              "pipeline_id": 7355323,
+              "status_id": 60877039,
+              "loss_reason_id": "=",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":412930,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.CPF.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":412934,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Polo.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":412928,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.RA.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":412932,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Curso.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1473851,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1454014,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1457224,\"type\":\"select\"}",
+                    "value": "={{ $('Code1').item.json.campos['Nível'].raw.values[0].value }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}",
+                          "is_main": false
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        144
+      ],
+      "id": "f6d0c3ff-2704-43d4-8051-16981828f8cb",
+      "name": "Cria Lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Code1').item.json.name }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":346300,\"type\":\"multitext\"}",
+                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1536,
+        144
+      ],
+      "id": "d1bfb529-0b6b-4c91-a415-6f13acd32b9e",
+      "name": "Cria contato",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -48
+      ],
+      "id": "9f496cc3-d6a5-43be-9682-83acb96290d3",
+      "name": "get lead info comercial",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.campos.Telefone.values[0].value }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -48
+      ],
+      "id": "9dc04509-fbd9-4d31-aaf7-cf19ca24810a",
+      "name": "search leads - acad",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst results = inputData.map(lead => {\n  const campos = {};\n\n  // Mapeia os campos personalizados\n  if (lead.custom_fields_values) {\n    lead.custom_fields_values.forEach(field => {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    });\n  }\n\n  // 📅 Converte a matrícula de timestamp para DD/MM/YYYY ou \"\" se inválida\n  let matriculaFormatada = \"\";\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000); // Unix timestamp\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000); // Ajuste GMT-3\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  return {\n    json: {\n      id: lead.id ?? \"\",\n      name: lead.name ?? \"\",\n      pipeline_id: lead.pipeline_id ?? \"\",\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? \"\",\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? \"\",\n      matriculaFormatada\n    }\n  };\n});\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -48
+      ],
+      "id": "d4c90391-f5af-4695-a4c8-93299a6a7b75",
+      "name": "Code1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1088,
+        144
+      ],
+      "id": "c6694ff3-1b81-4a3b-b67e-b6d8dd45e253",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1312,
+        144
+      ],
+      "id": "a21a4c3f-5715-4b1c-89a4-84160c66c7f4",
+      "name": "Wait",
+      "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $json._embedded?.leads || [];\n\nif (leads.length === 0) {\n  return [{ json: { quantidade_encontrada: 0, id_mais_recente: \"\" } }];\n}\n\n// Ordena por ID (maior = mais recente)\nconst leadsOrdenados = leads\n  .filter(lead => typeof lead.id === \"number\")\n  .sort((a, b) => b.id - a.id);\n\nconst quantidade_encontrada = leads.length;\nconst id_mais_recente = leadsOrdenados[0]?.id ?? \"\";\n\n// Retorno final\nreturn [{\n  json: {\n    quantidade_encontrada,\n    id_mais_recente\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        -48
+      ],
+      "id": "1f4dfee3-760f-419b-bc91-5d7dbbeec0b2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bbdc31a7-ea84-4942-80b3-1b81c2d0cfeb",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -48
+      ],
+      "id": "8ad68abb-b396-4071-8a14-d349b1fcfd90",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.id_mais_recente }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":1473849,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.name }}"
+                  },
+                  {
+                    "data": "{\"id\":412930,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.CPF.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":412932,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Curso.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":412934,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Polo.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1473851,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1454014,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":412928,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.RA.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1457224,\"type\":\"select\"}",
+                    "value": "={{ $('Code1').item.json.campos['Nível'].raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":413910,\"type\":\"text\"}",
+                    "value": "Calouro"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        -176
+      ],
+      "id": "94fdc7e5-bee7-405c-b7b8-e4b42e6129ac",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cria contato": {
+      "main": [
+        [
+          {
+            "node": "Cria Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get lead info comercial": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search leads - acad": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "search leads - acad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "get lead info comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "183",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "0ce1e833-51d7-4536-b84b-b2e677703572",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "18867373",
+            "leads[add][0][status_id]": "142",
+            "leads[add][0][pipeline_id]": "9095532",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/e81e7018-b4a3-40c3-b52b-df71200bdaa7",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "f7fd6bb2-76a6-4db4-9590-195e1a8216a1",
+  "triggerCount": 1,
+  "tags": []
+}
