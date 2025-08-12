@@ -1,0 +1,724 @@
+{
+  "createdAt": "2025-07-25T19:56:25.963Z",
+  "updatedAt": "2025-08-04T17:28:00.000Z",
+  "id": "YLRdJAd0DgnKuK4q",
+  "name": "criacao_leads_soead",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2544,
+        400
+      ],
+      "id": "92c91538-d695-4d73-b28e-074b371d45bf",
+      "name": "Wait",
+      "webhookId": "e1a1207b-471b-4c47-8af9-84c0c6317ade"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Sumaré",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1930491791,
+          "mode": "list",
+          "cachedResultName": "ANHANGUERA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit#gid=1930491791"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Ativo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1664,
+        208
+      ],
+      "id": "8d4d1e74-95d1-41c9-96cc-a8acfb742b39",
+      "name": "get_consultor",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Sumaré",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1930491791,
+          "mode": "list",
+          "cachedResultName": "ANHANGUERA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit#gid=1930491791"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "Ultimo Lead": "={{new Date().toISOString()}}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Id",
+              "displayName": "Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo Lead",
+              "displayName": "Ultimo Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1216,
+        208
+      ],
+      "id": "d2e969c5-dc38-4593-9ad7-06aaab3f894a",
+      "name": "update ultima exec",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Edit Fields').item.json.Nome }}",
+              "responsible_user_id": "={{ $('Code1').item.json.Id }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
+                    "value": "=+55{{ $('Edit Fields').item.json.Telefone }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        208
+      ],
+      "id": "df0d03e4-d957-4765-ade8-b456b45f5815",
+      "name": "cria contato",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1888,
+        400
+      ],
+      "id": "d6be20cf-4d8d-4d93-9840-7927b9c6e7f3",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Define campos fixos\nconst camposFixos = ['id', 'name', 'telefone', 'email', 'curso'];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\nif (quantidade_encontrada === 0) {\n  // Se nenhum lead for encontrado, retorna campos vazios\n  const vazio = {\n    quantidade_encontrada,\n    id: \"\",\n    name: \"\",\n    telefone: \"\",\n    email: \"\",\n    curso: \"\"\n  };\n  return [{ json: vazio }];\n}\n\n// Seleciona o lead com menor ID\nconst leadEscolhido = leads.reduce((min, atual) => {\n  return atual.id < min.id ? atual : min;\n});\n\n// Extrai valores dos campos customizados\nconst fields = leadEscolhido.custom_fields_values || [];\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name?.toLowerCase().includes(nome.toLowerCase()))\n         ?.values?.[0]?.value ?? \"\";\n};\n\nconst resultado = {\n  quantidade_encontrada,\n  id: leadEscolhido.id,\n  name: leadEscolhido.name ?? \"\",\n  telefone: getCampo(\"telefone\"),\n  email: getCampo(\"email\"),\n  curso: getCampo(\"curso\")\n};\n\nreturn [{ json: resultado }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2096,
+        400
+      ],
+      "id": "d93780ae-6e81-4eaf-9a3b-8f8ae1d38d36",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "=+55{{ $json.Telefone }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2320,
+        400
+      ],
+      "id": "031769ee-0c94-434f-904e-24798fd4bf35",
+      "name": "procura lead1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1664,
+        512
+      ],
+      "id": "970629c3-8769-4467-8cce-3aa1924ceb74",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1440,
+        208
+      ],
+      "id": "e52f6645-b555-4c87-b591-bf9b4d71ddb9",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c9eb4b1-ec44-4fac-82b1-232006b7872e",
+              "name": "Nome",
+              "value": "={{ $json.body.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "6c48dde8-316e-4f35-b881-8bb13510d468",
+              "name": "Telefone",
+              "value": "={{ $json.body.celular }}",
+              "type": "string"
+            },
+            {
+              "id": "1ddb0708-1df2-428d-bc0c-bb58e1637e51",
+              "name": "Tipo",
+              "value": "={{ $json.body.tipo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2768,
+        400
+      ],
+      "id": "1e3b439d-ad20-4624-95d4-cfd7f711d60b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
+                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1440,
+        512
+      ],
+      "id": "e533f839-0833-4d1c-8826-4470b88964c1",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1184,
+        768
+      ],
+      "id": "a238e0c8-b8e9-4b9d-8410-516cd94a9697",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.id }}",
+              "pipeline_id": 11003376,
+              "status_id": 84631600,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $json.name }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $json.telefone }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      157694
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        448
+      ],
+      "id": "25d17dea-68fb-4b81-b0d7-ea727879775f",
+      "name": "recadastro",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Edit Fields').item.json.Nome }}",
+              "pipeline_id": 9095532,
+              "status_id": 70788396,
+              "responsible_user_id": "={{ $('Code1').item.json.Id }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields').item.json.Nome }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "=+55{{ $('Edit Fields').item.json.Telefone }}"
+                  },
+                  {
+                    "data": "{\"id\":672274,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.Nome }}"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Site - Anhanguera"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -704,
+        208
+      ],
+      "id": "39c02de9-33eb-4204-926a-860277de91f6",
+      "name": "cria lead (eduit new)",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "50394c72-1fe1-4a09-93b4-a19095a13e71",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2992,
+        400
+      ],
+      "id": "fadd5b4a-ec4f-490e-9ac9-095831cfc1a7",
+      "name": "Webhook",
+      "webhookId": "50394c72-1fe1-4a09-93b4-a19095a13e71"
+    }
+  ],
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "procura lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_consultor": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update ultima exec": {
+      "main": [
+        [
+          {
+            "node": "cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cria contato": {
+      "main": [
+        [
+          {
+            "node": "cria lead (eduit new)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "get_consultor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "procura lead1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "update ultima exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "recadastro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+            "content-length": "62",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "accept-language": "pt-BR,pt;q=0.9",
+            "content-type": "application/json",
+            "origin": "https://www.soead.com.br",
+            "priority": "u=3, i",
+            "referer": "https://www.soead.com.br/",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "189.6.255.25",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "189.6.255.25"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nome": "Daniel",
+            "celular": "55997127864",
+            "tipo": "Graduação"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/50394c72-1fe1-4a09-93b4-a19095a13e71",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "c7db6bee-56b6-4c4a-af87-273371f57a9b",
+  "triggerCount": 1,
+  "tags": []
+}
