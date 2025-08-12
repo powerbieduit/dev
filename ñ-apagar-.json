@@ -1,0 +1,106 @@
+{
+  "createdAt": "2025-08-01T20:15:12.935Z",
+  "updatedAt": "2025-08-06T18:14:19.000Z",
+  "id": "eehlrwp0lbPtz94o",
+  "name": "Ñ APAGAR",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update_lead",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        -160
+      ],
+      "id": "8f3b5812-bba4-43be-8e32-64b0756a8201",
+      "name": "update_lead",
+      "webhookId": "c2fac49a-b9c3-425e-a9ae-d257b5fd0a1e"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tabula",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        64
+      ],
+      "id": "8ef21939-403d-4270-a5fb-bf0c7c7e35ac",
+      "name": "tabula",
+      "webhookId": "c2fac49a-b9c3-425e-a9ae-d257b5fd0a1e"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "notificacoes-tabulacao",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        512
+      ],
+      "id": "e82a5863-f754-4ab9-a20e-90b3a872fee2",
+      "name": "Webhook3",
+      "webhookId": "fd6612a4-dbf3-458e-87ea-800abeed9398"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atualiza-painel",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        736
+      ],
+      "id": "6f017f27-2fec-44cb-a8d9-4d26b3279c9d",
+      "name": "Webhook4",
+      "webhookId": "e9a11a66-7591-4f7a-bad6-bbc07d902367"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "status_change",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        288
+      ],
+      "id": "53fc43eb-5a3a-4fdd-aabd-cfce978c604e",
+      "name": "status",
+      "webhookId": "95f73fd1-4be0-4b14-aa43-858d92da6ff7"
+    }
+  ],
+  "connections": {
+    "status": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "35beb87c-0019-4e6e-978e-267cf1b7c321",
+  "triggerCount": 5,
+  "tags": []
+}
