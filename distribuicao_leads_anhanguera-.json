@@ -1,0 +1,367 @@
+{
+  "createdAt": "2025-07-25T21:18:19.721Z",
+  "updatedAt": "2025-08-04T17:28:02.000Z",
+  "id": "278LsyluypT5pJFv",
+  "name": "distribuicao_leads_anhanguera",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "DISTRIBUICAOBU",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        224,
+        -496
+      ],
+      "id": "674a227a-b148-4678-80bd-1a8961c4659a",
+      "name": "Webhook",
+      "webhookId": "2d4d6a76-e1a4-452f-a6f3-dcd3be6cd741"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -496
+      ],
+      "id": "890cc938-36bd-4d31-91ab-67f1a7f955b2",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acessa o primeiro lead\nconst lead = $json._embedded?.leads?.[0];\n\n// Garante que o lead existe\nif (!lead) {\n  return [{ json: { id: null, telefone: null, contact_id: null } }];\n}\n\n// Pega o campo \"Telefone\"\nconst telefone = lead.custom_fields_values?.find(f => f.field_name === \"Telefone\")?.values?.[0]?.value || null;\n\n// Pega o ID do contato principal\nconst contact_id = lead._embedded?.contacts?.[0]?.id || null;\n\n// Retorna ID, Telefone e ID do contato\nreturn [\n  {\n    json: {\n      id: lead.id,\n      telefone,\n      contact_id\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        -496
+      ],
+      "id": "3c5b560c-fcda-4077-901e-5c99e43833b1",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Sumaré",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "SUMARE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "Ultimo Lead": "={{new Date().toISOString()}}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Id",
+              "displayName": "Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo Lead",
+              "displayName": "Ultimo Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1360,
+        -496
+      ],
+      "id": "4748b82d-4098-4c7d-98bf-364782613ffe",
+      "name": "update ultima exec",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        -496
+      ],
+      "id": "c8451a4a-3ed0-46eb-bb9d-37b71fd72d7f",
+      "name": "Code8"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Sumaré",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1930491791,
+          "mode": "list",
+          "cachedResultName": "ANHANGUERA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit#gid=1930491791"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Ativo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        912,
+        -496
+      ],
+      "id": "8ef52a78-d6cd-4ba1-8af1-cff47a8662fe",
+      "name": "get_consultor1",
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WBAzBmkCdwnRet1o",
+          "name": "Google Sheets Mkt Eduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code').item.json.id }}",
+              "responsible_user_id": "={{ $('Code8').item.json.Id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        -496
+      ],
+      "id": "c7452ced-f507-45b8-8532-2b7b15f604e3",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Code').item.json.contact_id }}",
+              "responsible_user_id": "={{ $('Code8').item.json.Id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        -496
+      ],
+      "id": "3b6b1bb0-a7d9-4792-a645-19e68a55059a",
+      "name": "Update contacts1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "get_consultor1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update ultima exec": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code8": {
+      "main": [
+        [
+          {
+            "node": "update ultima exec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_consultor1": {
+      "main": [
+        [
+          {
+            "node": "Code8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads": {
+      "main": [
+        [
+          {
+            "node": "Update contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "09f8dc15-f55b-40aa-8059-cbea0476eca3",
+  "triggerCount": 1,
+  "tags": []
+}
