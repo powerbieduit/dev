@@ -1,0 +1,368 @@
+{
+  "createdAt": "2025-07-25T19:59:22.925Z",
+  "updatedAt": "2025-08-07T14:49:20.000Z",
+  "id": "l0ogp2vNaEnvONQ3",
+  "name": "distribuicao_whastapp",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "077036e1-5d46-4eea-85ad-e595b0848198",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -448
+      ],
+      "id": "4a888457-0ba9-412c-880a-09abbf10704d",
+      "name": "Webhook1",
+      "webhookId": "077036e1-5d46-4eea-85ad-e595b0848198"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        768,
+        -448
+      ],
+      "id": "d1da51ca-7ab6-4f0f-9594-83b35bfaf7e1",
+      "name": "Get list of leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code4').item.json.id }}",
+              "responsible_user_id": "={{ $('Code5').item.json.Id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        -448
+      ],
+      "id": "111796dc-5b5b-4f46-90a1-9100784063e6",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Code4').item.json.contact_id }}",
+              "responsible_user_id": "={{ $('Code5').item.json.Id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        -448
+      ],
+      "id": "503af484-4ee2-4c85-8703-703407681f12",
+      "name": "Update contacts3",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Cruzeiro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 105457879,
+          "mode": "list",
+          "cachedResultName": "Distrib",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit#gid=105457879"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ultimo Lead": "={{new Date().toISOString()}}",
+            "row_number": "={{ $json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Id",
+              "displayName": "Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo Lead",
+              "displayName": "Ultimo Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1648,
+        -448
+      ],
+      "id": "82085325-cf2c-4c86-b18d-02fc8304fdc4",
+      "name": "update ultima exec2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WBAzBmkCdwnRet1o",
+          "name": "Google Sheets Mkt Eduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        -448
+      ],
+      "id": "42631e06-e2b7-4202-aa15-b2c4d9337119",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Cruzeiro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 105457879,
+          "mode": "list",
+          "cachedResultName": "Distrib",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit#gid=105457879"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Ativo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1200,
+        -448
+      ],
+      "id": "4032dd94-0e91-4c8b-bbe4-918d8f82150c",
+      "name": "get_consultor2",
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WBAzBmkCdwnRet1o",
+          "name": "Google Sheets Mkt Eduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acessa o primeiro lead\nconst lead = $json._embedded?.leads?.[0];\n\n// Garante que o lead existe\nif (!lead) {\n  return [{ json: { id: null, telefone: null, contact_id: null } }];\n}\n\n// Pega o campo \"Telefone\"\nconst telefone = lead.custom_fields_values?.find(f => f.field_name === \"Telefone\")?.values?.[0]?.value || null;\n\n// Pega o ID do contato principal\nconst contact_id = lead._embedded?.contacts?.[0]?.id || null;\n\n// Retorna ID, Telefone e ID do contato\nreturn [\n  {\n    json: {\n      id: lead.id,\n      telefone,\n      contact_id\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        -448
+      ],
+      "id": "a6de985f-570b-4d2f-a7ad-49edb2870a77",
+      "name": "Code4"
+    }
+  ],
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads1": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Update contacts3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "update ultima exec2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_consultor2": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "get_consultor2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update ultima exec2": {
+      "main": [
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2475852c-e9a8-463a-894a-538afd2cfad4",
+  "triggerCount": 1,
+  "tags": []
+}
