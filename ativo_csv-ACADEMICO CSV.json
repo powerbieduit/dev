@@ -1,0 +1,302 @@
+{
+  "createdAt": "2025-07-25T20:01:25.396Z",
+  "updatedAt": "2025-07-25T22:58:15.000Z",
+  "id": "D1AqLQAUK63Fo0jZ",
+  "name": "ativo_csv",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dfb67322-692c-4fbf-83d4-9566db6573d2",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b09bfde3-2d28-4ed5-b584-c69b788f9523",
+      "name": "Webhook",
+      "webhookId": "dfb67322-692c-4fbf-83d4-9566db6573d2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_do_lead": "={{ $json.body['leads[add][0][id]'] }}",
+            "ativo_inativo": "Ativo"
+          },
+          "matchingColumns": [
+            "id_do_lead"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        0
+      ],
+      "id": "1db91439-e610-4640-933b-4f103a6ca151",
+      "name": "Postgres",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "Pq2u2kpM4UEc1q97",
+          "name": "Postgres distribuicao_academico"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "945dc43f-0e50-4aea-8275-26255a687a59",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-07-25T19:56:58.514Z",
+      "updatedAt": "2025-07-25T19:56:58.514Z",
+      "id": "XC7egqniXPXmFKMH",
+      "name": "ACADEMICO CSV"
+    }
+  ]
+}
