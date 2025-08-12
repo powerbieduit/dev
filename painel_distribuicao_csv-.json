@@ -1,0 +1,420 @@
+{
+  "createdAt": "2025-07-25T19:56:45.653Z",
+  "updatedAt": "2025-07-25T22:45:57.000Z",
+  "id": "Omx94aT4or4GKS3w",
+  "name": "painel_distribuicao_csv",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "api/distribuicao",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "4986ed09-8fea-472a-bbf6-baff58ed9345",
+      "name": "Webhook GET Distribuicao",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        464
+      ],
+      "webhookId": "027a53d9-b3d7-40af-80bd-a29c274a9bc7"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  responsavel,\n  ativo_inativo AS status,\n  almoco,\n  final_expediente,\n  pausa_distribuicao AS pausa,\n  volume_distribuicao AS volume,\n  tipo_atendimento,\n  fila,\n  id,\n  ultima_execucao\nFROM distribuicao_academico\nORDER BY responsavel;\n",
+        "options": {}
+      },
+      "id": "8bf33053-446c-452b-b6cc-d43a0ef3a267",
+      "name": "Postgres - Select Distribuicao",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        224,
+        464
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "Pq2u2kpM4UEc1q97",
+          "name": "Postgres distribuicao_academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const dadosDistribuicao = [];\nlet filaAtendimento = 0;\nlet filaAcolhimento = 0;\n\nfor (const item of items) {\n  if (item.json.responsavel) {\n    // Responsáveis individuais\n    dadosDistribuicao.push(item.json);\n  } else if (item.json.tipo_atendimento === 'Atendimento') {\n    filaAtendimento = item.json.total_leads ?? 0;\n  } else if (item.json.tipo_atendimento === 'Acolhimento') {\n    filaAcolhimento = item.json.total_leads ?? 0;\n  }\n}\n\nreturn [{\n  json: {\n    distribuicao: dadosDistribuicao,\n    fila_atendimento: filaAtendimento,\n    fila_acolhimento: filaAcolhimento\n  }\n}];\n"
+      },
+      "id": "2d57f833-cb23-41d7-b20d-a74f276f5622",
+      "name": "Limpar JSON",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        672,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b5eeed21-6fb8-4cac-b42d-b6968f3633a9",
+      "name": "Responder Webhook GET",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "api/atualizar-distribuicao",
+        "responseMode": "lastNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "67bfee2b-9ee6-4b85-a3fa-5cd44818e939",
+      "name": "Webhook POST Atualizar",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "56a42202-0fac-4176-83db-1fc35f22ca4b"
+    },
+    {
+      "parameters": {
+        "functionCode": "const array = Array.isArray($json) ? $json : $json.body;\n\nif (!Array.isArray(array)) {\n  throw new Error('O corpo da requisição não é um array nem contém um campo body com array');\n}\n\nreturn array.map(item => ({\n  json: {\n    id: item.id,\n    almoco: item.almoco,\n    final_expediente: item.final_expediente,\n    pausa: item.pausa,\n    volume: item.volume,\n    tipo_atendimento: item.tipo_atendimento\n  }\n}));\n"
+      },
+      "id": "fe0cd517-052d-49b6-a49f-5aaa20dfe8c1",
+      "name": "Preparar Updates",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE distribuicao_academico SET\n  almoco = {{ $json.almoco ? `'${$json.almoco}'` : 'NULL' }},\n  final_expediente = {{ $json.final_expediente ? `'${$json.final_expediente}'` : 'NULL' }},\n  pausa_distribuicao = {{ $json.pausa ?? 'NULL' }},\n  volume_distribuicao = {{ $json.volume ?? 'NULL' }},\n  tipo_atendimento = '{{ $json.tipo_atendimento }}'\nWHERE id = {{ $json.id }};\n",
+        "options": {}
+      },
+      "id": "8c234a98-d441-4a60-8d84-ef7c025e82d7",
+      "name": "Postgres - Update Distribuicao",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "Pq2u2kpM4UEc1q97",
+          "name": "Postgres distribuicao_academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3c52fb57-dcf6-4a07-a45c-8090d2a14827",
+      "name": "Responder Webhook POST",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=6961711&filter[statuses][0][status_id]=58225943&filter[statuses][1][pipeline_id]=6961711&filter[statuses][1][status_id]=61970803",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        272
+      ],
+      "id": "6be25153-8b31-423c-831c-5118fd055c60",
+      "name": "HTTP Request",
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let parsed;\nlet leads = [];\n\ntry {\n  parsed = JSON.parse(items[0].json.data);\n  leads = parsed._embedded?.leads ?? [];\n} catch (e) {\n  // Se der erro no parse, mantém leads vazio\n  leads = [];\n}\n\nlet totalAtendimento = 0;\nlet totalAcolhimento = 0;\n\nfor (const lead of leads) {\n  if (lead.status_id === 58225943) {\n    totalAtendimento++;\n  } else if (lead.status_id === 61970803) {\n    totalAcolhimento++;\n  }\n}\n\nreturn [\n  {\n    json: {\n      tipo_atendimento: 'Atendimento',\n      total_leads_fila: totalAtendimento\n    }\n  },\n  {\n    json: {\n      tipo_atendimento: 'Acolhimento',\n      total_leads_fila: totalAcolhimento\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        272
+      ],
+      "id": "b0523377-b79b-4e07-a8cb-a02ea01a1047",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "fila_volume_tipo",
+          "mode": "list",
+          "cachedResultName": "fila_volume_tipo"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tipo_atendimento": "={{ $json.tipo_atendimento }}",
+            "total_leads": "={{ $json.total_leads_fila }}",
+            "data_registro": "={{ new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"America/Sao_Paulo\" })) }}"
+          },
+          "matchingColumns": [
+            "tipo_atendimento"
+          ],
+          "schema": [
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_leads",
+              "displayName": "total_leads",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_registro",
+              "displayName": "data_registro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        672,
+        272
+      ],
+      "id": "b758466d-ae77-42c2-aed2-4a3e05548672",
+      "name": "Postgres3",
+      "credentials": {
+        "postgres": {
+          "id": "Pq2u2kpM4UEc1q97",
+          "name": "Postgres distribuicao_academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  tipo_atendimento,\n  total_leads\nFROM\n  fila_volume_tipo;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        672
+      ],
+      "id": "97b8f1d1-f72a-4a66-89d7-2d4544d86c16",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "Pq2u2kpM4UEc1q97",
+          "name": "Postgres distribuicao_academico"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        560
+      ],
+      "id": "bc2cb243-c6b2-4633-8922-545a8c34f5f0",
+      "name": "Merge"
+    }
+  ],
+  "connections": {
+    "Webhook GET Distribuicao": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Select Distribuicao",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Select Distribuicao": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpar JSON": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook GET",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook POST Atualizar": {
+      "main": [
+        [
+          {
+            "node": "Preparar Updates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Updates": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Update Distribuicao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Update Distribuicao": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook POST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Limpar JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "52e5cbc8-3d8c-4ec4-8a1e-21d2aab89786",
+  "triggerCount": 2,
+  "tags": []
+}
