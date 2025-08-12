@@ -1,0 +1,291 @@
+{
+  "createdAt": "2025-08-12T15:08:41.007Z",
+  "updatedAt": "2025-08-12T15:29:47.000Z",
+  "id": "vBQWXV2MCYF7Mduq",
+  "name": "retorno_disparos_gravacao",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "22c71bdd-b0ab-4c7a-970c-99711a4d3fc9",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        384,
+        192
+      ],
+      "id": "7d0dbfce-ee5f-4867-bc49-1cb874d6271a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'ENTROU NO ATENDIMENTO', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        192
+      ],
+      "id": "aef2e199-8250-4ec2-a891-c24e62604d99",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4f2543c-a088-44be-a81b-e0f03eecfe9d",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        384,
+        448
+      ],
+      "id": "43f540c7-987b-4353-92cb-94a4891a324a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        384,
+        704
+      ],
+      "id": "f694076c-49cd-47a4-ab36-628b87c8d413",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'SEM RESPOSTA', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        448
+      ],
+      "id": "c39aa680-9e75-4dd1-8c7b-d48414cc4466",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'PAGOU', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        704
+      ],
+      "id": "de98d104-5eef-4ad3-b9a2-210422cb3293",
+      "name": "Execute a SQL query2",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sem-resposta",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        448
+      ],
+      "id": "2493b5cd-257e-403b-8bba-b6377b55a7db",
+      "name": "sem-resposta",
+      "webhookId": "365e31d0-f98b-441e-8d8e-39136f198cb6"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rematricula-feita",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        704
+      ],
+      "id": "728c72c5-d7b6-449f-b929-8b016526efc7",
+      "name": "rematricula-feita",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "entrou-na-fila",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        112,
+        176
+      ],
+      "id": "1aa248c7-8afd-4ecf-9f1b-4fb829bcc709",
+      "name": "em-atendimento",
+      "webhookId": "c59535cb-4325-4f16-a38e-a45f6b95ce08"
+    },
+    {
+      "parameters": {
+        "content": "* entrou para atendimento\n* sem resposta\n* rematricula feita\n",
+        "height": 1020,
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7d37b8c7-528b-4b43-9c5a-0d1c1a73645a",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sem-resposta": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rematricula-feita": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "em-atendimento": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a2413bd6-5c64-464e-888c-b334e29d7c09",
+  "triggerCount": 3,
+  "tags": [
+    {
+      "createdAt": "2025-07-25T20:01:08.349Z",
+      "updatedAt": "2025-07-25T20:01:08.349Z",
+      "id": "YYK828CRJpOc3NVq",
+      "name": "disparos"
+    }
+  ]
+}
