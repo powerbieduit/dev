@@ -1,0 +1,1552 @@
+{
+  "createdAt": "2025-08-01T18:08:25.175Z",
+  "updatedAt": "2025-08-12T15:17:23.000Z",
+  "id": "Bytg5Eu5Z9nlt1Q7",
+  "name": "api_sumare",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api-relatorios.sumare.edu.br/api-sumare-eduit/v1/webhooks/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "57633"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer f6e2ede4-b3c1-4377-999b-14d52dd24516"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        176
+      ],
+      "id": "30422096-8fba-493c-87db-f143e3cbac80",
+      "name": "HTTP Request",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Sumaré",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 385970868,
+          "mode": "list",
+          "cachedResultName": "api2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit#gid=385970868"
+        },
+        "combineFilters": "OR",
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        96,
+        176
+      ],
+      "id": "41a5ea84-175c-40d3-b547-bb593b30993a",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WBAzBmkCdwnRet1o",
+          "name": "Google Sheets Mkt Eduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acessa o array \"retorno\" do item atual\nconst array = $json.retorno;\n\n// Garante que é um array válido\nif (!Array.isArray(array)) {\n  throw new Error('O campo retorno não é um array');\n}\n\n// Transforma o array em objeto indexado pelo id\nconst obj = {};\narray.forEach(item => {\n  obj[item.id] = item;\n});\n\n// Retorna um único item, objeto como $json\nreturn [{ json: obj }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        176
+      ],
+      "id": "25956421-3194-483f-a6d5-fcd6c7e578b0",
+      "name": "transforma em objt"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Se o objeto indexado está em $json (ou $json.dados, ajuste se necessário)\nconst dados = $json.dados ? $json.dados : $json; // flexível\n\n// ID atual vindo do Get Row\nconst idAtual = $('Get row(s) in sheet').first().json.id // já disponível no item!\n\n// Filtra os IDs maiores\nconst idsFiltrados = Object.keys(dados)\n  .map(Number)\n  .filter(id => id > Number(idAtual));\n\nidsFiltrados.sort((a, b) => a - b);\n\nconst result = idsFiltrados.map(id => dados[id.toString()]);\n\nreturn result.map(obj => ({ json: obj }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        176
+      ],
+      "id": "ba4eb515-db73-4cff-94e9-0bf396151edd",
+      "name": "filtro ids maiores",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        992,
+        176
+      ],
+      "id": "51f3e528-452c-43aa-ab70-acbce654ef1f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        -16
+      ],
+      "id": "64a6038c-2237-4801-872b-8d12b48a98a5",
+      "name": "No Operation, do nothing",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "url": "=https://sumaread.kommo.com/api/v4/leads?with=contact&query=+55{{ $('filtro ids maiores').item.json.celular }}&filter[statuses][0][pipeline_id]=5617751",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "=application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjdkMzJjZmMwZWY2MGVmNWQ3MTkwNTZkYmUxOGQzOTRmMDc2NzQ1YjVhMjc1NjEyZjlkNDBkNjgwZDc0NzJlMWQ2NzM2ZmIzNTI3MmRkNzk4In0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI3ZDMyY2ZjMGVmNjBlZjVkNzE5MDU2ZGJlMThkMzk0ZjA3Njc0NWI1YTI3NTYxMmY5ZDQwZDY4MGQ3NDcyZTFkNjczNmZiMzUyNzJkZDc5OCIsImlhdCI6MTc1NDUxMTc0NywibmJmIjoxNzU0NTExNzQ3LCJleHAiOjE3Njk2NDQ4MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiMmUyYTVlMDMtM2MxZi00NzVhLTk0ZjQtN2Q2OTQ0YzJkZjliIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.RMyonc2PFiARdUlnypo1RArNKS0hInZbIuEyNgOUnsE6IJLHfXfPeXYlAREpeadBXvBNvGjtpTKCsqba89f49Ea01AiDWTkjyj6oLq9sLu4_MFFgA8VHyldj8XAGNpj7jfcwXEX0hLTOJXGSMRwLX2DAghngPc5TYtbiqMl4QbuJH7uXiPDrwhIObdk3MwBQwYA0RGNUrH8TUJuOCxteWKHnGX2HMJfqPr86c26nDniYYFq3ws4JYR5dPZjTLkOBt2Ji6U2zaYx_3rTNY2F3qoKfG0rHJIYKYAnaJap_-dVs9PatYGTpsqeouxGWIgHzj5ciHmeBoDtIaVsGooT2xw"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        176
+      ],
+      "id": "54c83863-1332-4eb4-bf38-b5fbed8bd830",
+      "name": "HTTP Request1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('filtro ids maiores').item.json.status }}",
+                    "rightValue": "Matriculado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8cf26f9e-6834-472e-8298-b7215416ca7b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MATRICULADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "98075ab3-c8a8-4da4-8fb4-d1313cb1dfc2",
+                    "leftValue": "={{ $('filtro ids maiores').item.json.status }}",
+                    "rightValue": "Contrato Aceito",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CONTRATO ACEITO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "228264e0-765b-4e46-a356-26af9bc8aa4d",
+                    "leftValue": "={{ $('filtro ids maiores').item.json.status }}",
+                    "rightValue": "Inscrito",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INSCRITO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2560,
+        -128
+      ],
+      "id": "4beb52c7-4474-419a-8a91-8ce5e9a4268a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5617751,
+              "status_id": 142,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
+                  },
+                  {
+                    "data": "{\"id\":662154,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                  },
+                  {
+                    "data": "{\"id\":676343,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":673370,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.concurso || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662146,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662156,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.turno || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662152,\"type\":\"text\"}",
+                    "value": "={{\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"]\n}}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        -304
+      ],
+      "id": "95d2c29d-e092-41ed-acc7-d7da7acff3cf",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b04af75c-9c81-40cc-a060-c8e908842c0f",
+              "leftValue": "={{ Array.isArray($json) && ($json.length === 0 || ($json.length === 1 && Object.keys($json[0]).length === 0)) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c3c1e341-b9a9-4a07-85e1-6eb379ac5c09",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        176
+      ],
+      "id": "4cc5f803-77c3-403d-9dad-19180d759c4c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('filtro ids maiores').item.json.status }}",
+                    "rightValue": "Matriculado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8822ef80-d3af-4e5e-9321-85624f9bf7d0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MATRICULADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "490239bf-37fd-4fa5-9a19-a6cfe8d254c7",
+                    "leftValue": "={{ $('filtro ids maiores').item.json.status }}",
+                    "rightValue": "Contrato Aceito",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CONTRATO ACEITO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b58f3360-cdf9-4076-8ab4-95db429cba97",
+                    "leftValue": "={{ $('filtro ids maiores').item.json.status }}",
+                    "rightValue": "=Inscrito",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INSCRITO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2112,
+        448
+      ],
+      "id": "a1721853-3e34-4992-9482-f4595c2ee5a0",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1888,
+        464
+      ],
+      "id": "8997dc5e-c7a7-4473-86ed-0677c0eef78d",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1841528e-4b7a-4123-84cd-6d7abf406b40",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2336,
+        -112
+      ],
+      "id": "5a27e407-7582-44e7-8744-cc8808f2bf06",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5617751,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
+                  },
+                  {
+                    "data": "{\"id\":662154,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                  },
+                  {
+                    "data": "{\"id\":676343,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":673370,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.concurso || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662146,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662156,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.turno }}"
+                  },
+                  {
+                    "data": "{\"id\":662152,\"type\":\"text\"}",
+                    "value": "={{   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        -112
+      ],
+      "id": "ab0aedff-49f9-43db-904e-607d7d322b7a",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "Candidato acetou o contrato"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        -112
+      ],
+      "id": "83ab2772-2362-4f70-a583-7d7b8fb1c544",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5617751,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
+                  },
+                  {
+                    "data": "{\"id\":662154,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                  },
+                  {
+                    "data": "{\"id\":676343,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":673370,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.concurso || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662146,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662156,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.turno }}"
+                  },
+                  {
+                    "data": "{\"id\":662152,\"type\":\"text\"}",
+                    "value": "={{   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        80
+      ],
+      "id": "7b043244-adea-4e89-8760-317bca3e058c",
+      "name": "Update leads2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "Candidato realizou a inscrição"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        80
+      ],
+      "id": "810cd83c-34ad-4cac-b017-53e4a1102d01",
+      "name": "Create new notes1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Sumaré",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 385970868,
+          "mode": "list",
+          "cachedResultName": "api2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sjSQKP-aH5YHyb5WZVHPAylonbexkdSsj2tZv_tEfBc/edit#gid=385970868"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "row_number": 2
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1216,
+        176
+      ],
+      "id": "6d71064f-c2ad-4fff-a067-be92c74b518f",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4448,
+        272
+      ],
+      "id": "a93c5fdd-c701-40ea-8e92-fe2770d00e88",
+      "name": "Wait",
+      "webhookId": "4b750ebf-ca44-422e-bedb-c5561b57836d"
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        272
+      ],
+      "id": "fe545920-99bf-48e6-942f-50e5f5b23e20",
+      "name": "Create new contacts",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
+              "pipeline_id": 5617751,
+              "status_id": 142,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662154,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":673370,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.concurso }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                  },
+                  {
+                    "data": "{\"id\":688527,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.email }}"
+                  },
+                  {
+                    "data": "{\"id\":662146,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.situacao }}"
+                  },
+                  {
+                    "data": "{\"id\":676343,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || '' }}"
+                  },
+                  {
+                    "data": "{\"id\":669742,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.aluno }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        272
+      ],
+      "id": "2c4936b5-4d7a-462a-a688-02bd7f3c32f2",
+      "name": "Create new leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        464
+      ],
+      "id": "b83702fb-b3df-4c3e-9d2b-09ad14218223",
+      "name": "Create new contacts1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
+              "pipeline_id": 5617751,
+              "status_id": 55177276,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662154,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.cpf || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.curso || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":673370,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.concurso }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.celular || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":688527,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.email || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662146,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":676343,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || '' }}"
+                  },
+                  {
+                    "data": "{\"id\":669742,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.aluno || ''}}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        464
+      ],
+      "id": "20264760-e2c4-4310-af15-5f01d075e1f5",
+      "name": "Create new leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2336,
+        656
+      ],
+      "id": "27e01d6f-f490-4125-a027-f03df7272a35",
+      "name": "Create new contacts2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
+              "pipeline_id": 5617751,
+              "status_id": 49518851,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662154,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.cpf || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.curso || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":673370,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.concurso }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.celular || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":688527,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.email || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662146,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":676343,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || '' }}"
+                  },
+                  {
+                    "data": "{\"id\":669742,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.aluno || ''}}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2560,
+        656
+      ],
+      "id": "042f856f-6266-49f1-8998-012da4f5b8dc",
+      "name": "Create new leads2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "fXWWyKDxkTJ9v7GM",
+          "mode": "list",
+          "cachedResultName": "distribuicao_sumare_api"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id do lead": "={{ $json._embedded.leads[0].id }}"
+          },
+          "matchingColumns": [
+            ""
+          ],
+          "schema": [
+            {
+              "id": "id do lead",
+              "displayName": "id do lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3008,
+        656
+      ],
+      "id": "1b78c37d-9c1b-492b-ab4c-1a89b1e14feb",
+      "name": "Execute Workflow",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b0665ca6-259c-4917-937e-64603dfce469",
+              "name": "={{ $json._embedded.leads[0].id }}",
+              "value": "={{ $json._embedded.leads[0].id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2784,
+        656
+      ],
+      "id": "8a520116-e168-4975-9497-64d1e1bd144d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -128,
+        176
+      ],
+      "id": "9ff8ebd6-15ed-465e-881b-36606a16f9cd",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "transforma em objt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "transforma em objt": {
+      "main": [
+        [
+          {
+            "node": "filtro ids maiores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filtro ids maiores": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads2": {
+      "main": [
+        [
+          {
+            "node": "Create new notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Create new contacts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create new contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create new contacts2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts": {
+      "main": [
+        [
+          {
+            "node": "Create new leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new leads": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts1": {
+      "main": [
+        [
+          {
+            "node": "Create new leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new leads1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts2": {
+      "main": [
+        [
+          {
+            "node": "Create new leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new leads2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea",
+    "timezone": "America/Sao_Paulo"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3ba2ef2b-c41e-4e01-a153-00a07507bf3a",
+  "triggerCount": 1,
+  "tags": []
+}
