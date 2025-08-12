@@ -1,0 +1,587 @@
+{
+  "createdAt": "2025-07-28T16:55:17.984Z",
+  "updatedAt": "2025-08-12T20:25:29.000Z",
+  "id": "HBp98F7cHlM5sJ86",
+  "name": "distribuicao_sem resposta",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        256
+      ],
+      "id": "e53700ac-f868-4897-bb26-1409630e80a4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chats",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "updated_at",
+              "condition": "lt",
+              "keyValue": "={{ new Date(Date.now() - (3*60 + 10)*60*1000).toISOString() }}"
+            },
+            {
+              "keyName": "atendimento_kommo",
+              "condition": "is",
+              "keyValue": "null"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        256
+      ],
+      "id": "dfeacbc4-34c9-4da5-82a1-8262a5716b52",
+      "name": "Get many rows",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "null",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "02eaedca-5adb-42a1-b1eb-df57f7972c24"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "efe12c9c-9911-4eb4-9143-90ee00955700",
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        528,
+        16
+      ],
+      "id": "ae961146-c211-438c-868c-bfaab1ac679b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        784,
+        352
+      ],
+      "id": "bf044ed5-c0fb-46c1-8f61-9348dc8666c9",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "n8n_chat_histories",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "keyValue": "={{ $json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -80
+      ],
+      "id": "c5d1041b-212d-45a4-bded-0278becfb4ef",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f1997386-faaa-4c05-95b4-49c50a7b522d",
+              "leftValue": "={{ $json.message.type }}",
+              "rightValue": "ai",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        -80
+      ],
+      "id": "439b9b3f-1182-455c-b547-86d407910e86",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Get a row').item.json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -176
+      ],
+      "id": "5fff56c6-1caf-45dc-9f4a-06d07dc2d9d7",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_kommo",
+              "fieldValue": "sim"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        16
+      ],
+      "id": "1de1e1f3-0170-44fc-9b20-2dcbf7a630b1",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1424,
+        -80
+      ],
+      "id": "2977ba50-f547-4f2c-86ca-328e3911cffb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "pWLVh6dNNqX0DfAl",
+          "mode": "list",
+          "cachedResultName": "distribuir_atendimento_ia"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefone": "={{ $json.phone }}"
+          },
+          "matchingColumns": [
+            "Telefone"
+          ],
+          "schema": [
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2176,
+        112
+      ],
+      "id": "6c18a8c9-43d8-4db5-b8d2-3fda8e314e69",
+      "name": "exec distribuicao comercial"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [items[0]];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1648,
+        -80
+      ],
+      "id": "ef2a4392-e6f3-4c02-9484-8d35700605f2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "phone",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        16,
+        256
+      ],
+      "id": "50e6abda-3b9e-442b-a356-31731a90efa6",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        304,
+        272
+      ],
+      "id": "90761dd5-6208-4cc7-a290-0901f173f333",
+      "name": "Loop Over Items"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "exec distribuicao comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exec distribuicao comercial": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-08-12T15:10:16.004-04:00",
+          "Readable date": "August 12th 2025, 3:10:16 pm",
+          "Readable time": "3:10:16 pm",
+          "Day of week": "Tuesday",
+          "Year": "2025",
+          "Month": "August",
+          "Day of month": "12",
+          "Hour": "15",
+          "Minute": "10",
+          "Second": "16",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ],
+    "Get many rows": [
+      {
+        "json": {
+          "id": 829,
+          "created_at": "2025-08-12T18:44:14.67+00:00",
+          "phone": "5511969176223@s.whatsapp.net",
+          "updated_at": "2025-08-12T15:45:29.9",
+          "atendimento_kommo": null
+        }
+      },
+      {
+        "json": {
+          "id": 826,
+          "created_at": "2025-08-12T18:28:20.134+00:00",
+          "phone": "5511994121793@s.whatsapp.net",
+          "updated_at": "2025-08-12T15:31:17.818",
+          "atendimento_kommo": null
+        }
+      }
+    ]
+  },
+  "versionId": "dc069545-e98d-43b4-a7b1-3e81273d3b40",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-07-30T20:41:48.074Z",
+      "updatedAt": "2025-07-30T20:41:48.074Z",
+      "id": "HCAYGF54Hj7mAMlF",
+      "name": "ai"
+    }
+  ]
+}
