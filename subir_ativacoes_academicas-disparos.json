@@ -1,0 +1,214 @@
+{
+  "createdAt": "2025-08-12T16:57:15.249Z",
+  "updatedAt": "2025-08-12T18:57:59.000Z",
+  "id": "trOK57VdxQTBiJVS",
+  "name": "subir_ativacoes_academicas",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        688,
+        -192
+      ],
+      "id": "a6a20006-f3f5-4068-b602-2f8b8817cae5",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1nr1qZhAgFcfZnt57N_fH083iJQFGpwAh",
+          "mode": "list",
+          "cachedResultName": "database_disparos 2025.2 ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1nr1qZhAgFcfZnt57N_fH083iJQFGpwAh"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -192
+      ],
+      "id": "ecc35f9f-7317-4525-ac87-34d643bdfd9e",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c4e54270-07b1-4099-8068-e50f2b488449",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        -192
+      ],
+      "id": "7a0b15c5-836e-417d-9d63-85eed2ea3b99",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        912,
+        -192
+      ],
+      "id": "41e78cac-ee37-4c6f-8347-e242d629cd97",
+      "name": "Extract from File",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO ativacoes (rgm, data_ativacao)\nVALUES ('{{ $json.rgm }}', TO_DATE('{{ $json.data }}', 'DD/MM/YYYY'));",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1552,
+        -192
+      ],
+      "id": "8a1dd64b-747b-4cef-8c07-d951c451818f",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code node (Run Once for All Items)\n\nfunction excelSerialToDMY(n) {\n  const num = Number(n);\n  if (!Number.isFinite(num)) return null;\n  // Excel: dias desde 1899-12-30\n  const ms = (num - 25569) * 86400 * 1000;\n  const d = new Date(ms);\n  // Ajusta para fuso horário local\n  const dLocal = new Date(d.getTime() - d.getTimezoneOffset() * 60000);\n  const dd = String(dLocal.getDate()).padStart(2, '0');\n  const mm = String(dLocal.getMonth() + 1).padStart(2, '0');\n  const yyyy = dLocal.getFullYear();\n  return `${dd}/${mm}/${yyyy}`;\n}\n\nreturn items.map(({ json }) => {\n  const out = { ...json };\n  const raw = json.data;\n\n  if (typeof raw === 'number' || /^\\d+(\\.\\d+)?$/.test(String(raw))) {\n    // Número de série Excel\n    out.data = excelSerialToDMY(raw);\n  } else if (typeof raw === 'string' && raw.includes('/')) {\n    // Já vem no formato texto - garante padronização\n    const parts = raw.split('/');\n    const dd = parts[0].padStart(2, '0');\n    const mm = parts[1].padStart(2, '0');\n    const yyyy = parts[2];\n    out.data = `${dd}/${mm}/${yyyy}`;\n  } else {\n    // Fallback - tenta interpretar como Date\n    const d = new Date(raw);\n    if (!isNaN(d)) {\n      const dd = String(d.getDate()).padStart(2, '0');\n      const mm = String(d.getMonth() + 1).padStart(2, '0');\n      const yyyy = d.getFullYear();\n      out.data = `${dd}/${mm}/${yyyy}`;\n    } else {\n      out.data = null;\n    }\n  }\n\n  return { json: out };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        -192
+      ],
+      "id": "c1cac5f5-4702-4d28-b978-1306174f369b",
+      "name": "Code"
+    }
+  ],
+  "connections": {
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Google Drive Trigger": {
+      "lastTimeChecked": "2025-08-12T18:57:59Z"
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "4a135940-fff4-464f-92c9-3fc3a795d01f",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-07-25T20:01:08.349Z",
+      "updatedAt": "2025-07-25T20:01:08.349Z",
+      "id": "YYK828CRJpOc3NVq",
+      "name": "disparos"
+    }
+  ]
+}
