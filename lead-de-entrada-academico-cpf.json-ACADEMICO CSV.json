@@ -1,0 +1,729 @@
+{
+  "createdAt": "2025-07-25T19:57:16.362Z",
+  "updatedAt": "2025-07-29T15:54:31.000Z",
+  "id": "cOuYZK07fsSx5djC",
+  "name": "Lead de Entrada Academico CPF.json",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3a86fec0-eaef-46f7-a442-ded40af19ba4",
+              "leftValue": "={{ $('Code3').item.json.quantidade }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2000,
+        144
+      ],
+      "id": "8ff1c5bd-105e-4424-8862-7163dd8e10f0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $('array dados').item.json.cpf }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        240
+      ],
+      "id": "546dea7f-1fb9-418a-ac0d-73f3c940e8ae",
+      "name": "query",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fd338b99-80eb-4b10-973a-2a7cf6cba08f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -3200,
+        144
+      ],
+      "id": "8ccadb4d-9b42-4670-b027-f07f1dce4fe3",
+      "name": "pesquisar telefone",
+      "webhookId": "fd338b99-80eb-4b10-973a-2a7cf6cba08f"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acessa o primeiro lead do array\nconst lead = $json._embedded?.leads?.[0];\n\n// Verifica se o lead e os campos existem\nif (!lead || !lead.custom_fields_values) {\n  return [{ json: { id: null } }];\n}\n\nconst fields = lead.custom_fields_values;\n\n// Função auxiliar para buscar qualquer campo por nome\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name === nome)?.values?.[0]?.value ?? null;\n};\n\n// Retorna os campos desejados\nreturn [\n  {\n    json: {\n      id: lead.id,\n      nome_do_aluno: getCampo('Nome do Aluno'),\n      cpf: getCampo('CPF'),\n      curso: getCampo('Curso'),\n      telefone_pesquisa: getCampo('Telefone Pesquisa'),\n      polo: getCampo('Polo'),\n      email_academico: getCampo('Email Acadêmico'),\n      nivel: getCampo('Nivel'),\n      rgm: getCampo('RGM'),\n      motivo_perda: getCampo('Motivo da Perda'),\n      pesquisa: getCampo('Pesquisa')\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2768,
+        144
+      ],
+      "id": "842f7170-1e36-40fc-8f89-6a6c0fb8d84f",
+      "name": "array dados"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mapeamento dos campos desejados: field_id → nome do campo fixo\nconst camposMap = {\n  689701: \"email\",\n  190582: \"telefone\",\n  31776: \"rgm\",\n  31774: \"cpf\",\n  31782: \"curso\",\n  31780: \"polo\",\n  689705: \"cep\",\n  689713: \"rg\",\n  31772: \"matricula\",\n  31766: \"situacao\",\n  31786: \"formacao\",\n  677669: \"motivo_perda\",\n  683271: \"ultima_fase\",\n  666386: \"email_academico\"\n};\n\n// Leads retornados da API\nconst leads = $json._embedded?.leads || [];\nif (!leads.length) throw new Error(\"Nenhum lead encontrado.\");\n\n// Encontra o lead com menor ID\nconst lead = leads.reduce((a, b) => a.id < b.id ? a : b);\n\n// Inicializa resultado com campos fixos\nconst resultado = {\n  id: lead.id,\n  pipeline_id: lead.pipeline_id,\n  status_id: lead.status_id,\n  email: \" \",\n  telefone: \" \",\n  rgm: \" \",\n  cpf: \" \",\n  curso: \" \",\n  polo: \" \",\n  cep: \" \",\n  rg: \" \",\n  matricula: \" \",\n  situacao: \" \",\n  formacao: \" \",\n  motivo_perda: \" \",\n  ultima_fase: \" \",\n  email_academico: \" \"\n};\n\n// Preenche os campos fixos com os valores do lead (se existirem)\nfor (const [fieldId, nomeCampo] of Object.entries(camposMap)) {\n  const campo = lead.custom_fields_values?.find(f => f.field_id === parseInt(fieldId));\n  const valor = campo?.values?.[0]?.value;\n  if (valor !== undefined && valor !== null) {\n    resultado[nomeCampo] = valor;\n  }\n}\n\n// Finaliza com retorno\nreturn [{ json: resultado }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1520,
+        -16
+      ],
+      "id": "7d2b970a-d6a0-4435-8212-b1cacf22bfcf",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 📌 Mapa dos campos desejados\nconst camposDesejados = {\n  334080: \"Nome do Aluno\",\n  1014523: \"Email Acadêmico\",\n  1029777: \"Senha do Aluno\",\n  330926: \"CPF\",\n  330876: \"RGM\",\n  330938: \"Curso\",\n  330992: \"Polo\",\n  330930: \"Data de Matricula\",\n  331044: \"Turma de Ingresso\",\n  330988: \"Nivel\",\n  1004854: \"Situacao Academica\",\n  500210: \"Motivo da Perda\",\n  331286: \"Situacao Financeira\",\n  330990: \"Modalidade\",\n  1030445: \"Inicio das aulas\",\n  414754: \"Ultima Fase\",\n  419530: \"Controle Fase\",\n  1003496: \"Telefone Pesquisa\"\n};\n\nconst leads = $json._embedded?.leads || [];\n\n// Se não vierem leads, retorna vazio com id nulo\nif (leads.length === 0) {\n  return [{ json: { id: null, quantidade_encontrada: 0 } }];\n}\n\n// 👉 Pega o telefone do primeiro lead (referência da busca)\nconst telefoneReferencia = leads[0].custom_fields_values?.find(f => f.field_id === 1003496)?.values?.[0]?.value;\n\n// Se não tiver telefone, não podemos fazer o match\nif (!telefoneReferencia) {\n  return [{ json: { id: null, quantidade_encontrada: 0 } }];\n}\n\n// 🔍 Filtra leads que têm o mesmo telefone\nconst leadsComMesmoTelefone = leads.filter(lead =>\n  lead.custom_fields_values?.some(c =>\n    c.field_id === 1003496 && c.values?.[0]?.value === telefoneReferencia\n  )\n);\n\n// Contagem total\nconst quantidade_encontrada = leadsComMesmoTelefone.length;\n\n// ❗ Se só tem 1 lead, significa que é o atual, não existe antigo\nif (quantidade_encontrada <= 1) {\n  return [{\n    json: {\n      quantidade_encontrada,\n      id_mais_antigo: null,\n      id_mais_recente: null,\n      lead_mais_antigo: null\n    }\n  }];\n}\n\n// ✅ Ordena os leads por ID crescente\nconst idsOrdenados = leadsComMesmoTelefone\n  .map(lead => lead.id)\n  .filter(id => typeof id === 'number')\n  .sort((a, b) => a - b);\n\n// ✅ Pega o lead mais antigo (menor ID)\nconst leadMaisAntigo = leadsComMesmoTelefone.find(lead => lead.id === idsOrdenados[0]);\n\n// 🧾 Retorna os dados necessários\nreturn [{\n  json: {\n    quantidade_encontrada,\n    id_mais_antigo: idsOrdenados[0],\n    id_mais_recente: idsOrdenados[idsOrdenados.length - 1],\n    lead_mais_antigo: leadMaisAntigo\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        224
+      ],
+      "id": "af768626-1168-4e6d-8c66-d173ecb4a1aa",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d53c0cf-0004-4996-8ead-1bcdf9153b37",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "c8cce089-b308-4ff3-8731-7eed2cfa57c0",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        208
+      ],
+      "id": "2a3ca17b-4de0-405e-bb27-11133e17f6ed",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        320
+      ],
+      "id": "0001e789-3bc0-4413-9959-f7c4c7b4cba6",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.id }}",
+              "pipeline_id": 6961711,
+              "status_id": 143,
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      38408
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        112
+      ],
+      "id": "2bd5a180-f2e9-489e-b340-8dcc18e9ecf4",
+      "name": "apagar lead1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1728,
+        240
+      ],
+      "id": "686f8928-2c26-4196-985e-11712cb13233",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $json._embedded?.leads || [];\n\nreturn [\n  {\n    json: {\n      quantidade: leads.length\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2256,
+        144
+      ],
+      "id": "2fbe1afa-ebdc-49c6-87e6-e91798657cdc",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e44d96c3-81cd-4c89-bdae-dfce8890761e",
+              "leftValue": "={{ $json._embedded.leads[0].id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        240
+      ],
+      "id": "3faceb54-68cc-4b86-a934-a07b0eea38f7",
+      "name": "If2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        400
+      ],
+      "id": "0bc73e12-58d3-4f44-857f-3ed177606753",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.cpf }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2528,
+        144
+      ],
+      "id": "c477541e-c179-4604-abb1-4644195ff406",
+      "name": "Get list of leads2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $('array dados').item.json.cpf }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        -16
+      ],
+      "id": "ebd2893c-2e02-42e9-bdf7-a81fb19ed604",
+      "name": "Get list of leads3",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('pesquisar telefone').item.json.body['leads[add][0][id]'] }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":1003496,\"type\":\"text\"}",
+                    "value": "={{ $json.telefone }}"
+                  },
+                  {
+                    "data": "{\"id\":330876,\"type\":\"text\"}",
+                    "value": "={{ $json.rgm }}"
+                  },
+                  {
+                    "data": "{\"id\":330926,\"type\":\"text\"}",
+                    "value": "={{ $json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":330938,\"type\":\"text\"}",
+                    "value": "={{ $json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":330992,\"type\":\"text\"}",
+                    "value": "={{ $json.polo }}"
+                  },
+                  {
+                    "data": "{\"id\":330988,\"type\":\"text\"}",
+                    "value": "={{ $json.formacao }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        -16
+      ],
+      "id": "7ef78a8f-c4c7-42d8-b3a2-14fa895f0462",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2976,
+        144
+      ],
+      "id": "2788398c-600b-4036-ae07-605f9ae590ff",
+      "name": "Pesquisa no Acadêmico",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ⚙️ Mapeamento de ID de campo para nome\nconst camposDesejados = {\n  334080: \"Nome do Aluno\",\n  1014523: \"Email Acadêmico\",\n  1029777: \"Senha do Aluno\",\n  330926: \"CPF\",\n  330876: \"RGM\",\n  330938: \"Curso\",\n  330992: \"Polo\",\n  330930: \"Data de Matricula\",\n  331044: \"Turma de Ingresso\",\n  330988: \"Nivel\",\n  1004854: \"Situacao Academica\",\n  500210: \"Motivo da Perda\",\n  331286: \"Situacao Financeira\",\n  330990: \"Modalidade\",\n  1030445: \"Inicio das aulas\",\n  414754: \"Ultima Fase\",\n  419530: \"Controle Fase\",\n  1003496: \"Telefone Pesquisa\"\n};\n\n// 🎯 Acessa o item JSON principal\nconst input = $json;\n\n// 📥 Acessa o lead mais antigo dentro da estrutura\nconst lead = input.lead_mais_antigo;\n\n// Verificação de existência do lead\nif (!lead?.id) {\n  return [{ json: { id: null, quantidade_encontrada: input.quantidade_encontrada || 0 } }];\n}\n\n// 🧩 Constrói o resultado com os campos desejados\nconst resultado = {\n  id: lead.id,\n  id_mais_recente: input.id_mais_recente,\n  quantidade_encontrada: input.quantidade_encontrada\n};\n\nfor (const [fieldId, nomeCampo] of Object.entries(camposDesejados)) {\n  const campo = lead.custom_fields_values?.find(f => f.field_id == fieldId);\n  resultado[nomeCampo] = campo?.values?.[0]?.value || \"\";\n}\n\nreturn [{ json: resultado }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        112
+      ],
+      "id": "bcb7d2e8-cb88-4b6e-bbc4-6e89578cad72",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code1').item.json.id_mais_recente }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":330876,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json.RGM }}"
+                  },
+                  {
+                    "data": "{\"id\":330926,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json.CPF }}"
+                  },
+                  {
+                    "data": "{\"id\":330938,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json.Curso }}"
+                  },
+                  {
+                    "data": "{\"id\":330988,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json.Nivel }}"
+                  },
+                  {
+                    "data": "{\"id\":330990,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json.Modalidade }}"
+                  },
+                  {
+                    "data": "{\"id\":330992,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json.Polo }}"
+                  },
+                  {
+                    "data": "{\"id\":334080,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json['Nome do Aluno'] }}"
+                  },
+                  {
+                    "data": "{\"id\":414754,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json['Ultima Fase'] }}"
+                  },
+                  {
+                    "data": "{\"id\":1003496,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json['Telefone Pesquisa'] }}"
+                  },
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code4').item.json['Email Acadêmico'] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        192,
+        112
+      ],
+      "id": "93568817-3be1-4731-ad2a-4627cacb2565",
+      "name": "update lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "query": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pesquisar telefone": {
+      "main": [
+        [
+          {
+            "node": "Pesquisa no Acadêmico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "array dados": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "apagar lead1": {
+      "main": [
+        [
+          {
+            "node": "update lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads2": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads3": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pesquisa no Acadêmico": {
+      "main": [
+        [
+          {
+            "node": "array dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "apagar lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "pesquisar telefone": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "194",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "b5ef872a-d040-4827-b856-5bfe287228aa",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19275719",
+            "leads[add][0][status_id]": "58994187",
+            "leads[add][0][pipeline_id]": "6961711",
+            "account[id]": "31370511",
+            "account[subdomain]": "csvatendimento"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/fd338b99-80eb-4b10-973a-2a7cf6cba08f",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "803377d4-118f-47a4-a3b4-ac6726938dd5",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-07-25T19:56:58.514Z",
+      "updatedAt": "2025-07-25T19:56:58.514Z",
+      "id": "XC7egqniXPXmFKMH",
+      "name": "ACADEMICO CSV"
+    }
+  ]
+}
