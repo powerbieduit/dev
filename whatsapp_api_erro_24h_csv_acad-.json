@@ -1,0 +1,231 @@
+{
+  "createdAt": "2025-07-25T19:54:42.891Z",
+  "updatedAt": "2025-07-31T17:23:09.000Z",
+  "id": "0yCY00gWknlDKweJ",
+  "name": "whatsapp_api_erro_24h_csv_acad",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.statuses[0].errors[0].code }}",
+                    "rightValue": 131047,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "b034092e-ee03-421b-ab19-2dda3e0f631d"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -128,
+        -48
+      ],
+      "id": "fe56b7c8-55b0-4a74-bfac-c1c6102a6833",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "whatsapp_envio_falha",
+          "mode": "list",
+          "cachedResultName": "whatsapp_envio_falha"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "recipient_id": "=+{{ $json.statuses[0].recipient_id }}",
+            "message_id": "={{ $json.statuses[0].id }}",
+            "erro_code": "={{ $json.statuses[0].errors[0].code }}",
+            "erro_title": "={{ $json.statuses[0].errors[0].title }}",
+            "erro_message": "={{ $json.statuses[0].errors[0].message }}",
+            "erro_details": "={{ $json.statuses[0].errors[0].error_data.details }}",
+            "timestamp_falha": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp_falha",
+              "displayName": "timestamp_falha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "recipient_id",
+              "displayName": "recipient_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "erro_code",
+              "displayName": "erro_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "erro_title",
+              "displayName": "erro_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "erro_message",
+              "displayName": "erro_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "erro_details",
+              "displayName": "erro_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        80,
+        -48
+      ],
+      "id": "3f99d4ca-d832-483c-b445-1c12e7dc46e5",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "Pq2u2kpM4UEc1q97",
+          "name": "Postgres distribuicao_academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -64
+      ],
+      "id": "e094c047-22bb-4a94-a062-6d9fb08b05b8",
+      "name": "WhatsApp Trigger",
+      "webhookId": "ab73aa15-99c4-4506-aeda-89577bba5877",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "Pkj61mMvVfCTkFg3",
+          "name": "WhatsApp CSV Academico Oficial"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "0b8668db-0560-4c84-97db-c6401dcacccc",
+  "triggerCount": 1,
+  "tags": []
+}
