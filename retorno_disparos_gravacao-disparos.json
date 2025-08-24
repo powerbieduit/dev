@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-12T15:08:41.007Z",
-  "updatedAt": "2025-08-12T15:29:47.000Z",
+  "updatedAt": "2025-08-22T20:44:59.000Z",
   "id": "vBQWXV2MCYF7Mduq",
   "name": "retorno_disparos_gravacao",
   "active": true,
@@ -189,7 +189,7 @@
     {
       "parameters": {
         "content": "* entrou para atendimento\n* sem resposta\n* rematricula feita\n",
-        "height": 1020,
+        "height": 1964,
         "width": 880
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -200,6 +200,246 @@
       ],
       "id": "7d37b8c7-528b-4b43-9c5a-0d1c1a73645a",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "realizou-acesso",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        176,
+        1184
+      ],
+      "id": "42411163-39b1-417f-9b28-ae6c2c291a6c",
+      "name": "acesso realizado",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "seminteresse",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        928
+      ],
+      "id": "f7dd9c42-f60a-4b00-bfc5-77068a399f11",
+      "name": "rematricula-feita1",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        384,
+        928
+      ],
+      "id": "0b967fc4-2e10-49ad-8307-8696ce1e7187",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'SEM INTERESSE', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        928
+      ],
+      "id": "126b6bc9-f89a-466e-be73-36c288ec17c7",
+      "name": "Execute a SQL query3",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        1168
+      ],
+      "id": "6beddbcc-a203-4bef-bf0b-9e6bf3211f53",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'REALIZOU ACESSO', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        656,
+        1184
+      ],
+      "id": "16f4ceff-d91c-43ae-8acc-69f090e163e2",
+      "name": "Execute a SQL query4",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        1408
+      ],
+      "id": "b3b03f8a-f2d5-4fe1-a1a9-9781629da1c9",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'NÃO ACESSOU', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        640,
+        1424
+      ],
+      "id": "1a6a798c-f87e-4b9d-8fc0-f75f0fd9b4cb",
+      "name": "Execute a SQL query5",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nao-acessou",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        1424
+      ],
+      "id": "85373b72-326d-487d-a394-ace1967bb742",
+      "name": "nao acessou",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        1744
+      ],
+      "id": "e2c3a14f-a1aa-45bc-b5b6-0dc4b07016be",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'PAGOU', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        1744
+      ],
+      "id": "86c039b1-4891-441f-995c-971f0624682f",
+      "name": "Execute a SQL query6",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pagou",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        128,
+        1744
+      ],
+      "id": "2baf25ed-ae7a-4cb3-8393-f8244cbe6622",
+      "name": "pagou",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     }
   ],
   "connections": {
@@ -268,6 +508,94 @@
           }
         ]
       ]
+    },
+    "acesso realizado": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rematricula-feita1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "nao acessou": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pagou": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -278,8 +606,17 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "a2413bd6-5c64-464e-888c-b334e29d7c09",
-  "triggerCount": 3,
+  "versionId": "47cc41d9-471b-43ac-9af3-89c8ece0b71b",
+  "triggerCount": 7,
+  "shared": [
+    {
+      "createdAt": "2025-08-12T15:08:41.011Z",
+      "updatedAt": "2025-08-12T15:08:41.011Z",
+      "role": "workflow:owner",
+      "workflowId": "vBQWXV2MCYF7Mduq",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-25T20:01:08.349Z",
