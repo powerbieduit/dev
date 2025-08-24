@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-31T20:27:16.876Z",
-  "updatedAt": "2025-07-31T21:24:37.000Z",
+  "updatedAt": "2025-08-22T18:02:51.000Z",
   "id": "EphfDCJgvSTJDyoD",
   "name": "gravacao_leads_comercial_csv",
   "active": true,
@@ -15,8 +15,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -672,
-        -144
+        -976,
+        -128
       ],
       "id": "ffe02b87-940b-4a8d-8e1e-d29f4198c56e",
       "name": "Webhook",
@@ -81,15 +81,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        0,
-        -48
+        -128,
+        -32
       ],
       "id": "6eb1fc8b-0bf3-4a12-958a-9f8cfd269fd8",
       "name": "Insert rows in a table",
       "credentials": {
         "postgres": {
-          "id": "UH0D2nzipqnnRW0Y",
-          "name": "supabase_n8n"
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
         }
       }
     },
@@ -100,8 +100,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -448,
-        -144
+        -592,
+        -96
       ],
       "id": "a86da545-7e88-4c7c-b4a3-9077dc514900",
       "name": "Code"
@@ -141,8 +141,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -224,
-        -144
+        -368,
+        -96
       ],
       "id": "e7ff155c-78a7-43e8-9c64-6fa5991b60fa",
       "name": "Switch"
@@ -206,15 +206,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        448,
-        -240
+        192,
+        -224
       ],
       "id": "5f11da0a-ebd6-4b12-964d-628e72715bdb",
       "name": "Insert rows in a table1",
       "credentials": {
         "postgres": {
-          "id": "UH0D2nzipqnnRW0Y",
-          "name": "supabase_n8n"
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
         }
       }
     },
@@ -226,8 +226,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        224,
-        -240
+        -16,
+        -224
       ],
       "id": "dfc32140-babf-497c-9dfe-0f5bfd719cc8",
       "name": "Wait",
@@ -240,11 +240,470 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        0,
-        -240
+        -192,
+        -224
       ],
       "id": "69b6363f-a495-4d69-b7e3-b5ae9d11eb57",
       "name": "Timer"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gravar-face-insta",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        272
+      ],
+      "id": "3841c33a-0a91-42ba-9467-818893e15dab",
+      "name": "Webhook1",
+      "webhookId": "98b8b2d8-56ea-4923-8956-9592af041185"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO \"face-insta\" (id_lead, created_at)\nVALUES ({{ $json.body['leads[add][0][id]'] }}, NOW());",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1296,
+        -288
+      ],
+      "id": "6c368929-3767-4270-9676-ea59abe6f98f",
+      "name": "grava_leads",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2400,
+        240
+      ],
+      "id": "085cac1b-84b9-4f7c-ad9a-e26493ce6e35",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "face-insta",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1056,
+        -272
+      ],
+      "id": "0c1ec6de-d642-4671-a22e-e05432258a06",
+      "name": "Webhook2",
+      "webhookId": "98b8b2d8-56ea-4923-8956-9592af041185"
+    },
+    {
+      "parameters": {
+        "content": "## MOVIMENTAÇÃO DE LEADS - CSV\n",
+        "height": 560,
+        "width": 1408,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        -336
+      ],
+      "id": "77e42c36-0c0c-46c5-a320-3c979d22f799",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## LEADS - FONTE META (INSTA & FACE)\n\n",
+        "height": 944,
+        "width": 1840,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        768,
+        -352
+      ],
+      "id": "28b8cfe9-c691-48fc-82af-d0e6b287d4f4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1840,
+        208
+      ],
+      "id": "9d133c49-a3da-4249-8630-390afa31834a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Run Once for All Items\n\n// 1) Unir todos os itens do input em um único objeto\nconst merged = $input.all().reduce((acc, item) => ({ ...acc, ...item.json }), {});\n\n// 2) Normalizar para número\nconst toNum = (v) => (v === undefined || v === null || v === '' ? 0 : Number(v));\n\nconst total_faceinsta     = toNum(merged.total_faceinsta);\nconst matriculados_de_fb  = toNum(merged.matriculados_de_fb);\nconst total_matriculados  = toNum(merged.total_matriculados);\nconst perdidos_de_fb      = toNum(merged.perdidos_de_fb);\nconst total_perdidos      = toNum(merged.total_perdidos);\n\n// 3) % matriculados (FB) sobre total_faceinsta\nconst percentual_matriculados_sobre_total_faceinsta = total_faceinsta > 0\n  ? ((matriculados_de_fb / total_faceinsta) * 100).toFixed(2) + \"%\"\n  : \"0.00%\";\n\n// 4) % perdidos (FB) sobre total_perdidos\nconst percentual_perdidos_sobre_total_perdidos = total_perdidos > 0\n  ? ((perdidos_de_fb / total_perdidos) * 100).toFixed(4) + \"%\"\n  : \"0.0000%\";\n\n// 5) Retorno\nreturn [\n  {\n    json: {\n      total_faceinsta,\n      total_matriculados,\n      matriculados_de_fb,\n      percentual_matriculados_sobre_total_faceinsta,\n      total_perdidos,\n      perdidos_de_fb,\n      percentual_perdidos_sobre_total_perdidos\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2096,
+        240
+      ],
+      "id": "68a3e21e-1daa-4ea4-b3a4-fb79b381316f",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH ids AS (\n  SELECT jsonb_array_elements_text($1::jsonb) AS id\n)\nSELECT\n  (\n    SELECT COUNT(DISTINCT m.id_lead)\n    FROM public.novos_ganhos m\n    JOIN ids ON ids.id = m.id_lead\n  )::int AS matriculados_de_fb,\n  (\n    SELECT COUNT(DISTINCT id_lead)\n    FROM public.novos_ganhos\n  )::int AS total_matriculados;",
+        "options": {
+          "queryReplacement": "={{ JSON.stringify($items(\"count por id\")[0].json.ids_face || []) }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1424,
+        -80
+      ],
+      "id": "0833bf5b-767f-451e-aa91-150b411dace3",
+      "name": "calcula matriculados",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE(JSON_AGG(DISTINCT id_lead), '[]'::json) AS ids_face\nFROM public.\"face-insta\";\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1184,
+        64
+      ],
+      "id": "6a601796-5940-4526-b6f3-a2141392301a",
+      "name": "count por id",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- SUPABASE (contagem)\nSELECT COUNT(*)::int AS total_faceinsta\nFROM public.\"face-insta\";\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1456,
+        400
+      ],
+      "id": "87194c25-1aae-46e4-b568-80c6d72608ee",
+      "name": "count geral",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH ids AS (\n  SELECT jsonb_array_elements_text($1::jsonb) AS id\n)\nSELECT\n  (\n    SELECT COUNT(DISTINCT m.id_lead)\n    FROM public.novos_perdidos m\n    JOIN ids ON ids.id = m.id_lead\n  )::int AS perdidos_de_fb,\n  (\n    SELECT COUNT(DISTINCT id_lead)\n    FROM public.novos_perdidos\n  )::int AS total_perdidos;",
+        "options": {
+          "queryReplacement": "={{ JSON.stringify($items(\"count por id\")[0].json.ids_face || []) }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1424,
+        192
+      ],
+      "id": "a5e04f24-5507-428d-981e-1fef8c6d2a34",
+      "name": "calcula perdidos",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "941c3e39-fdf2-42bf-a637-9aa84157d435",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3008,
+        1072
+      ],
+      "id": "3047a5f9-c044-4a8c-88b1-5e06b9841fdb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        1072
+      ],
+      "id": "9a6f07be-9ae4-4a38-8254-2cfbd3ff1d00",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.numero }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2624,
+        1072
+      ],
+      "id": "d1a4526d-51d1-444b-8010-91d5b882c43b",
+      "name": "Wait1",
+      "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst first = items[0]?.json ?? {};\n\nconst leadsFromRoot = first?._embedded?.leads;\nconst leadsFromData = first?.data?._embedded?.leads;\nconst leadsFromBody = first?.body?._embedded?.leads;\n\nlet leads = [leadsFromRoot, leadsFromData, leadsFromBody].find(Array.isArray);\n\nif (!Array.isArray(leads)) {\n  const looksLikeLeads = items.every(i => typeof i?.json === 'object' && ('id' in i.json));\n  if (looksLikeLeads) {\n    leads = items.map(i => i.json);\n  }\n}\n\nif (!Array.isArray(leads)) leads = [];\n\nreturn [\n  {\n    json: {\n      \"em-aceite\": leads.length\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3264,
+        1136
+      ],
+      "id": "cb923494-719e-4ed0-9a6b-f802d97f15a8",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aceite_novos_dia",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2208,
+        1312
+      ],
+      "id": "806da5ec-fa86-464f-8e8f-22e39f0ab82a",
+      "name": "Webhook3",
+      "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        3664,
+        1280
+      ],
+      "id": "f3a6aa0c-d07e-408d-aab6-1f2358f24eef",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3472,
+        1296
+      ],
+      "id": "06c6e70a-e94c-4f79-bf91-75d5037757e9",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "## ACEITE E NOVOS LEADS\n",
+        "height": 864,
+        "width": 1904,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        880
+      ],
+      "id": "12e3e11c-9c10-4129-83f5-cecd3d3a999d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body[\"leads[status][0][pipeline_id]\"] }}",
+                    "rightValue": "=5481944",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fe2f9d20-fdc1-4ed9-84ad-e9b1baf6b8f7"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -800,
+        -112
+      ],
+      "id": "aa123e0c-25d0-4e90-96e1-137e46425848",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        64
+      ],
+      "id": "c6dc7c06-62c3-460a-8fb4-d3bfec2c9c94",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(id_lead) AS total_ids_novos \nFROM unique_leads",
+        "options": {
+          "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2816,
+        1312
+      ],
+      "id": "2f417228-cc73-4bb1-b357-59c5fe2e4186",
+      "name": "leads novos",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48566207",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2816,
+        1072
+      ],
+      "id": "2bddf85b-fa1b-4775-af7c-eb7925c80d79",
+      "name": "leads em aceite"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(id_lead) AS total_ids_perdidos \nFROM novos_perdidos;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2816,
+        1568
+      ],
+      "id": "57f52a1d-1800-4328-a4a5-2ea064129e05",
+      "name": "leads perdidos",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
     }
   ],
   "connections": {
@@ -252,7 +711,7 @@
       "main": [
         [
           {
-            "node": "Code",
+            "node": "Switch1",
             "type": "main",
             "index": 0
           }
@@ -314,6 +773,231 @@
           }
         ]
       ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "count geral",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "count por id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "grava_leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calcula matriculados": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "count por id": {
+      "main": [
+        [
+          {
+            "node": "calcula matriculados",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "calcula perdidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "count geral": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "calcula perdidos": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "leads em aceite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook3": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "leads novos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "leads perdidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leads novos": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "leads em aceite": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leads perdidos": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -323,8 +1007,119 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "b321e001-7f1c-4931-af90-81f6e22a1fb4",
-  "triggerCount": 1,
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "0",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "38.10.153.20",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "38.10.153.20"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/gravar-face-insta",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "307",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "b8d95f0b-91fc-4044-b7c9-c7ee6c1d544e",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[status][0][id]": "19142603",
+            "leads[status][0][status_id]": "143",
+            "leads[status][0][pipeline_id]": "5481944",
+            "leads[status][0][old_status_id]": "74941508",
+            "leads[status][0][old_pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/e825259a-a2dd-4593-b5ce-f1a74e41d3e6",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook3": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "0",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "https://web-sandbox.oaiusercontent.com",
+            "priority": "u=1, i",
+            "referer": "https://web-sandbox.oaiusercontent.com/",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "38.10.152.69",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "38.10.152.69"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/aceite_novos_dia",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "54d04bce-8654-482d-a3a9-4d54070b2d03",
+  "triggerCount": 4,
+  "shared": [
+    {
+      "createdAt": "2025-07-31T20:27:16.888Z",
+      "updatedAt": "2025-07-31T20:27:16.888Z",
+      "role": "workflow:owner",
+      "workflowId": "EphfDCJgvSTJDyoD",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
