@@ -1,0 +1,256 @@
+{
+  "createdAt": "2025-08-18T19:40:29.880Z",
+  "updatedAt": "2025-08-21T18:31:03.000Z",
+  "id": "tuaQuCIXuiUkzKOL",
+  "name": "painel csv comercial - distribuicao",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  nome,\n  id_lead,\n  status,\n  quantidade_leads,\n  observacao,\n  ultimo_lead\nFROM distribuicao_comercial;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "b028245d-774f-439c-b2f8-090ea9e36733",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        144,
+        0
+      ],
+      "id": "d4b00d49-6dad-429e-92f9-80b31cdfa0a6",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "distribuicaocomercial",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "d4a386f9-80fa-414c-811d-6f7b81676dd3",
+      "name": "consultores",
+      "webhookId": "f7689401-51cb-4db1-9f7c-ee2a6d397a52"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "edicao_distrib",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        -224
+      ],
+      "id": "8795cc1b-1a6e-4125-931f-1c8e2dd1bd95",
+      "name": "Webhook",
+      "webhookId": "14bc1427-1f20-43bd-9deb-358a131d7b9b"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH payload AS (\n  SELECT *\n  FROM jsonb_to_recordset('{{ JSON.stringify($json.body?.registros || []) }}'::jsonb)\n       AS t(id_lead text, status text, quantidade_leads int, observacao text)\n)\nUPDATE distribuicao_comercial d\nSET\n  status = CASE\n             WHEN UPPER(p.status) IN ('ATIVO','INATIVO') THEN UPPER(p.status)\n             ELSE d.status\n           END,\n  quantidade_leads = GREATEST(1, LEAST(3, COALESCE(p.quantidade_leads, 1))),\n  observacao = NULLIF(p.observacao, '')\nFROM payload p\nWHERE d.id_lead::text = p.id_lead\nRETURNING d.id_lead, d.status, d.quantidade_leads, d.observacao;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -80,
+        -224
+      ],
+      "id": "14030f83-aecc-4c68-94f8-dab415e642dc",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        144,
+        -224
+      ],
+      "id": "3c79bcd7-079e-4f99-9213-913becf8d6ef",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "connections": {
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consultores": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "consultores": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "0",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/distribuicaocomercial",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "95",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "registros": [
+              {
+                "id_lead": "8240189",
+                "status": "INATIVO",
+                "quantidade_leads": 1,
+                "observacao": null
+              }
+            ]
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/edicao_distrib",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "e2e8e450-15e5-4c32-8def-453e91e24cfb",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-08-18T19:40:29.886Z",
+      "updatedAt": "2025-08-18T19:40:29.886Z",
+      "role": "workflow:owner",
+      "workflowId": "tuaQuCIXuiUkzKOL",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
