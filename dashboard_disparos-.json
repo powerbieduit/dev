@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-12T19:00:00.578Z",
-  "updatedAt": "2025-08-12T19:26:22.000Z",
+  "updatedAt": "2025-08-14T16:40:53.000Z",
   "id": "1jMKODbyXXgxral1",
   "name": "dashboard_disparos",
   "active": true,
@@ -88,8 +88,55 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "dc3d4b10-c815-4f0a-a8f6-7f789f58e4de",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
+            "if-none-match": "W/\"3d-VSYt6OOxvX8fYYSnw2JCeMp9raY\"",
+            "origin": "https://painel.cruzeiroead.com.br",
+            "priority": "u=1, i",
+            "referer": "https://painel.cruzeiroead.com.br/",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "187.101.249.108",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "187.101.249.108"
+          },
+          "params": {},
+          "query": {
+            "data_inicio": "2025-08-14",
+            "data_fim": "2025-08-13"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/dashboard",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "f4790f4d-19a8-4a05-9ef9-9cca406e4167",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-12T19:00:00.588Z",
+      "updatedAt": "2025-08-12T19:00:00.588Z",
+      "role": "workflow:owner",
+      "workflowId": "1jMKODbyXXgxral1",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
