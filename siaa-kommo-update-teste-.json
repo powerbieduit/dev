@@ -1,0 +1,1782 @@
+{
+  "createdAt": "2025-08-12T19:25:36.937Z",
+  "updatedAt": "2025-08-19T12:40:54.000Z",
+  "id": "CD7cCWjUGZBFcSec",
+  "name": "Siaa Kommo update TESTE",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1VOnTJWoQl-bbA0a5iUCWyI_TJbBhOpSp",
+          "mode": "list",
+          "cachedResultName": "Consolidated",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1VOnTJWoQl-bbA0a5iUCWyI_TJbBhOpSp"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -320
+      ],
+      "id": "2598457b-11d7-4d88-b1eb-2e0d59c37d3b",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ei8DkqyZHlfNyEOk",
+          "name": "MKT Eduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -224
+      ],
+      "id": "155ae627-ab1c-4087-8193-ca17b9e92e34",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -704,
+        -224
+      ],
+      "id": "2f23440c-d9f1-4da1-938c-24f6df54efe8",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ei8DkqyZHlfNyEOk",
+          "name": "MKT Eduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "=siaa_nova",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cpf": "={{ $json.CPF }}",
+            "nome_completo": "={{ $json['﻿Nome Completo'] }}",
+            "primeiro_nome": "={{ $json['Primeiro Nome'] }}",
+            "rgm": "={{ $json.RG }}",
+            "rg": "={{ $json.RG }}",
+            "sexo": "={{ $json.Sexo }}",
+            "status_inscrito": "={{ $json['Status Inscrito'] }}",
+            "inscricao": "={{ $json['Inscrição'] }}",
+            "curso": "={{ $json.Curso }}",
+            "polo": "={{ $json.Polo }}",
+            "data_inscricao": "={{ $json['Data da Inscrição'] }}",
+            "data_prova": "={{ $json['Data da Prova'] }}",
+            "data_matricula": "={{ $json['Data da Matricula'] }}",
+            "ddd_cel_e_fone_cel": "={{ $json['DDD cel e Fone Cel'] }}",
+            "email": "={{ $json['e-mail'] }}",
+            "email_ad": "={{ $json['e-mail AD'] }}",
+            "situacao": "={{ $json['Situação'] }}",
+            "status_final": "={{ $json['Status Final'] }}",
+            "trimestre_ingresso": "={{ $json['Trimestre de Ingresso'] }}",
+            "data_nascimento": "={{ $json['Data Nascimento'] }}",
+            "idade": "={{ $json.Idade }}",
+            "cep": "={{ $json.CEP }}",
+            "endereco": "={{ $json['Endereço'] }}",
+            "bairro": "={{ $json.Bairro }}",
+            "cidade": "={{ $json.Cidade }}",
+            "estado": "={{ $json.Estado }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nome_completo",
+              "displayName": "nome_completo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "primeiro_nome",
+              "displayName": "primeiro_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cpf",
+              "displayName": "cpf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rg",
+              "displayName": "rg",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sexo",
+              "displayName": "sexo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_inscrito",
+              "displayName": "status_inscrito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "inscricao",
+              "displayName": "inscricao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "polo",
+              "displayName": "polo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "serie",
+              "displayName": "serie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "data_inscricao",
+              "displayName": "data_inscricao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_prova",
+              "displayName": "data_prova",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ddd_cel_e_fone_cel",
+              "displayName": "ddd_cel_e_fone_cel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email_ad",
+              "displayName": "email_ad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "situacao",
+              "displayName": "situacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "trimestre_ingresso",
+              "displayName": "trimestre_ingresso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_nascimento",
+              "displayName": "data_nascimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "idade",
+              "displayName": "idade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cep",
+              "displayName": "cep",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "endereco",
+              "displayName": "endereco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "bairro",
+              "displayName": "bairro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "replaceEmptyStrings": true
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -256,
+        -224
+      ],
+      "id": "b6a7796c-2c3c-4c9a-af8e-54d58ec28cc7",
+      "name": "Insert in Nova",
+      "executeOnce": false,
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO siaa_antiga (\n    nome_completo,\n    primeiro_nome,\n    cpf,\n    rg,\n    rgm,\n    sexo,\n    status_inscrito,\n    inscricao,\n    curso,\n    polo,\n    serie,\n    data_inscricao,\n    data_prova,\n    data_matricula,\n    ddd_cel_e_fone_cel,\n    email,\n    email_ad,\n    situacao,\n    status_final,\n    trimestre_ingresso,\n    data_nascimento,\n    idade,\n    cep,\n    endereco,\n    bairro,\n    cidade,\n    estado\n)\nSELECT\n    nome_completo,\n    primeiro_nome,\n    cpf,\n    rg,\n    rgm,\n    sexo,\n    status_inscrito,\n    inscricao,\n    curso,\n    polo,\n    serie,\n    data_inscricao,\n    data_prova,\n    data_matricula,\n    ddd_cel_e_fone_cel,\n    email,\n    email_ad,\n    situacao,\n    status_final,\n    trimestre_ingresso,\n    data_nascimento,\n    idade,\n    cep,\n    endereco,\n    bairro,\n    cidade,\n    estado\nFROM siaa_nova;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -704,
+        -640
+      ],
+      "id": "708b4545-b3ba-4831-a296-bf23385e0b4e",
+      "name": "Backup para Antiga",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "siaa_antiga",
+          "mode": "list",
+          "cachedResultName": "siaa_antiga"
+        },
+        "deleteCommand": "delete",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -928,
+        -640
+      ],
+      "id": "2550b529-90bb-4d6c-95e6-52a39560a193",
+      "name": "Delete Antiga",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "siaa_nova",
+          "mode": "list",
+          "cachedResultName": "siaa_nova"
+        },
+        "deleteCommand": "delete",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -704,
+        -416
+      ],
+      "id": "6a3b2d51-ed9e-40d6-8458-c740e86900de",
+      "name": "Delete NOVA",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1056,
+        736
+      ],
+      "id": "077ddb99-8cc8-4536-92d3-633587066ebc",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Resumo objetivo\ntransferido: inscrição vazia, status_final = 'Matriculado', CPF não existe na antiga\n\nmatriculado: nova inscrição (não existe na antiga), status_final = 'Matriculado'\n\ninsert: nova inscrição, status_final <> 'Matriculado'\n\nupdate_matricula: mesma inscrição, status_final virou 'Matriculado'\n\nupdate_situacao: mesma inscrição, mudou só situacao\n\nnão aparece: não se encaixa nas regras acima",
+        "height": 540,
+        "width": 448,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        -16
+      ],
+      "id": "cb30945c-0ff2-46a5-938a-9d00ae4aeff6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === DEBUG: Exibe tudo que chega ===\nconsole.log('===== DEBUG INICIAL =====');\nconsole.log(JSON.stringify($json, null, 2));\n\n// === 1. Normaliza status prioritário (kommo > situacao) ===\nconst statusRaw = $json.kommo || $json.situacao || '';\nconst status = statusRaw.toLowerCase().trim();\n\n// === 2. Número de inscrição do banco ===\nconst inscricaoAlvo = String($json.inscricao).trim();\n\n// === 3. Lista de leads retornados pelo Kommo ===\nconst leads = $json._embedded?.leads || [];\n\n// === 4. Função auxiliar: pega valor de campo personalizado ===\nfunction getValorCampo(lead, fieldId) {\n  return lead.custom_fields_values?.find(f => f.field_id === fieldId)?.values?.[0]?.value || '';\n}\n\n// === 5. Busca lead com inscrição igual à do banco ===\nconst leadEncontradoObj = leads.find(lead => {\n  const nroInscricao = getValorCampo(lead, 690889);\n  return String(nroInscricao).trim() === inscricaoAlvo;\n});\n\n// === 6. Define ID do lead (ou string vazia se não encontrar) ===\nconst leadExiste = !!leadEncontradoObj;\nconst leadId = leadExiste ? String(leadEncontradoObj.id) : '';\nconsole.log('Lead com inscrição encontrada:', leadId);\n\n// === 7. Chave de decisão para de/para ===\nconst chave = `${status}|${leadExiste ? 'Sim' : 'Não'}`;\nconsole.log('CHAVE DE DECISÃO:', chave);\n\n// === 8. Regras de decisão ===\nconst mapa = {\n  'matriculado|Sim': {\n    acao: 'atualizar_lead',\n    pipeline_id: 5481944,\n    status_id: 142,\n    origem_timestamp: '',\n    origem: ''\n  },\n  'matriculado|Não': {\n    acao: 'criar_lead',\n    pipeline_id: 5481944,\n    status_id: 142,\n    origem_timestamp: '',\n    origem: 'SIAA'\n  },\n  'transferido|Sim': {\n    acao: 'atualizar_lead',\n    pipeline_id: 5481944,\n    status_id: 142,\n    origem_timestamp: '',\n    origem: ''\n  },\n  'transferido|Não': {\n    acao: 'criar_lead',\n    pipeline_id: 5481944,\n    status_id: 142,\n    origem_timestamp: '',\n    origem: 'SIAA'\n  },\n  'insert|Não': {\n    acao: 'criar_lead',\n    pipeline_id: 5481944,\n    status_id: 48539246,\n    origem_timestamp: 'Recebido',\n    origem: 'SIAA / Salesforce'\n  },\n  'update_matricula|Sim': {\n    acao: 'atualizar_lead',\n    pipeline_id: 5481944,\n    status_id: 142,\n    origem_timestamp: '',\n    origem: ''\n  },\n  'update_situacao|Sim': {\n    acao: 'atualizar_lead',\n    pipeline_id: 5481944,\n    status_id: 48566201,\n    origem_timestamp: 'Recebido',\n    origem: ''\n  }\n};\n\n// === 9. Resultado da regra ou padrão ===\nconst resultado = mapa[chave] || {\n  acao: 'ignorar',\n  pipeline_id: '',\n  status_id: '',\n  origem_timestamp: '',\n  origem: ''\n};\n\n// === 10. Função que converte null/undefined em \"\" (recursiva) ===\nfunction limparValores(obj) {\n  if (Array.isArray(obj)) {\n    return obj.map(limparValores);\n  } else if (obj !== null && typeof obj === 'object') {\n    const novoObj = {};\n    for (const key in obj) {\n      novoObj[key] = limparValores(obj[key]);\n    }\n    return novoObj;\n  } else {\n    return obj === null || obj === undefined ? '' : obj;\n  }\n}\n\n// === 11. Monta e retorna o JSON final já tratado ===\nreturn [{\n  json: limparValores({\n    ...$json,\n    ...resultado,\n    lead_encontrado: leadId\n  })\n}];\n"
+      },
+      "id": "664daa94-b847-4671-bb73-b91e1d9452f5",
+      "name": "Code - Junta & Decide",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.acao }}",
+                    "rightValue": "criar_lead",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ab0554ba-d7c2-4bd9-ad33-648788a594be"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.acao }}",
+                    "rightValue": "atualizar_lead",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "395e0753-31c8-4687-a616-a63eae73ccb5"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "20856b18-282c-4fa4-9a51-6cfb91602685",
+                    "leftValue": "={{ $json.acao }}",
+                    "rightValue": "ignorar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "28e3b59e-a348-4638-a91a-45c75c50d371",
+      "name": "Switch - Criar ou Atualizar",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        416,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": "public",
+        "table": {
+          "__rl": true,
+          "value": "atualizacao_comercial_teste",
+          "mode": ""
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "daa52594-1f8b-4941-b229-feb24001281c",
+      "name": "Select atualizacao_comercial2",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -848,
+        736
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.inscricao }}"
+        },
+        "options": {}
+      },
+      "id": "2b34eaa1-7f95-4286-87df-9573a6144188",
+      "name": "Get list of leads2",
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        704
+      ],
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        1136
+      ],
+      "id": "ffbabb79-c2c5-4be6-b1c7-e2696f28167c",
+      "name": "Wait",
+      "webhookId": "9d700e4f-327b-4d7f-ab7e-858d0c1e1396"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        672
+      ],
+      "id": "4847b380-2549-4f5b-89a6-8faa051cd288",
+      "name": "Wait1",
+      "webhookId": "cfc82d16-dec0-4baf-a488-9760e61d7464"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -640,
+        736
+      ],
+      "id": "de821e45-823a-4299-adbf-09d593a461ff",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        512
+      ],
+      "id": "3bf63a58-66ad-4a04-b577-b8be7966c707",
+      "name": "No Operation, do nothing",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        1360
+      ],
+      "id": "ef2c0666-7201-497c-9573-078565ff8821",
+      "name": "Wait2",
+      "webhookId": "3b7e2fd4-6f3f-44d0-8f83-855e79754f0e"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        96,
+        720
+      ],
+      "id": "0e71d2f0-8449-4f9d-8026-92c39efb944e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        656
+      ],
+      "id": "59948f88-6e9c-4014-9693-9f300b79ea2a",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.lead_encontrado }}",
+              "pipeline_id": 5481944,
+              "status_id": 142,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":304628,\"type\":\"text\"}",
+                    "value": "={{ $json.nome_completo }}"
+                  },
+                  {
+                    "data": "{\"id\":31774,\"type\":\"text\"}",
+                    "value": "={{ $json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":689713,\"type\":\"numeric\"}",
+                    "value": "={{ $json.rg }}"
+                  },
+                  {
+                    "data": "{\"id\":31776,\"type\":\"text\"}",
+                    "value": "={{ $json.rgm }}"
+                  },
+                  {
+                    "data": "{\"id\":690889,\"type\":\"text\"}",
+                    "value": "={{ $json.inscricao }}"
+                  },
+                  {
+                    "data": "{\"id\":31782,\"type\":\"text\"}",
+                    "value": "={{ $json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":31780,\"type\":\"text\"}",
+                    "value": "={{ $json.polo }}"
+                  },
+                  {
+                    "data": "{\"id\":190582,\"type\":\"text\"}",
+                    "value": "=+55{{ $json.ddd_cel_e_fone_cel }}"
+                  },
+                  {
+                    "data": "{\"id\":689701,\"type\":\"text\"}",
+                    "value": "={{ $json.email }}"
+                  },
+                  {
+                    "data": "{\"id\":31766,\"type\":\"text\"}",
+                    "value": "={{ $json.situacao }}"
+                  },
+                  {
+                    "data": "{\"id\":31772,\"type\":\"date\"}",
+                    "value": "={{ Math.floor((Number($json.data_matricula_unix_ms) + (3 * 3600 * 1000)) / 1000) }}\n"
+                  },
+                  {
+                    "data": "{\"id\":685933,\"type\":\"text\"}",
+                    "value": "={{ $json.modalidade }}"
+                  },
+                  {
+                    "data": "{\"id\":689009,\"type\":\"select\"}",
+                    "value": "={{ $json.nivel }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      192085
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        928,
+        1008
+      ],
+      "id": "e37c17d0-67c3-4bed-9656-9553ca7294af",
+      "name": "Update leads Matriculados",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $json.nome_completo }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":15846,\"type\":\"multitext\"}",
+                    "value": "=+55{{ $json.ddd_cel_e_fone_cel }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        544
+      ],
+      "id": "15478817-6e4d-46cb-bd16-fa19d83adaa5",
+      "name": "Criar contato não matriculado",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "SIAA",
+              "pipeline_id": 5481944,
+              "status_id": 48539240,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":304628,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.nome_completo }}"
+                  },
+                  {
+                    "data": "{\"id\":31774,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":689713,\"type\":\"numeric\"}",
+                    "value": "={{ $('Merge1').item.json.rg }}"
+                  },
+                  {
+                    "data": "{\"id\":31782,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":31780,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.polo }}"
+                  },
+                  {
+                    "data": "{\"id\":689701,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.email }}"
+                  },
+                  {
+                    "data": "{\"id\":31766,\"type\":\"text\"}",
+                    "value": "={{ $('Matriculado ou não').item.json.situacao }}"
+                  },
+                  {
+                    "data": "{\"id\":31786,\"type\":\"text\"}",
+                    "value": "\" \""
+                  },
+                  {
+                    "data": "{\"id\":31764,\"type\":\"text\"}",
+                    "value": "SIAA"
+                  },
+                  {
+                    "data": "{\"id\":685933,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.modalidade }}"
+                  },
+                  {
+                    "data": "{\"id\":689009,\"type\":\"select\"}",
+                    "value": "={{ $('Merge1').item.json.nivel }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "tags": [
+                  {
+                    "id": [
+                      192085
+                    ]
+                  },
+                  {}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        544
+      ],
+      "id": "ef0cc83d-9e6e-48b1-b84a-f16a3ec013e2",
+      "name": "Criar lead não matriculado",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "SIAA",
+              "pipeline_id": 5481944,
+              "status_id": 142,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":304628,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.nome_completo }}"
+                  },
+                  {
+                    "data": "{\"id\":31774,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":689713,\"type\":\"numeric\"}",
+                    "value": "={{ $('Merge1').item.json.rg }}"
+                  },
+                  {
+                    "data": "{\"id\":31776,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.rgm }}"
+                  },
+                  {
+                    "data": "{\"id\":31782,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":31780,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.polo }}"
+                  },
+                  {
+                    "data": "{\"id\":689701,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.email }}"
+                  },
+                  {
+                    "data": "{\"id\":666386,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.email_ad }}"
+                  },
+                  {
+                    "data": "{\"id\":31766,\"type\":\"text\"}",
+                    "value": "={{ $('Matriculado ou não').item.json.situacao }}"
+                  },
+                  {
+                    "data": "{\"id\":31772,\"type\":\"date\"}",
+                    "value": "={{ Math.floor((Number($('Merge1').item.json.data_matricula_unix_ms) + (3 * 3600 * 1000)) / 1000) }}"
+                  },
+                  {
+                    "data": "{\"id\":31764,\"type\":\"text\"}",
+                    "value": "SIAA"
+                  },
+                  {
+                    "data": "{\"id\":689009,\"type\":\"select\"}",
+                    "value": "={{ $('Merge1').item.json.nivel }}"
+                  },
+                  {
+                    "data": "{\"id\":685933,\"type\":\"text\"}",
+                    "value": "={{ $('Merge1').item.json.modalidade }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "tags": [
+                  {
+                    "id": [
+                      192085
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        800
+      ],
+      "id": "59023393-8340-43d9-9ae3-c712a19229f3",
+      "name": "Criar lead matriculado",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $json.nome_completo }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":15846,\"type\":\"multitext\"}",
+                    "value": "=+55{{ $json.ddd_cel_e_fone_cel }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        800
+      ],
+      "id": "b1a62b86-8fa4-4214-9ea4-aa809d9e2f72",
+      "name": "Criar contato matriculado",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.lead_encontrado }}",
+              "pipeline_id": 5481944,
+              "status_id": 48566201,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":304628,\"type\":\"text\"}",
+                    "value": "={{ $json.nome_completo }}"
+                  },
+                  {
+                    "data": "{\"id\":31774,\"type\":\"text\"}",
+                    "value": "={{ $json.cpf }}"
+                  },
+                  {
+                    "data": "{\"id\":689713,\"type\":\"numeric\"}",
+                    "value": "={{ $json.rg }}"
+                  },
+                  {
+                    "data": "{\"id\":690889,\"type\":\"text\"}",
+                    "value": "={{ $json.inscricao }}"
+                  },
+                  {
+                    "data": "{\"id\":31782,\"type\":\"text\"}",
+                    "value": "={{ $json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":31780,\"type\":\"text\"}",
+                    "value": "={{ $json.polo }}"
+                  },
+                  {
+                    "data": "{\"id\":190582,\"type\":\"text\"}",
+                    "value": "=+55{{ $json.ddd_cel_e_fone_cel }}"
+                  },
+                  {
+                    "data": "{\"id\":689701,\"type\":\"text\"}",
+                    "value": "={{ $json.email }}"
+                  },
+                  {
+                    "data": "{\"id\":31766,\"type\":\"text\"}",
+                    "value": "={{ $json.situacao }}"
+                  },
+                  {
+                    "data": "{\"id\":685933,\"type\":\"text\"}",
+                    "value": "={{ $json.modalidade }}"
+                  },
+                  {
+                    "data": "{\"id\":689009,\"type\":\"select\"}",
+                    "value": "={{ $json.nivel }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      192085
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        928,
+        1280
+      ],
+      "id": "eb491d2b-da74-4b64-afd6-9d571f3dd7ce",
+      "name": "Update leads Não Matriculados",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status_final }}",
+                    "rightValue": "Não matriculado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "741d5c9f-be23-4548-b828-2da096ad564a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "335027c2-53d5-41fe-91e7-ac400162a57f",
+                    "leftValue": "={{ $json.status_final }}",
+                    "rightValue": "Matriculado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        848,
+        656
+      ],
+      "id": "13b6a940-4e66-4327-8770-d8825a3fcd51",
+      "name": "Matriculado ou não"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status_final }}",
+                    "rightValue": "Matriculado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "23176542-93be-4a67-8062-9ffcbab038a9"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "edf2c402-5c3e-4808-b7ac-c94384cabf33",
+                    "leftValue": "={{ $json.status_final }}",
+                    "rightValue": "Não matriculado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        1120
+      ],
+      "id": "e689eb44-3856-49a8-a672-4ef36272c930",
+      "name": "Matriculado ou não2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.inscricao }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "3d540f16-7fc8-4962-97a9-9df46ff07541"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1a7f0c34-9672-478b-bbd6-6c024beee3bd",
+                    "leftValue": "={{ $json.inscricao }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -384,
+        912
+      ],
+      "id": "3997d984-6521-4957-a507-d83ab910d4da",
+      "name": "Switch"
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete NOVA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Insert in Nova",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert in Nova": {
+      "main": [
+        []
+      ]
+    },
+    "Delete Antiga": {
+      "main": [
+        [
+          {
+            "node": "Backup para Antiga",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Select atualizacao_comercial2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Junta & Decide": {
+      "main": [
+        [
+          {
+            "node": "Switch - Criar ou Atualizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select atualizacao_comercial2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch - Criar ou Atualizar": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Matriculado ou não2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        []
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code - Junta & Decide",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Matriculado ou não",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads Matriculados": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar contato não matriculado": {
+      "main": [
+        [
+          {
+            "node": "Criar lead não matriculado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar lead não matriculado": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar lead matriculado": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar contato matriculado": {
+      "main": [
+        [
+          {
+            "node": "Criar lead matriculado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads Não Matriculados": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Matriculado ou não": {
+      "main": [
+        [
+          {
+            "node": "Criar contato não matriculado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar contato matriculado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Matriculado ou não2": {
+      "main": [
+        [
+          {
+            "node": "Update leads Matriculados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update leads Não Matriculados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Code - Junta & Decide",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Google Drive Trigger": {
+      "lastTimeChecked": "2025-08-20T02:41:26Z"
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "1a43bc38-4502-424d-ac31-4bfd65f91faf",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-12T19:25:36.941Z",
+      "updatedAt": "2025-08-12T19:25:36.941Z",
+      "role": "workflow:owner",
+      "workflowId": "CD7cCWjUGZBFcSec",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
