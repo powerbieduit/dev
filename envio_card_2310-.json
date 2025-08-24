@@ -1,0 +1,131 @@
+{
+  "createdAt": "2025-08-13T20:36:47.473Z",
+  "updatedAt": "2025-08-13T21:09:03.000Z",
+  "id": "tQ75E09Q3OlUulWr",
+  "name": "Envio_Card_2310",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-contact",
+        "instanceName": "2310",
+        "remoteJid": "={{ $json.data.key.remoteJid }}",
+        "contacts": {
+          "contactValues": [
+            {
+              "fullName": "Cruzeiro do Sul Suporte ao Aluno",
+              "wuid": "5511915184535",
+              "phoneNumber": "=+55 11 9 1518-4535",
+              "organization": "Cruzeiro do Sul Virtual",
+              "url": "www.cruzeiroead.com.br"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "7c52141f-c576-4132-88b2-ef2124913df5",
+      "name": "Enviar contato",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nB4splEd6P979FNr",
+          "name": "Evolution - Comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2310",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -624,
+        0
+      ],
+      "id": "44917e53-a811-4e95-9e65-b48b48b343ea",
+      "name": "Webhook",
+      "webhookId": "accfc6d8-8d5b-45f7-951a-2390a0f4bf6f"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $json.body.instance }}",
+        "remoteJid": "={{ $json.body.data.key.remoteJid }}",
+        "messageText": "=📢 _Atenção!_ Este número não está mais ativo. \n📱 *Salve agora nosso novo número oficial* para atendimento e suporte ao aluno.  \n🙏 Se puder, nos informe onde encontrou nosso contato antigo. Isso ajuda outros alunos a falar com o número certo.",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "69b33b63-4b19-44ee-a95e-8bf578ce88cb",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nB4splEd6P979FNr",
+          "name": "Evolution - Comercial"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Enviar contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar contato": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "fe20d45e-7f16-444c-94d0-cf5fd3103acf",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-13T20:36:47.480Z",
+      "updatedAt": "2025-08-13T20:36:47.480Z",
+      "role": "workflow:owner",
+      "workflowId": "tQ75E09Q3OlUulWr",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
