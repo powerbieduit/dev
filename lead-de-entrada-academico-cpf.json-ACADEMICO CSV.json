@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T19:57:16.362Z",
-  "updatedAt": "2025-07-29T15:54:31.000Z",
+  "updatedAt": "2025-08-18T16:16:07.000Z",
   "id": "cOuYZK07fsSx5djC",
   "name": "Lead de Entrada Academico CPF.json",
   "active": true,
@@ -677,7 +677,8 @@
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "dCpCqA316QocWWea"
+    "errorWorkflow": "dCpCqA316QocWWea",
+    "timezone": "America/Sao_Paulo"
   },
   "staticData": null,
   "meta": {
@@ -716,8 +717,17 @@
       }
     ]
   },
-  "versionId": "803377d4-118f-47a4-a3b4-ac6726938dd5",
+  "versionId": "1de0f643-cead-441e-9f2b-572f4673e26f",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T19:57:16.364Z",
+      "updatedAt": "2025-07-25T19:57:16.364Z",
+      "role": "workflow:owner",
+      "workflowId": "cOuYZK07fsSx5djC",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-25T19:56:58.514Z",
