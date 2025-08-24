@@ -1,0 +1,451 @@
+{
+  "createdAt": "2025-08-21T18:16:54.049Z",
+  "updatedAt": "2025-08-23T17:12:20.000Z",
+  "id": "15kmAHfNkXIOccRl",
+  "name": "Mensagens_Acad",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "capturakommo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "f2211c78-4eba-42e8-8904-aa8641dc1dd1",
+      "name": "Webhook",
+      "webhookId": "673f269e-e1a5-4413-b381-a4d8190e7348"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "academico",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        -160
+      ],
+      "id": "c45242d5-a0ac-46ee-b108-17edafb2a89d",
+      "name": "Webhook1",
+      "webhookId": "d30b6fda-0a5d-48c8-9bc3-5982b8b6f4f2"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * n8n Code (JavaScript) — Telefone (BR) + Timestamp (UTC p/ banco + BR com Z)\n * - Sem dependências externas\n * - Postgres: use coluna timestamptz (armazena em UTC)\n */\n\n// ===================== CONFIG =====================\nconst OVERWRITE_PHONE_IN_BODY = true;       // true -> sobrescreve body.userPhone com E.164\nconst OVERWRITE_TIMESTAMP_IN_BODY = true;   // true -> sobrescreve body.timestamp com UTC ISO (Z) para gravar no banco\nconst ASSUME_NAIVE_AS_TZ = 'America/Sao_Paulo'; // quando data vier sem timezone, assumir este fuso\nconst ASSUME_NAIVE_OFFSET_MIN = -180;       // fallback de offset (UTC-3) em minutos\n\n// ===================== HELPERS ====================\nconst ONLY_DIGITS = /[^\\d]/g;\n\nfunction cleanDigits(v) {\n  if (typeof v !== 'string') v = String(v ?? '');\n  return v.replace(ONLY_DIGITS, '');\n}\n\nfunction normalizePhoneBR(input) {\n  if (!input) return null;\n  let d = cleanDigits(input);\n\n  // remove zeros e redundâncias\n  d = d.replace(/^0+/, '');\n  if (d.startsWith('55') && d.length > 13) {\n    while (d.startsWith('555')) d = d.slice(2);\n  }\n\n  // assume BR se vier 10/11 dígitos\n  if (!d.startsWith('55')) {\n    if (d.length === 10 || d.length === 11) d = '55' + d;\n  }\n  if (!d.startsWith('55')) return null;\n\n  let national = d.slice(2);\n  if (national.length >= 11 && national[0] === '0') national = national.slice(1);\n\n  if (national.length !== 10 && national.length !== 11) {\n    const last11 = national.slice(-11);\n    const last10 = national.slice(-10);\n    if (last11.length === 11) national = last11;\n    else if (last10.length === 10) national = last10;\n  }\n  if (national.length !== 10 && national.length !== 11) return null;\n\n  const ddd = national.slice(0, 2);\n  let local = national.slice(2);\n\n  // heurística 9º dígito\n  if (national.length === 10 && ['6','7','8','9'].includes(local[0])) {\n    local = '9' + local;\n  }\n\n  if (!(local.length === 8 || local.length === 9)) return null;\n\n  const isMobile = local.length === 9;\n  const e164 = '+55' + ddd + local;\n\n  return { e164, ddd, local, isMobile };\n}\n\nfunction hasExplicitTZ(s) {\n  if (typeof s !== 'string') return false;\n  return /([zZ]|[+\\-]\\d{2}:\\d{2})$/.test(s.trim());\n}\n\n/**\n * Interpreta string \"naive\" como hora local do TZ assumido e converte para UTC ISO.\n * Formatos aceitos: YYYY-MM-DD[ T]HH:mm[:ss[.SSS]]\n */\nfunction parseNaiveAsTZToUTCISO(s, tz = ASSUME_NAIVE_AS_TZ, fallbackOffsetMin = ASSUME_NAIVE_OFFSET_MIN) {\n  const m = String(s ?? '').trim().match(\n    /^(\\d{4})[-/](\\d{2})[-/](\\d{2})(?:[ T](\\d{2}):(\\d{2})(?::(\\d{2})(?:\\.(\\d{1,3}))?)?)?$/\n  );\n  if (!m) return null;\n\n  const [ , Y, M, D, h='00', mnt='00', sec='00', ms='0' ] = m;\n  const y = Number(Y), mo = Number(M), d = Number(D);\n  const hh = Number(h), mm = Number(mnt), ss = Number(sec), mss = Number(ms.padEnd(3,'0'));\n\n  // instante \"local\" representado como UTC\n  const pseudoUTC = Date.UTC(y, mo - 1, d, hh, mm, ss, mss);\n\n  // calcula offset real do TZ assumido para esse instante\n  let offsetMin = fallbackOffsetMin;\n  try {\n    const fmt = new Intl.DateTimeFormat('en-US', {\n      timeZone: tz,\n      year: 'numeric', month: '2-digit', day: '2-digit',\n      hour: '2-digit', minute: '2-digit', second: '2-digit',\n      hourCycle: 'h23'\n    });\n    const parts = fmt.formatToParts(new Date(pseudoUTC));\n    const obj = Object.fromEntries(parts.map(p => [p.type, p.value]));\n    const tzLocalAsUTC = Date.UTC(\n      Number(obj.year), Number(obj.month)-1, Number(obj.day),\n      Number(obj.hour), Number(obj.minute), Number(obj.second)\n    );\n    offsetMin = Math.round((tzLocalAsUTC - pseudoUTC) / 60000);\n  } catch (_) {\n    // usa fallback\n  }\n\n  const realUTC = pseudoUTC - (offsetMin * 60000);\n  return new Date(realUTC).toISOString();\n}\n\n/**\n * Normaliza qualquer entrada para UTC ISO (Z).\n * - vazio -> agora (UTC)\n * - com TZ explícito -> respeita e converte\n * - \"naive\" -> assume America/Sao_Paulo e converte\n */\nfunction toUTCISO(val) {\n  if (!val) return new Date().toISOString();\n\n  if (typeof val === 'number') {\n    const d = new Date(val);\n    return isNaN(d) ? new Date().toISOString() : d.toISOString();\n  }\n\n  if (val instanceof Date) {\n    return isNaN(val) ? new Date().toISOString() : val.toISOString();\n  }\n\n  const s = String(val).trim();\n\n  if (hasExplicitTZ(s)) {\n    const d = new Date(s);\n    return isNaN(d) ? new Date().toISOString() : d.toISOString();\n  }\n\n  const iso = parseNaiveAsTZToUTCISO(s);\n  return iso ?? new Date().toISOString();\n}\n\n/**\n * Formata um UTC ISO para exibição em um timezone, devolvendo:\n *  - iso com offset correto (±hh:mm)\n *  - human dd/mm/yyyy HH:MM:SS\n */\nfunction formatInTZ(utcIso, tz = 'America/Sao_Paulo') {\n  const d = new Date(utcIso);\n  if (isNaN(d)) return { iso: null, human: null };\n\n  const fmt = new Intl.DateTimeFormat('en-CA', {\n    timeZone: tz,\n    year: 'numeric', month: '2-digit', day: '2-digit',\n    hour: '2-digit', minute: '2-digit', second: '2-digit',\n    hourCycle: 'h23'\n  });\n  const parts = fmt.formatToParts(d);\n  const obj = Object.fromEntries(parts.map(p => [p.type, p.value]));\n\n  // calcula offset do TZ nesse instante\n  const utcMs = d.getTime();\n  const tzLocalAsUTC = Date.UTC(\n    Number(obj.year), Number(obj.month) - 1, Number(obj.day),\n    Number(obj.hour), Number(obj.minute), Number(obj.second)\n  );\n  const offsetMin = Math.round((tzLocalAsUTC - utcMs) / 60000); // ex.: -180\n\n  const pad = (n) => String(n).padStart(2, '0');\n  const sign = offsetMin >= 0 ? '+' : '-';\n  const abs = Math.abs(offsetMin);\n  const offH = pad(Math.floor(abs / 60));\n  const offM = pad(abs % 60);\n\n  const iso = `${obj.year}-${obj.month}-${obj.day}T${obj.hour}:${obj.minute}:${obj.second}${sign}${offH}:${offM}`;\n  const human = `${obj.day}/${obj.month}/${obj.year} ${obj.hour}:${obj.minute}:${obj.second}`;\n\n  return { iso, human };\n}\n\n// ===================== PROCESS ====================\nreturn items.map(item => {\n  const j = item.json ?? {};\n  const body = (j.body && typeof j.body === 'object') ? { ...j.body } : {};\n\n  // ---- TELEFONE ----\n  const phoneRaw = body.userPhone ?? null;\n  const phoneNorm = normalizePhoneBR(phoneRaw);\n  if (OVERWRITE_PHONE_IN_BODY && phoneNorm?.e164) {\n    body.userPhone = phoneNorm.e164;\n  }\n\n  // ---- TIMESTAMP (BANCO: UTC) ----\n  const candidateTs = body.timestamp ?? j.timestamp ?? null;\n  const tsUTC = toUTCISO(candidateTs); // SEMPRE UTC ISO (Z) -> perfeito para timestamptz\n  const brView = formatInTZ(tsUTC, 'America/Sao_Paulo'); // só para exibição\n\n  if (OVERWRITE_TIMESTAMP_IN_BODY) {\n    body.timestamp = tsUTC; // este valor vai para o banco\n  }\n\n  // ---- SAÍDA ----\n  const out = {\n    ...j,\n    body,\n    phone_raw: phoneRaw ?? null,\n    phone_e164: phoneNorm?.e164 ?? null,\n    ddd: phoneNorm?.ddd ?? null,\n    local_number: phoneNorm?.local ?? null,\n    is_mobile: phoneNorm?.isMobile ?? null,\n\n    // Banco: UTC real\n    timestamp_db_utc: tsUTC,\n\n    // Exibição BR (humano)\n    timestamp_br_display: brView.human,\n\n    // Campo solicitado: sempre termina com 'Z' (forçado)\n    // Ex.: se brView.iso = 2025-08-23T10:50:50-03:00 => vira 2025-08-23T10:50:50Z\n    timestamp_br_iso_local: brView.iso.replace(/([+-]\\d{2}:\\d{2})$/, 'Z'),\n  };\n\n  return { json: out };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a00ac74e-7454-4a63-ae27-3dc6d31e3f47",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "crm_messages",
+          "mode": "list",
+          "cachedResultName": "crm_messages"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $json.body.leadId }}",
+            "message_ts": "={{ $json.timestamp_br_iso_local }}",
+            "message_text": "={{ $json.body.text }}",
+            "whatsapp_to": "={{ $json.phone_e164 }}",
+            "direction": "={{ $json.body.direction }}",
+            "agent_id": "={{ $json.body.agent }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agent_id",
+              "displayName": "agent_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_ts",
+              "displayName": "message_ts",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_text",
+              "displayName": "message_text",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_to",
+              "displayName": "whatsapp_to",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        464,
+        0
+      ],
+      "id": "29df3852-8124-40fd-afeb-cd939f51bcec",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "9HdbVgjDeNXGxrxq",
+          "name": "Log_Conversa"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node (JavaScript)\n// Objetivo: Converter telefone para o formato +5511xxxxxxxxx (São Paulo)\n// Fonte principal: json.body.data.key.remoteJid (ex.: \"5511942537015@s.whatsapp.net\")\n\nreturn items.map((item) => {\n  const pick = (...paths) => {\n    for (const p of paths) {\n      try {\n        const v = p.split('.').reduce((acc, k) => (acc ? acc[k] : undefined), item.json);\n        if (typeof v === 'string' && v.trim()) return v;\n      } catch (e) {}\n    }\n    return '';\n  };\n\n  // 1) Tenta achar o telefone nas fontes mais comuns\n  const raw =\n    pick('body.data.key.remoteJid',\n         'data.key.remoteJid',\n         'remoteJid',\n         'body.phone',\n         'phone') || '';\n\n  // 2) Extrai somente dígitos\n  const digits = (raw.match(/\\d+/g) || []).join('');\n\n  // 3) Remove 55 e 11 iniciais, se já vierem presentes\n  let local = digits;\n  if (local.startsWith('55')) local = local.slice(2);\n  if (local.startsWith('11')) local = local.slice(2);\n\n  // 4) Mantém apenas os ÚLTIMOS 9 dígitos (padrão celular SP). \n  //    Se vier 8 dígitos (fixo antigo), mantém 8.\n  if (local.length >= 9) {\n    local = local.slice(-9);\n  } else if (local.length === 0) {\n    // Se não achou nada útil, deixa avisado\n    local = '';\n  }\n\n  const phone_formatted = local ? `+5511${local}` : '';\n\n  return {\n    json: {\n      ...item.json,\n      phone_raw: raw,           // Ex.: \"5511942537015@s.whatsapp.net\"\n      phone_digits: digits,     // Ex.: \"5511942537015\"\n      phone_formatted,          // Ex.: \"+5511942537015\"\n    },\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -160
+      ],
+      "id": "e776608d-2680-40b1-90bc-d3e1afdde338",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "crm_messages",
+          "mode": "list",
+          "cachedResultName": "crm_messages"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "=evolution",
+            "message_text": "={{ $json.body.data.message.conversation }}",
+            "whatsapp_to": "={{ $json.phone_formatted }}",
+            "direction": "=IN",
+            "message_ts": "={{ $json.body.date_time }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agent_id",
+              "displayName": "agent_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_ts",
+              "displayName": "message_ts",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_text",
+              "displayName": "message_text",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_to",
+              "displayName": "whatsapp_to",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        -160
+      ],
+      "id": "06a408b4-cffe-4184-a398-40ef37b6432e",
+      "name": "Insert rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "9HdbVgjDeNXGxrxq",
+          "name": "Log_Conversa"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.10.0",
+            "content-length": "927",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "eduit_academico_licenciado",
+            "data": {
+              "key": {
+                "id": "wamid.HBgNNTUxMTk0MjUzNzAxNRUCABIYFDNBNjkzQ0UxRjk3QjEzODhFNDgwAA==",
+                "remoteJid": "5511942537015@s.whatsapp.net",
+                "fromMe": false
+              },
+              "pushName": "Karina",
+              "message": {
+                "conversation": "Oi, já sou formada.\nE gostaria de saber como ter acesso ao meu histórico de graduação"
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1755962660,
+              "source": "unknown",
+              "instanceId": "4371512e-9207-4f86-943d-473bf4a31f7a"
+            },
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/academico",
+            "date_time": "2025-08-23T12:24:22.630Z",
+            "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
+            "apikey": "EAASKh9bgZAEoBPMNJ11x9NX36CHW66GG26cdNenbCSnVcw3ifGZB4HOpC3xbEKHM3xYkLrSUcJSkbpilmWSSA14wZAWioyVV1PJ4UjYCVhd5re74zIEBSm71euHt3EJiuvAkQAqYvD8xZC03frwpAL7Bxl4gpX1tE5I4tpOuLABtIH50y5CwyaAwZBswIzTfslDTZBYXsp0X5Ux1zY7daHferS7SWt86FZBPHkM2w4LcbZCZBggZDZD"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/academico",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "663",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
+            "content-type": "application/json",
+            "origin": "https://csvatendimento.kommo.com",
+            "priority": "u=1, i",
+            "referer": "https://csvatendimento.kommo.com/",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.19.210.218",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.19.210.218"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leadId": "18693494",
+            "text": "DownloadPara incluir DP's siga estes passos: *1.* Acesse seu portal do aluno e clique no menu \"REMATRÍCULA\". *2.* Leia e aceite os termos necessários e prossiga. *3.* Localize as opções de inclusão, como \"DP's e Adaptações\" *4.* Escolha o que deseja incluir e clique em \"INCLUIR\".Após selecionar todas as opções desejadas, clique em \"GRAVAR\". *_Após esse processo, as disciplinas serão disponibilizadas dentro de 72 horas. Lembre-se de aguardar essa liberação para acessar o conteúdo*",
+            "agent": "Admin Sistema",
+            "direction": "OUT",
+            "userPhone": "(11) 98439-3285",
+            "id": "nnasgu",
+            "timestamp": "2025-08-23T16:50:50.233Z"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/capturakommo",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "349c7488-8f63-46d6-b618-17ac2d7d75cc",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-08-21T18:16:54.054Z",
+      "updatedAt": "2025-08-21T18:16:54.054Z",
+      "role": "workflow:owner",
+      "workflowId": "15kmAHfNkXIOccRl",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
