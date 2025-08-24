@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T21:53:34.061Z",
-  "updatedAt": "2025-07-31T20:01:56.000Z",
+  "updatedAt": "2025-08-22T15:57:35.000Z",
   "id": "j7JFCySo5BqbTQEA",
   "name": "distribuicao_academico_csv",
   "active": true,
@@ -322,30 +322,6 @@
         "kommoOAuth2Api": {
           "id": "UJXbFUmZVweNcdbc",
           "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "591812090691346",
-        "recipientPhoneNumber": "={{ $('Lead 1').item.json.telefone }}",
-        "textBody": "Oi! Tudo bem? Agora sou eu que vou te atender 🙂 Vi que você pediu ajuda sobre o seu curso. Se já deixou sua dúvida aqui na conversa, vou analisar e te responder rapidinho. Se ainda não explicou o que está acontecendo, pode me contar? Estou aqui para ajudar no que for preciso!",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [
-        -1024,
-        -288
-      ],
-      "id": "80a0b909-b0e5-4c6c-83f4-07543102c652",
-      "name": "WhatsApp Business Cloud",
-      "webhookId": "208902bf-9075-4f35-b048-e73fac8e9290",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "J6UXZDHIgr3S5XXH",
-          "name": "WhatsApp account App CSV Academico"
         }
       }
     },
@@ -1321,28 +1297,6 @@
     },
     {
       "parameters": {
-        "phoneNumberId": "591812090691346",
-        "recipientPhoneNumber": "={{ $json.wa_id }}",
-        "template": "706e7247_15cd_45b1_95ea_4eba3de16b6c|pt_BR"
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [
-        320,
-        -384
-      ],
-      "id": "d7dbbafb-7eee-4fcf-a192-ad633811d7d6",
-      "name": "WhatsApp Business Cloud3",
-      "webhookId": "bf7884c6-aeb2-419e-90d4-8f7c8898669b",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "J6UXZDHIgr3S5XXH",
-          "name": "WhatsApp account App CSV Academico"
-        }
-      }
-    },
-    {
-      "parameters": {
         "operation": "deleteTable",
         "schema": {
           "__rl": true,
@@ -1699,28 +1653,6 @@
       ],
       "id": "1b8e9d66-e15f-45b6-b732-0637fe44ce07",
       "name": "If2"
-    },
-    {
-      "parameters": {
-        "phoneNumberId": "591812090691346",
-        "recipientPhoneNumber": "={{ $json.wa_id }}",
-        "template": "706e7247_15cd_45b1_95ea_4eba3de16b6c|pt_BR"
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [
-        544,
-        0
-      ],
-      "id": "da49c1ac-1206-4a66-8f2b-c60a75abdaf4",
-      "name": "WhatsApp Business Cloud4",
-      "webhookId": "bf7884c6-aeb2-419e-90d4-8f7c8898669b",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "J6UXZDHIgr3S5XXH",
-          "name": "WhatsApp account App CSV Academico"
-        }
-      }
     },
     {
       "parameters": {
@@ -2083,28 +2015,6 @@
     },
     {
       "parameters": {
-        "phoneNumberId": "591812090691346",
-        "recipientPhoneNumber": "={{ $json.wa_id }}",
-        "template": "706e7247_15cd_45b1_95ea_4eba3de16b6c|pt_BR"
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [
-        544,
-        384
-      ],
-      "id": "c8e48252-79ec-4c8f-b66b-b41a47905129",
-      "name": "WhatsApp Business Cloud5",
-      "webhookId": "bf7884c6-aeb2-419e-90d4-8f7c8898669b",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "J6UXZDHIgr3S5XXH",
-          "name": "WhatsApp account App CSV Academico"
-        }
-      }
-    },
-    {
-      "parameters": {
         "operation": "deleteTable",
         "schema": {
           "__rl": true,
@@ -2176,7 +2086,7 @@
         "operation": "send",
         "phoneNumberId": "591812090691346",
         "recipientPhoneNumber": "={{ $('Lead 2').item.json.telefone }}",
-        "textBody": "Oi! Tudo bem? Agora sou eu que vou te atender 🙂 Vi que você pediu ajuda sobre o seu curso. Se já deixou sua dúvida aqui na conversa, vou analisar e te responder rapidinho. Se ainda não explicou o que está acontecendo, pode me contar? Estou aqui para ajudar no que for preciso!",
+        "textBody": "=Oi! Tudo bem? Aqui é {{ $('IF Status OK - Distribuir').item.json.proxima_ordem[0].nome }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.\n\n● Se já explicou o que aconteceu, vou analisar e responder em breve. \n● Se ainda não contou, pode me dizer agora?  \n\nEstou à disposição para ajudar. ✅ ",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
@@ -2190,8 +2100,8 @@
       "webhookId": "208902bf-9075-4f35-b048-e73fac8e9290",
       "credentials": {
         "whatsAppApi": {
-          "id": "J6UXZDHIgr3S5XXH",
-          "name": "WhatsApp account App CSV Academico"
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
         }
       }
     },
@@ -2200,7 +2110,7 @@
         "operation": "send",
         "phoneNumberId": "591812090691346",
         "recipientPhoneNumber": "={{ $('Lead 3').item.json.telefone }}",
-        "textBody": "Oi! Tudo bem? Agora sou eu que vou te atender 🙂 Vi que você pediu ajuda sobre o seu curso. Se já deixou sua dúvida aqui na conversa, vou analisar e te responder rapidinho. Se ainda não explicou o que está acontecendo, pode me contar? Estou aqui para ajudar no que for preciso!",
+        "textBody": "=Oi! Tudo bem? Aqui é {{ $('IF Status OK - Distribuir').item.json.proxima_ordem[0].nome }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.\n\n● Se já explicou o que aconteceu, vou analisar e responder em breve. \n● Se ainda não contou, pode me dizer agora?  \n\nEstou à disposição para ajudar. ✅ ",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
@@ -2214,8 +2124,8 @@
       "webhookId": "208902bf-9075-4f35-b048-e73fac8e9290",
       "credentials": {
         "whatsAppApi": {
-          "id": "J6UXZDHIgr3S5XXH",
-          "name": "WhatsApp account App CSV Academico"
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
         }
       }
     },
@@ -2712,6 +2622,135 @@
           "name": "Postgres distribuicao_academico"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $('Lead 1').item.json.telefone }}",
+        "textBody": "=Oi! Tudo bem? Aqui é {{ $('IF Status OK - Distribuir').item.json.proxima_ordem[0].nome }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.\n\n● Se já explicou o que aconteceu, vou analisar e responder em breve. \n● Se ainda não contou, pode me dizer agora?  \n\nEstou à disposição para ajudar. ✅ ",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -1024,
+        -288
+      ],
+      "id": "80a0b909-b0e5-4c6c-83f4-07543102c652",
+      "name": "Send message2",
+      "webhookId": "208902bf-9075-4f35-b048-e73fac8e9290",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $json.wa_id }}",
+        "template": "waca_distribuido_rrbo21|pt_BR",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $('Distribuicao').item.json.proxima_ordem[0].nome }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -384
+      ],
+      "id": "800bd4bd-e854-47e7-b31a-5ccb868f13e2",
+      "name": "Send template",
+      "webhookId": "bf7884c6-aeb2-419e-90d4-8f7c8898669b",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $json.wa_id }}",
+        "template": "waca_distribuido_rrbo21|pt_BR",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $('Distribuicao').item.json.proxima_ordem[0].nome }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        544,
+        0
+      ],
+      "id": "da49c1ac-1206-4a66-8f2b-c60a75abdaf4",
+      "name": "Send template1",
+      "webhookId": "bf7884c6-aeb2-419e-90d4-8f7c8898669b",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $json.wa_id }}",
+        "template": "waca_distribuido_rrbo21|pt_BR",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $('Distribuicao').item.json.proxima_ordem[0].nome }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        544,
+        384
+      ],
+      "id": "c8e48252-79ec-4c8f-b66b-b41a47905129",
+      "name": "Send template2",
+      "webhookId": "bf7884c6-aeb2-419e-90d4-8f7c8898669b",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
     }
   ],
   "connections": {
@@ -2873,18 +2912,7 @@
       "main": [
         [
           {
-            "node": "WhatsApp Business Cloud",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "WhatsApp Business Cloud": {
-      "main": [
-        [
-          {
-            "node": "Create new notes1",
+            "node": "Send message2",
             "type": "main",
             "index": 0
           }
@@ -3067,7 +3095,7 @@
       "main": [
         [
           {
-            "node": "WhatsApp Business Cloud3",
+            "node": "Send template",
             "type": "main",
             "index": 0
           }
@@ -3075,17 +3103,6 @@
         [
           {
             "node": "Postgres",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "WhatsApp Business Cloud3": {
-      "main": [
-        [
-          {
-            "node": "Postgres7",
             "type": "main",
             "index": 0
           }
@@ -3167,7 +3184,7 @@
       "main": [
         [
           {
-            "node": "WhatsApp Business Cloud4",
+            "node": "Send template1",
             "type": "main",
             "index": 0
           }
@@ -3175,17 +3192,6 @@
         [
           {
             "node": "Update rows in a table",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "WhatsApp Business Cloud4": {
-      "main": [
-        [
-          {
-            "node": "Postgres8",
             "type": "main",
             "index": 0
           }
@@ -3262,7 +3268,7 @@
       "main": [
         [
           {
-            "node": "WhatsApp Business Cloud5",
+            "node": "Send template2",
             "type": "main",
             "index": 0
           }
@@ -3270,17 +3276,6 @@
         [
           {
             "node": "Update rows in a table1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "WhatsApp Business Cloud5": {
-      "main": [
-        [
-          {
-            "node": "Postgres9",
             "type": "main",
             "index": 0
           }
@@ -3341,6 +3336,50 @@
           }
         ]
       ]
+    },
+    "Send message2": {
+      "main": [
+        [
+          {
+            "node": "Create new notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template": {
+      "main": [
+        [
+          {
+            "node": "Postgres7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template1": {
+      "main": [
+        [
+          {
+            "node": "Postgres8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template2": {
+      "main": [
+        [
+          {
+            "node": "Postgres9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -3354,9 +3393,36 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "307062a7-e7f9-4497-9ba5-2497bf3fcfe1",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-08-14T15:03:00.002-04:00",
+          "Readable date": "August 14th 2025, 3:03:00 pm",
+          "Readable time": "3:03:00 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "August",
+          "Day of month": "14",
+          "Hour": "15",
+          "Minute": "03",
+          "Second": "00",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "df14195b-bece-4b30-9a8a-f3a6189a7d73",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T21:53:34.064Z",
+      "updatedAt": "2025-07-25T21:53:34.064Z",
+      "role": "workflow:owner",
+      "workflowId": "j7JFCySo5BqbTQEA",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-25T19:56:58.514Z",
