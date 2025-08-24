@@ -800,5 +800,14 @@
   },
   "versionId": "701f4a6b-dc97-4166-b173-8d32e1cca684",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-31T15:28:35.108Z",
+      "updatedAt": "2025-07-31T15:28:35.108Z",
+      "role": "workflow:owner",
+      "workflowId": "GyFhwlLIleRxISfq",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
