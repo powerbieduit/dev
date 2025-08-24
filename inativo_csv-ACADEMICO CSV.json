@@ -291,6 +291,15 @@
   "pinData": {},
   "versionId": "7f9b9cf7-64ca-4702-a194-c2b450ba9b1b",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T19:57:29.448Z",
+      "updatedAt": "2025-07-25T19:57:29.448Z",
+      "role": "workflow:owner",
+      "workflowId": "RsjU4yDcMPNjhg3l",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-25T19:56:58.514Z",
