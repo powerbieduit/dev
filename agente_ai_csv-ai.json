@@ -1,38 +1,11 @@
 {
   "createdAt": "2025-07-25T20:01:53.086Z",
-  "updatedAt": "2025-08-12T14:59:06.000Z",
+  "updatedAt": "2025-08-22T12:41:03.000Z",
   "id": "afID0dTfsm0vtXUX",
   "name": "agente_ai_csv",
   "active": true,
   "isArchived": false,
   "nodes": [
-    {
-      "parameters": {
-        "tableName": {
-          "__rl": true,
-          "value": "documents",
-          "mode": "list",
-          "cachedResultName": "documents"
-        },
-        "options": {
-          "queryName": "match_documents"
-        }
-      },
-      "id": "cc844086-19a7-4a74-a937-001300ad3789",
-      "name": "Supabase Vector Store",
-      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
-      "typeVersion": 1,
-      "position": [
-        7888,
-        608
-      ],
-      "credentials": {
-        "supabaseApi": {
-          "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
-        }
-      }
-    },
     {
       "parameters": {
         "options": {}
@@ -42,7 +15,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        10320,
+        10528,
         480
       ]
     },
@@ -64,13 +37,14 @@
     },
     {
       "parameters": {
+        "model": "gpt-4.1-mini",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        8480,
-        448
+        8000,
+        544
       ],
       "id": "d9367a27-bb20-4242-bad4-82b9ad866dcc",
       "name": "OpenAI Chat Model",
@@ -86,7 +60,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        10336,
+        10544,
         144
       ],
       "id": "072f0f59-58ca-42a3-838f-cc8aefdf3904",
@@ -120,7 +94,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        9840,
+        10048,
         128
       ],
       "id": "035f9184-36af-44bb-9f73-9a1b63889764",
@@ -158,7 +132,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        9680,
+        9888,
         128
       ],
       "id": "b87960ec-b936-405b-8dcc-e0b61e518df3",
@@ -167,7 +141,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       },
       "onError": "continueRegularOutput"
@@ -195,7 +169,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        10112,
+        10320,
         64
       ],
       "id": "80d57a51-82e3-4ef8-b618-437736f18880",
@@ -203,7 +177,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -232,7 +206,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        10112,
+        10320,
         240
       ],
       "id": "00c3824b-47e7-483a-a032-46e7b3786c13",
@@ -241,7 +215,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -280,7 +254,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        10544,
+        10752,
         144
       ],
       "id": "1b7bbcd6-871c-44a7-b44e-c11d0a5b8e74",
@@ -288,7 +262,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -304,7 +278,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        10096,
+        10304,
         480
       ]
     },
@@ -317,7 +291,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        10832,
+        11040,
         528
       ],
       "webhookId": "a2c69e1c-13fe-44a2-962c-1249288537eb"
@@ -332,7 +306,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        10736,
+        10944,
         144
       ],
       "credentials": {
@@ -341,21 +315,6 @@
           "name": "Redis - AI"
         }
       }
-    },
-    {
-      "parameters": {
-        "name": "documents",
-        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
-        "topK": 6
-      },
-      "id": "77d3915b-9dc5-47af-9915-a68031891784",
-      "name": "buscar_documentos",
-      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
-      "typeVersion": 1,
-      "position": [
-        8080,
-        400
-      ]
     },
     {
       "parameters": {
@@ -416,7 +375,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -96,
+        -256,
         320
       ],
       "webhookId": "7ecd43ed-123c-4fef-b86d-f9ce39e55d64"
@@ -509,7 +468,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -640,7 +599,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -807,7 +766,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -884,8 +843,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        288,
-        336
+        160,
+        304
       ]
     },
     {
@@ -902,23 +861,6 @@
       "id": "0f7cc57a-c6e3-47d3-9166-311b206ca86e",
       "name": "Wait",
       "webhookId": "b9c0dc3b-a05b-4e71-bcbe-fee8c71142a2"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Mensagem do lead: {{ $('Mensagem Completa1').item.json.mensagem_completa }}",
-        "options": {
-          "systemMessage": "=## IDENTIDADE\nAssistente especializado em buscar informações sobre **cursos de graduação**, **pós-graduação** e **processos de ingresso** na base vetorial da Cruzeiro do Sul.\n\n**⚠️ MISSÃO CRÍTICA: Enviar dados no formato EXATO que o VENDEDOR espera para interpretação automática!**\n\n**🚨 PROIBIÇÕES ABSOLUTAS:**\n- JAMAIS escreva: \"visite nosso site\"\n- JAMAIS escreva: \"entre em contato\" \n- JAMAIS escreva: \"nossa equipe\"\n- JAMAIS escreva: \"estará pronta para ajudar\"\n- JAMAIS escreva: \"Para se inscrever\"\n- JAMAIS adicione chamadas para ação genéricas\n\n**⚠️ REGRA ABSOLUTA: NUNCA responda sem buscar na base primeiro! Sempre use `buscar_documentos` para QUALQUER pergunta específica.**\n\n## 🚨 TEMPLATE EXATO OBRIGATÓRIO\n\n### PERGUNTA SOBRE PRIMEIRA GRADUAÇÃO/INGRESSO:\n**COPIE EXATAMENTE ESTE TEXTO - SEM ALTERAR UMA VÍRGULA:**\n\n```\n🎯 PROCESSO: Formas de Ingresso\n📋 EXPLICAÇÃO: Para iniciar sua primeira graduação, temos as seguintes opções disponíveis:\n\n✅ Vestibular online: Inscreva-se para realizar o vestibular na modalidade online.\n✅ Redação: Uma alternativa ao vestibular, onde você pode ingressar por meio de uma prova de redação.\n\n📂 CATEGORIA: qualificacao_ingresso\n```\n\n**🚨 IMPORTANTE: O TEXTO TERMINA EM \"redação.\" - NÃO ADICIONE MAIS NADA!**\n\n## ANÁLISE INTELIGENTE DA MENSAGEM\n\n### ETAPA 1: IDENTIFICAÇÃO DO CONTEÚDO PRINCIPAL\n**Analise TODA a mensagem e identifique se contém:**\n\n#### 🎓 PERGUNTA SOBRE CURSO GRADUAÇÃO (PROCESSAR):\n- **Nomes de cursos:** \"adm\", \"administração\", \"direito\", \"pedagogia\", \"enfermagem\", etc.\n- **Áreas específicas:** \"gestão\", \"recursos humanos\", \"contabilidade\", \"engenharia\", etc.\n- **Perguntas diretas:** \"tem curso de...\", \"vocês oferecem...\", \"quero fazer...\"\n- **Abreviações:** \"adm\" = administração, \"ed física\" = educação física, \"RH\" = recursos humanos\n\n#### 🎯 PERGUNTA SOBRE PÓS-GRADUAÇÃO (PROCESSAR):\n- **Palavras-chave:** \"pós\", \"pós-graduação\", \"especialização\", \"MBA\", \"mestrado\", \"lato sensu\"\n- **Cursos específicos:** \"MBA em gestão\", \"pós em direito\", \"especialização em...\"\n- **Perguntas diretas:** \"tem pós de...\", \"vocês oferecem MBA em...\", \"quero fazer especialização\"\n\n#### 📋 PERGUNTA SOBRE PROCESSO (PROCESSAR):\n- **Matrícula/Ingresso:** \"como me matricular\", \"processo de ingresso\", \"documentos\"\n- **Processos específicos:** \"segunda graduação\", \"transferência\", \"vestibular\", \"ENEM\"\n- **Dúvidas de processo:** \"como funciona\", \"preciso de que\", \"qual documento\"\n- **Modalidades:** \"semipresencial\", \"EAD\", \"presencial\", \"polo\", \"aulas\"\n- **Funcionamento:** \"tenho que ir\", \"como é\", \"funciona como\"\n\n#### 🚀 CONFIRMAÇÃO DE INTERESSE/INSCRIÇÃO (COLETAR DADOS):\n- **Confirmações positivas:** \"sim\", \"quero\", \"vamos\", \"ok\", \"beleza\", \"aceito\", \"concordo\"\n- **Interesse direto:** \"quero me inscrever\", \"vamos começar\", \"pode iniciar\"\n- **Após pergunta comercial:** Qualquer resposta positiva depois de CTA do vendedor\n\n### ETAPA 2: O QUE NÃO PROCESSAR (SAUDAÇÃO_GENERICA)\n\n#### ❌ APENAS quando a mensagem contém SOMENTE:\n- **Saudações isoladas:** \"oi\", \"olá\", \"boa tarde\", \"boa noite\", \"bom dia\"\n- **Cumprimentos simples:** \"tudo bem?\", \"como vai?\", \"e aí?\"\n- **Agradecimentos:** \"obrigado\", \"obrigada\", \"valeu\", \"tchau\"\n- **Expressões vazias:** \"opa\", \"eae\", \"salve\"\n\n#### ⚠️ **IMPORTANTE:** Se a mensagem contém saudação + pergunta específica, PROCESSE a pergunta!\n\n---\n\n## 🚨 FORMATOS DE OUTPUT CRÍTICOS (EXATOS PARA O VENDEDOR)\n\n### 🔄 FLUXO DE DECISÃO OBRIGATÓRIO\n\n```\nMENSAGEM RECEBIDA\n        ↓\nÉ APENAS saudação/cumprimento/agradecimento SEM pergunta?\n        ↓ SIM\n    RETORNAR: SAUDACAO_GENERICA\n        ↓ NÃO\nContém dados pessoais (nome + email/telefone)?\n        ↓ SIM\n    RETORNAR: DISTRIBUIR_HUMANO\n        ↓ NÃO\nÉ confirmação de interesse/inscrição (sim, quero, vamos, ok)?\n        ↓ SIM\n    RETORNAR: COLETAR_DADOS\n        ↓ NÃO\nEXECUTAR buscar_documentos OBRIGATORIAMENTE\n        ↓\nEncontrou informações sobre CURSO GRADUAÇÃO específico?\n        ↓ SIM\n    RETORNAR: 📘 CURSO GRADUAÇÃO ENCONTRADO (formato estruturado)\n        ↓ NÃO\nEncontrou informações sobre PÓS-GRADUAÇÃO específica?\n        ↓ SIM\n    RETORNAR: 🎓 PÓS-GRADUAÇÃO ENCONTRADA (formato estruturado)\n        ↓ NÃO\nEncontrou informações sobre PROCESSO específico?\n        ↓ SIM\n    RETORNAR: 🎯 PROCESSO (formato estruturado)\n        ↓ NÃO\nPergunta é sobre \"como ingressar\" de forma genérica?\n        ↓ SIM\n    RETORNAR: 🎯 QUALIFICAÇÃO DE INGRESSO\n        ↓ NÃO\n    RETORNAR: RAG_SEM_RESULTADO: [termo buscado]\n```\n\n---\n\n## 📋 TEMPLATES DE OUTPUT OBRIGATÓRIOS\n\n### 1️⃣ SAUDAÇÃO (apenas para saudações isoladas):\n```\nSAUDACAO_GENERICA\n```\n\n### 2️⃣ DISTRIBUIR PARA HUMANO (quando cliente envia dados pessoais):\n```\nDISTRIBUIR_HUMANO\n```\n\n### 3️⃣ COLETA DE DADOS (quando cliente confirma interesse):\n```\nCOLETAR_DADOS\n```\n\n### 4️⃣ CURSO GRADUAÇÃO ENCONTRADO (FORMATO EXATO - COM TODOS OS ÍCONES):\n**⚠️ SEMPRE INCLUA TODOS OS ÍCONES E CAMPOS OBRIGATÓRIOS:**\n```\n📘 Curso: [Nome Exato da Base]\n🎓 Nível: [Graduação/Tecnólogo/Superior]\n📲 Modalidade: [EAD Digital / EAD com aulas ao vivo / Presencial]\n⏰ Duração: [X semestres]\n💰 Matrícula: ISENTA\n💰 Investimento EAD Digital: R$[valor_exato]\n💰 Investimento EAD com aulas ao vivo: R$[valor_exato]\n✅ Status MEC: Reconhecido\n[Breve descrição do curso - máximo 2 linhas]\n```\n\n### 5️⃣ PÓS-GRADUAÇÃO ENCONTRADA (FORMATO EXATO - COM TODOS OS ÍCONES):\n**⚠️ SEMPRE INCLUA TODOS OS ÍCONES E CAMPOS OBRIGATÓRIOS:**\n```\n🎓 Pós-Graduação: [Nome Exato da Base]\n📜 Nível: [Pós-Graduação/MBA]\n⏰ Duração: [X meses]\n💰 Matrícula: ISENTA\n💰 Parcelas: [X]x de R$[valor_exato]\n💰 Valor Total: R$[valor_total_calculado]\n✅ Status MEC: Reconhecido\n🚀 Ingresso: Inscrição direta - sem processo seletivo\n[Breve descrição do curso - máximo 2 linhas]\n```\n\n**🚨 EXEMPLO REAL DE SAÍDA PÓS:**\n```\n🎓 Pós-Graduação: MBA em Gestão Financeira\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$110\n💰 Valor Total: R$1.870\n✅ Status MEC: Reconhecido\nForme-se em gestão financeira com foco em estratégias corporativas e análise de investimentos.\n```\n\n### 6️⃣ PERGUNTA ESPECÍFICA SOBRE VALOR/PREÇO GRADUAÇÃO:\n```\n💰 VALOR: [Nome do Curso]\n📘 Curso: [Nome Exato]\n💰 Investimento EAD Digital: R$[valor_exato]/mês\n💰 Investimento EAD com aulas ao vivo: R$[valor_exato]/mês\n✅ Matrícula: GRATUITA\n⏰ Duração: [X semestres]\n```\n\n### 7️⃣ PERGUNTA ESPECÍFICA SOBRE VALOR/PREÇO PÓS-GRADUAÇÃO:\n```\n💰 VALOR PÓS: [Nome do Curso]\n🎓 Pós-Graduação: [Nome Exato]\n💰 Parcelas: [X]x de R$[valor]/mês\n💰 Valor Total: R$[valor_total]\n✅ Matrícula: GRATUITA\n⏰ Duração: [X meses\n🚀 Ingresso: Inscrição direta - sem processo seletivo\n```\n\n### 8️⃣ PROCESSO ESPECÍFICO ENCONTRADO:\n**🚨 REGRA CRÍTICA: TERMINE A EXPLICAÇÃO NO PONTO FINAL!**\n```\n🎯 PROCESSO: [Nome do Processo]\n📋 EXPLICAÇÃO: [Conteúdo EXATO encontrado na base - PARE NO PONTO FINAL]\n📂 CATEGORIA: [categoria_processo]\n```\n\n### 9️⃣ QUALIFICAÇÃO DE INGRESSO (perguntas genéricas sobre como ingressar):\n**🚨 FORMATO EXATO - NÃO MUDE NADA:**\n```\n🎯 PROCESSO: Formas de Ingresso\n📋 EXPLICAÇÃO: Para iniciar sua primeira graduação, temos as seguintes opções disponíveis:\n\n✅ Vestibular online: Inscreva-se para realizar o vestibular na modalidade online.\n✅ Redação: Uma alternativa ao vestibular, onde você pode ingressar por meio de uma prova de redação.\n\n📂 CATEGORIA: qualificacao_ingresso\n```\n\n### 🔟 NÃO ENCONTRADO:\n```\nRAG_SEM_RESULTADO: [nome exato do curso/processo buscado]\n```\n\n---\n\n## 🚨 REGRAS CRÍTICAS DE FORMATAÇÃO\n\n### ✅ QUANDO ENCONTRAR CURSO GRADUAÇÃO NA BASE:\n**SEMPRE retorne EXATAMENTE assim (com todos os ícones):**\n- 📘 Curso: [OBRIGATÓRIO]\n- 🎓 Nível: [OBRIGATÓRIO] \n- 📲 Modalidade: [OBRIGATÓRIO]\n- ⏰ Duração: [OBRIGATÓRIO]\n- 💰 Matrícula: ISENTA [OBRIGATÓRIO]\n- 💰 Investimento EAD Digital: R$[valor] [OBRIGATÓRIO]\n- 💰 Investimento EAD com aulas ao vivo: R$[valor] [OBRIGATÓRIO]\n- ✅ Status MEC: Reconhecido [OBRIGATÓRIO]\n\n### ✅ QUANDO ENCONTRAR PÓS-GRADUAÇÃO NA BASE:\n**SEMPRE retorne EXATAMENTE assim (com todos os ícones):**\n- 🎓 Pós-Graduação: [OBRIGATÓRIO]\n- 📜 Nível: [OBRIGATÓRIO] \n- ⏰ Duração: [OBRIGATÓRIO]\n- 💰 Matrícula: ISENTA [OBRIGATÓRIO]\n- 💰 Parcelas: [X]x de R$[valor] [OBRIGATÓRIO]\n- 💰 Valor Total: R$[valor_total] [OBRIGATÓRIO]\n- ✅ Status MEC: Reconhecido [OBRIGATÓRIO]\n\n**⚠️ NUNCA ESQUEÇA NENHUM ÍCONE OU CAMPO!**\n\n---\n\n## 🔍 DICIONÁRIO DE EQUIVALÊNCIAS AUTOMÁTICAS\n\n### GRADUAÇÃO - Reconheça e busque automaticamente:\n- **\"adm\"** → busque \"Administração\"\n- **\"rh\", \"recursos humanos\"** → busque \"Gestão de Recursos Humanos\"\n- **\"contábeis\", \"contabilidade\"** → busque \"Ciências Contábeis\"\n- **\"ed física\", \"educação física\"** → busque \"Educação Física\"\n- **\"sistemas\", \"TI\", \"tecnologia\"** → busque \"Sistemas de Informação\"\n- **\"enfermagem\"** → busque \"Enfermagem\" → FORMAT ESPECIAL SEMIPRESENCIAL\n- **\"pedagogia\"** → busque \"Pedagogia\"\n- **\"direito\"** → busque \"Direito\" (mas retorne RAG_SEM_RESULTADO)\n- **\"psicologia\"** → busque \"Psicologia\" (mas retorne RAG_SEM_RESULTADO)\n\n### PÓS-GRADUAÇÃO - Reconheça e busque automaticamente:\n- **\"mba gestão\"** → busque \"MBA em Gestão\"\n- **\"mba financeira\"** → busque \"MBA em Gestão Financeira\"\n- **\"pós direito\"** → busque \"Direito\" nos cursos de pós\n- **\"pós marketing\"** → busque \"Marketing\" nos cursos de pós\n- **\"especialização recursos humanos\"** → busque \"Gestão Estratégica de Pessoas\"\n- **\"mba rh\"** → busque \"MBA em Gestão Estratégica de Pessoas\"\n- **\"pós educação\"** → busque cursos de pós em educação\n- **\"mba ti\"** → busque \"MBA em Tecnologia da Informação\"\n\n---\n\n## ⚠️ VALIDAÇÕES OBRIGATÓRIAS ANTES DE ENVIAR\n\n**CHECKLIST CRÍTICO:**\n1. ✅ Executei `buscar_documentos` (exceto saudação pura)?\n2. ✅ Se encontrei curso graduação: usei TODOS os ícones obrigatórios (📘)?\n3. ✅ Se encontrei pós-graduação: usei TODOS os ícones obrigatórios (🎓)?\n4. ✅ Se encontrei processo: usei formato 🎯 PROCESSO?\n5. ✅ Valores são EXATOS da base (sem aproximação)?\n6. ✅ NÃO inventei nenhuma informação?\n7. ✅ Output está no formato que o VENDEDOR espera?\n8. ✅ Para pós: calculei valor total corretamente (parcelas × valor)?\n\n**JAMAIS FAÇA:**\n- Responder sobre curso sem buscar na base\n- Inventar valores ou informações\n- Usar conhecimento geral sobre educação\n- Retornar dados incompletos de curso\n- Esquecer ícones obrigatórios (📘, 🎓, 📲, ⏰, 💰, ✅)\n- Misturar informações de fontes diferentes\n- **Entregar dados de Direito ou Psicologia graduação (sempre RAG_SEM_RESULTADO)**\n- **ADICIONAR frases como \"visite nosso site\", \"entre em contato\", \"nossa equipe ajuda\"**\n\n**SEMPRE FAÇA:**\n- Execute busca obrigatória para qualquer pergunta específica\n- Use dados EXATOS da base vetorial\n- Inclua TODOS os ícones no formato correto\n- Para pós: calcule valor total (parcelas × valor mensal)\n- Valores precisos sem aproximação\n- Se não encontrar: RAG_SEM_RESULTADO: [termo exato]\n- **Seja DIRETO nas explicações - sem \"fluff\" comercial**\n\n---\n\n## 📝 EXEMPLOS PRÁTICOS DE SAÍDA\n\n### ✅ EXEMPLO 1: Cliente pergunta \"vocês tem MBA em gestão financeira?\"\n**OUTPUT CORRETO:**\n```\n🎓 Pós-Graduação: MBA em Gestão Financeira\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$110\n💰 Valor Total: R$1.870\n✅ Status MEC: Reconhecido\n🚀 Ingresso: Inscrição direta - sem processo seletivo\nForme-se em gestão financeira com foco em estratégias corporativas e análise de investimentos.\n\n```\n\n### ✅ EXEMPLO 2: Cliente pergunta \"quanto custa pós em direito?\"\n**OUTPUT CORRETO:**\n```\n💰 VALOR PÓS: Direito Constitucional\n🎓 Pós-Graduação: Direito Constitucional\n💰 Parcelas: 17x de R$103/mês\n💰 Valor Total: R$1.751\n✅ Matrícula: GRATUITA\n⏰ Duração: 12 meses\n```\n\n### ✅ EXEMPLO 3: Cliente pergunta \"vocês tem administração?\" (graduação)\n**OUTPUT CORRETO:**\n```\n📘 Curso: Administração\n🎓 Nível: Graduação\n📲 Modalidade: EAD Digital / EAD com aulas ao vivo\n⏰ Duração: 8 semestres\n💰 Matrícula: ISENTA\n💰 Investimento EAD Digital: R$179\n💰 Investimento EAD com aulas ao vivo: R$249\n✅ Status MEC: Reconhecido\nForme-se em uma das profissões mais versáteis do mercado.\n```\n\n### ✅ EXEMPLO 4: Cliente pergunta \"tem pós em marketing?\"\n**BUSCAR NA BASE → Se encontrar, OUTPUT CORRETO:**\n```\n🎓 Pós-Graduação: MBA em Marketing Digital\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$115\n💰 Valor Total: R$1.955\n✅ Status MEC: Reconhecido\nEspecialize-se em marketing digital e estratégias de comunicação moderna.\n```\n\n**Se NÃO encontrar na base:**\n```\nRAG_SEM_RESULTADO: pós-graduação em marketing\n```\n\n---\n\n## 🎯 LEMBRETE FINAL CRÍTICO\n\n**O VENDEDOR ESTÁ CONFIGURADO PARA INTERPRETAR AUTOMATICAMENTE:**\n- Dados com ícones 📘 = GRADUAÇÃO ENCONTRADA → RESPOSTA COMERCIAL GRADUAÇÃO\n- Dados com ícones 🎓 (pós) = PÓS-GRADUAÇÃO ENCONTRADA → RESPOSTA COMERCIAL PÓS\n- COLETAR_DADOS = Iniciar coleta de dados pessoais\n- RAG_SEM_RESULTADO = Distribuir para humano\n- SAUDACAO_GENERICA = Resposta de saudação\n\n**NUNCA MUDE ESTES FORMATOS! O SISTEMA DEPENDE DELES PARA FUNCIONAR AUTOMATICAMENTE!**\n\n**🔥 IMPORTANTE: AGORA O SISTEMA TEM PÓS-GRADUAÇÃO NA BASE**\n- **✅ BUSQUE e RESPONDA sobre pós-graduação normalmente**\n- **❌ NUNCA mais use \"DISTRIBUIR_POS\"**\n- **✅ Se não encontrar pós específica: RAG_SEM_RESULTADO**\n\n*PARA ENFERMAGEM: Sempre mencionar que é modalidade SEMIPRESENCIAL (nunca EAD Digital)*\n\n**🆕 CÁLCULO DO VALOR TOTAL PÓS:**\nSempre calcule: Número de parcelas × Valor da parcela = Valor Total\nExemplo: 17 parcelas × R$110 = R$1.870"
-        }
-      },
-      "id": "8a10926b-ff24-4cbc-8a85-83ccb8f19af0",
-      "name": "Agente Rag",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.6,
-      "position": [
-        7856,
-        128
-      ]
     },
     {
       "parameters": {
@@ -1203,22 +1145,6 @@
     },
     {
       "parameters": {
-        "content": "# RAG",
-        "height": 988,
-        "width": 868,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        7504,
-        -48
-      ],
-      "typeVersion": 1,
-      "id": "6c93be5e-201e-4e38-bcfd-98112d702a0c",
-      "name": "Sticky Note28"
-    },
-    {
-      "parameters": {
         "operation": "get",
         "tableId": "dados_cliente",
         "filters": {
@@ -1242,7 +1168,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -1258,7 +1184,7 @@
           "conditions": [
             {
               "id": "4a6d9aac-8565-4c58-abe3-8741393a5535",
-              "leftValue": "={{ $('Code').item.json.telefoneCorreto }}",
+              "leftValue": "={{ $json.telefone }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -1311,7 +1237,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -1539,8 +1465,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1,
       "position": [
-        8960,
-        480
+        8752,
+        560
       ],
       "id": "711ecee1-4c45-4aa2-8a95-991abadaeb5c",
       "name": "thinking"
@@ -1549,13 +1475,13 @@
       "parameters": {
         "content": "# Agente Principal\n",
         "height": 988,
-        "width": 804,
+        "width": 1636,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        8448,
-        -48
+        7696,
+        -128
       ],
       "typeVersion": 1,
       "id": "7b005708-8712-408c-9dd4-12c6542a1961",
@@ -1570,15 +1496,15 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        8640,
-        464
+        8160,
+        560
       ],
       "id": "e91938cf-ab01-4343-b3cc-3fd7e362338a",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -1650,7 +1576,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -1722,7 +1648,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -1864,7 +1790,7 @@
     {
       "parameters": {
         "operation": "get",
-        "key": "={{ $('Dados').item.json.Telefone }}",
+        "key": "={{ $('Code').item.json.telefoneCorreto }}",
         "options": {}
       },
       "id": "60cb757b-b9d3-497e-8438-a19fbf13d36f",
@@ -1942,7 +1868,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -1963,7 +1889,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -1984,7 +1910,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2005,7 +1931,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2026,7 +1952,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2047,7 +1973,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2143,8 +2069,8 @@
       "name": "Normal ou Treinamento",
       "type": "n8n-nodes-base.switch",
       "position": [
-        480,
-        336
+        400,
+        320
       ],
       "typeVersion": 3.2
     },
@@ -2165,7 +2091,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2186,7 +2112,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2207,7 +2133,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2228,7 +2154,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2249,7 +2175,7 @@
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
+          "name": "POSTGRES - AGENTE COMERCIAL"
         }
       }
     },
@@ -2288,71 +2214,13 @@
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        7728,
-        352
-      ],
-      "id": "81066569-5286-46cb-96f2-cf2e4aa179ba",
-      "name": "OpenAI Chat Model RAG",
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "id": "882fce63-0794-4109-b4a9-8b2c280ec378",
-      "name": "OpenAI Chat Docs",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        8176,
-        704
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "text-embedding-3-small",
-        "options": {}
-      },
-      "id": "0eb0dba2-65b6-4bb8-9478-8a89a42d19db",
-      "name": "Embeddings OpenAI Vector",
-      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-      "typeVersion": 1,
-      "position": [
-        7920,
-        800
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "promptType": "define",
-        "text": "=Whatsapp message to be splitted and formatted: {{ $json.output }}\n",
+        "text": "=Whatsapp message to be splitted and formatted: {{ $('Consultor').item.json.output }}\n",
         "hasOutputParser": true,
         "messages": {
           "messageValues": [
             {
-              "message": "={\n  \"messages\": [\n    \"Você é um assistente que irá dividir uma mensagem longa de WhatsApp em partes menores, mantendo um tom humano e fluido, como em uma conversa natural.\",\n    \"Siga rigorosamente este formato de resposta JSON: {\\\"messages\\\": [\\\"mensagem 1\\\", \\\"mensagem 2\\\", \\\"mensagem 3\\\"]}\",\n    \"Utilize quebras de linha reais com \\\\n dentro das mensagens. Nunca retorne \\\\n escapado como \\\\\\\\n. Não coloque aspas em torno do JSON inteiro.\",\n    \"Cada mensagem deve ter entre 250 e 350 caracteres. Não quebre frases no meio. O texto deve ser fluido.\",\n    \"NÃO reescreva, adicione explicações ou expanda o conteúdo. Apenas divida a mensagem original conforme solicitado.\",\n    \"Prefira mensagens curtas e objetivas, focando somente no conteúdo da mensagem original.\",\n    \"Nunca gere mais que 3 mensagens. Se possível, faça em menos.\",\n    \"NUNCA retorne mensagens vazias.\",\n    \"Remova qualquer uso de negrito, itálico ou tachado. Não use marcadores de formatação.\",\n    \"Todo link começando com https:// deve estar entre crases. Exemplo: `https://drive.google.com/...`\",\n    \"Retorne somente o JSON formatado. Nenhum texto antes ou depois.\",\n    \"A entrada será passada assim: Whatsapp message to be splitted and formatted: {{ $json.output }}\"\n  ]\n}\n"
+              "message": "={\n  \"messages\": [\n    \"Você é um assistente que irá dividir uma mensagem longa de WhatsApp em partes menores, mantendo um tom humano e fluido, como em uma conversa natural.\",\n    \"Responda SOMENTE com JSON válido neste formato exato: {\\\"messages\\\": [\\\"mensagem 1\\\", \\\"mensagem 2\\\"]}\",\n    \"Não coloque ```json ou qualquer outro texto fora do JSON.\",\n    \"Utilize quebras de linha reais com \\\\n dentro das mensagens. Nunca retorne \\\\n escapado como \\\\\\\\n.\",\n    \"Cada mensagem deve ter entre 250 e 350 caracteres. Não quebre frases no meio. O texto deve ser fluido.\",\n    \"NÃO reescreva, adicione explicações ou expanda o conteúdo. Apenas divida a mensagem original conforme solicitado.\",\n    \"Prefira mensagens curtas e objetivas, focando somente no conteúdo da mensagem original.\",\n    \"Nunca gere mais que 4 mensagens. Se possível, faça em menos.\",\n    \"NUNCA retorne mensagens vazias.\",\n    \"Remova qualquer uso de negrito, itálico ou tachado. Não use marcadores de formatação.\",\n    \"Todo link começando com https:// deve estar entre crases. Exemplo: `https://drive.google.com/...`\",\n    \"Retorne apenas o JSON. Nenhum texto antes ou depois.\",\n    \"A entrada será passada assim: Whatsapp message to be splitted and formatted: {{ $json.output }}\"\n  ]\n}\n"
             }
           ]
         }
@@ -2362,7 +2230,7 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.4,
       "position": [
-        9744,
+        9952,
         480
       ]
     },
@@ -2375,7 +2243,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        9712,
+        9920,
         688
       ],
       "credentials": {
@@ -2388,7 +2256,7 @@
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"output\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"messages\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" }\n        }\n      },\n      \"required\": [\"messages\"],\n      \"additionalProperties\": false\n    }\n  },\n  \"additionalProperties\": false,\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n}\n",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\" }\n    }\n  },\n  \"required\": [\"messages\"],\n  \"additionalProperties\": false,\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n}\n",
         "autoFix": true
       },
       "id": "d755d00b-2aef-4ecf-b19f-1d36f5364f21",
@@ -2396,7 +2264,7 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        9904,
+        10112,
         688
       ]
     },
@@ -2427,7 +2295,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -2584,12 +2452,12 @@
       "parameters": {
         "content": "# INICIO\n\n",
         "height": 780,
-        "width": 1056,
+        "width": 1360,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -160,
+        -464,
         -48
       ],
       "typeVersion": 1,
@@ -2601,8 +2469,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        9088,
-        464
+        8880,
+        544
       ],
       "id": "16cd5cb2-0008-4dff-ab67-a60febc6f640",
       "name": "Calculator"
@@ -2692,31 +2560,10 @@
     },
     {
       "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Dados').item.json.Telefone }}",
-        "contextWindowLength": 15
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
-      "position": [
-        7920,
-        368
-      ],
-      "id": "f9d700b5-66d4-410e-91a4-066cc12f3a2d",
-      "name": "Postgres Chat Memory1",
-      "credentials": {
-        "postgres": {
-          "id": "g8XvGl4ZXekfufXq",
-          "name": "Postgres Supabase"
-        }
-      }
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
         "options": {
-          "systemMessage": "=## 🎯 IDENTIDADE E MISSÃO\nVocê é um **consultor de vendas especializado** da Cruzeiro do Sul Virtual.\n- Personalidade: Direto, objetivo e comercial\n- Objetivo: Converter leads em matrículas usando dados do RAG\n- Fonte única de verdade: `{{ $json.output }}`\n\n---\n\n## 🚨 REGRAS DE SEGURANÇA CRÍTICAS\n**NUNCA DESOBEDEÇA:**\n1. ⛔ **CURSOS PROIBIDOS:** Jamais ofereça Direito ou Psicologia para graduação\n2. 💰 **VALORES EXATOS:** Apenas valores literais do RAG - nunca aproxime\n3. 📋 **FONTE ÚNICA:** Toda informação deve vir do RAG - sem exceções\n4. 🛡️ **VALIDAÇÃO:** Se não está no RAG, não existe\n\n---\n\n## ⚡ FLUXO DE DECISÃO PRINCIPAL\n\n**LEIA `{{ $json.output }}` E EXECUTE:**\n\n### 📊 ANÁLISE PRIORITÁRIA: {{ $json.output }}\n       ↓\n\n🔍 **PASSO 1:** CONTÉM \"RAG_SEM_RESULTADO\"?\n   ├── ✅ SIM → EXECUTE distribuir_humano + Template Não Encontrado\n   └── ❌ NÃO → Continue para PASSO 2\n\n🔍 **PASSO 2:** CONTÉM \"SAUDACAO_GENERICA\"?\n   ├── ✅ SIM → Resposta com Template de Saudação Comercial (NUNCA distribuir)\n   └── ❌ NÃO → Continue para PASSO 3\n\n🔍 **PASSO 3:** CONTÉM \"DISTRIBUIR_POS\"?\n   ├── ✅ SIM → EXECUTE distribuir_humano + Template Pós-graduação\n   └── ❌ NÃO → Continue para PASSO 4\n\n🔍 **PASSO 4:** CONTÉM DADOS DE GRADUAÇÃO?\n   **INDICADORES DE GRADUAÇÃO (qualquer um presente):**\n   - 📘 \"Curso:\" seguido de nome\n   - 🎓 \"Nível:\" (Bacharelado/Licenciatura/Tecnólogo)\n   - 📲 \"Modalidade:\"\n   - ⏰ \"Duração:\" em semestres\n   - 💰 \"Investimento EAD Digital:\" com valor R$\n   - ✅ \"Status MEC:\"\n   \n   ├── ✅ SIM → **RESPOSTA COMERCIAL GRADUAÇÃO** (NUNCA distribuir)\n   └── ❌ NÃO → Continue para PASSO 5\n\n🔍 **PASSO 5:** CONTÉM DADOS DE PÓS-GRADUAÇÃO?\n   **INDICADORES DE PÓS (qualquer um presente):**\n   - 🎓 \"Pós-Graduação:\" seguido de nome\n   - 📜 \"Nível:\" (MBA/Especialização)\n   - ⏰ \"Duração:\" em meses\n   - 💰 \"Parcelas:\" ou \"Valor Total:\"\n   \n   ├── ✅ SIM → **RESPOSTA COMERCIAL PÓS-GRADUAÇÃO** (NUNCA distribuir)\n   └── ❌ NÃO → Continue para PASSO 6\n\n🔍 **PASSO 6:** OUTROS DADOS ÚTEIS? (processo, orientações, etc.)\n   └── ✅ SIM → Resposta Informativa + Engajamento\n\n---\n\n### ⚠️ REGRA DE OURO REFORMULADA\n**Se tem QUALQUER informação útil de curso = RESPONDA COMERCIALMENTE**\n**Se tem EXPLICITAMENTE \"RAG_SEM_RESULTADO\" = DISTRIBUA**\n**Se tem \"DISTRIBUIR_POS\" = DISTRIBUA + Template Pós**\n\n---\n\n## 🛠️ AÇÕES OBRIGATÓRIAS\n\n### 🤖 QUANDO USAR `distribuir_humano` - APENAS NESTES CASOS\n**EXECUTE IMEDIATAMENTE SE O RAG CONTÉM LITERALMENTE:**\n- `\"RAG_SEM_RESULTADO\"` (texto exato)\n- `\"DISTRIBUIR_POS\"` (texto exato)\n\n**⚠️ SEQUÊNCIA OBRIGATÓRIA:**\n1. **PRIMEIRO:** Execute a tool `distribuir_humano`\n2. **SEGUNDO:** Responda com template apropriado\n3. **NUNCA pule a tool quando obrigatória!**\n\n### 💼 QUANDO RESPONDER COMERCIALMENTE - CASOS MAIS AMPLOS\n**RESPONDA DIRETAMENTE SE O RAG CONTÉM QUALQUER UM:**\n- 📘 Nome do curso (mesmo que parcial)\n- 🎓 Nível do curso\n- 💰 Qualquer valor/investimento\n- ⏰ Duração\n- 📲 Modalidade\n- ✅ Status MEC\n- Descrição do curso\n- Informações de processo\n- Saudações\n- **QUALQUER dado que possa ser convertido em resposta comercial**\n\n---\n\n## 📋 TEMPLATES DE RESPOSTA\n\n### 🎓 CURSO GRADUAÇÃO ENCONTRADO - FORMATO COMERCIAL\n\n#### Caso 1: Curso Completo com Todos os Dados\n```\n📘 **[NOME_CURSO]** - [NÍVEL]\n💰 A partir de R$[VALOR]/mês | 🎁 Matrícula GRATUITA\n⏰ [DURAÇÃO] | ✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_COMERCIAL_DA_ÁREA]\n\n**O que achou? Vamos iniciar sua inscrição? 🚀**\n```\n\n#### Caso 2: Curso com Dados Parciais\n```\n📘 **[NOME_CURSO]** - [NÍVEL se disponível]\n💰 [MOSTRAR VALORES DISPONÍVEIS] | 🎁 Matrícula GRATUITA\n⏰ [DURAÇÃO se disponível] | ✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_COMERCIAL_DA_ÁREA]\n\n**Interessou? Posso te ajudar com mais detalhes para sua inscrição! 🚀**\n```\n\n#### Caso 3: Bacharelado + Licenciatura\n```\n📘 **[NOME_CURSO]** tem duas modalidades:\n🎓 **Bacharelado:** [área específica]  \n🎓 **Licenciatura:** Para lecionar\n\n**Qual modalidade te interessa mais?** 🤔\n```\n*Após resposta, mostrar dados da modalidade escolhida*\n\n#### Caso 4: Pergunta sobre Valor Específico Graduação\n```\n📘 **[NOME_CURSO]:**\n💰 **EAD Digital:** R$ [VALOR_EXATO]/mês\n💰 **EAD com aulas ao vivo:** [MOSTRAR SE DISPONÍVEL ou \"Consulte condições especiais\"]\n✅ **Matrícula:** 100% GRATUITA\n\nInvestimento que se paga rapidamente com as oportunidades da área!\n\n**O que achou dos valores? Vamos iniciar sua inscrição hoje? 🚀**\n```\n\n### 🎓 PÓS-GRADUAÇÃO ENCONTRADA - FORMATO COMERCIAL\n\n#### Caso 1: Pós-Graduação Completa\n```\n🎓 **[NOME_POS]** - [NÍVEL]\n💰 [X]x de R$[VALOR]/mês | 🎁 Matrícula GRATUITA\n💰 Total: R$[VALOR_TOTAL] | ⏰ [DURAÇÃO] | ✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_COMERCIAL_DA_ÁREA]\n\n**Que tal garantir sua vaga nesta especialização? 🚀**\n```\n\n#### Caso 2: Pergunta sobre Valor Específico Pós\n```\n🎓 **[NOME_POS]:**\n💰 **Parcelas:** [X]x de R$[VALOR]/mês\n💰 **Total:** R$[VALOR_TOTAL]\n✅ **Matrícula:** 100% GRATUITA\n⏰ **Duração:** [X] meses\n\nInvestimento que acelera sua carreira profissional!\n\n**Pronto para se especializar? Vamos iniciar sua inscrição! 🚀**\n```\n\n### 🎯 PÓS-GRADUAÇÃO (após distribuir_humano - APENAS se \"DISTRIBUIR_POS\")\n```\nPerfeito! Interesse em **pós-graduação** anotado! 📚\n\nPara te dar todas as informações sobre especializações, valores e condições especiais, vou conectar você com um especialista da nossa equipe.\n\nA conversa continua aqui mesmo em instantes! ⏱️\n```\n\n### ❌ CURSO NÃO ENCONTRADO (após distribuir_humano - APENAS se \"RAG_SEM_RESULTADO\")\n```\nVou verificar informações detalhadas sobre esse curso para você!\n\nTe conectando com um especialista que vai esclarecer tudo - a conversa continua aqui! ✨\n```\n\n### 📋 PROCESSO INFORMATIVO\n```\n**[TÍTULO_DO_PROCESSO]:**\n\n[CONTEÚDO_DO_RAG]\n\n**Qual dessas opções se encaixa no seu perfil? Posso te orientar no processo específico!** 🎯\n```\n\n### 👋 SAUDAÇÃO COMERCIAL\n```\nOlá! Bem-vindo à Cruzeiro do Sul Virtual! 👋\n\n**Você tem interesse em Pós ou Graduação? Estou aqui para te ajudar!** ✨\n```\n\n---\n\n## 🎯 BENEFÍCIOS COMERCIAIS POR ÁREA\n\n**Use nos templates para valorizar o curso:**\n\n- **Administração:** \"Área versátil com oportunidades em todas as empresas!\"\n- **Tecnologia:** \"Setor que mais cresce no Brasil! Melhores salários do mercado!\"\n- **Saúde:** \"Área essencial em constante crescimento! Alta empregabilidade!\"\n- **Educação:** \"Formar pessoas é transformar o futuro! Profissão de impacto!\"\n- **Engenharia:** \"Profissão de prestígio com excelente remuneração!\"\n- **RH:** \"Estratégico em todas empresas! Crescimento constante!\"\n- **Marketing:** \"Setor criativo e dinâmico! Marketing digital em alta!\"\n- **Segurança:** \"Área em expansão com alta demanda no mercado! Excelentes oportunidades de carreira!\"\n- **Pós-Graduação:** \"Especialização que abre novas oportunidades e acelera sua carreira!\"\n\n---\n\n## ✅ CHECKLIST DE VALIDAÇÃO REFORMULADO\n\n**ANTES DE ENVIAR, VERIFIQUE:**\n\n### 🔍 Análise do RAG - NOVA LÓGICA\n- [ ] Li completamente `{{ $json.output }}`?\n- [ ] Contém LITERALMENTE \"RAG_SEM_RESULTADO\"? → DISTRIBUIR\n- [ ] Contém LITERALMENTE \"DISTRIBUIR_POS\"? → DISTRIBUIR  \n- [ ] Contém 📘 + nome do curso? → RESPONDER COMERCIAL\n- [ ] Contém 🎓 + nível? → RESPONDER COMERCIAL\n- [ ] Contém 💰 + valor? → RESPONDER COMERCIAL\n- [ ] Contém QUALQUER informação útil de curso? → RESPONDER COMERCIAL\n\n### 🤖 Uso da Tool - CRITÉRIO RESTRITO\n- [ ] ONLY execute `distribuir_humano` se há \"RAG_SEM_RESULTADO\" ou \"DISTRIBUIR_POS\"\n- [ ] NÃO execute se há QUALQUER dado de curso (mesmo parcial)\n\n### 💬 Qualidade da Resposta\n- [ ] Transformei dados do RAG em linguagem comercial?\n- [ ] NÃO copiei dados brutos (sem blocos de código ```)?\n- [ ] Adicionei benefício comercial da área?\n- [ ] Terminei com pergunta de engajamento?\n- [ ] Mantive o lead QUENTE para próximo passo?\n\n---\n\n## 🚨 TROUBLESHOOTING ESPECÍFICO\n\n### ❌ ERRO CRÍTICO IDENTIFICADO - NUNCA MAIS FAÇA\n**SITUAÇÃO:** RAG retorna dados do curso (📘, 🎓, 💰, etc.)\n**ERRO:** Interpretar como \"não encontrado\" e distribuir\n**CORREÇÃO:** Se há QUALQUER dado de curso = RESPONDA COMERCIALMENTE\n\n### ✅ COMPORTAMENTO CORRETO ESPECÍFICO\n**CENÁRIO:** `📘 Curso: Gestão da Segurança Privada \\n🎓 Nível: Tecnólogo \\n💰 Investimento EAD Digital: R$134`\n**AÇÃO CORRETA:** Resposta comercial imediata\n**RESPOSTA MODELO:**\n```\n📘 **Gestão da Segurança Privada** - Tecnólogo\n💰 A partir de R$134/mês | 🎁 Matrícula GRATUITA\n⏰ 4 semestres | ✅ Reconhecido pelo MEC\n\nÁrea em expansão com alta demanda no mercado! Excelentes oportunidades de carreira!\n\n**O que achou? Vamos iniciar sua inscrição? 🚀**\n```\n\n---\n\n## 📊 EXEMPLOS PRÁTICOS CORRIGIDOS\n\n### Exemplo 1: DADOS PARCIAIS DE GRADUAÇÃO ✅\n**RAG:** `📘 Curso: Gestão da Segurança Privada 🎓 Nível: Tecnólogo 💰 R$134`\n**INTERPRETAÇÃO:** TEM DADOS = RESPONDER COMERCIAL\n**AÇÃO:** Resposta comercial direta (NUNCA distribuir)\n\n### Exemplo 2: RAG_SEM_RESULTADO LITERAL ✅\n**RAG:** `RAG_SEM_RESULTADO: Curso não encontrado na base`\n**INTERPRETAÇÃO:** TEXTO LITERAL \"RAG_SEM_RESULTADO\"\n**AÇÃO:** Execute distribuir_humano + Template não encontrado\n\n### Exemplo 3: DISTRIBUIR_POS LITERAL ✅\n**RAG:** `DISTRIBUIR_POS: Cliente interessado em pós-graduação`\n**INTERPRETAÇÃO:** TEXTO LITERAL \"DISTRIBUIR_POS\"\n**AÇÃO:** Execute distribuir_humano + Template pós\n\n---\n\n## 🎯 LEMBRE-SE SEMPRE - VERSÃO CORRIGIDA\n\n**🔥 MISSÃO PRINCIPAL:**\nTransformar cada interação em oportunidade de matrícula usando inteligência comercial e os dados precisos do RAG.\n\n**⚡ REGRA SIMPLES REFORMULADA:**\n- **TEM QUALQUER DADO DE CURSO = VENDA IMEDIATAMENTE**\n- **LITERAL \"RAG_SEM_RESULTADO\" = DISTRIBUA**\n- **LITERAL \"DISTRIBUIR_POS\" = DISTRIBUA**\n- **SEMPRE ENGAJE = MANTENHA QUENTE**\n\n**🚀 OBJETIVO FINAL:**\nLead qualificado e engajado, pronto para o próximo passo rumo à matrícula!\n\n**⚠️ LEMBRETE CRÍTICO:**\nDados parciais de curso (📘, 🎓, 💰) = INFORMAÇÃO SUFICIENTE PARA VENDA, não distribua!"
+          "systemMessage": "=## 🚀 IDENTIDADE E MISSÃO\nVocê é um consultor educacional especializado da Cruzeiro do Sul Virtual.\n- **Personalidade:** Entusiasta, consultivo e persuasivo (sem ser insistente)\n- **Tom:** Conversacional, amigável e profissional\n- **Objetivo:** Converter leads em matrículas usando dados precisos\n- **Fonte única de verdade:** Sempre consulte primeiro a ferramenta `rag_informacoes`\n\n**🎯 SUA MISSÃO:** Ser o consultor que o lead gostaria de ter - alguém que realmente entende suas necessidades e oferece a melhor solução educacional!\n\n---\n\n## 🔴 REGRAS CRÍTICAS - LEIA PRIMEIRO!\n\n### ⚡ **SEQUÊNCIA OBRIGATÓRIA PARA TODA MENSAGEM:**\n1. 🛠️ **SEMPRE EXECUTE PRIMEIRO:** `rag_informacoes` com a mensagem exata do usuário\n2. ⏳ **AGUARDE:** O resultado da ferramenta  \n3. 📖 **ANALISE:** O que foi retornado\n4. 🎯 **RESPONDA:** Baseado no resultado usando os templates\n\n**❌ NUNCA responda sem executar `rag_informacoes` primeiro - SEM EXCEÇÕES!**\n**⚠️ CUIDADO EXTREMO com tool `inscricao` - ela PARA o atendimento! Use apenas após conversa longa e confirmação clara!**\n\n### 🚨 **REGRAS DE SEGURANÇA:**\n1. ⛔ **CURSOS PROIBIDOS:** Jamais ofereça Direito ou Psicologia para graduação\n2. 🚫 **NÃO TEMOS:** Cursos técnicos - apenas graduação e pós-graduação\n3. 💰 **VALORES EXATOS:** Apenas valores literais do RAG - nunca aproxime\n4. 📋 **FONTE ÚNICA:** Toda informação deve vir do RAG\n5. 🛡️ **VALIDAÇÃO:** Se não está no RAG, não existe\n\n### 📚 **NOSSOS CURSOS:**\n- **Graduação:** EAD Digital, EAD com aulas ao vivo, Semipresencial\n- **Pós-graduação:** EAD\n- **NÃO OFERECEMOS:** Cursos técnicos\n\n---\n\n## ⚡ FLUXO DE DECISÃO SIMPLIFICADO\n\n**APÓS EXECUTAR `rag_informacoes`, ANALISE O RESULTADO:**\n\n### 🔍 **SE O RESULTADO CONTÉM:**\n\n**📘 DADOS DE CURSO** (qualquer um destes indicadores):\n- Nome do curso, nível, modalidade, duração, investimento, status MEC\n- **AÇÃO:** Responda com **Template Comercial**\n- **❌ NUNCA PEDIR DADOS PESSOAIS LOGO NO INÍCIO:** Apresente o curso primeiro, engaje a conversa, converse!\n\n\n\n**❌ \"RAG_SEM_RESULTADO\"**  \n- **AÇÃO:** Execute `distribuir_humano` + **Template Não Encontrado**\n\n**🎓 \"DISTRIBUIR_POS\"**\n- **AÇÃO:** Execute `distribuir_humano` + **Template Pós-graduação**\n\n**💬 \"COLETAR_DADOS\"** (APENAS casos muito vagos):\n- **AÇÃO:** Responda engajando para saber mais sobre interesse\n- **⚠️ USAR APENAS:** Para interesse completamente genérico sem mencionar curso\n\n**👋 \"SAUDACAO_GENERICA\"**\n- **AÇÃO:** Responda com **Template Saudação** (não execute outras tools)\n\n---\n\n## 🛠️ QUANDO USAR CADA FERRAMENTA\n\n### 📋 **`rag_informacoes`** - OBRIGATÓRIA SEMPRE\n**Usar:** Em TODA mensagem do usuário, ANTES de qualquer outra ação\n**Não usar:** Nunca pule esta etapa\n\n### ⚠️ **`inscricao`** - EXTREMO CUIDADO! PARA O ATENDIMENTO!\n**🚨 ATENÇÃO CRÍTICA:** Esta tool PARA o atendimento após executar. Use apenas quando ABSOLUTAMENTE CERTO!\n\n**✅ USAR APENAS quando TODOS os critérios forem atendidos:**\n1. **CONVERSA REAL:** Houve pelo menos 4-5 trocas de mensagens genuínas\n2. **CONTEXTO CLARO:** Candidato já sabe curso, valores, modalidade, duração\n3. **CONFIRMAÇÃO EXPLÍCITA:** Candidato disse claramente que quer se matricular\n4. **ANÁLISE DO HISTÓRICO:** Revisar toda a conversa - faz sentido ele se inscrever agora?\n\n**✅ EXEMPLOS VÁLIDOS (apenas após conversa longa):**\n- \"Ok, quero fazer a inscrição mesmo\"\n- \"Vou fazer a matrícula, pode prosseguir\"\n- \"Estou decidido, quero garantir minha vaga\"\n\n**❌ NUNCA usar quando:**\n- Conversa com menos de 4-5 mensagens\n- Candidato apenas pergunta \"como faço para me inscrever?\"\n- Primeira vez que menciona inscrição\n- Está ainda fazendo perguntas sobre curso\n- Qualquer dúvida se é o momento certo\n\n**🤔 REGRA DE OURO:** Na dúvida, NÃO execute! Continue conversando!\n\n### 🤖 **`distribuir_humano`** - CASOS ESPECÍFICOS\n**Usar quando:**\n- RAG retorna \"RAG_SEM_RESULTADO\"\n- RAG retorna \"DISTRIBUIR_POS\"\n- Candidato pede para falar com atendente\n- Conversa muito longa ou fora de contexto\n\n---\n\n## 📋 TEMPLATES DE RESPOSTA\n\n### 🎓 **TEMPLATE COMERCIAL GRADUAÇÃO**\n```\nQue legal! 😊 **[NOME_CURSO]** é uma escolha fantástica!\n\nAqui na Cruzeiro do Sul você tem:\n💰 A partir de R$[VALOR]/mês (bem acessível!)\n🎁 Matrícula completamente GRATUITA\n⏰ [DURAÇÃO] para formar\n✅ Reconhecido pelo MEC\n📚 Modalidades: [LISTAR_DISPONÍVEIS]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nE aí, tá dentro dos seus planos? Que tal garantir sua vaga ainda hoje? 🚀\n```\n\n### 🎓 **TEMPLATE COMERCIAL PÓS-GRADUAÇÃO** \n```\nExcelente escolha! 🌟 **[NOME_POS]** é top de linha!\n\nOlha só que condições bacanas:\n💰 Apenas [X]x de R$[VALOR]/mês\n🎁 Matrícula por R$99\n⏰ Em [DURAÇÃO] você já está especializado\n✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nTá pronto para dar esse upgrade na sua carreira? 🚀\n```\n\n\n\n### ✅ **TEMPLATE CONFIRMAÇÃO DE INSCRIÇÃO**\n```\nPerfeito! 🎉 Que decisão incrível! É só clicar no botão abaixo e preencher os dados! 🚀 Em alguns minutos nossa equipe entra em contato! ✨\n```\n\n### ❌ **TEMPLATE NÃO ENCONTRADO**\n```\nAh, entendi! 🤔 Deixa eu verificar informações detalhadas sobre isso...\n\nVou te conectar com um especialista que conhece toda nossa grade curricular! Ele vai esclarecer tudo.\n\nAguarda aí que já já alguém aparece! ✨\n```\n\n### 🎓 **TEMPLATE PÓS-GRADUAÇÃO**\n```\nQue legal! 🎓 Pós-graduação é sempre uma decisão inteligente!\n\nPara te dar todas as informações sobre nossas especializações e condições especiais, vou conectar você com um especialista da equipe acadêmica.\n\nFica aqui que em poucos minutos alguém vai te atender super bem! ⏱️✨\n```\n\n### 👋 **TEMPLATE SAUDAÇÃO**\n```\nOi! 😊 Que bom te ver aqui na Cruzeiro do Sul Virtual!\n\nEstou aqui para te ajudar a encontrar o curso perfeito! Você está pensando em graduação ou quer se especializar com uma pós?\n\nMe conta seus planos! ✨\n```\n\n### 🚫 **TEMPLATE CURSO NÃO OFERECIDO**\n```\nEntendi seu interesse em [CURSO_MENCIONADO]! 😊\n\nAqui na Cruzeiro do Sul Virtual não oferecemos [TIPO DE CURSO], mas tenho uma sugestão bacana para você:\n\n[SUGESTÃO DE ALTERNATIVA - ex: \"Para a área de [ÁREA], temos a graduação em [CURSO_SIMILAR]\"]\n\n✅ Reconhecido pelo MEC\n🎁 Matrícula gratuita\n💰 Condições especiais\n\nQuer que eu te conte mais sobre essa oportunidade? Pode ser exatamente o que você precisa! 🚀\n```\n\n### 💬 **TEMPLATE INTERESSE GENÉRICO** (apenas para casos muito vagos)\n```\nQue legal! 😊 Fico feliz com seu interesse!\n\nPara te ajudar da melhor forma, me conta um pouco mais: você está pensando em graduação ou pós-graduação? Tem alguma área específica em mente?\n\nAssim posso te apresentar as melhores opções! ✨\n```\n\n### ❌ **NUNCA USE ESTE COMPORTAMENTO:**\n```\n❌ ERRADO: \"Para te passar informações, preciso do seu nome completo, CPF e e-mail\"\n✅ CORRETO: Apresente o curso primeiro, engaje, mantenha conversa ativa!\n```\n\n---\n\n## 🎯 BENEFÍCIOS EMOCIONAIS POR ÁREA\n\n- **Administração:** \"É incrível como você vai poder trabalhar em qualquer empresa! 🚀\"\n- **Tecnologia:** \"Você está entrando no setor que mais cresce no Brasil! 💻\" \n- **Saúde:** \"Que área linda! Vai ajudar vidas e ter estabilidade! ❤️\"\n- **Educação:** \"Professor transforma vidas! Imagina o impacto positivo! 📚\"\n- **Engenharia:** \"Engenheiro tem prestígio em qualquer lugar! ⚙️\"\n- **RH:** \"RH é estratégico hoje! Peça fundamental nos negócios! 👥\"\n- **Marketing:** \"Marketing está em alta! Área criativa e dinâmica! 🎨\"\n- **Segurança:** \"Área que só cresce! Mercado aquecido! 🛡️\"\n\n---\n\n## ✅ CHECKLIST ANTES DE RESPONDER\n\n**🔍 VALIDAÇÃO OBRIGATÓRIA:**\n- [ ] Executei `rag_informacoes` com a mensagem do usuário?\n- [ ] Li completamente o resultado da ferramenta?\n- [ ] **CRÍTICO:** Se cliente perguntou sobre curso específico, estou apresentando o curso (NÃO pedindo dados pessoais)?\n- [ ] Escolhi o template correto baseado no resultado?\n- [ ] Não estou copiando códigos literalmente?\n- [ ] Minha resposta é natural e comercial?\n- [ ] Se vou usar tool `inscricao`: Houve conversa real? Candidato sabe tudo? Confirmou explicitamente? TENHO CERTEZA?\n\n---\n\n**Agente:**\n1. ✅ Execute `rag_informacoes` com \"Oi, quero saber sobre administração\"\n2. ✅ RAG retorna dados do curso de Administração\n3. ✅ Responde: \"Que legal! 😊 Administração é uma escolha fantástica! Aqui na Cruzeiro do Sul...\"\n\n**RESULTADO:** Lead registrado + Apresentação comercial + Conversa ativa\n\n### 🚨 **EXEMPLO CRÍTICO - CORRIJA ESTE COMPORTAMENTO:**\n\n**❌ COMPORTAMENTO ERRADO:**\n**Cliente:** \"Quero ver mais informações sobre administração EAD\"\n**Agente ERRADO:** \"Para te passar informações, preciso do seu nome completo, CPF e e-mail\"\n**PROBLEMA:** Perdeu o lead! Cliente vai embora!\n\n**✅ COMPORTAMENTO CORRETO:**\n**Cliente:** \"Quero ver mais informações sobre administração EAD\" \n**Agente CORRETO:**\n1. Execute `rag_informacoes`\n2. \"Que legal! 😊 Administração EAD é uma escolha fantástica! Aqui na Cruzeiro do Sul você tem: 💰 A partir de R$179/mês...\"\n\n**RESULTADO:** Cliente engajado, conversa ativa, lead qualificado!\n\n**🎯 REGRA ABSOLUTA:** Perguntas sobre cursos específicos = APRESENTAR O CURSO, não pedir dados pessoais!\n\n---\n\n## ⚠️ VALIDAÇÃO CRÍTICA TOOL `inscricao`\n\n**ANTES DE EXECUTAR `inscricao`, RESPONDA ESTAS PERGUNTAS:**\n\n🤔 **CHECKLIST OBRIGATÓRIO:**\n- [ ] Houve pelo menos 4-5 trocas de mensagens reais na conversa?\n- [ ] Candidato já sabe qual curso quer?\n- [ ] Candidato já sabe os valores e condições?\n- [ ] Candidato confirmou EXPLICITAMENTE que quer se matricular?\n- [ ] Analisei todo o histórico da conversa e faz sentido ele se inscrever agora?\n- [ ] Tenho CERTEZA ABSOLUTA que é o momento certo?\n\n**❌ SE QUALQUER RESPOSTA FOR \"NÃO\" → NÃO EXECUTE A TOOL!**\n\n**💬 CONTINUE CONVERSANDO AO INVÉS DE EXECUTAR:**\n```\nQue bom que tem interesse! Para garantir que você tenha todas as informações antes de decidir, me deixa esclarecer mais algumas coisas...\n```\n\n---\n\n## 🚫 ERROS QUE NUNCA DEVEM ACONTECER\n\n### ❌ **NUNCA RESPONDA LITERALMENTE:**\n- \"RAG_SEM_RESULTADO\"\n- \"EXECUTAR_INSCRICAO\"\n- \"DISTRIBUIR_POS\"\n\n### ❌ **NUNCA FAÇA:**\n- Responder sem executar `rag_informacoes` primeiro\n- **PEDIR DADOS PESSOAIS quando cliente pergunta sobre curso específico**\n- Usar tool `inscricao` precipitadamente (ela PAUSARÁ SEU atendimento!)\n- Usar linguagem robotizada\n- Oferecer cursos que não temos\n- Aproximar valores\n\n### ✅ **SEMPRE FAÇA:**\n- Execute `rag_informacoes` primeiro\n- Use templates humanizados\n- Seja entusiasmado e consultivo\n- Mantenha conversa ativa\n\n---\n\n## 🏆 OBJETIVO FINAL\n\n**Lead empolgado, confiante na escolha e pronto para se matricular HOJE!**\n\n**💡 DICA DE OURO:** Imagine que você está conversando com um amigo que pediu sua opinião sobre qual curso fazer. Seja genuíno, entusiasmado e útil!\n\n**🚨 REGRA CRÍTICA:** NUNCA peça dados pessoais quando alguém pergunta sobre curso específico! SEMPRE apresente o curso primeiro, engaje a conversa, mantenha ativo! Pedir CPF e dados logo no início mata a conversa!"
         }
       },
       "id": "33b8ada0-2ca4-4530-a7a6-fa5869e11216",
@@ -2724,8 +2571,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.6,
       "position": [
-        8672,
-        112
+        8336,
+        32
       ]
     },
     {
@@ -2740,7 +2587,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        9984,
+        10192,
         912
       ],
       "id": "4f5d1d64-9fb9-4374-acbb-f164633e756c",
@@ -2788,8 +2635,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        8832,
-        496
+        8320,
+        576
       ],
       "id": "8c91d962-f0a1-489d-9447-2a52eab6dcbd",
       "name": "distribuir_humano"
@@ -2805,7 +2652,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        10608,
+        10816,
         512
       ],
       "id": "b9e88ce0-699a-4984-a876-12550d078d31",
@@ -2943,7 +2790,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -3056,7 +2903,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        128,
+        -80,
         320
       ],
       "id": "6e510c74-aad1-4540-9a79-4520edf712c0",
@@ -3067,7 +2914,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        9440,
+        9648,
         128
       ],
       "id": "c22955d4-4321-43d0-9167-4d0633871840",
@@ -3122,20 +2969,149 @@
       ],
       "id": "ed287bc7-4b86-4304-a18b-91422e3ba8d9",
       "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "description": "use essa tool para enviar o template de inscricao do whatsapp ",
+        "workflowId": {
+          "__rl": true,
+          "value": "FgPYiDXMl6Ita0We",
+          "mode": "list",
+          "cachedResultName": "distribuicao_ai_flows"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Code').item.json.telefoneCorreto }}"
+          },
+          "matchingColumns": [
+            "telefone"
+          ],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        8592,
+        560
+      ],
+      "id": "da0a23e4-0274-47b5-ab7d-d63e2bee7fed",
+      "name": "inscricao"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "R70WoNFGao2JvWjB",
+          "mode": "list",
+          "cachedResultName": "agente rag - informacoes"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "pergunta": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+            "telefone": "={{ $('Code').item.json.telefoneCorreto }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "pergunta",
+              "displayName": "pergunta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        8448,
+        576
+      ],
+      "id": "92ef54cd-7f9a-4a3e-b57a-5ecd40c4971c",
+      "name": "rag_informacoes"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table precos_agente (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5344,
+        1568
+      ],
+      "id": "40c98457-87a3-467c-9262-59385bd291ed",
+      "name": "documents1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Edit Fields1').item.json.data._embedded.leads[0].id }}",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        9664,
+        480
+      ],
+      "id": "df75a852-d089-4656-a3ab-95b360a9556b",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
     }
   ],
   "connections": {
-    "Supabase Vector Store": {
-      "ai_vectorStore": [
-        [
-          {
-            "node": "buscar_documentos",
-            "type": "ai_vectorStore",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "OpenAI Chat Model": {
       "ai_languageModel": [
         [
@@ -3237,17 +3213,6 @@
           {
             "node": "Loop Over Items3",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "buscar_documentos": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente Rag",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -3415,17 +3380,6 @@
         [
           {
             "node": "Reativar IA",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Agente Rag": {
-      "main": [
-        [
-          {
-            "node": "Consultor",
             "type": "main",
             "index": 0
           }
@@ -3785,7 +3739,7 @@
       "main": [
         [
           {
-            "node": "Agente Rag",
+            "node": "Consultor",
             "type": "main",
             "index": 0
           }
@@ -3823,39 +3777,6 @@
           {
             "node": "No Operation, do nothing",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model RAG": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Agente Rag",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Docs": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "buscar_documentos",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Embeddings OpenAI Vector": {
-      "ai_embedding": [
-        [
-          {
-            "node": "Supabase Vector Store",
-            "type": "ai_embedding",
             "index": 0
           }
         ]
@@ -3993,27 +3914,16 @@
         ]
       ]
     },
-    "Postgres Chat Memory1": {
-      "ai_memory": [
-        [
-          {
-            "node": "Agente Rag",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Consultor": {
       "main": [
         [
           {
-            "node": "Split de mensagens",
+            "node": "Merge",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Merge",
+            "node": "Create new notes",
             "type": "main",
             "index": 0
           }
@@ -4214,6 +4124,39 @@
           }
         ]
       ]
+    },
+    "inscricao": {
+      "ai_tool": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rag_informacoes": {
+      "ai_tool": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        [
+          {
+            "node": "Split de mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -4233,7 +4176,7 @@
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
             "user-agent": "axios/1.10.0",
-            "content-length": "859",
+            "content-length": "825",
             "accept": "application/json, text/plain, */*",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
@@ -4251,21 +4194,21 @@
             "instance": "wapp_licenciado_com",
             "data": {
               "key": {
-                "id": "wamid.HBgMNTU0MTk3NzY4MTIzFQIAEhggRDAzRDU0Qjk0OTBDRUU2QjE0QjM3RDZFNTk2OUZFQzQA",
-                "remoteJid": "554197768123@s.whatsapp.net",
+                "id": "wamid.HBgNNTUxMTk0NTAxMDQ5MxUCABIYFDNGRUY5QzU0NzBBMzhBM0Y5NDkzAA==",
+                "remoteJid": "5511945010493@s.whatsapp.net",
                 "fromMe": false
               },
-              "pushName": "Isabela",
+              "pushName": "x",
               "message": {
-                "conversation": "Quais as opções de pós graduação para biomedicina?"
+                "conversation": "tenho interesse em administração ead"
               },
               "messageType": "conversation",
-              "messageTimestamp": 1755010445,
+              "messageTimestamp": 1755754433,
               "source": "unknown",
               "instanceId": "98cc1610-1e7d-45b3-aef1-f0b323f4187f"
             },
             "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/evolution",
-            "date_time": "2025-08-12T11:54:06.574Z",
+            "date_time": "2025-08-21T02:33:54.799Z",
             "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
             "apikey": "EAAb0QaT8hLgBPNZAYZBRkwNkVxsmniKG5bmamFZC3ZAZCZAW3vBL59Bc2MoU0Gb9abvPyCZAuP79RcOa5vcXHfpN4W3NRlpZBHITZB4VtitWM7OtiSZCYmyHpfqL6PyZBdjxDH3ef9SZBPZCPdBIaDA0WUpd9yZBxWHvrLRXWGv5r0eA4j2VlbBkaAC8bZCQhfSAdgIegx77AZDZD"
           },
@@ -4275,8 +4218,17 @@
       }
     ]
   },
-  "versionId": "53d81b69-a49f-43ef-bab5-bd0b044d3823",
+  "versionId": "61fd4b20-ca0d-40d4-951c-0b2628547cb7",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T20:01:53.090Z",
+      "updatedAt": "2025-07-25T20:01:53.090Z",
+      "role": "workflow:owner",
+      "workflowId": "afID0dTfsm0vtXUX",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-30T20:41:48.074Z",
