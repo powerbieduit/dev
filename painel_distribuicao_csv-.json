@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T19:56:45.653Z",
-  "updatedAt": "2025-07-25T22:45:57.000Z",
+  "updatedAt": "2025-08-21T20:16:07.000Z",
   "id": "Omx94aT4or4GKS3w",
   "name": "painel_distribuicao_csv",
   "active": true,
@@ -414,7 +414,16 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "52e5cbc8-3d8c-4ec4-8a1e-21d2aab89786",
+  "versionId": "5b05a64b-4998-4023-875f-1e869cd755e4",
   "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T19:56:45.655Z",
+      "updatedAt": "2025-07-25T19:56:45.655Z",
+      "role": "workflow:owner",
+      "workflowId": "Omx94aT4or4GKS3w",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
