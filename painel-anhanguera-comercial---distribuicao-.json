@@ -1,0 +1,314 @@
+{
+  "createdAt": "2025-08-20T19:20:30.489Z",
+  "updatedAt": "2025-08-21T19:28:18.000Z",
+  "id": "ciZalP1K1FtFrqVs",
+  "name": "painel anhanguera comercial - distribuicao",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH ult AS (\n  SELECT id_usuario, MAX(ultimo_lead) AS ultimo_lead\n  FROM public.distrib_anhanguera\n  GROUP BY id_usuario\n)\nSELECT\n  a.nome,\n  a.id_usuario AS id_lead,\n  UPPER(a.status) AS status,\n  GREATEST(1, LEAST(3, COALESCE(a.qnt_distribuir, 1))) AS quantidade_leads,\n  a.obs,                      -- 👈 aqui pega da tabela\n  u.ultimo_lead\nFROM public.anhanguera AS a\nLEFT JOIN ult AS u\n  ON u.id_usuario = a.id_usuario;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -96,
+        -48
+      ],
+      "id": "4537ddbe-ed9c-4b1b-8f96-4d9adf538b91",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "sTDl6Fd4x2B7Tlus",
+          "name": "bu-distribuicao"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        128,
+        -48
+      ],
+      "id": "ce2233d0-1b0a-4f05-b421-c446a74004b2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dados",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        -48
+      ],
+      "id": "64f867e6-f8ba-4f88-9b1e-cc34eb318543",
+      "name": "consultores",
+      "webhookId": "e03fdadc-11e9-479b-8e3e-5caeabb51f4a"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "edicao",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        -272
+      ],
+      "id": "fe0b2216-b260-4fe2-87c1-0337a24653a7",
+      "name": "Webhook",
+      "webhookId": "fe2d4eac-78a9-4897-be99-31f8ea58c718"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH payload AS (\n  SELECT *\n  FROM jsonb_to_recordset(\n    '{{ JSON.stringify($json.body?.registros || []) }}'::jsonb\n  ) AS t (\n    id_usuario      text,\n    nome            text,\n    status          text,\n    qnt_distribuir  int,\n    ultimo_lead     timestamptz,\n    obs             text\n  )\n)\nUPDATE public.anhanguera AS a\nSET\n  status = CASE\n             WHEN UPPER(p.status) IN ('ATIVO','INATIVO') THEN UPPER(p.status)\n             ELSE a.status\n           END,\n  qnt_distribuir = GREATEST(1, LEAST(3, COALESCE(p.qnt_distribuir, a.qnt_distribuir))),\n  obs          = COALESCE(p.obs, a.obs),\n  ultimo_lead  = COALESCE(p.ultimo_lead, a.ultimo_lead)\nFROM payload p\nWHERE a.id_usuario::text = p.id_usuario::text\nRETURNING a.id_usuario, a.nome, a.status, a.qnt_distribuir, a.obs, a.ultimo_lead;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -96,
+        -272
+      ],
+      "id": "9e6dc6fe-339e-4647-987e-5b07dbe69673",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "sTDl6Fd4x2B7Tlus",
+          "name": "bu-distribuicao"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        128,
+        -272
+      ],
+      "id": "83fbaa22-6d06-4158-b739-aed3e9f18a3d",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "connections": {
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consultores": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "979",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "source": "dashboard-anhanguera",
+            "action": "salvar",
+            "ts": "2025-08-21T19:22:22.476Z",
+            "registros": [
+              {
+                "id_usuario": "8395835",
+                "nome": "Gabriel",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": "2025-08-19T19:52:43.457Z",
+                "obs": "A"
+              },
+              {
+                "id_usuario": "8338379",
+                "nome": "Camila",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": "2025-08-19T21:11:46.654Z",
+                "obs": "B"
+              },
+              {
+                "id_usuario": "12681912",
+                "nome": "Vanda",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": null,
+                "obs": "C"
+              },
+              {
+                "id_usuario": "11440800",
+                "nome": "Gustavo",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": "2025-08-19T15:31:35.070Z",
+                "obs": "D"
+              },
+              {
+                "id_usuario": "11930360",
+                "nome": "Rodrigo",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": "2025-08-01T13:05:00.997Z",
+                "obs": "E"
+              },
+              {
+                "id_usuario": "13350072",
+                "nome": "Tatiane",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": "2025-08-01T02:38:54.720Z",
+                "obs": "F"
+              },
+              {
+                "id_usuario": "11990620",
+                "nome": "Camilo",
+                "status": "ATIVO",
+                "qnt_distribuir": 3,
+                "ultimo_lead": "2025-08-01T13:31:56.989Z",
+                "obs": "G"
+              }
+            ]
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/edicao",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "consultores": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "86",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "source": "dashboard-anhanguera",
+            "action": "atualizar",
+            "ts": "2025-08-21T19:25:48.701Z"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/dados",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "ce95615c-d499-401f-ae88-a6a33452eee2",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-08-20T19:20:30.500Z",
+      "updatedAt": "2025-08-20T19:20:30.500Z",
+      "role": "workflow:owner",
+      "workflowId": "ciZalP1K1FtFrqVs",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
