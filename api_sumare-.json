@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-01T18:08:25.175Z",
-  "updatedAt": "2025-08-12T15:17:23.000Z",
+  "updatedAt": "2025-08-18T21:30:34.000Z",
   "id": "Bytg5Eu5Z9nlt1Q7",
   "name": "api_sumare",
   "active": true,
@@ -32,8 +32,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        320,
-        176
+        544,
+        272
       ],
       "id": "30422096-8fba-493c-87db-f143e3cbac80",
       "name": "HTTP Request",
@@ -68,7 +68,7 @@
       "typeVersion": 4.6,
       "position": [
         96,
-        176
+        368
       ],
       "id": "41a5ea84-175c-40d3-b547-bb593b30993a",
       "name": "Get row(s) in sheet",
@@ -87,8 +87,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        544,
-        176
+        768,
+        272
       ],
       "id": "25956421-3194-483f-a6d5-fcd6c7e578b0",
       "name": "transforma em objt"
@@ -100,8 +100,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        768,
-        176
+        992,
+        272
       ],
       "id": "ba4eb515-db73-4cff-94e9-0bf396151edd",
       "name": "filtro ids maiores",
@@ -114,7 +114,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        992,
+        1440,
         176
       ],
       "id": "51f3e528-452c-43aa-ab70-acbce654ef1f",
@@ -125,8 +125,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1216,
-        -16
+        1664,
+        -96
       ],
       "id": "64a6038c-2237-4801-872b-8d12b48a98a5",
       "name": "No Operation, do nothing",
@@ -153,8 +153,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1440,
-        176
+        1888,
+        96
       ],
       "id": "54c83863-1332-4eb4-bf38-b5fbed8bd830",
       "name": "HTTP Request1",
@@ -245,8 +245,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2560,
-        -128
+        2736,
+        -144
       ],
       "id": "4beb52c7-4474-419a-8a91-8ce5e9a4268a",
       "name": "Switch"
@@ -308,7 +308,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3008,
+        3456,
         -304
       ],
       "id": "95d2c29d-e092-41ed-acc7-d7da7acff3cf",
@@ -358,8 +358,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1664,
-        176
+        2112,
+        96
       ],
       "id": "4cc5f803-77c3-403d-9dad-19180d759c4c",
       "name": "If"
@@ -449,7 +449,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2112,
+        2560,
         448
       ],
       "id": "a1721853-3e34-4992-9482-f4595c2ee5a0",
@@ -460,7 +460,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1888,
+        2336,
         464
       ],
       "id": "8997dc5e-c7a7-4473-86ed-0677c0eef78d",
@@ -483,8 +483,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2336,
-        -112
+        2560,
+        -128
       ],
       "id": "5a27e407-7582-44e7-8744-cc8808f2bf06",
       "name": "Edit Fields1"
@@ -536,6 +536,10 @@
                   {
                     "data": "{\"id\":662152,\"type\":\"text\"}",
                     "value": "={{   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] }}"
+                  },
+                  {
+                    "data": "{\"id\":693635,\"type\":\"select\"}",
+                    "value": "Recebida"
                   }
                 ]
               }
@@ -546,7 +550,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2784,
+        3232,
         -112
       ],
       "id": "ab0aedff-49f9-43db-904e-607d7d322b7a",
@@ -574,7 +578,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3008,
+        3456,
         -112
       ],
       "id": "83ab2772-2362-4f70-a583-7d7b8fb1c544",
@@ -633,6 +637,10 @@
                   {
                     "data": "{\"id\":662152,\"type\":\"text\"}",
                     "value": "={{   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] }}"
+                  },
+                  {
+                    "data": "{\"id\":693635,\"type\":\"select\"}",
+                    "value": "Recebida"
                   }
                 ]
               }
@@ -643,7 +651,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2784,
+        3232,
         80
       ],
       "id": "7b043244-adea-4e89-8760-317bca3e058c",
@@ -671,7 +679,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3008,
+        3456,
         80
       ],
       "id": "810cd83c-34ad-4cac-b017-53e4a1102d01",
@@ -740,8 +748,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        1216,
-        176
+        1664,
+        96
       ],
       "id": "6d71064f-c2ad-4fff-a067-be92c74b518f",
       "name": "Update row in sheet",
@@ -757,8 +765,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        4448,
-        272
+        3680,
+        96
       ],
       "id": "a93c5fdd-c701-40ea-8e92-fe2770d00e88",
       "name": "Wait",
@@ -787,8 +795,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2784,
-        272
+        2864,
+        304
       ],
       "id": "fe545920-99bf-48e6-942f-50e5f5b23e20",
       "name": "Create new contacts",
@@ -865,8 +873,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3008,
-        272
+        3104,
+        336
       ],
       "id": "2c4936b5-4d7a-462a-a688-02bd7f3c32f2",
       "name": "Create new leads",
@@ -900,8 +908,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2784,
-        464
+        2864,
+        480
       ],
       "id": "b83702fb-b3df-4c3e-9d2b-09ad14218223",
       "name": "Create new contacts1",
@@ -955,6 +963,10 @@
                   {
                     "data": "{\"id\":669742,\"type\":\"text\"}",
                     "value": "={{ $('filtro ids maiores').item.json.aluno || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":693635,\"type\":\"select\"}",
+                    "value": "Recebida"
                   }
                 ]
               },
@@ -978,8 +990,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3008,
-        464
+        3104,
+        480
       ],
       "id": "20264760-e2c4-4310-af15-5f01d075e1f5",
       "name": "Create new leads1",
@@ -1013,7 +1025,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2336,
+        2784,
         656
       ],
       "id": "27e01d6f-f490-4125-a027-f03df7272a35",
@@ -1091,7 +1103,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2560,
+        3008,
         656
       ],
       "id": "042f856f-6266-49f1-8998-012da4f5b8dc",
@@ -1140,8 +1152,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        3008,
-        656
+        3456,
+        560
       ],
       "id": "1b78c37d-9c1b-492b-ab4c-1a89b1e14feb",
       "name": "Execute Workflow",
@@ -1164,7 +1176,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2784,
+        3232,
         656
       ],
       "id": "8a520116-e168-4975-9497-64d1e1bd144d",
@@ -1184,10 +1196,100 @@
       "typeVersion": 1.2,
       "position": [
         -128,
-        176
+        368
       ],
       "id": "9ff8ebd6-15ed-465e-881b-36606a16f9cd",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5492a0c6-e9f2-4e00-8f8d-1034279bf2c4",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        368
+      ],
+      "id": "9e64323a-1732-46b0-82bf-a8ddff065dd3",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        544,
+        464
+      ],
+      "id": "0113d3a5-1526-46c7-900f-9ca1812b3ae6",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4bc56168-a29c-40e9-a4d3-58a862687239",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        272
+      ],
+      "id": "c0b758ae-0ab5-48e9-84dd-73d084661385",
+      "name": "If2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        368
+      ],
+      "id": "93f1142e-b9f8-4289-82fa-566843e08ec7",
+      "name": "No Operation, do nothing2"
     }
   ],
   "connections": {
@@ -1206,7 +1308,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -1228,7 +1330,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items",
+            "node": "If2",
             "type": "main",
             "index": 0
           }
@@ -1468,7 +1570,7 @@
       "main": [
         [
           {
-            "node": "Wait",
+            "node": "Execute Workflow",
             "type": "main",
             "index": 0
           }
@@ -1529,6 +1631,42 @@
           }
         ]
       ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1545,8 +1683,35 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "3ba2ef2b-c41e-4e01-a153-00a07507bf3a",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-08-18T13:18:31.473-03:00",
+          "Readable date": "August 18th 2025, 1:18:31 pm",
+          "Readable time": "1:18:31 pm",
+          "Day of week": "Monday",
+          "Year": "2025",
+          "Month": "August",
+          "Day of month": "18",
+          "Hour": "13",
+          "Minute": "18",
+          "Second": "31",
+          "Timezone": "America/Sao_Paulo (UTC-03:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "cd77104c-a361-4d87-b963-ca1c7b2c8f1d",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-01T18:08:25.179Z",
+      "updatedAt": "2025-08-01T18:08:25.179Z",
+      "role": "workflow:owner",
+      "workflowId": "Bytg5Eu5Z9nlt1Q7",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
