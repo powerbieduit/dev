@@ -1,0 +1,352 @@
+{
+  "createdAt": "2025-08-19T15:46:42.173Z",
+  "updatedAt": "2025-08-19T20:40:08.000Z",
+  "id": "rAHfokpq0wGiOghD",
+  "name": "distribuicao_com_siaa V2",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items do nó anterior (Supabase)\nconst rows = items;\n\n// ===== Config =====\nconst DEFAULT_TOP_N = 5;\nconst TOP_N = Number(items?.[0]?.json?.TOP_N) > 0 ? Number(items[0].json.TOP_N) : DEFAULT_TOP_N;\n\n// ===== Helpers =====\nconst normNome = (v) => (v ?? \"\").trim().toLowerCase();\nconst getKey = (j) => j.id_lead ?? normNome(j.nome ?? j.Nome); // chave do consultor\nconst getTs = (j) => {\n  const s = j.ultimo_lead ?? j[\"Ultimo Lead\"] ?? j.ultimoLead;\n  const t = Date.parse(s);\n  return isNaN(t) ? Number.NEGATIVE_INFINITY : t; // sem/ruim => mais antigo\n};\n\n// ===== Dedup por consultor, mantendo o MAIS ANTIGO ultimo_lead =====\nconst byConsultor = new Map();\n/*\n Estrutura: key -> { idx, item, ts }\n Mantém aquele com ts MENOR (mais antigo) para representar o consultor.\n*/\nfor (let i = 0; i < rows.length; i++) {\n  const r = rows[i];\n  const j = r.json;\n\n  const keyRaw = getKey(j);\n  const key = (keyRaw == null || keyRaw === \"\") ? `__sem_chave_${i}` : String(keyRaw);\n\n  const ts = getTs(j);\n\n  const cur = byConsultor.get(key);\n  if (!cur || ts < cur.ts) {\n    byConsultor.set(key, { idx: i, item: r, ts });\n  }\n}\n\nconst unicos = Array.from(byConsultor.values());\n\nif (unicos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// ===== Ordenar do mais antigo -> mais recente =====\nunicos.sort((a, b) => a.ts - b.ts);\n\n// ===== Selecionar pool e sortear =====\nconst take = Math.min(TOP_N, unicos.length);\nconst candidatos = unicos.slice(0, take);\n\n// Sorteio uniforme\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// ===== Retorno preservando o índice original para pairedItem =====\nreturn [\n  {\n    json: escolhido.item.json,\n    pairedItem: { item: escolhido.idx },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        16
+      ],
+      "id": "165c9705-d136-4b42-92d4-058bd6c2016a",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acessa o JSON de entrada da execução atual\nconst input = $json;\n\n// Extrai os leads da estrutura\nconst leads = input._embedded?.leads || [];\n\nconst formattedLeads = leads.map(lead => {\n  const fields = lead.custom_fields_values || [];\n\n  const getFieldValue = (fieldName) => {\n    const field = fields.find(f => f.field_name === fieldName);\n    if (!field || !field.values || field.values.length === 0) return \" \";\n    return field.values[0].value || \" \";\n  };\n\n  return {\n    id: lead.id || \" \",\n    nome: getFieldValue(\"Nome\"),\n    email: getFieldValue(\"E-mail\"),\n    formacao: getFieldValue(\"Formação\"),\n    origem: getFieldValue(\"Origem-new\"),\n    telefone_comercial: getFieldValue(\"Telefone Comercial\"),\n    horario: getFieldValue(\"Horario\"),\n    ultima_fase: getFieldValue(\"Última Fase\"),\n    motivo_perda: getFieldValue(\"Motivo da Perda\"),\n    cpf: getFieldValue(\"CPF\"),\n    rg: getFieldValue(\"RG\"),\n    curso: getFieldValue(\"Curso\"),\n    tags: (lead._embedded?.tags || []).map(tag => tag.name).join(\", \") || \" \"\n  };\n});\n\n// Retorna como saída para os próximos nós\nreturn formattedLeads.map(item => ({ json: item }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        16
+      ],
+      "id": "033ad9ed-a61c-42bc-b00b-1da7a294c203",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.randomDelayMinutes }}",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        16
+      ],
+      "id": "2846f09e-229c-42e8-a1ad-f35f2904ba8a",
+      "name": "Wait",
+      "webhookId": "98e534a1-f80b-4de3-9116-69cc7713cf13"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        528,
+        16
+      ],
+      "id": "861ae859-83e3-445f-93da-0be3d4632e1a",
+      "name": "Get list of leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Webhook').item.json.body['leads[add][0][id]'] }}",
+              "pipeline_id": 5481944,
+              "status_id": 0,
+              "responsible_user_id": "={{ $json.id_lead }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        16
+      ],
+      "id": "dfdba89f-483e-4892-b9bf-bfef6adb05da",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Get list of leads1').item.json._embedded.leads[0]._embedded.contacts[0].id }}",
+              "responsible_user_id": "={{ $('Update a row').item.json.id_lead }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        16
+      ],
+      "id": "5ba0d5b6-5ac5-4f31-bfd8-3f3c55f75733",
+      "name": "Update contacts1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b5102c65-0263-4a97-ab6e-c183d6defe9c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -144,
+        16
+      ],
+      "id": "ea2042ad-0358-45fe-8843-2ffa5a85e4d3",
+      "name": "Webhook",
+      "webhookId": "b5102c65-0263-4a97-ab6e-c183d6defe9c"
+    },
+    {
+      "parameters": {
+        "jsCode": "const minMinutes = 1;\nconst maxMinutes = 10;\n\n// Gera um número inteiro aleatório entre 1 e 10\nconst randomDelayMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;\n\nreturn [{\n  json: {\n    ...$json,\n    randomDelayMinutes\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        16
+      ],
+      "id": "5374d054-554d-4f55-9a88-dc4774211092",
+      "name": "Timer"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distrib_comercial",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "ATIVO"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        976,
+        16
+      ],
+      "id": "74d1e5f6-7fa6-4293-af48-554e26f61669",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "distrib_comercial",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_lead",
+              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        16
+      ],
+      "id": "cd35de4c-2d0a-4e39-a444-26e706b79a06",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Update contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Timer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Timer": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "235277d9-4e51-424c-b99c-1626f7de6219",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-19T15:46:42.183Z",
+      "updatedAt": "2025-08-19T15:46:42.183Z",
+      "role": "workflow:owner",
+      "workflowId": "rAHfokpq0wGiOghD",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
