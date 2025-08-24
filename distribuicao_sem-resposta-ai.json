@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-28T16:55:17.984Z",
-  "updatedAt": "2025-08-12T20:25:29.000Z",
+  "updatedAt": "2025-08-18T00:38:14.000Z",
   "id": "HBp98F7cHlM5sJ86",
   "name": "distribuicao_sem resposta",
   "active": true,
@@ -58,7 +58,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -160,7 +160,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -231,7 +231,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -268,7 +268,7 @@
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
-          "name": "Banco Vetorial"
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -294,7 +294,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "Telefone": "={{ $json.phone }}"
+            "Telefone": "={{ $json.telefone }}"
           },
           "matchingColumns": [
             "Telefone"
@@ -539,43 +539,32 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-08-12T15:10:16.004-04:00",
-          "Readable date": "August 12th 2025, 3:10:16 pm",
-          "Readable time": "3:10:16 pm",
-          "Day of week": "Tuesday",
+          "timestamp": "2025-08-17T20:30:55.007-04:00",
+          "Readable date": "August 17th 2025, 8:30:55 pm",
+          "Readable time": "8:30:55 pm",
+          "Day of week": "Sunday",
           "Year": "2025",
           "Month": "August",
-          "Day of month": "12",
-          "Hour": "15",
-          "Minute": "10",
-          "Second": "16",
+          "Day of month": "17",
+          "Hour": "20",
+          "Minute": "30",
+          "Second": "55",
           "Timezone": "America/New_York (UTC-04:00)"
-        }
-      }
-    ],
-    "Get many rows": [
-      {
-        "json": {
-          "id": 829,
-          "created_at": "2025-08-12T18:44:14.67+00:00",
-          "phone": "5511969176223@s.whatsapp.net",
-          "updated_at": "2025-08-12T15:45:29.9",
-          "atendimento_kommo": null
-        }
-      },
-      {
-        "json": {
-          "id": 826,
-          "created_at": "2025-08-12T18:28:20.134+00:00",
-          "phone": "5511994121793@s.whatsapp.net",
-          "updated_at": "2025-08-12T15:31:17.818",
-          "atendimento_kommo": null
         }
       }
     ]
   },
-  "versionId": "dc069545-e98d-43b4-a7b1-3e81273d3b40",
+  "versionId": "96e3b61a-7d70-40a0-87b5-1915210c4617",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-28T16:55:17.986Z",
+      "updatedAt": "2025-07-28T16:55:17.986Z",
+      "role": "workflow:owner",
+      "workflowId": "HBp98F7cHlM5sJ86",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-30T20:41:48.074Z",
