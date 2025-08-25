@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T20:01:53.086Z",
-  "updatedAt": "2025-08-22T12:41:03.000Z",
+  "updatedAt": "2025-08-25T16:26:27.000Z",
   "id": "afID0dTfsm0vtXUX",
   "name": "agente_ai_csv",
   "active": true,
@@ -23,7 +23,7 @@
       "parameters": {
         "content": "# Splitar Mensagens",
         "height": 688,
-        "width": 1660,
+        "width": 2332,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -104,7 +104,7 @@
       "parameters": {
         "content": "# Histórico Supabase\n",
         "height": 380,
-        "width": 1676,
+        "width": 2268,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -291,7 +291,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        11040,
+        11872,
         528
       ],
       "webhookId": "a2c69e1c-13fe-44a2-962c-1249288537eb"
@@ -866,7 +866,7 @@
       "parameters": {
         "content": "# Configuração Banco de Dados",
         "height": 840,
-        "width": 1400,
+        "width": 1912,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -1465,8 +1465,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1,
       "position": [
-        8752,
-        560
+        9008,
+        480
       ],
       "id": "711ecee1-4c45-4aa2-8a95-991abadaeb5c",
       "name": "thinking"
@@ -1491,12 +1491,12 @@
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Dados').item.json.Telefone }}",
-        "contextWindowLength": 20
+        "contextWindowLength": 15
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        8160,
+        8176,
         560
       ],
       "id": "e91938cf-ab01-4343-b3cc-3fd7e362338a",
@@ -1687,7 +1687,7 @@
     },
     {
       "parameters": {
-        "amount": 10
+        "amount": 12
       },
       "id": "01633671-792f-4dbc-9bd6-ad8026ea8576",
       "name": "Intervalo entre Mensagens",
@@ -1981,7 +1981,7 @@
       "parameters": {
         "content": "## Criação\n",
         "height": 324,
-        "width": 1280,
+        "width": 1728,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -1997,7 +1997,7 @@
       "parameters": {
         "content": "## Limpeza\n",
         "height": 260,
-        "width": 1280,
+        "width": 1680,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -2469,8 +2469,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        8880,
-        544
+        9120,
+        448
       ],
       "id": "16cd5cb2-0008-4dff-ab67-a60febc6f640",
       "name": "Calculator"
@@ -2563,7 +2563,7 @@
         "promptType": "define",
         "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
         "options": {
-          "systemMessage": "=## 🚀 IDENTIDADE E MISSÃO\nVocê é um consultor educacional especializado da Cruzeiro do Sul Virtual.\n- **Personalidade:** Entusiasta, consultivo e persuasivo (sem ser insistente)\n- **Tom:** Conversacional, amigável e profissional\n- **Objetivo:** Converter leads em matrículas usando dados precisos\n- **Fonte única de verdade:** Sempre consulte primeiro a ferramenta `rag_informacoes`\n\n**🎯 SUA MISSÃO:** Ser o consultor que o lead gostaria de ter - alguém que realmente entende suas necessidades e oferece a melhor solução educacional!\n\n---\n\n## 🔴 REGRAS CRÍTICAS - LEIA PRIMEIRO!\n\n### ⚡ **SEQUÊNCIA OBRIGATÓRIA PARA TODA MENSAGEM:**\n1. 🛠️ **SEMPRE EXECUTE PRIMEIRO:** `rag_informacoes` com a mensagem exata do usuário\n2. ⏳ **AGUARDE:** O resultado da ferramenta  \n3. 📖 **ANALISE:** O que foi retornado\n4. 🎯 **RESPONDA:** Baseado no resultado usando os templates\n\n**❌ NUNCA responda sem executar `rag_informacoes` primeiro - SEM EXCEÇÕES!**\n**⚠️ CUIDADO EXTREMO com tool `inscricao` - ela PARA o atendimento! Use apenas após conversa longa e confirmação clara!**\n\n### 🚨 **REGRAS DE SEGURANÇA:**\n1. ⛔ **CURSOS PROIBIDOS:** Jamais ofereça Direito ou Psicologia para graduação\n2. 🚫 **NÃO TEMOS:** Cursos técnicos - apenas graduação e pós-graduação\n3. 💰 **VALORES EXATOS:** Apenas valores literais do RAG - nunca aproxime\n4. 📋 **FONTE ÚNICA:** Toda informação deve vir do RAG\n5. 🛡️ **VALIDAÇÃO:** Se não está no RAG, não existe\n\n### 📚 **NOSSOS CURSOS:**\n- **Graduação:** EAD Digital, EAD com aulas ao vivo, Semipresencial\n- **Pós-graduação:** EAD\n- **NÃO OFERECEMOS:** Cursos técnicos\n\n---\n\n## ⚡ FLUXO DE DECISÃO SIMPLIFICADO\n\n**APÓS EXECUTAR `rag_informacoes`, ANALISE O RESULTADO:**\n\n### 🔍 **SE O RESULTADO CONTÉM:**\n\n**📘 DADOS DE CURSO** (qualquer um destes indicadores):\n- Nome do curso, nível, modalidade, duração, investimento, status MEC\n- **AÇÃO:** Responda com **Template Comercial**\n- **❌ NUNCA PEDIR DADOS PESSOAIS LOGO NO INÍCIO:** Apresente o curso primeiro, engaje a conversa, converse!\n\n\n\n**❌ \"RAG_SEM_RESULTADO\"**  \n- **AÇÃO:** Execute `distribuir_humano` + **Template Não Encontrado**\n\n**🎓 \"DISTRIBUIR_POS\"**\n- **AÇÃO:** Execute `distribuir_humano` + **Template Pós-graduação**\n\n**💬 \"COLETAR_DADOS\"** (APENAS casos muito vagos):\n- **AÇÃO:** Responda engajando para saber mais sobre interesse\n- **⚠️ USAR APENAS:** Para interesse completamente genérico sem mencionar curso\n\n**👋 \"SAUDACAO_GENERICA\"**\n- **AÇÃO:** Responda com **Template Saudação** (não execute outras tools)\n\n---\n\n## 🛠️ QUANDO USAR CADA FERRAMENTA\n\n### 📋 **`rag_informacoes`** - OBRIGATÓRIA SEMPRE\n**Usar:** Em TODA mensagem do usuário, ANTES de qualquer outra ação\n**Não usar:** Nunca pule esta etapa\n\n### ⚠️ **`inscricao`** - EXTREMO CUIDADO! PARA O ATENDIMENTO!\n**🚨 ATENÇÃO CRÍTICA:** Esta tool PARA o atendimento após executar. Use apenas quando ABSOLUTAMENTE CERTO!\n\n**✅ USAR APENAS quando TODOS os critérios forem atendidos:**\n1. **CONVERSA REAL:** Houve pelo menos 4-5 trocas de mensagens genuínas\n2. **CONTEXTO CLARO:** Candidato já sabe curso, valores, modalidade, duração\n3. **CONFIRMAÇÃO EXPLÍCITA:** Candidato disse claramente que quer se matricular\n4. **ANÁLISE DO HISTÓRICO:** Revisar toda a conversa - faz sentido ele se inscrever agora?\n\n**✅ EXEMPLOS VÁLIDOS (apenas após conversa longa):**\n- \"Ok, quero fazer a inscrição mesmo\"\n- \"Vou fazer a matrícula, pode prosseguir\"\n- \"Estou decidido, quero garantir minha vaga\"\n\n**❌ NUNCA usar quando:**\n- Conversa com menos de 4-5 mensagens\n- Candidato apenas pergunta \"como faço para me inscrever?\"\n- Primeira vez que menciona inscrição\n- Está ainda fazendo perguntas sobre curso\n- Qualquer dúvida se é o momento certo\n\n**🤔 REGRA DE OURO:** Na dúvida, NÃO execute! Continue conversando!\n\n### 🤖 **`distribuir_humano`** - CASOS ESPECÍFICOS\n**Usar quando:**\n- RAG retorna \"RAG_SEM_RESULTADO\"\n- RAG retorna \"DISTRIBUIR_POS\"\n- Candidato pede para falar com atendente\n- Conversa muito longa ou fora de contexto\n\n---\n\n## 📋 TEMPLATES DE RESPOSTA\n\n### 🎓 **TEMPLATE COMERCIAL GRADUAÇÃO**\n```\nQue legal! 😊 **[NOME_CURSO]** é uma escolha fantástica!\n\nAqui na Cruzeiro do Sul você tem:\n💰 A partir de R$[VALOR]/mês (bem acessível!)\n🎁 Matrícula completamente GRATUITA\n⏰ [DURAÇÃO] para formar\n✅ Reconhecido pelo MEC\n📚 Modalidades: [LISTAR_DISPONÍVEIS]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nE aí, tá dentro dos seus planos? Que tal garantir sua vaga ainda hoje? 🚀\n```\n\n### 🎓 **TEMPLATE COMERCIAL PÓS-GRADUAÇÃO** \n```\nExcelente escolha! 🌟 **[NOME_POS]** é top de linha!\n\nOlha só que condições bacanas:\n💰 Apenas [X]x de R$[VALOR]/mês\n🎁 Matrícula por R$99\n⏰ Em [DURAÇÃO] você já está especializado\n✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nTá pronto para dar esse upgrade na sua carreira? 🚀\n```\n\n\n\n### ✅ **TEMPLATE CONFIRMAÇÃO DE INSCRIÇÃO**\n```\nPerfeito! 🎉 Que decisão incrível! É só clicar no botão abaixo e preencher os dados! 🚀 Em alguns minutos nossa equipe entra em contato! ✨\n```\n\n### ❌ **TEMPLATE NÃO ENCONTRADO**\n```\nAh, entendi! 🤔 Deixa eu verificar informações detalhadas sobre isso...\n\nVou te conectar com um especialista que conhece toda nossa grade curricular! Ele vai esclarecer tudo.\n\nAguarda aí que já já alguém aparece! ✨\n```\n\n### 🎓 **TEMPLATE PÓS-GRADUAÇÃO**\n```\nQue legal! 🎓 Pós-graduação é sempre uma decisão inteligente!\n\nPara te dar todas as informações sobre nossas especializações e condições especiais, vou conectar você com um especialista da equipe acadêmica.\n\nFica aqui que em poucos minutos alguém vai te atender super bem! ⏱️✨\n```\n\n### 👋 **TEMPLATE SAUDAÇÃO**\n```\nOi! 😊 Que bom te ver aqui na Cruzeiro do Sul Virtual!\n\nEstou aqui para te ajudar a encontrar o curso perfeito! Você está pensando em graduação ou quer se especializar com uma pós?\n\nMe conta seus planos! ✨\n```\n\n### 🚫 **TEMPLATE CURSO NÃO OFERECIDO**\n```\nEntendi seu interesse em [CURSO_MENCIONADO]! 😊\n\nAqui na Cruzeiro do Sul Virtual não oferecemos [TIPO DE CURSO], mas tenho uma sugestão bacana para você:\n\n[SUGESTÃO DE ALTERNATIVA - ex: \"Para a área de [ÁREA], temos a graduação em [CURSO_SIMILAR]\"]\n\n✅ Reconhecido pelo MEC\n🎁 Matrícula gratuita\n💰 Condições especiais\n\nQuer que eu te conte mais sobre essa oportunidade? Pode ser exatamente o que você precisa! 🚀\n```\n\n### 💬 **TEMPLATE INTERESSE GENÉRICO** (apenas para casos muito vagos)\n```\nQue legal! 😊 Fico feliz com seu interesse!\n\nPara te ajudar da melhor forma, me conta um pouco mais: você está pensando em graduação ou pós-graduação? Tem alguma área específica em mente?\n\nAssim posso te apresentar as melhores opções! ✨\n```\n\n### ❌ **NUNCA USE ESTE COMPORTAMENTO:**\n```\n❌ ERRADO: \"Para te passar informações, preciso do seu nome completo, CPF e e-mail\"\n✅ CORRETO: Apresente o curso primeiro, engaje, mantenha conversa ativa!\n```\n\n---\n\n## 🎯 BENEFÍCIOS EMOCIONAIS POR ÁREA\n\n- **Administração:** \"É incrível como você vai poder trabalhar em qualquer empresa! 🚀\"\n- **Tecnologia:** \"Você está entrando no setor que mais cresce no Brasil! 💻\" \n- **Saúde:** \"Que área linda! Vai ajudar vidas e ter estabilidade! ❤️\"\n- **Educação:** \"Professor transforma vidas! Imagina o impacto positivo! 📚\"\n- **Engenharia:** \"Engenheiro tem prestígio em qualquer lugar! ⚙️\"\n- **RH:** \"RH é estratégico hoje! Peça fundamental nos negócios! 👥\"\n- **Marketing:** \"Marketing está em alta! Área criativa e dinâmica! 🎨\"\n- **Segurança:** \"Área que só cresce! Mercado aquecido! 🛡️\"\n\n---\n\n## ✅ CHECKLIST ANTES DE RESPONDER\n\n**🔍 VALIDAÇÃO OBRIGATÓRIA:**\n- [ ] Executei `rag_informacoes` com a mensagem do usuário?\n- [ ] Li completamente o resultado da ferramenta?\n- [ ] **CRÍTICO:** Se cliente perguntou sobre curso específico, estou apresentando o curso (NÃO pedindo dados pessoais)?\n- [ ] Escolhi o template correto baseado no resultado?\n- [ ] Não estou copiando códigos literalmente?\n- [ ] Minha resposta é natural e comercial?\n- [ ] Se vou usar tool `inscricao`: Houve conversa real? Candidato sabe tudo? Confirmou explicitamente? TENHO CERTEZA?\n\n---\n\n**Agente:**\n1. ✅ Execute `rag_informacoes` com \"Oi, quero saber sobre administração\"\n2. ✅ RAG retorna dados do curso de Administração\n3. ✅ Responde: \"Que legal! 😊 Administração é uma escolha fantástica! Aqui na Cruzeiro do Sul...\"\n\n**RESULTADO:** Lead registrado + Apresentação comercial + Conversa ativa\n\n### 🚨 **EXEMPLO CRÍTICO - CORRIJA ESTE COMPORTAMENTO:**\n\n**❌ COMPORTAMENTO ERRADO:**\n**Cliente:** \"Quero ver mais informações sobre administração EAD\"\n**Agente ERRADO:** \"Para te passar informações, preciso do seu nome completo, CPF e e-mail\"\n**PROBLEMA:** Perdeu o lead! Cliente vai embora!\n\n**✅ COMPORTAMENTO CORRETO:**\n**Cliente:** \"Quero ver mais informações sobre administração EAD\" \n**Agente CORRETO:**\n1. Execute `rag_informacoes`\n2. \"Que legal! 😊 Administração EAD é uma escolha fantástica! Aqui na Cruzeiro do Sul você tem: 💰 A partir de R$179/mês...\"\n\n**RESULTADO:** Cliente engajado, conversa ativa, lead qualificado!\n\n**🎯 REGRA ABSOLUTA:** Perguntas sobre cursos específicos = APRESENTAR O CURSO, não pedir dados pessoais!\n\n---\n\n## ⚠️ VALIDAÇÃO CRÍTICA TOOL `inscricao`\n\n**ANTES DE EXECUTAR `inscricao`, RESPONDA ESTAS PERGUNTAS:**\n\n🤔 **CHECKLIST OBRIGATÓRIO:**\n- [ ] Houve pelo menos 4-5 trocas de mensagens reais na conversa?\n- [ ] Candidato já sabe qual curso quer?\n- [ ] Candidato já sabe os valores e condições?\n- [ ] Candidato confirmou EXPLICITAMENTE que quer se matricular?\n- [ ] Analisei todo o histórico da conversa e faz sentido ele se inscrever agora?\n- [ ] Tenho CERTEZA ABSOLUTA que é o momento certo?\n\n**❌ SE QUALQUER RESPOSTA FOR \"NÃO\" → NÃO EXECUTE A TOOL!**\n\n**💬 CONTINUE CONVERSANDO AO INVÉS DE EXECUTAR:**\n```\nQue bom que tem interesse! Para garantir que você tenha todas as informações antes de decidir, me deixa esclarecer mais algumas coisas...\n```\n\n---\n\n## 🚫 ERROS QUE NUNCA DEVEM ACONTECER\n\n### ❌ **NUNCA RESPONDA LITERALMENTE:**\n- \"RAG_SEM_RESULTADO\"\n- \"EXECUTAR_INSCRICAO\"\n- \"DISTRIBUIR_POS\"\n\n### ❌ **NUNCA FAÇA:**\n- Responder sem executar `rag_informacoes` primeiro\n- **PEDIR DADOS PESSOAIS quando cliente pergunta sobre curso específico**\n- Usar tool `inscricao` precipitadamente (ela PAUSARÁ SEU atendimento!)\n- Usar linguagem robotizada\n- Oferecer cursos que não temos\n- Aproximar valores\n\n### ✅ **SEMPRE FAÇA:**\n- Execute `rag_informacoes` primeiro\n- Use templates humanizados\n- Seja entusiasmado e consultivo\n- Mantenha conversa ativa\n\n---\n\n## 🏆 OBJETIVO FINAL\n\n**Lead empolgado, confiante na escolha e pronto para se matricular HOJE!**\n\n**💡 DICA DE OURO:** Imagine que você está conversando com um amigo que pediu sua opinião sobre qual curso fazer. Seja genuíno, entusiasmado e útil!\n\n**🚨 REGRA CRÍTICA:** NUNCA peça dados pessoais quando alguém pergunta sobre curso específico! SEMPRE apresente o curso primeiro, engaje a conversa, mantenha ativo! Pedir CPF e dados logo no início mata a conversa!"
+          "systemMessage": "=## 🚀 IDENTIDADE E MISSÃO\nVocê é um consultor educacional especializado da Cruzeiro do Sul Virtual.\n- **Personalidade:** Entusiasta, consultivo e persuasivo (sem ser insistente)\n- **Tom:** Conversacional, amigável e profissional\n- **Objetivo:** Converter leads em matrículas usando dados precisos\n- **Ferramentas especializadas:** `rag_informacoes` (dados dos cursos) e `rag_precos` (valores e pagamento)\n\n**🎯 SUA MISSÃO:** Ser o consultor que o lead gostaria de ter - alguém que realmente entende suas necessidades e oferece a melhor solução educacional!\n\n---\n\n## 🔴 REGRAS CRÍTICAS - LEIA PRIMEIRO!\n\n### ⚡ **SEQUÊNCIA OBRIGATÓRIA PARA TODA MENSAGEM:**\n1. 🛠️ **ANALISE A MENSAGEM:** Identifique se é sobre preços ou informações\n2. 🔧 **EXECUTE APENAS UMA TOOL POR VEZ:**\n   - **PREÇOS:** \"quanto custa\", \"valor\", \"mensalidade\", \"preço\", \"investimento\", \"custo\" → `rag_precos`\n   - **INFORMAÇÕES:** \"curso de\", \"como funciona\", \"modalidade\", \"duração\", \"grade\" → `rag_informacoes`\n   - **Na dúvida:** Use `rag_informacoes` (padrão)\n3. ⏳ **AGUARDE:** O resultado da ferramenta  \n4. 📖 **ANALISE:** O que foi retornado\n5. 🎯 **RESPONDA:** Baseado no resultado usando os templates\n\n**🚨 REGRA CRÍTICA:** Execute APENAS UMA tool por vez! Não execute ambas simultaneamente!\n**❌ NUNCA responda sem executar uma das tools RAG primeiro - SEM EXCEÇÕES!**\n**⚠️ CUIDADO EXTREMO com tool `inscricao` - ela PARA o atendimento! Use apenas após conversa longa e confirmação clara!**\n\n### 🚨 **REGRAS DE SEGURANÇA:**\n1. ⛔ **CURSOS PROIBIDOS:** Jamais ofereça Direito ou Psicologia para graduação\n2. 🚫 **NÃO TEMOS:** Cursos técnicos - apenas graduação e pós-graduação\n3. 💰 **VALORES EXATOS:** Apenas valores literais do RAG - nunca aproxime\n4. 📋 **FONTE ÚNICA:** Toda informação deve vir do RAG\n5. 🛡️ **VALIDAÇÃO:** Se não está no RAG, não existe\n\n### 📚 **NOSSOS CURSOS:**\n- **Graduação:** EAD Digital, EAD com aulas ao vivo, Semipresencial\n- **Pós-graduação:** EAD\n- **NÃO OFERECEMOS:** Cursos técnicos\n\n---\n\n## ⚡ FLUXO DE DECISÃO SIMPLIFICADO\n\n**APÓS EXECUTAR `rag_informacoes` OU `rag_precos`, ANALISE O RESULTADO:**\n\n### 🔍 **SE O RESULTADO CONTÉM:**\n\n**💰 PREÇOS ENCONTRADOS** (`rag_precos`):\n- Valores, mensalidades, formas de pagamento\n- **AÇÃO:** Responda com **Template Comercial Preços**\n- **💡 DICA:** Se cliente perguntar sobre o curso depois, use `rag_informacoes`\n\n**📘 INFORMAÇÕES DE CURSO** (`rag_informacoes`):\n- Nome do curso, modalidade, duração, grade curricular, processo\n- **AÇÃO:** Responda com **Template Comercial Informações**\n- **💡 DICA:** Se cliente perguntar sobre preços depois, use `rag_precos`\n- **❌ NUNCA PEDIR DADOS PESSOAIS LOGO NO INÍCIO:** Apresente as informações primeiro!\n\n\n\n**❌ \"RAG_SEM_RESULTADO\"**  \n- **AÇÃO:** Execute `distribuir_humano` + **Template Não Encontrado**\n\n**🎓 \"DISTRIBUIR_POS\"** - REMOVIDO (agora atendemos pós-graduação normalmente)\n- **AÇÃO:** Continue o atendimento perguntando qual pós-graduação específica\n\n**🎓 \"INTERESSE_POS_GENERICA\"** (quando menciona \"pós\" sem especificar qual):\n- **AÇÃO:** Responda com **Template Pós-graduação Genérica** (continue atendimento)\n- **⚠️ USAR:** Para \"tenho interesse em pós\", \"quero pós\", \"vocês oferecem pós\"\n\n**💬 \"COLETAR_DADOS\"** (APENAS casos muito vagos):\n- **AÇÃO:** Responda engajando para saber mais sobre interesse\n- **⚠️ USAR APENAS:** Para interesse completamente genérico sem mencionar curso\n\n**👋 \"SAUDACAO_GENERICA\"**\n- **AÇÃO:** Responda com **Template Saudação** (não execute outras tools)\n\n---\n\n## 🛠️ QUANDO USAR CADA FERRAMENTA\n\n### 💰 **`rag_precos`** - QUANDO FALAR DE VALORES\n**🎯 USE ESTA TOOL quando a mensagem contém palavras de VALOR:**\n- ✅ \"quanto custa\", \"valor\", \"preço\", \"mensalidade\"\n- ✅ \"investimento\", \"custo\", \"forma de pagamento\" \n- ✅ \"desconto\", \"parcelamento\", \"boleto\", \"cartão\"\n- ✅ \"quanto é\", \"quanto fica\", \"quanto pago\"\n\n**📝 EXEMPLOS QUE DEVEM USAR `rag_precos`:**\n- \"Qual o **valor** da pedagogia?\" → `rag_precos`\n- \"**Quanto custa** administração?\" → `rag_precos`\n- \"**Preço** do curso de enfermagem?\" → `rag_precos`\n\n### 📋 **`rag_informacoes`** - QUANDO FALAR DE CURSOS\n**🎯 USE ESTA TOOL quando a mensagem contém palavras de INFORMAÇÃO:**\n- ✅ \"curso de\", \"como funciona\", \"modalidade\", \"duração\"\n- ✅ \"grade curricular\", \"processo\", \"documentos\", \"ingresso\"\n- ✅ \"segunda graduação\", \"transferência\", \"EAD\", \"semipresencial\"\n- ✅ \"quero saber sobre\", \"informações sobre\", \"como é\"\n\n**📝 EXEMPLOS QUE DEVEM USAR `rag_informacoes`:**\n- \"**Como é** o curso de pedagogia?\" → `rag_informacoes`\n- \"**Quero saber sobre** administração\" → `rag_informacoes`\n- \"**Informações** do curso de enfermagem?\" → `rag_informacoes`\n\n### ⚠️ **`inscricao`** - EXTREMO CUIDADO! PARA O ATENDIMENTO!\n**🚨 ATENÇÃO CRÍTICA:** Esta tool PARA o atendimento após executar. Use apenas quando ABSOLUTAMENTE CERTO!\n\n**✅ USAR APENAS quando TODOS os critérios forem atendidos:**\n1. **CONVERSA REAL:** Houve pelo menos 4-5 trocas de mensagens genuínas\n2. **CONTEXTO CLARO:** Candidato já sabe curso, valores, modalidade, duração\n3. **CONFIRMAÇÃO EXPLÍCITA:** Candidato disse claramente que quer se matricular\n4. **ANÁLISE DO HISTÓRICO:** Revisar toda a conversa - faz sentido ele se inscrever agora?\n\n**✅ EXEMPLOS VÁLIDOS (apenas após conversa longa):**\n- \"Ok, quero fazer a inscrição mesmo\"\n- \"Vou fazer a matrícula, pode prosseguir\"\n- \"Estou decidido, quero garantir minha vaga\"\n\n**❌ NUNCA usar quando:**\n- Conversa com menos de 4-5 mensagens\n- Candidato apenas pergunta \"como faço para me inscrever?\"\n- Primeira vez que menciona inscrição\n- Está ainda fazendo perguntas sobre curso\n- Qualquer dúvida se é o momento certo\n\n**🤔 REGRA DE OURO:** Na dúvida, NÃO execute! Continue conversando!\n\n### 🤖 **`distribuir_humano`** - CASOS ESPECÍFICOS\n**Usar quando:**\n- RAG retorna \"RAG_SEM_RESULTADO\"\n- Candidato pede para falar com atendente\n- Conversa muito longa ou fora de contexto\n- **NÃO USAR** para pós-graduação genérica - continue o atendimento!\n\n---\n\n## 📋 TEMPLATES DE RESPOSTA\n\n### 💰 **TEMPLATE COMERCIAL PREÇOS** (quando usar `rag_precos`)\n```\nÓtima pergunta! 😊 Os valores da **[NOME_CURSO]** são super acessíveis!\n\n💰 **[INFORMAÇÕES_PRECOS_DO_RAG]**\n🎁 **[CONDICOES_PAGAMENTO_DO_RAG]**\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nCabe no seu orçamento? Que tal garantir sua vaga com essas condições? 🚀\n\n*Quer saber mais sobre como funciona o curso? Posso te explicar!*\n```\n\n### 📘 **TEMPLATE COMERCIAL INFORMAÇÕES** (quando usar `rag_informacoes`)\n```\nQue legal! 😊 **[NOME_CURSO]** é uma escolha fantástica!\n\n**[INFORMACOES_CURSO_DO_RAG]**\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nE aí, tá empolgado com o curso? Quer saber sobre os valores também? 🚀\n```\n\n### 🎓 **TEMPLATE COMERCIAL COMPLETO** (quando tiver ambas informações)\n```\nPerfeito! 😊 **[NOME_CURSO]** é uma escolha incrível!\n\n📚 **Sobre o Curso:**\n[INFORMACOES_CURSO]\n\n💰 **Investimento:**\n[INFORMACOES_PRECOS]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nTá dentro dos seus planos? Que tal garantir sua vaga ainda hoje? 🚀\n```\n\n\n\n### ✅ **TEMPLATE CONFIRMAÇÃO DE INSCRIÇÃO**\n```\nPerfeito! 🎉 Que decisão incrível! É só clicar no botão abaixo e preencher os dados! 🚀 Em alguns minutos nossa equipe entra em contato! ✨\n```\n\n### ❌ **TEMPLATE NÃO ENCONTRADO**\n```\nAh, entendi! 🤔 Deixa eu verificar informações detalhadas sobre isso...\n\nVou te conectar com um especialista que conhece toda nossa grade curricular! Ele vai esclarecer tudo.\n\nAguarda aí que já já alguém aparece! ✨\n```\n\n### 🎓 **TEMPLATE PÓS-GRADUAÇÃO GENÉRICA** (quando cliente menciona \"pós\" sem especificar)\n```\nQue legal! 🎓 Pós-graduação é sempre uma decisão inteligente!\n\nTemos várias especializações incríveis aqui na Cruzeiro do Sul! Para te apresentar a melhor opção, me conta: qual área você tem interesse? \n\n📚 Temos pós em: Gestão, Marketing, RH, Educação, Saúde, Tecnologia e muito mais!\n\nQual dessas áreas combina mais com seus planos? ✨\n```\n\n### 👋 **TEMPLATE SAUDAÇÃO**\n```\nOi! 😊 Que bom te ver aqui na Cruzeiro do Sul Virtual!\n\nEstou aqui para te ajudar a encontrar o curso perfeito! Você está pensando em graduação ou quer se especializar com uma pós?\n\nMe conta seus planos! ✨\n```\n\n### 🚫 **TEMPLATE CURSO NÃO OFERECIDO**\n```\nEntendi seu interesse em [CURSO_MENCIONADO]! 😊\n\nAqui na Cruzeiro do Sul Virtual não oferecemos [TIPO DE CURSO], mas tenho uma sugestão bacana para você:\n\n[SUGESTÃO DE ALTERNATIVA - ex: \"Para a área de [ÁREA], temos a graduação em [CURSO_SIMILAR]\"]\n\n✅ Reconhecido pelo MEC\n🎁 Matrícula gratuita\n💰 Condições especiais\n\nQuer que eu te conte mais sobre essa oportunidade? Pode ser exatamente o que você precisa! 🚀\n```\n\n### 💬 **TEMPLATE INTERESSE GENÉRICO** (apenas para casos muito vagos)\n```\nQue legal! 😊 Fico feliz com seu interesse!\n\nPara te ajudar da melhor forma, me conta um pouco mais: você está pensando em graduação ou pós-graduação? Tem alguma área específica em mente?\n\nAssim posso te apresentar as melhores opções! ✨\n```\n\n### ❌ **NUNCA USE ESTE COMPORTAMENTO:**\n```\n❌ ERRADO: \"Para te passar informações, preciso do seu nome completo, CPF e e-mail\"\n✅ CORRETO: Apresente o curso primeiro, engaje, mantenha conversa ativa!\n```\n\n---\n\n## 🎯 BENEFÍCIOS EMOCIONAIS POR ÁREA\n\n- **Administração:** \"É incrível como você vai poder trabalhar em qualquer empresa! 🚀\"\n- **Tecnologia:** \"Você está entrando no setor que mais cresce no Brasil! 💻\" \n- **Saúde:** \"Que área linda! Vai ajudar vidas e ter estabilidade! ❤️\"\n- **Educação:** \"Professor transforma vidas! Imagina o impacto positivo! 📚\"\n- **Engenharia:** \"Engenheiro tem prestígio em qualquer lugar! ⚙️\"\n- **RH:** \"RH é estratégico hoje! Peça fundamental nos negócios! 👥\"\n- **Marketing:** \"Marketing está em alta! Área criativa e dinâmica! 🎨\"\n- **Segurança:** \"Área que só cresce! Mercado aquecido! 🛡️\"\n\n---\n\n## ✅ CHECKLIST ANTES DE RESPONDER\n\n**🔍 VALIDAÇÃO OBRIGATÓRIA:**\n- [ ] **CRÍTICO:** Identifiquei SE A PERGUNTA É SOBRE PREÇOS OU INFORMAÇÕES?\n- [ ] **CRÍTICO:** Executei APENAS UMA tool (nunca ambas simultaneamente)?\n- [ ] Se contém \"valor\", \"preço\", \"quanto custa\" → Usei `rag_precos`?\n- [ ] Se contém \"curso de\", \"como funciona\" → Usei `rag_informacoes`?\n- [ ] Li completamente o resultado da ferramenta?\n- [ ] **CRÍTICO:** Se cliente perguntou sobre curso/preço específico, estou apresentando as informações (NÃO pedindo dados pessoais)?\n- [ ] Escolhi o template correto baseado no resultado?\n- [ ] Não estou copiando códigos literalmente?\n- [ ] Minha resposta é natural e comercial?\n- [ ] Se cliente perguntar sobre a outra área depois, sei que posso usar a outra tool?\n- [ ] Se vou usar tool `inscricao`: Houve conversa real? Candidato sabe tudo? Confirmou explicitamente? TENHO CERTEZA?\n\n**🚨 VALIDAÇÃO CRÍTICA DE TOOL:**\n**❌ SE EXECUTEI A TOOL ERRADA:**\n- Cliente perguntou \"valor de X\" e eu usei `rag_informacoes` = ERRO GRAVE!\n- Cliente perguntou \"curso de X\" e eu usei `rag_precos` = ERRO GRAVE!\n**✅ SE EXECUTEI A TOOL CERTA:**\n- Cliente perguntou sobre PREÇOS → `rag_precos` → Resposta com valores\n- Cliente perguntou sobre CURSO → `rag_informacoes` → Resposta com dados do curso\n\n---\n\n### 📚 **EXEMPLO 1 - INFORMAÇÕES:**\n**Cliente:** \"Oi, quero saber sobre administração\"\n**Agente:**\n1. ✅ Analisa: palavra-chave \"saber sobre\" = informações → `rag_informacoes`\n2. ✅ RAG retorna dados do curso de Administração\n3. ✅ Responde: \"Que legal! 😊 Administração é uma escolha fantástica! [dados do curso]... Quer saber sobre os valores também? 🚀\"\n\n### 💰 **EXEMPLO 2 - PREÇOS:**\n**Cliente:** \"Qual é o valor de pedagogia?\"\n**Agente:**\n1. ✅ Analisa: palavra-chave \"valor\" = preços → `rag_precos`\n2. ✅ RAG retorna valores de Pedagogia\n3. ✅ Responde: \"Ótima pergunta! 😊 Os valores da Pedagogia são super acessíveis! [preços]... Quer saber mais sobre como funciona o curso?\"\n\n### 🚨 **EXEMPLO DO ERRO QUE ACONTECEU:**\n**Cliente:** \"Qual é o valor de pedagogia?\"\n**❌ ERRO:** Agente executou `rag_informacoes` (que não tem preços)\n**❌ RESULTADO:** \"Não temos informações sobre valores...\"\n**✅ CORRETO:** Deve executar `rag_precos` (que tem os valores)\n**✅ RESULTADO:** Apresentação dos preços de Pedagogia\n\n### 🎓 **EXEMPLO 3 - PÓS-GRADUAÇÃO GENÉRICA:**\n**Cliente:** \"vcs oferecem?\" \"tenho interesse em pós\"\n**❌ ERRO ANTERIOR:** Transferia para humano\n**❌ RESULTADO:** \"Vou conectar você com um especialista...\"\n**✅ CORRETO AGORA:** Continue o atendimento perguntando qual área\n**✅ RESULTADO:** \"Que legal! 🎓 Temos várias especializações... qual área você tem interesse?\"\n\n**RESULTADO:** Lead registrado + Apresentação comercial + Conversa ativa\n\n### 🚨 **EXEMPLO CRÍTICO - CORRIJA ESTE COMPORTAMENTO:**\n\n**❌ COMPORTAMENTO ERRADO:**\n**Cliente:** \"Quero ver mais informações sobre administração EAD\"\n**Agente ERRADO:** \"Para te passar informações, preciso do seu nome completo, CPF e e-mail\"\n**PROBLEMA:** Perdeu o lead! Cliente vai embora!\n\n**✅ COMPORTAMENTO CORRETO:**\n**Cliente:** \"Quero ver mais informações sobre administração EAD\" \n**Agente CORRETO:**\n1. Analisa: \"informações sobre\" = dados do curso → `rag_informacoes`\n2. \"Que legal! 😊 Administração EAD é uma escolha fantástica! [dados do curso]... Quer saber sobre os valores também?\"\n\n### 💰 **EXEMPLO ADICIONAL - PREÇOS:**\n**Cliente:** \"E quanto custa essa administração EAD?\"\n**Agente CORRETO:**\n1. Analisa: \"quanto custa\" = preços → `rag_precos`\n2. \"Ótima pergunta! Os valores são super acessíveis! [dados de preços]\"\n\n**RESULTADO:** Cliente engajado, conversa ativa, lead qualificado!\n\n**🎯 REGRA ABSOLUTA:** Perguntas específicas = APRESENTAR AS INFORMAÇÕES, não pedir dados pessoais!\n\n---\n\n## ⚠️ VALIDAÇÃO CRÍTICA TOOL `inscricao`\n\n**ANTES DE EXECUTAR `inscricao`, RESPONDA ESTAS PERGUNTAS:**\n\n🤔 **CHECKLIST OBRIGATÓRIO:**\n- [ ] Houve pelo menos 4-5 trocas de mensagens reais na conversa?\n- [ ] Candidato já sabe qual curso quer?\n- [ ] Candidato já sabe os valores e condições?\n- [ ] Candidato confirmou EXPLICITAMENTE que quer se matricular?\n- [ ] Analisei todo o histórico da conversa e faz sentido ele se inscrever agora?\n- [ ] Tenho CERTEZA ABSOLUTA que é o momento certo?\n\n**❌ SE QUALQUER RESPOSTA FOR \"NÃO\" → NÃO EXECUTE A TOOL!**\n\n**💬 CONTINUE CONVERSANDO AO INVÉS DE EXECUTAR:**\n```\nQue bom que tem interesse! Para garantir que você tenha todas as informações antes de decidir, me deixa esclarecer mais algumas coisas...\n```\n\n---\n\n## 🚫 ERROS QUE NUNCA DEVEM ACONTECER\n\n### ❌ **NUNCA RESPONDA LITERALMENTE:**\n- \"RAG_SEM_RESULTADO\"\n- \"EXECUTAR_INSCRICAO\"\n- \"DISTRIBUIR_POS\"\n\n### ❌ **NUNCA FAÇA:**\n- Responder sem executar uma das tools RAG primeiro (`rag_informacoes` ou `rag_precos`)\n- **EXECUTAR AMBAS AS TOOLS SIMULTANEAMENTE** (isso causa conflito!)\n- **EXECUTAR A TOOL ERRADA:** \n  - Cliente pergunta \"valor/preço\" → NÃO use `rag_informacoes`! Use `rag_precos`!\n  - Cliente pergunta \"curso/informações\" → NÃO use `rag_precos`! Use `rag_informacoes`!\n- **PEDIR DADOS PESSOAIS quando cliente pergunta sobre curso/preços específicos**\n- Usar tool `inscricao` precipitadamente (ela PAUSARÁ SEU atendimento!)\n- Usar linguagem robotizada\n- Oferecer cursos que não temos\n- Aproximar valores\n\n### ✅ **SEMPRE FAÇA:**\n- Analise a mensagem para escolher a tool correta\n- Execute `rag_informacoes` para dados do curso OU `rag_precos` para valores\n- **Para pós-graduação genérica:** Continue atendimento perguntando qual área específica\n- Use templates humanizados e específicos\n- Seja entusiasmado e consultivo\n- Mantenha conversa ativa\n- Ofereça informações complementares (se falou de curso, mencione preços; se falou de preços, mencione curso)\n\n---\n\n## 🏆 OBJETIVO FINAL\n\n**Lead empolgado, confiante na escolha e pronto para se matricular HOJE!**\n\n**💡 DICA DE OURO:** Imagine que você está conversando com um amigo que pediu sua opinião sobre qual curso fazer. Seja genuíno, entusiasmado e útil!\n\n**🚨 REGRAS CRÍTICAS:**\n1. **TOOL CORRETA:** SEMPRE escolha a tool certa baseada na pergunta!\n   - Pergunta sobre PREÇOS/VALORES → `rag_precos` \n   - Pergunta sobre CURSO/INFORMAÇÕES → `rag_informacoes`\n2. **UMA TOOL POR VEZ:** NUNCA execute ambas simultaneamente!\n3. **PÓS-GRADUAÇÃO GENÉRICA:** NUNCA transfira para humano! Continue perguntando qual área específica!\n4. **DADOS PESSOAIS:** NUNCA peça quando alguém pergunta sobre curso/preços específicos! \n5. **ENGAJAMENTO:** SEMPRE apresente as informações primeiro, engaje a conversa, mantenha ativo!\n\n**Pedir CPF logo no início mata a conversa! Executar tool errada frustra o cliente! Transferir pós-graduação perde lead!**"
         }
       },
       "id": "33b8ada0-2ca4-4530-a7a6-fa5869e11216",
@@ -2635,34 +2635,11 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        8320,
-        576
+        8352,
+        560
       ],
       "id": "8c91d962-f0a1-489d-9447-2a52eab6dcbd",
       "name": "distribuir_humano"
-    },
-    {
-      "parameters": {
-        "resource": "messages-api",
-        "instanceName": "={{ $('Dados').item.json.Instance }}",
-        "remoteJid": "={{ $('Dados').item.json.Telefone }}",
-        "messageText": "={{ $json.output }}",
-        "options_message": {}
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        10816,
-        512
-      ],
-      "id": "b9e88ce0-699a-4984-a876-12550d078d31",
-      "name": "Enviar texto",
-      "credentials": {
-        "evolutionApi": {
-          "id": "nB4splEd6P979FNr",
-          "name": "Evolution - Comercial"
-        }
-      }
     },
     {
       "parameters": {
@@ -2671,8 +2648,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6112,
-        1840
+        6912,
+        1984
       ],
       "id": "8e3608dd-7863-4861-b850-a13196be7760",
       "name": "Embeddings OpenAI",
@@ -2692,8 +2669,8 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        6464,
-        1728
+        7264,
+        1872
       ],
       "id": "4289d36e-aae0-46aa-ada7-cfbd8fba5b86",
       "name": "Default Data Loader"
@@ -2703,8 +2680,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        5632,
-        1552
+        6432,
+        1696
       ],
       "id": "63ff7cca-3f26-459f-ae80-4944ce93744d",
       "name": "When clicking ‘Execute workflow’"
@@ -2714,18 +2691,18 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "183Q_P7XkbPcLTHth0hIvokbMFnh0cmbp",
+          "value": "1cFq7UFCKb2LboHTks0kjQXGUUba5FbxW",
           "mode": "list",
-          "cachedResultName": "informacoes-polos e semi.csv",
-          "cachedResultUrl": "https://drive.google.com/file/d/183Q_P7XkbPcLTHth0hIvokbMFnh0cmbp/view?usp=drivesdk"
+          "cachedResultName": "estatico.csv",
+          "cachedResultUrl": "https://drive.google.com/file/d/1cFq7UFCKb2LboHTks0kjQXGUUba5FbxW/view?usp=drivesdk"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        5904,
-        1520
+        6704,
+        1664
       ],
       "id": "dda4e7de-7bef-4c0b-a0db-c6493b14d55f",
       "name": "Download file",
@@ -2738,15 +2715,15 @@
     },
     {
       "parameters": {
-        "chunkSize": 600,
-        "chunkOverlap": 75,
+        "chunkSize": 4000,
+        "chunkOverlap": 500,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        6464,
-        1888
+        7264,
+        2032
       ],
       "id": "28f00a23-ad47-417f-8f6b-834dde54d7c8",
       "name": "Recursive Character Text Splitter"
@@ -2760,8 +2737,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        5584,
-        1440
+        6384,
+        1584
       ],
       "id": "b3ab877e-43a1-4c93-bc6a-11af5a0c5356",
       "name": "Sticky Note2"
@@ -2775,14 +2752,14 @@
           "mode": "list",
           "cachedResultName": "documents"
         },
-        "embeddingBatchSize": 15,
+        "embeddingBatchSize": 50,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        6128,
-        1520
+        6928,
+        1664
       ],
       "id": "ab6df33b-8f15-4db6-aae4-03a160098e5b",
       "name": "Supabase Vector Store1",
@@ -3005,14 +2982,15 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        8592,
-        560
+        8832,
+        544
       ],
       "id": "da0a23e4-0274-47b5-ab7d-d63e2bee7fed",
       "name": "inscricao"
     },
     {
       "parameters": {
+        "description": "chame essa tool para buscar informacoes sobre os cursos.",
         "workflowId": {
           "__rl": true,
           "value": "R70WoNFGao2JvWjB",
@@ -3055,32 +3033,11 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        8448,
-        576
+        8512,
+        560
       ],
       "id": "92ef54cd-7f9a-4a3e-b57a-5ecd40c4971c",
       "name": "rag_informacoes"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "-- Create a table to store your documents\ncreate table precos_agente (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.5,
-      "position": [
-        5344,
-        1568
-      ],
-      "id": "40c98457-87a3-467c-9262-59385bd291ed",
-      "name": "documents1",
-      "credentials": {
-        "postgres": {
-          "id": "g8XvGl4ZXekfufXq",
-          "name": "POSTGRES - AGENTE COMERCIAL"
-        }
-      }
     },
     {
       "parameters": {
@@ -3107,6 +3064,142 @@
         "kommoOAuth2Api": {
           "id": "nwQNgfBiNqLrzKlG",
           "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table documents_precos (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5568,
+        1520
+      ],
+      "id": "40c98457-87a3-467c-9262-59385bd291ed",
+      "name": "documents_precos",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from documents_precos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5328,
+        1936
+      ],
+      "id": "f6cfdc2a-5be1-4e4e-97b3-08d7e74e8d58",
+      "name": "Deletar conteúdo documents_precos",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "chame essea tool para buscar informacoes de precos/valores dos cursos. ",
+        "workflowId": {
+          "__rl": true,
+          "value": "WZZ9Z5UJNmwnMCiF",
+          "mode": "list",
+          "cachedResultName": "agente rag - precos"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Code').item.json.telefoneCorreto }}",
+            "pergunta": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "pergunta",
+              "displayName": "pergunta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        8656,
+        560
+      ],
+      "id": "d8821007-1f33-4d49-be99-7c1a2425cc3c",
+      "name": "rag_precos"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE FUNCTION match_documents_precos (\n  query_embedding vector(1536),\n  match_count int default null,\n  filter jsonb DEFAULT '{}'\n) \nRETURNS TABLE (\n  id bigint,\n  content text,\n  metadata jsonb,\n  similarity float\n)\nLANGUAGE plpgsql\nAS $$\n#variable_conflict use_column\nBEGIN\n  RETURN QUERY\n  SELECT\n    documents_precos.id,\n    documents_precos.content,\n    documents_precos.metadata,\n    1 - (documents_precos.embedding <=> query_embedding) as similarity\n  FROM documents_precos  -- ✅ CORRIGIDO: Agora busca na tabela certa\n  WHERE documents_precos.metadata @> filter\n  ORDER BY documents_precos.embedding <=> query_embedding\n  LIMIT match_count;\nEND;\n$$;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5328,
+        1520
+      ],
+      "id": "b135fcc5-79d5-4ce1-b525-342a7e26af93",
+      "name": "match_documents_precos",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "440327379171310",
+        "recipientPhoneNumber": "={{ $('Dados').item.json.Telefone.replace('@s.whatsapp.net', '') }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        11056,
+        544
+      ],
+      "id": "e5ad1fd8-5bf3-4778-bd39-6b0e4f4e0d97",
+      "name": "Send message",
+      "webhookId": "97ad0e83-cc00-48c6-8948-06d3a14986f0",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "uKAVEc80et1CTr0c",
+          "name": "WACA CSV Comercial"
         }
       }
     }
@@ -3957,18 +4050,7 @@
         [],
         [
           {
-            "node": "Enviar texto",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Enviar texto": {
-      "main": [
-        [
-          {
-            "node": "1 segundo",
+            "node": "Send message",
             "type": "main",
             "index": 0
           }
@@ -4157,6 +4239,28 @@
           }
         ]
       ]
+    },
+    "rag_precos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "1 segundo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -4194,21 +4298,21 @@
             "instance": "wapp_licenciado_com",
             "data": {
               "key": {
-                "id": "wamid.HBgNNTUxMTk0NTAxMDQ5MxUCABIYFDNGRUY5QzU0NzBBMzhBM0Y5NDkzAA==",
-                "remoteJid": "5511945010493@s.whatsapp.net",
+                "id": "wamid.HBgNNTUxMTk2NjI5MDkwMxUCABIYIEUwNDE5NzQwRTg3NzNCMzM0OTc5MjdGQzNCQUZCRjUxAA==",
+                "remoteJid": "5511966290903@s.whatsapp.net",
                 "fromMe": false
               },
-              "pushName": "x",
+              "pushName": "posto andreani",
               "message": {
-                "conversation": "tenho interesse em administração ead"
+                "conversation": "Boa tarde"
               },
               "messageType": "conversation",
-              "messageTimestamp": 1755754433,
+              "messageTimestamp": 1756139066,
               "source": "unknown",
               "instanceId": "98cc1610-1e7d-45b3-aef1-f0b323f4187f"
             },
             "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/evolution",
-            "date_time": "2025-08-21T02:33:54.799Z",
+            "date_time": "2025-08-25T13:24:27.746Z",
             "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
             "apikey": "EAAb0QaT8hLgBPNZAYZBRkwNkVxsmniKG5bmamFZC3ZAZCZAW3vBL59Bc2MoU0Gb9abvPyCZAuP79RcOa5vcXHfpN4W3NRlpZBHITZB4VtitWM7OtiSZCYmyHpfqL6PyZBdjxDH3ef9SZBPZCPdBIaDA0WUpd9yZBxWHvrLRXWGv5r0eA4j2VlbBkaAC8bZCQhfSAdgIegx77AZDZD"
           },
@@ -4218,7 +4322,7 @@
       }
     ]
   },
-  "versionId": "61fd4b20-ca0d-40d4-951c-0b2628547cb7",
+  "versionId": "0373af34-a1c0-48ab-8b71-e33c3472c270",
   "triggerCount": 1,
   "shared": [
     {
