@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T21:00:44.158Z",
-  "updatedAt": "2025-08-22T20:09:02.000Z",
+  "updatedAt": "2025-08-25T15:51:36.000Z",
   "id": "Lec74yhTDupOfWxT",
   "name": "criacao_leads_sumaread V2",
   "active": true,
@@ -44,7 +44,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1168,
+        1376,
         48
       ],
       "id": "69dcf92e-8c68-4280-b969-fbbc55225a6f",
@@ -138,7 +138,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -328,7 +328,7 @@
               "name": "={{$items(\"Edit Fields\")[0].json.nome}}",
               "pipeline_id": 5617751,
               "status_id": 49518221,
-              "responsible_user_id": "={{ $('Code2').item.json.id_usuario }}",
+              "responsible_user_id": "={{ $('Edit Fields1').item.json.id_usuario }}",
               "custom_fields_values": {
                 "custom_field": [
                   {
@@ -373,7 +373,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1376,
+        1584,
         32
       ],
       "id": "9165a50b-9a4b-4170-8fce-1f0e500bd612",
@@ -484,7 +484,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        720,
+        944,
         -16
       ],
       "id": "4195d550-a796-4786-866f-ef91ccd7cb81",
@@ -492,15 +492,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// Entrada padrão do n8n\nconst dados = items.map(item => item.json);\n\n// Pegar apenas os ids únicos\nconst idsUnicos = [...new Set(dados.map(d => d.id_usuario))];\n\n// Se você quiser só **um** objeto no output final\n// (primeiro id encontrado)\nreturn [\n  {\n    json: { id_usuario: idsUnicos[0] }\n  }\n];\n"
+        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        896,
-        16
+        720,
+        -16
       ],
-      "id": "702bbae4-60ee-4a0e-925b-b0c921dfcb2a",
+      "id": "1b495b9c-b56b-4000-9684-112703b7148e",
       "name": "Code2"
     }
   ],
@@ -644,7 +644,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields1",
+            "node": "Code2",
             "type": "main",
             "index": 0
           }
@@ -655,7 +655,7 @@
       "main": [
         [
           {
-            "node": "Code2",
+            "node": "cria contato",
             "type": "main",
             "index": 0
           }
@@ -666,7 +666,7 @@
       "main": [
         [
           {
-            "node": "cria contato",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -687,30 +687,29 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36",
-            "content-length": "87",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+            "content-length": "62",
             "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-encoding": "gzip, deflate, br",
             "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             "content-type": "application/json",
             "origin": "https://www.sumaread.com.br",
-            "priority": "u=1, i",
             "referer": "https://www.sumaread.com.br/",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "187.90.219.216",
+            "x-forwarded-for": "191.183.36.92",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "187.90.219.216"
+            "x-real-ip": "191.183.36.92"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Marcel Schinagel do Nascimento ",
-            "celular": "11975472152",
+            "nome": "rensto",
+            "celular": "11991425856",
             "tipo": "Graduação"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/criacao_leads_sumare",
@@ -719,7 +718,7 @@
       }
     ]
   },
-  "versionId": "74077ad7-dd5f-43cb-987b-8831342b58c3",
+  "versionId": "74a77b11-13b2-4fa7-bcf7-1e9d88a94d4a",
   "triggerCount": 1,
   "shared": [
     {
