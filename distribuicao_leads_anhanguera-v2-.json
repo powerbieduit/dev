@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T20:59:27.892Z",
-  "updatedAt": "2025-08-21T20:40:26.000Z",
+  "updatedAt": "2025-08-25T15:32:14.000Z",
   "id": "JZJSZfePPl6NQxTx",
   "name": "distribuicao_leads_anhanguera V2",
   "active": true,
@@ -65,7 +65,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -93,7 +93,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1776,
+        1984,
         -496
       ],
       "id": "18dacbb5-ed17-44f4-b706-21f4e47782ab",
@@ -121,7 +121,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2000,
+        2208,
         -496
       ],
       "id": "869ec838-ff8e-4e69-953b-e131b17e588a",
@@ -187,7 +187,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1344,
+        1312,
         -496
       ],
       "id": "d2d81bb9-326b-4802-95d7-be01ddd52aaa",
@@ -216,11 +216,24 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1552,
+        1776,
         -496
       ],
       "id": "eb356d3b-7c57-417d-bc83-41f2cfb205c5",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -496
+      ],
+      "id": "0f1ecbad-cfb6-40c7-a35b-e41794e19f2c",
+      "name": "Code1"
     }
   ],
   "connections": {
@@ -294,7 +307,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Code1",
             "type": "main",
             "index": 0
           }
@@ -311,6 +324,17 @@
           }
         ]
       ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -322,8 +346,40 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "69b6c7c3-a0f7-4dc7-8e42-860e7eaf13a7",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "188",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "18648154-2b0f-441b-81bf-d4a78fb5c288",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19122843",
+            "leads[add][0][status_id]": "70788396",
+            "leads[add][0][pipeline_id]": "9095532",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/distribuir",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "a163bbb5-b396-4f3f-a142-67170ce5c423",
   "triggerCount": 1,
   "shared": [
     {
