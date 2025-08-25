@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-01T18:08:25.175Z",
-  "updatedAt": "2025-08-18T21:30:34.000Z",
+  "updatedAt": "2025-08-25T09:11:53.000Z",
   "id": "Bytg5Eu5Z9nlt1Q7",
   "name": "api_sumare",
   "active": true,
@@ -1687,22 +1687,22 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-08-18T13:18:31.473-03:00",
-          "Readable date": "August 18th 2025, 1:18:31 pm",
-          "Readable time": "1:18:31 pm",
+          "timestamp": "2025-08-25T06:00:30.008-03:00",
+          "Readable date": "August 25th 2025, 6:00:30 am",
+          "Readable time": "6:00:30 am",
           "Day of week": "Monday",
           "Year": "2025",
           "Month": "August",
-          "Day of month": "18",
-          "Hour": "13",
-          "Minute": "18",
-          "Second": "31",
+          "Day of month": "25",
+          "Hour": "06",
+          "Minute": "00",
+          "Second": "30",
           "Timezone": "America/Sao_Paulo (UTC-03:00)"
         }
       }
     ]
   },
-  "versionId": "cd77104c-a361-4d87-b963-ca1c7b2c8f1d",
+  "versionId": "d71a1b2b-e33c-449c-9017-f2f4d6394532",
   "triggerCount": 1,
   "shared": [
     {
