@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T17:52:50.272Z",
-  "updatedAt": "2025-08-22T13:41:12.000Z",
+  "updatedAt": "2025-08-25T15:46:33.000Z",
   "id": "AdorfGfiq50Ph1tg",
   "name": "criacao_leads_soead V2",
   "active": true,
@@ -42,7 +42,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -336,
+        -128,
         208
       ],
       "id": "c0b3fd2f-1983-4147-9f3f-b675f1e22314",
@@ -136,7 +136,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -368,24 +368,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -768,
-        208
+        -544,
+        192
       ],
       "id": "54834d6f-89f1-4b20-bde2-283bbfe6a4ad",
       "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Entrada padrão do n8n\nconst dados = items.map(item => item.json);\n\n// Pegar apenas os ids únicos\nconst idsUnicos = [...new Set(dados.map(d => d.id_usuario))];\n\n// Se você quiser só **um** objeto no output final\n// (primeiro id encontrado)\nreturn [\n  {\n    json: { id_usuario: idsUnicos[0] }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -560,
-        208
-      ],
-      "id": "eeb5c6f4-eff0-4ea0-afa3-4f549e4bebab",
-      "name": "Code2"
     },
     {
       "parameters": {},
@@ -443,7 +430,7 @@
               "name": "={{$items(\"dados\")[0].json.Nome}}",
               "pipeline_id": 9095532,
               "status_id": 70788396,
-              "responsible_user_id": "={{ $('Code2').item.json.id_usuario }}",
+              "responsible_user_id": "={{ $('Edit Fields1').item.json.id_usuario }}",
               "custom_fields_values": {
                 "custom_field": [
                   {
@@ -488,7 +475,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -112,
+        96,
         208
       ],
       "id": "26802c80-3e58-41b8-a50a-11b362b69c4e",
@@ -499,6 +486,19 @@
           "name": "Kommo BU"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -784,
+        208
+      ],
+      "id": "0fcbf526-3bf7-47b6-b915-495d2a94acf4",
+      "name": "Code3"
     }
   ],
   "connections": {
@@ -630,7 +630,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields1",
+            "node": "Code3",
             "type": "main",
             "index": 0
           }
@@ -638,17 +638,6 @@
       ]
     },
     "Edit Fields1": {
-      "main": [
-        [
-          {
-            "node": "Code2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code2": {
       "main": [
         [
           {
@@ -680,6 +669,17 @@
           }
         ]
       ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -700,11 +700,11 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36",
-            "content-length": "68",
+            "user-agent": "Mozilla/5.0 (Linux; Android 11; SM-A022G Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/139.0.7258.94 Mobile Safari/537.36[FBAN/EMA;FBLC/pt_PT;FBAV/464.0.0.16.111;FBCX/modulariab;]",
+            "content-length": "76",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "accept-language": "pt-PT,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             "content-type": "application/json",
             "origin": "https://www.soead.com.br",
             "priority": "u=1, i",
@@ -712,19 +712,20 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "179.111.113.249",
+            "x-forwarded-for": "105.172.239.237",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "179.111.113.249"
+            "x-real-ip": "105.172.239.237",
+            "x-requested-with": "com.facebook.lite"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Márcia ",
-            "celular": "1196836974",
-            "tipo": "Pós-Graduação"
+            "nome": "António Morais Jorge ",
+            "celular": "929081628",
+            "tipo": "Graduação"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/690a8140-ee68-4ba8-ad5a-32d1c8bd01c6",
           "executionMode": "production"
@@ -732,7 +733,7 @@
       }
     ]
   },
-  "versionId": "85acf1e0-01e8-44e6-b265-f56a57ad8e61",
+  "versionId": "074c9248-693e-4fcd-9915-a6b6aff18ce6",
   "triggerCount": 1,
   "shared": [
     {
