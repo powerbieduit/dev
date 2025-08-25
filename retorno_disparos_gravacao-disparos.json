@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-12T15:08:41.007Z",
-  "updatedAt": "2025-08-22T20:44:59.000Z",
+  "updatedAt": "2025-08-25T15:38:46.000Z",
   "id": "vBQWXV2MCYF7Mduq",
   "name": "retorno_disparos_gravacao",
   "active": true,
@@ -219,22 +219,6 @@
     },
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "seminteresse",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        160,
-        928
-      ],
-      "id": "f7dd9c42-f60a-4b00-bfc5-77068a399f11",
-      "name": "rematricula-feita1",
-      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -440,6 +424,22 @@
       "id": "2baf25ed-ae7a-4cb3-8393-f8244cbe6622",
       "name": "pagou",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "seminteresse",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        928
+      ],
+      "id": "f7dd9c42-f60a-4b00-bfc5-77068a399f11",
+      "name": "sem interesse",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     }
   ],
   "connections": {
@@ -520,17 +520,6 @@
         ]
       ]
     },
-    "rematricula-feita1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Edit Fields3": {
       "main": [
         [
@@ -596,6 +585,17 @@
           }
         ]
       ]
+    },
+    "sem interesse": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -606,7 +606,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "47cc41d9-471b-43ac-9af3-89c8ece0b71b",
+  "versionId": "7409e356-ff19-401f-9839-9e9c9bb69849",
   "triggerCount": 7,
   "shared": [
     {
