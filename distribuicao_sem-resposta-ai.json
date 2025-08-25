@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-28T16:55:17.984Z",
-  "updatedAt": "2025-08-18T00:38:14.000Z",
+  "updatedAt": "2025-08-25T09:12:36.000Z",
   "id": "HBp98F7cHlM5sJ86",
   "name": "distribuicao_sem resposta",
   "active": true,
@@ -539,22 +539,22 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-08-17T20:30:55.007-04:00",
-          "Readable date": "August 17th 2025, 8:30:55 pm",
-          "Readable time": "8:30:55 pm",
-          "Day of week": "Sunday",
+          "timestamp": "2025-08-25T05:00:36.004-04:00",
+          "Readable date": "August 25th 2025, 5:00:36 am",
+          "Readable time": "5:00:36 am",
+          "Day of week": "Monday",
           "Year": "2025",
           "Month": "August",
-          "Day of month": "17",
-          "Hour": "20",
-          "Minute": "30",
-          "Second": "55",
+          "Day of month": "25",
+          "Hour": "05",
+          "Minute": "00",
+          "Second": "36",
           "Timezone": "America/New_York (UTC-04:00)"
         }
       }
     ]
   },
-  "versionId": "96e3b61a-7d70-40a0-87b5-1915210c4617",
+  "versionId": "4f975fec-a1a2-46a1-9dff-aa1d74b821db",
   "triggerCount": 1,
   "shared": [
     {
