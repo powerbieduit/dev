@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T19:58:17.025Z",
-  "updatedAt": "2025-07-25T22:47:53.000Z",
+  "updatedAt": "2025-09-08T17:33:10.000Z",
   "id": "BF3Jclknpaw5arXj",
   "name": "painel_relatorios_csv",
   "active": true,
@@ -40,8 +40,8 @@
       "name": "Postgres",
       "credentials": {
         "postgres": {
-          "id": "Pq2u2kpM4UEc1q97",
-          "name": "Postgres distribuicao_academico"
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
         }
       }
     },
@@ -116,7 +116,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4872271a-0792-4a7a-b902-6e9ba6da25f0",
+  "versionId": "10fd4da7-a3c8-4406-a22a-26c9b2d5941a",
   "triggerCount": 1,
   "shared": [
     {
