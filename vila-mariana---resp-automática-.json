@@ -1,0 +1,149 @@
+{
+  "createdAt": "2025-09-06T05:59:20.147Z",
+  "updatedAt": "2025-09-06T06:12:27.000Z",
+  "id": "2KUUEXvNBWEo9qGE",
+  "name": "vila mariana - resp automática",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vilamariana",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2042d067-5ea5-42ce-8504-d6bd478e2405",
+      "name": "Webhook",
+      "webhookId": "c01cca84-8c0f-44ae-895f-aff52f953339"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "vila mariana",
+        "remoteJid": "={{ $json.body.data.key.remoteJid }}",
+        "messageText": "Olá, tudo bem?\n\nEste número de *WhatsApp foi desativado*. Para obter atendimento, por favor, *clique no nosso novo link* de contato: 👉 https://wa.cruzeiroead.com.br/atendimento.\n\nEsperamos seu contato por lá! 😉\n\n*Até mais!*",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "462268ca-32d1-48c3-b37c-09910adcfdbf",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nB4splEd6P979FNr",
+          "name": "Evolution - outros-evolution-api.ca31ey.easypanel"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.10.0",
+            "content-length": "992",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "vila mariana",
+            "data": {
+              "key": {
+                "remoteJid": "5511945010493@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3F224D4BECE0F9B3C78E",
+                "senderLid": "64622128279666@lid"
+              },
+              "pushName": "x",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "/Sz+IWGIBKOMGQ==",
+                    "senderTimestamp": "1757006404",
+                    "recipientKeyHash": "ChRHgewuKxuaRg==",
+                    "recipientTimestamp": "1756937952"
+                  },
+                  "deviceListMetadataVersion": 2
+                },
+                "conversation": "asdasd"
+              },
+              "contextInfo": {
+                "expiration": 0,
+                "ephemeralSettingTimestamp": "0",
+                "disappearingMode": {
+                  "initiator": "CHANGED_IN_CHAT"
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1757138378,
+              "instanceId": "3f23fd70-4c84-4019-86d3-d85677c29513",
+              "source": "desktop"
+            },
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/vilamariana",
+            "date_time": "2025-09-06T02:59:39.693Z",
+            "sender": "5511993092112@s.whatsapp.net",
+            "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
+            "apikey": "563733D13BF3-4470-A0B1-C73AC820AE8C"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/vilamariana",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "157d57af-1693-4835-a216-d0a8877b29f7",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-09-06T05:59:20.151Z",
+      "updatedAt": "2025-09-06T05:59:20.151Z",
+      "role": "workflow:owner",
+      "workflowId": "2KUUEXvNBWEo9qGE",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
