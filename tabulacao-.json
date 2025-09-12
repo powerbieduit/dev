@@ -1,0 +1,151 @@
+{
+  "createdAt": "2025-08-25T19:36:40.160Z",
+  "updatedAt": "2025-09-08T18:11:07.000Z",
+  "id": "tuFqFlMpKvetCh06",
+  "name": "Tabulacao",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tabulacao",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        176
+      ],
+      "id": "ae13b5cd-0761-4188-a721-5e64ad67a10a",
+      "name": "Webhook1",
+      "webhookId": "c21b7403-1a87-4b9b-81ad-68b29844782d"
+    },
+    {
+      "parameters": {
+        "tableId": "tabulacao_logs",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "lead_id",
+              "fieldValue": "={{ $json.body.id_atendimento }}"
+            },
+            {
+              "fieldId": "responsavel",
+              "fieldValue": "={{ $json.body.agente }}"
+            },
+            {
+              "fieldId": "timestamp_brazil",
+              "fieldValue": "={{ (() => {\nconst d = new Date($json.body.data_tabulacao);\nd.setHours(d.getHours() - 3); // subtrai 3 horas\nreturn d.toISOString();\n})() }}"
+            },
+            {
+              "fieldId": "nivel1",
+              "fieldValue": "={{ $json.body.nivel_1_nome }}"
+            },
+            {
+              "fieldId": "nivel2",
+              "fieldValue": "={{ $json.body.nivel_2_nome }}"
+            },
+            {
+              "fieldId": "nivel3",
+              "fieldValue": "={{ $json.body.nivel_3_nome }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        176
+      ],
+      "id": "dcf8776a-c31a-460d-b192-02be39bb9ba2",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "266",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "origin": "chrome-extension://edhhcfnbgioiepgpbhhoeccjgoldcjhk",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.188.30",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.188.30"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id_atendimento": "15493061",
+            "agente": "Mariana",
+            "id_nivel_1": 1,
+            "id_nivel_2": 1,
+            "id_nivel_3": 1,
+            "nivel_1_nome": "Acadêmico",
+            "nivel_2_nome": "Dificuldade em disciplina",
+            "nivel_3_nome": "Orientação e esclarecimento de dúvida",
+            "data_tabulacao": "2025-09-08T16:54:18.139Z"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/tabulacao",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "ea522a89-5b57-41a5-a6a3-49aec902da0e",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-25T19:36:40.164Z",
+      "updatedAt": "2025-08-25T19:36:40.164Z",
+      "role": "workflow:owner",
+      "workflowId": "tuFqFlMpKvetCh06",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
