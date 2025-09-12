@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-31T20:27:16.876Z",
-  "updatedAt": "2025-08-22T18:02:51.000Z",
+  "updatedAt": "2025-08-28T19:38:24.000Z",
   "id": "EphfDCJgvSTJDyoD",
   "name": "gravacao_leads_comercial_csv",
   "active": true,
@@ -516,28 +516,11 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3264,
-        1136
+        3216,
+        1200
       ],
       "id": "cb923494-719e-4ed0-9a6b-f802d97f15a8",
       "name": "Code3"
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "aceite_novos_dia",
-        "responseMode": "responseNode",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        2208,
-        1312
-      ],
-      "id": "806da5ec-fa86-464f-8e8f-22e39f0ab82a",
-      "name": "Webhook3",
-      "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
     },
     {
       "parameters": {
@@ -547,21 +530,21 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        3664,
-        1280
+        4128,
+        1952
       ],
       "id": "f3a6aa0c-d07e-408d-aab6-1f2358f24eef",
       "name": "Respond to Webhook1"
     },
     {
       "parameters": {
-        "numberInputs": 3
+        "numberInputs": 7
       },
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3472,
-        1296
+        3776,
+        1872
       ],
       "id": "06c6e70a-e94c-4f79-bf91-75d5037757e9",
       "name": "Merge1"
@@ -569,15 +552,15 @@
     {
       "parameters": {
         "content": "## ACEITE E NOVOS LEADS\n",
-        "height": 864,
-        "width": 1904,
+        "height": 2240,
+        "width": 2720,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1984,
-        880
+        1808,
+        944
       ],
       "id": "12e3e11c-9c10-4129-83f5-cecd3d3a999d",
       "name": "Sticky Note2"
@@ -637,7 +620,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT COUNT(id_lead) AS total_ids_novos \nFROM unique_leads",
+        "query": "SELECT COUNT(DISTINCT id_lead) AS total_ids_novos\nFROM unique_leads\nWHERE primeira_data >= $1::date\n  AND primeira_data <  ($2::date + INTERVAL '1 day');\n",
         "options": {
           "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
         }
@@ -686,15 +669,74 @@
     },
     {
       "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT COUNT(id_lead) AS total_ids_perdidos \nFROM novos_perdidos;",
+        "httpMethod": "POST",
+        "path": "dados-comercial",
+        "responseMode": "responseNode",
         "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2032,
+        1536
+      ],
+      "id": "806da5ec-fa86-464f-8e8f-22e39f0ab82a",
+      "name": "novos-ganhos-perdidos",
+      "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aceite",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2064,
+        1072
+      ],
+      "id": "7b94a627-b834-456d-b812-74b4578ad207",
+      "name": "aceite",
+      "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(DISTINCT RGM) AS total_alunos\nFROM alunos_atuais\nWHERE data_matricula >= $1::date\n  AND data_matricula < ($2::date + INTERVAL '1 day')\n  AND tipo_matricula = 'INGRESSANTE';\n",
+        "options": {
+          "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
+        }
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2816,
-        1568
+        2800,
+        1744
+      ],
+      "id": "2bf046a3-040e-49aa-b360-f0af47728438",
+      "name": "leads ganhos1",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(DISTINCT id_lead) AS total_ids_perdidos\nFROM novos_perdidos\nWHERE primeiro_perdido >= $1::date\n  AND primeiro_perdido <  ($2::date + INTERVAL '1 day');\n",
+        "options": {
+          "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2800,
+        1520
       ],
       "id": "57f52a1d-1800-4328-a4a5-2ea064129e05",
       "name": "leads perdidos",
@@ -704,6 +746,390 @@
           "name": "Postgres CSV_comercial"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48539249",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2592,
+        1984
+      ],
+      "id": "79c27ba6-2535-4f27-98d1-e98241bdd9b3",
+      "name": "leads em inscricao"
+    },
+    {
+      "parameters": {
+        "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48566195",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2464,
+        2512
+      ],
+      "id": "6dd22855-4b3c-4518-97ab-8d1e9454ff1c",
+      "name": "leads em processo seletivo"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2208,
+        2016
+      ],
+      "id": "e852bb6c-3c8e-4da5-8ee6-967bde570cec",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.numero }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2368,
+        1984
+      ],
+      "id": "3b41daa0-e81c-44f3-939e-bd429ab448d6",
+      "name": "Wait2",
+      "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2112,
+        2512
+      ],
+      "id": "4c9ee329-703d-429c-962c-7c5c06a324c6",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.numero }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2288,
+        2512
+      ],
+      "id": "06550701-c8b5-4f31-9991-151666c0282d",
+      "name": "Wait3",
+      "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "inscricao",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2016,
+        2000
+      ],
+      "id": "2f523c64-0741-4658-b4ce-dbfee27c44a5",
+      "name": "inscricao",
+      "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "processo seletivo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1888,
+        2512
+      ],
+      "id": "30a4efb4-5912-43cc-8a7b-a8c4fb41f832",
+      "name": "processo seletivo",
+      "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "941c3e39-fdf2-42bf-a637-9aa84157d435",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2784,
+        1984
+      ],
+      "id": "0b417ebd-43e8-4b90-b08f-c3712f7d541c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst first = items[0]?.json ?? {};\n\nconst leadsFromRoot = first?._embedded?.leads;\nconst leadsFromData = first?.data?._embedded?.leads;\nconst leadsFromBody = first?.body?._embedded?.leads;\n\nlet leads = [leadsFromRoot, leadsFromData, leadsFromBody].find(Array.isArray);\n\nif (!Array.isArray(leads)) {\n  const looksLikeLeads = items.every(i => typeof i?.json === 'object' && ('id' in i.json));\n  if (looksLikeLeads) {\n    leads = items.map(i => i.json);\n  }\n}\n\nif (!Array.isArray(leads)) leads = [];\n\nreturn [\n  {\n    json: {\n      \"em-aceite\": leads.length\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2976,
+        1936
+      ],
+      "id": "a6f58f00-b80d-4b01-9f94-1594756e9a38",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "941c3e39-fdf2-42bf-a637-9aa84157d435",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2672,
+        2512
+      ],
+      "id": "9c130cac-8c62-4428-ad44-72147749bac9",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst first = items[0]?.json ?? {};\n\nconst leadsFromRoot = first?._embedded?.leads;\nconst leadsFromData = first?.data?._embedded?.leads;\nconst leadsFromBody = first?.body?._embedded?.leads;\n\nlet leads = [leadsFromRoot, leadsFromData, leadsFromBody].find(Array.isArray);\n\nif (!Array.isArray(leads)) {\n  const looksLikeLeads = items.every(i => typeof i?.json === 'object' && ('id' in i.json));\n  if (looksLikeLeads) {\n    leads = items.map(i => i.json);\n  }\n}\n\nif (!Array.isArray(leads)) leads = [];\n\nreturn [\n  {\n    json: {\n      \"em-aceite\": leads.length\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        2512
+      ],
+      "id": "35d8a28a-9079-4f59-9430-ff19a1babe20",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48539246",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "requestInterval": 2000
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        2944
+      ],
+      "id": "8fcd3009-898d-453f-979d-70bb1b12e4a5",
+      "name": "leads em atendimento"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "495ce514-a7e8-42e5-a348-76703230c472",
+              "name": "data1",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2528,
+        2944
+      ],
+      "id": "f0897205-a15c-446e-aa71-d74183443030",
+      "name": "Edit Fields3",
+      "retryOnFail": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mesma coleta que já fizemos\nfunction collectLeadsDeep(obj, acc) {\n  if (!obj) return;\n  if (Array.isArray(obj)) return obj.forEach(el => collectLeadsDeep(el, acc));\n  if (typeof obj === 'object') {\n    if (obj._embedded?.leads) acc.push(...obj._embedded.leads);\n    if ('id' in obj && 'responsible_user_id' in obj) acc.push(obj);\n    for (const v of Object.values(obj)) {\n      if (v && (typeof v === 'object' || Array.isArray(v))) collectLeadsDeep(v, acc);\n    }\n  }\n}\n\nconst found = [];\nfor (const it of items) collectLeadsDeep(it?.json, found);\n\n// Elimina duplicados por id\nconst seen = new Set();\nconst leads = [];\nfor (const l of found) {\n  if (!l?.id) continue;\n  if (seen.has(l.id)) continue;\n  seen.add(l.id);\n  leads.push(l);\n}\n\n// Agrupa só por responsável\nconst byResponsible = leads.reduce((acc, l) => {\n  const k = String(l.responsible_user_id ?? 'null');\n  acc[k] = (acc[k] || 0) + 1;\n  return acc;\n}, {});\n\n// Retorna só a contagem\nreturn [{ json: byResponsible }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2784,
+        2832
+      ],
+      "id": "78bc8511-2b34-4710-89ab-62cd96aea8a1",
+      "name": "Code8"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distribuicao_comercial",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        3008
+      ],
+      "id": "2bd4b74e-416c-4514-9ca3-27705725f9b4",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- Funções utilitárias ---\nfunction isPlainObject(o) {\n  return o && typeof o === 'object' && !Array.isArray(o);\n}\nfunction looksLikeCountMap(obj) {\n  if (!isPlainObject(obj)) return false;\n  const entries = Object.entries(obj);\n  if (entries.length === 0) return false;\n  let numericPairs = 0;\n  for (const [k, v] of entries) {\n    if (!isNaN(Number(k)) && typeof v === 'number') numericPairs++;\n  }\n  return numericPairs >= Math.max(3, Math.ceil(entries.length * 0.6));\n}\nfunction collectRowsWithIdLeadNome(any, acc) {\n  if (!any) return;\n  if (Array.isArray(any)) {\n    for (const el of any) collectRowsWithIdLeadNome(el, acc);\n    return;\n  }\n  if (isPlainObject(any)) {\n    if ('id_lead' in any && 'nome' in any) acc.push(any);\n    for (const v of Object.values(any)) {\n      if (v && (isPlainObject(v) || Array.isArray(v))) collectRowsWithIdLeadNome(v, acc);\n    }\n  }\n}\n\n// --- Varre todos os items para encontrar: (a) mapa de contagem e (b) linhas do Supabase ---\nlet countMap = null;\nconst supaRows = [];\n\nfor (const it of items) {\n  const j = it?.json;\n\n  if (!countMap && looksLikeCountMap(j)) countMap = j;\n  if (!countMap && isPlainObject(j) && j.byResponsible && looksLikeCountMap(j.byResponsible)) {\n    countMap = j.byResponsible;\n  }\n\n  collectRowsWithIdLeadNome(j, supaRows);\n}\n\n// Segurança\nif (!countMap) {\n  return [{ json: { error: \"Mapa de contagens (byResponsible) não encontrado nos items.\", previewFirstItem: items?.[0]?.json ?? null } }];\n}\nif (supaRows.length === 0) {\n  return [{ json: { error: \"Nenhuma linha do Supabase com {id_lead, nome} foi encontrada.\", previewSecondItem: items?.[1]?.json ?? null } }];\n}\n\n// Monta mapa id -> nome (e opcionalmente outros campos)\nconst idToRow = {};\nfor (const row of supaRows) {\n  idToRow[String(row.id_lead)] = row; // guarda a linha inteira se quiser usar status/observacao depois\n}\n\n// Junta SOMENTE os que existem no Supabase\nconst joined = Object.entries(countMap)\n  .filter(([id]) => Object.prototype.hasOwnProperty.call(idToRow, String(id))) // <- filtro pedido\n  .map(([id, count]) => {\n    const r = idToRow[String(id)];\n    return {\n      responsible_user_id: Number(id),\n      nome: r?.nome ?? \"(Sem nome)\",\n      leads_count: count\n      // se quiser, acrescente: status: r?.status, observacao: r?.observacao\n    };\n  })\n  .sort((a, b) => b.leads_count - a.leads_count);\n\n// Retorna como múltiplos itens (um por responsável)\nreturn joined.map(r => ({ json: r }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3328,
+        2816
+      ],
+      "id": "6365696d-08fb-475c-b912-eefc09305e66",
+      "name": "Code9"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3008,
+        2928
+      ],
+      "id": "97fbf606-e965-4570-8ba0-718948281704",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lista_atendimento ",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1824,
+        2928
+      ],
+      "id": "199d201b-435c-447a-9df2-9c5389b20022",
+      "name": "em atendimento",
+      "webhookId": "b9a7cb38-824f-42a9-889f-6783a517659d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        2944
+      ],
+      "id": "97c6060b-b180-4967-a114-fe334b98fcf0",
+      "name": "Code10"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.numero }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2160,
+        2960
+      ],
+      "id": "e4cbca27-6175-48f0-8309-266d2cc64116",
+      "name": "Wait4",
+      "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
     }
   ],
   "connections": {
@@ -905,27 +1331,6 @@
         ]
       ]
     },
-    "Webhook3": {
-      "main": [
-        [
-          {
-            "node": "Code2",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "leads novos",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "leads perdidos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code3": {
       "main": [
         [
@@ -988,6 +1393,38 @@
         ]
       ]
     },
+    "novos-ganhos-perdidos": {
+      "main": [
+        [
+          {
+            "node": "leads novos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "leads perdidos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "leads ganhos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aceite": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "leads perdidos": {
       "main": [
         [
@@ -995,6 +1432,253 @@
             "node": "Merge1",
             "type": "main",
             "index": 2
+          }
+        ]
+      ]
+    },
+    "leads ganhos1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "leads em inscricao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leads em inscricao": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leads em processo seletivo": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "leads em processo seletivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "inscricao": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "processo seletivo": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "leads em atendimento": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Code8",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code8": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Code9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "em atendimento": {
+      "main": [
+        [
+          {
+            "node": "Code10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code10": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "leads em atendimento",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1074,35 +1758,144 @@
         }
       }
     ],
-    "Webhook3": [
+    "novos-ganhos-perdidos": [
       {
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0",
             "content-length": "0",
-            "accept": "*/*",
+            "accept": "application/json",
             "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
-            "content-type": "application/json",
-            "origin": "https://web-sandbox.oaiusercontent.com",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+            "origin": "null",
             "priority": "u=1, i",
-            "referer": "https://web-sandbox.oaiusercontent.com/",
-            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Microsoft Edge\";v=\"139\", \"Chromium\";v=\"139\"",
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": "\"Windows\"",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "38.10.152.69",
+            "x-forwarded-for": "191.204.187.221",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "38.10.152.69"
+            "x-real-ip": "191.204.187.221"
           },
           "params": {},
-          "query": {},
+          "query": {
+            "start": "2025-08-20",
+            "end": "2025-08-20"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/aceite_novos_dia",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "aceite": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0",
+            "content-length": "0",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Microsoft Edge\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {
+            "start": "2025-08-20",
+            "end": "2025-08-20"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/aceite_novos_dia",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "inscricao": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0",
+            "content-length": "0",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Microsoft Edge\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {
+            "start": "2025-08-20",
+            "end": "2025-08-20"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/aceite_novos_dia",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "processo seletivo": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0",
+            "content-length": "0",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Microsoft Edge\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.187.221"
+          },
+          "params": {},
+          "query": {
+            "start": "2025-08-20",
+            "end": "2025-08-20"
+          },
           "body": {},
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/aceite_novos_dia",
           "executionMode": "production"
@@ -1110,8 +1903,8 @@
       }
     ]
   },
-  "versionId": "54d04bce-8654-482d-a3a9-4d54070b2d03",
-  "triggerCount": 4,
+  "versionId": "16bcb31b-59d7-46d8-a15e-ff2a44784b59",
+  "triggerCount": 8,
   "shared": [
     {
       "createdAt": "2025-07-31T20:27:16.888Z",
