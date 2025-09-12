@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T17:19:43.195Z",
-  "updatedAt": "2025-08-20T16:37:18.000Z",
+  "updatedAt": "2025-09-09T14:42:55.000Z",
   "id": "wMujUjfLRvtBK4bg",
   "name": "distribuicao_whastapp V2",
   "active": true,
@@ -197,29 +197,6 @@
           "name": "Supabase Academico"
         }
       }
-    },
-    {
-      "parameters": {
-        "workflowInputs": {
-          "values": [
-            {
-              "name": "telefone"
-            },
-            {
-              "name": "id_lead",
-              "type": "number"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        544,
-        -720
-      ],
-      "id": "622210a9-d750-4b71-b3a7-a9d4e259b196",
-      "name": "When Executed by Another Workflow"
     }
   ],
   "connections": {
@@ -299,17 +276,6 @@
           }
         ]
       ]
-    },
-    "When Executed by Another Workflow": {
-      "main": [
-        [
-          {
-            "node": "Get list of leads1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "settings": {
@@ -322,7 +288,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "7bea8079-cb0b-4993-b5b1-8386610e4a1f",
+  "versionId": "57ec6d0c-77f9-4b2f-8577-8a4eb947f26a",
   "triggerCount": 1,
   "shared": [
     {
