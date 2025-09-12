@@ -1,0 +1,3345 @@
+{
+  "createdAt": "2025-09-11T14:25:52.421Z",
+  "updatedAt": "2025-09-11T22:41:27.000Z",
+  "id": "8OQzeZgaLqZDvjbB",
+  "name": "distribuicao_academico/acolhimento_csv copy 2",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "6e561d5f-0e58-4ff5-94cf-d340c26119bc",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -5632,
+        -64
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -4928,
+        176
+      ],
+      "id": "605838f8-b605-46df-8070-fb55de28af58",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\n// São Paulo (24h)\nconst fmt = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo',\n  hour12: false,\n  hour: '2-digit',\n  minute: '2-digit',\n  second: '2-digit',\n  weekday: 'short',\n});\n\nconst parts = fmt.formatToParts(now);\nconst get = (t) => parts.find(p => p.type === t)?.value ?? '';\n\nconst hour   = Number(get('hour'));\nconst minute = Number(get('minute'));\nconst second = Number(get('second'));\n\n// Normaliza o weekday: remove acento/pontuação e baixa caixa\nconst wdRaw = get('weekday');\nconst wdNorm = String(wdRaw)\n  .normalize('NFD').replace(/\\p{Diacritic}/gu, '')\n  .replace(/\\W+/g, '') // remove ponto/traços/esp.\n  .toLowerCase();\n\n// Mapa robusto (aceita \"sab\", \"sabado\", \"sáb.\", etc.)\nconst dayMap = {\n  dom: 0, domingo: 0,\n  seg: 1, segunda: 1,\n  ter: 2, terca: 2, terça: 2,\n  qua: 3, quarta: 3,\n  qui: 4, quinta: 4,\n  sex: 5, sexta: 5,\n  sab: 6, sabado: 6,\n};\nconst day = dayMap[wdNorm] ?? dayMap[wdNorm.slice(0,3)] ?? -1;\n\n// Janelas de atendimento\nconst inWeekWindow     = (h) => h >= 8 && h < 20; // seg–sex 09:00–19:59\nconst inSaturdayWindow = (h) => h >= 9 && h < 17; // sáb 09:00–16:59\n\nconst permitido =\n  (day >= 1 && day <= 5 && inWeekWindow(hour)) ||\n  (day === 6 && inSaturdayWindow(hour));\n\nreturn [{\n  json: {\n    status: permitido ? 'Permitido' : 'Fora do horário',\n    hora_SP: `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}:${String(second).padStart(2,'0')}`,\n    dia_da_semana: day,   // 0=dom ... 6=sáb\n    weekday_raw: wdRaw,   // só pra debug\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5408,
+        -64
+      ],
+      "id": "2d1f89fa-f628-404a-ac2c-077f8b9d26da",
+      "name": "Verfica Horario"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "03628131-1b39-4bc1-8c07-2835de78e857",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Permitido",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5200,
+        -64
+      ],
+      "id": "bd8ca27e-320f-4b49-b5a4-03c4583f9dae",
+      "name": "If Dentro Horario"
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=6961711&filter[statuses][0][status_id]=61970803&with=contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -3280,
+        -80
+      ],
+      "id": "aa7ed6a8-4e66-4c8d-ab31-064db089e161",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1) $.json.data precisa existir e ser string não vazia\nif (typeof $json.data !== 'string' || !$json.data.trim()) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: '$.json.data ausente ou vazio' }\n  }];\n}\n\n// 2) Parse seguro\nlet parsed;\ntry {\n  parsed = JSON.parse($json.data);\n} catch (e) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: String(e.message) }\n  }];\n}\n\n// 3) Validar estrutura básica\nconst leads = parsed?._embedded?.leads;\nif (!Array.isArray(leads)) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: 'Estrutura inesperada: _embedded.leads não encontrado' }\n  }];\n}\nif (leads.length === 0) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: 'Nenhum lead retornado' }\n  }];\n}\n\n// 4) Pegar SEMPRE o primeiro lead do array\nconst lead = leads[0];\n\n// 5) Validar contato do primeiro lead\nconst contato = (lead._embedded?.contacts || []).find(c => c?.id && c?.is_main === true) \n              || (lead._embedded?.contacts || []).find(c => c?.id); // fallback: qualquer contato com id\n\nif (!contato) {\n  return [{\n    json: {\n      error: 'Falha no parse Leads',\n      detalhe: `Primeiro lead (id=${lead.id}) não possui contato válido`\n    }\n  }];\n}\n\n// 6) Montar saída de um ÚNICO item\nreturn [{\n  json: {\n    id_lead: lead.id,\n    id_contato: contato.id,\n    updated_at: lead.updated_at ?? null,\n    id_responsavel_atual: lead.responsible_user_id ?? null,\n    id_responsavel_novo: null, // preencha depois no fluxo\n    // opcional: inclua metadados úteis pra debug\n    pipeline_id: lead.pipeline_id ?? null,\n    status_id: lead.status_id ?? null,\n    // se quiser manter o payload do lead pra uso posterior, descomente:\n    // lead\n  }\n}];\n"
+      },
+      "name": "Extrair IDs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3056,
+        -80
+      ],
+      "id": "1a8bb2c0-1ed0-413f-981c-76d409d0cad6"
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/contacts",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filter[id][]",
+              "value": "={{ $json.id_contato }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Contatos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -2640,
+        -96
+      ],
+      "id": "5a4f407f-44ff-4c96-a9a6-8678cfc5dfc0",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const saida = [];\n\nconst leads = $items(\"Extrair IDs\");\nconst contatos = $items(\"Get Contatos\");\n\nfor (let i = 0; i < leads.length; i++) {\n  const lead = leads[i].json;\n\n  // Buscar o contato correspondente\n  const contatoItem = contatos.find(c => {\n    try {\n      const parsed = JSON.parse(c.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n      return contato?.id === lead.id_contato;\n    } catch (e) {\n      return false;\n    }\n  });\n\n  let telefone = null;\n  let nome_contato = null;\n\n  if (contatoItem) {\n    try {\n      const parsed = JSON.parse(contatoItem.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n\n      if (contato) {\n        nome_contato = contato.name ?? null;\n        const campoTelefone = contato.custom_fields_values?.find(f => f.field_code === 'PHONE');\n        if (campoTelefone && campoTelefone.values?.length > 0) {\n          telefone = campoTelefone.values[0].value ?? null;\n        }\n      }\n    } catch (e) {\n      // Ignora erros de parse\n    }\n  }\n\n  saida.push({\n    json: {\n      id_lead: lead.id_lead,\n      id_contato: lead.id_contato,\n      id_responsavel: lead.id_responsavel, // ← Mantendo o responsável vindo do Extrair IDs!\n      nome_contato,\n      telefone\n    }\n  });\n}\n\nreturn saida;\n"
+      },
+      "name": "Extrair Telefones",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2448,
+        -96
+      ],
+      "id": "27702789-b4ba-4084-aa5d-202483f8f07f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ce4ed228-41cd-4c47-b238-d73aa351bb08",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "Falha no parse Leads",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2848,
+        -80
+      ],
+      "id": "598b944d-dc81-489c-b5fd-103c41ffeeda",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2640,
+        96
+      ],
+      "id": "c8039f43-4619-4ca2-86c0-a343650334d4",
+      "name": "Nada a Distribuir"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3280,
+        128
+      ],
+      "id": "ad2b955e-d849-48b6-90be-2f9bba0bf3ea",
+      "name": "Nenhum agente disponível"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Atualiza Fila Postgres3').item.json.id }}",
+            "fila": "={{ $('Atualiza Fila Postgres3').item.json.fila + 1 }}\n"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "aa0b1a8b-aacc-45db-b82a-b72bdfccc171",
+      "name": "Atualiza Fila Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1840,
+        -96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Extrair IDs').first().json.id_contato }}",
+              "responsible_user_id": "={{ +$('Atualiza Fila Postgres3').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2256,
+        -96
+      ],
+      "id": "8e767e4f-47be-4c73-8d9e-c563bc8a7b58",
+      "name": "Update Contact1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Extrair Telefones').first().json.id_lead }}",
+              "pipeline_id": 11116680,
+              "status_id": 85291940,
+              "responsible_user_id": "={{ +$('Atualiza Fila Postgres3').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2048,
+        -96
+      ],
+      "id": "571ca114-b4af-4bab-95e5-1861390243c2",
+      "name": "Update Lead1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Extrair IDs').first().json.id_lead }}",
+              "text": "Oi! Tudo bem? Agora sou eu que vou te atender 🙂 Vi que você pediu ajuda sobre o seu curso. Se já deixou sua dúvida aqui na conversa, vou analisar e te responder rapidinho. Se ainda não explicou o que está acontecendo, pode me contar? Estou aqui para ajudar no que for preciso!"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        -96
+      ],
+      "id": "198b9b48-1dee-42e3-8484-0c7d6fcf83f1",
+      "name": "Create new notes",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $('Extrair Telefones').first().json.telefone }}",
+        "textBody": "=Oi! Tudo bem? Aqui é {{ $('Distribuicao').item.json.proxima_ordem[0].nome }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.  \n\n● Se já explicou o que aconteceu, vou analisar e responder em breve. \n● Se ainda não contou, pode me dizer agora?  \n\nEstou à disposição para ajudar. ✅",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        -96
+      ],
+      "id": "0ed14cb7-afdb-47db-87f3-4ebdc7dad109",
+      "name": "Send message",
+      "webhookId": "a668f817-0a90-4368-81e4-fac7b8a25ca6",
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=6961711&filter[statuses][0][status_id]=58225943&with=contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Leads1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -3552,
+        512
+      ],
+      "id": "82cd5c9b-95ac-4201-ba75-b3ff0fbc673f",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrair IDs - apenas o PRIMEIRO lead válido\n\n// 1) $.json.data precisa existir e ser string não vazia\nif (typeof $json.data !== 'string' || !$json.data.trim()) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: '$.json.data ausente ou vazio' }\n  }];\n}\n\n// 2) Parse seguro\nlet parsed;\ntry {\n  parsed = JSON.parse($json.data);\n} catch (e) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: String(e.message) }\n  }];\n}\n\n// 3) Validar estrutura básica\nconst leads = parsed?._embedded?.leads;\nif (!Array.isArray(leads)) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: 'Estrutura inesperada: _embedded.leads não encontrado' }\n  }];\n}\nif (leads.length === 0) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: 'Nenhum lead retornado' }\n  }];\n}\n\n// 4) Pegar SEMPRE o primeiro lead do array\nconst lead = leads[0];\n\n// 5) Validar contato do primeiro lead\nconst contato = (lead._embedded?.contacts || []).find(c => c?.id && c?.is_main === true) \n              || (lead._embedded?.contacts || []).find(c => c?.id); // fallback: qualquer contato\n\nif (!contato) {\n  return [{\n    json: {\n      error: 'Falha no parse Leads',\n      detalhe: `Primeiro lead (id=${lead.id}) não possui contato válido`\n    }\n  }];\n}\n\n// 6) Montar saída de um ÚNICO item\nreturn [{\n  json: {\n    id_lead: lead.id,\n    id_contato: contato.id,\n    updated_at: lead.updated_at ?? null,\n    id_responsavel_atual: lead.responsible_user_id ?? null,\n    id_responsavel_novo: null, // você vai preencher depois no fluxo\n    // metadados úteis pra debug\n    pipeline_id: lead.pipeline_id ?? null,\n    status_id: lead.status_id ?? null,\n    // se quiser, mantenha o payload inteiro:\n    // lead\n  }\n}];\n"
+      },
+      "name": "Extrair IDs1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3344,
+        512
+      ],
+      "id": "98c239b5-14f5-4299-9ee6-2efe0f266127"
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/contacts",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filter[id][]",
+              "value": "={{ $json.id_contato }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Contatos1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -2896,
+        496
+      ],
+      "id": "78d1e4e6-9253-44ea-803a-d36f5718f5d7",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const saida = [];\n\nconst leads = $items(\"Extrair IDs1\");\nconst contatos = $items(\"Get Contatos1\");\n\nfor (let i = 0; i < leads.length; i++) {\n  const lead = leads[i].json;\n\n  // Buscar o contato correspondente\n  const contatoItem = contatos.find(c => {\n    try {\n      const parsed = JSON.parse(c.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n      return contato?.id === lead.id_contato;\n    } catch (e) {\n      return false;\n    }\n  });\n\n  let telefone = null;\n  let nome_contato = null;\n\n  if (contatoItem) {\n    try {\n      const parsed = JSON.parse(contatoItem.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n\n      if (contato) {\n        nome_contato = contato.name ?? null;\n        const campoTelefone = contato.custom_fields_values?.find(f => f.field_code === 'PHONE');\n        if (campoTelefone && campoTelefone.values?.length > 0) {\n          telefone = campoTelefone.values[0].value ?? null;\n        }\n      }\n    } catch (e) {\n      // Ignora erros de parse\n    }\n  }\n\n  saida.push({\n    json: {\n      id_lead: lead.id_lead,\n      id_contato: lead.id_contato,\n      id_responsavel: lead.id_responsavel, // ← Mantendo o responsável vindo do Extrair IDs!\n      nome_contato,\n      telefone\n    }\n  });\n}\n\nreturn saida;\n"
+      },
+      "name": "Extrair Telefones1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2688,
+        496
+      ],
+      "id": "012834a5-643a-4e79-ad95-7bd8b1406590"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ce4ed228-41cd-4c47-b238-d73aa351bb08",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "Falha no parse Leads",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3120,
+        512
+      ],
+      "id": "8d9a2a3c-7590-49d5-8be9-fe3ab0cb2d3d",
+      "name": "If4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2896,
+        720
+      ],
+      "id": "aa20aaf4-999a-4307-86f4-aae28a105966",
+      "name": "Nada a Distribuir1"
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Extrair IDs1').first().json.id_contato }}",
+              "name": "=",
+              "responsible_user_id": "={{ +$('Atualiza Fila Postgres2').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2480,
+        496
+      ],
+      "id": "e22c12da-1ee3-483f-b10b-d32ebcc682b7",
+      "name": "Update Contact3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Extrair IDs1').first().json.id_lead }}",
+              "pipeline_id": 11115992,
+              "status_id": 85286344,
+              "responsible_user_id": "={{ $('Distribuicao1').item.json.id_responsavel }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2272,
+        496
+      ],
+      "id": "684b5f9f-ac9c-4d1f-9a81-806ac5ba757d",
+      "name": "Update Lead3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Extrair IDs1').first().json.id_lead }}",
+              "text": "Oi! Tudo bem? Agora sou eu que vou te atender 🙂 Vi que você pediu ajuda sobre o seu curso. Se já deixou sua dúvida aqui na conversa, vou analisar e te responder rapidinho. Se ainda não explicou o que está acontecendo, pode me contar? Estou aqui para ajudar no que for preciso!"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        496
+      ],
+      "id": "c7cbca7a-72b1-42ae-b652-9dcb8d82847e",
+      "name": "Create new notes3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $('Extrair Telefones1').first().json.telefone }}",
+        "textBody": "=Oi! Tudo bem? Aqui é {{ $('Atualiza Fila Postgres1').item.json.responsavel }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.\n\n● Se já explicou o que aconteceu, vou analisar e responder em breve. \n● Se ainda não contou, pode me dizer agora?  \n\nEstou à disposição para ajudar. ✅ \n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        496
+      ],
+      "id": "18c15497-81fa-4738-bccc-643c395072b8",
+      "name": "Send message3",
+      "webhookId": "9a7c38fa-5c96-4e21-bdf8-e8f455f8d70e",
+      "alwaysOutputData": true,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Distribuicao1').item.json.id_responsavel }}",
+            "fila": "={{ $('Distribuicao1').item.json.proxima_ordem[0].fila_atual +1}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "c0164425-cbc5-465c-bd76-1f8f237a97d1",
+      "name": "Atualiza Fila Postgres1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2048,
+        496
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3552,
+        736
+      ],
+      "id": "86077037-4891-46a2-9cd4-334323936357",
+      "name": "Nenhum agente disponível1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "ultima_execucao": "={{    (() => {     const data = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));     const dia = String(data.getDate()).padStart(2, '0');     const mes = String(data.getMonth() + 1).padStart(2, '0');     const ano = String(data.getFullYear()).slice(-2);     const hora = String(data.getHours()).padStart(2, '0');     const minuto = String(data.getMinutes()).padStart(2, '0');     return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;   })()  }}",
+            "timestamp": "={{ new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"America/Sao_Paulo\" })) }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1824,
+        496
+      ],
+      "id": "4dee1865-7472-4ef2-a21d-5799b2f2ad72",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "ultima_execucao": "={{    (() => {     const data = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));     const dia = String(data.getDate()).padStart(2, '0');     const mes = String(data.getMonth() + 1).padStart(2, '0');     const ano = String(data.getFullYear()).slice(-2);     const hora = String(data.getHours()).padStart(2, '0');     const minuto = String(data.getMinutes()).padStart(2, '0');     return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;   })()  }}",
+            "timestamp": "={{ new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"America/Sao_Paulo\" })) }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1616,
+        -96
+      ],
+      "id": "bc99a962-d2e4-43b7-9509-cedcb379f1b0",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "6c218226-b478-45f9-b40f-1c695c6f2035",
+      "name": "Schedule Trigger1",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -5648,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\n// São Paulo (24h)\nconst fmt = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo',\n  hour12: false,\n  hour: '2-digit',\n  minute: '2-digit',\n  second: '2-digit',\n  weekday: 'short',\n});\n\nconst parts = fmt.formatToParts(now);\nconst get = (t) => parts.find(p => p.type === t)?.value ?? '';\n\nconst hour   = Number(get('hour'));\nconst minute = Number(get('minute'));\nconst second = Number(get('second'));\n\n// Normaliza o weekday: remove acento/pontuação e baixa caixa\nconst wdRaw = get('weekday');\nconst wdNorm = String(wdRaw)\n  .normalize('NFD').replace(/\\p{Diacritic}/gu, '')\n  .replace(/\\W+/g, '') // remove ponto/traços/esp.\n  .toLowerCase();\n\n// Mapa robusto (aceita \"sab\", \"sabado\", \"sáb.\", etc.)\nconst dayMap = {\n  dom: 0, domingo: 0,\n  seg: 1, segunda: 1,\n  ter: 2, terca: 2, terça: 2,\n  qua: 3, quarta: 3,\n  qui: 4, quinta: 4,\n  sex: 5, sexta: 5,\n  sab: 6, sabado: 6,\n};\nconst day = dayMap[wdNorm] ?? dayMap[wdNorm.slice(0,3)] ?? -1;\n\n// Janelas de atendimento\nconst inWeekWindow     = (h) => h >= 8 && h < 20; // seg–sex 09:00–19:59\nconst inSaturdayWindow = (h) => h >= 9 && h < 17; // sáb 09:00–16:59\n\nconst permitido =\n  (day >= 1 && day <= 5 && inWeekWindow(hour)) ||\n  (day === 6 && inSaturdayWindow(hour));\n\nreturn [{\n  json: {\n    status: permitido ? 'Permitido' : 'Fora do horário',\n    hora_SP: `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}:${String(second).padStart(2,'0')}`,\n    dia_da_semana: day,   // 0=dom ... 6=sáb\n    weekday_raw: wdRaw,   // só pra debug\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5424,
+        544
+      ],
+      "id": "4b1dd90d-4038-4a8b-9f8a-250f8020bab8",
+      "name": "Verfica Horario1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "03628131-1b39-4bc1-8c07-2835de78e857",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Permitido",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5200,
+        544
+      ],
+      "id": "a3dba70b-1829-4749-9fa6-29e7fd1cff05",
+      "name": "If Dentro Horario1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -4944,
+        816
+      ],
+      "id": "f24f9a99-39b7-4aac-a2c7-480b2244c7d8",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "historico_distribuicao",
+          "mode": "list",
+          "cachedResultName": "historico_distribuicao"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('Extrair Telefones').first().json.id_lead }}",
+            "id_responsavel": "={{ $json.id }}",
+            "tipo": "={{ $json.tipo_atendimento }}",
+            "data_distribuicao": "={{ $json.timestamp }}",
+            "tma_segundos": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_distribuicao",
+              "displayName": "data_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_fechamento",
+              "displayName": "data_fechamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tma_segundos",
+              "displayName": "tma_segundos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1392,
+        -96
+      ],
+      "id": "61893927-8b0d-4ce3-9600-33f3b885dd90",
+      "name": "Postgres3",
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "historico_distribuicao",
+          "mode": "list",
+          "cachedResultName": "historico_distribuicao"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('Extrair IDs1').first().json.id_lead }}",
+            "id_responsavel": "={{ $json.id }}",
+            "tipo": "={{ $json.tipo_atendimento }}",
+            "data_distribuicao": "={{ $json.timestamp }}",
+            "tma_segundos": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_distribuicao",
+              "displayName": "data_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_fechamento",
+              "displayName": "data_fechamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tma_segundos",
+              "displayName": "tma_segundos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1600,
+        496
+      ],
+      "id": "8f78ce76-ea72-4868-b5bc-425e31dce1c2",
+      "name": "Postgres4",
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "e4b2e1d1-ae03-46e6-8ef5-88754e716ace",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -4688,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===============================================================\n// Agrupa Leads And Responsaveis1  (Run Once for All Items)\n// - Base de responsáveis: Select distribuicao_academico[2]\n// - Contagem de cards (fila): HTTP Get Atendimento[1] (Kommo)\n// ===============================================================\n\n// ----------------- Helpers -----------------\nfunction safeItems(nodeName) {\n  try { const arr = $items(nodeName); return Array.isArray(arr) ? arr : []; }\n  catch { return []; }\n}\nfunction toArrayJson(arr) {\n  return (Array.isArray(arr) ? arr : []).map(i => i?.json ?? i);\n}\nfunction num(x, def = NaN) {\n  const n = Number(x);\n  return Number.isFinite(n) ? n : def;\n}\n\n// ----------------- 0) Entradas -----------------\n// Base de responsáveis (SELECT)\nlet respItems = safeItems('Select distribuicao_academico');\nif (!respItems.length) respItems = safeItems('Select distribuicao_academico2'); // fallback\nconst responsaveisRaw = toArrayJson(respItems);\n\n// Leads do Kommo (HTTP)\nlet httpItems = safeItems('Get Atendimento');\nif (!httpItems.length) httpItems = safeItems('Get Atendimento1'); // fallback também aceito\nconst httpJsons = toArrayJson(httpItems);\n\n// ----------------- 1) Extrai TODOS os leads do HTTP -----------------\n// Suporta tanto payload já-objeto quanto string JSON em .data, e várias páginas (n itens)\nconst leads = [];\nfor (const j of httpJsons) {\n  // Caso 1: objeto já parseado\n  if (Array.isArray(j?._embedded?.leads)) {\n    leads.push(...j._embedded.leads);\n    continue;\n  }\n  // Caso 2: string JSON no campo .data\n  if (typeof j?.data === 'string') {\n    try {\n      const parsed = JSON.parse(j.data);\n      if (Array.isArray(parsed?._embedded?.leads)) {\n        leads.push(...parsed._embedded.leads);\n      }\n    } catch (_) {\n      // ignora este item e segue\n    }\n  }\n}\n\n// ----------------- 2) Contagem por responsável (Kommo) -----------------\nconst counts = {};\nfor (const lead of leads) {\n  const rid = num(lead?.responsible_user_id, null);\n  if (rid == null) continue;\n  counts[rid] = (counts[rid] || 0) + 1;\n}\n\n// ----------------- 3) Normaliza responsáveis + injeta total_leads (HTTP) -----------------\nreturn responsaveisRaw.map(r => {\n  const id = num(r.id ?? r.responsible_user_id ?? r.responsavel_id);\n  const nome = r.responsavel ?? r.nome ?? 'Sem Nome';\n\n  // Contagem real vinda do HTTP (prioritária)\n  const total_leads = counts[id] || 0;\n\n  // Campos auxiliares (mantidos para compatibilidade com o Distribuidor)\n  const almoco = r.almoco ?? r.almoco_inicio ?? r.almoco_real ?? null;        // \"HH:MM:SS\"\n  const final_expediente = r.final_expediente ?? r.expediente_fim ?? null;    // \"HH:MM:SS\"\n\n  return {\n    json: {\n      // Identidade\n      responsible_user_id: id,\n      nome,\n\n      // Ocupação/limite\n      total_leads,                                  // <= usado pelo Distribuidor como ocupação\n      volume_distribuicao: num(r.volume_distribuicao, 10),\n\n      // Fallback/legado para debug (se houver no SELECT)\n      fila: num(r.fila, NaN),\n\n      // Status/horários\n      ativo_inativo: r.ativo_inativo ?? 'Ativo',\n      status_almoco: r.status_almoco ?? 'Ativo',\n      status_final_expediente: r.status_final_expediente ?? 'Ativo',\n      status_final: r.status_final ?? 'Distribuir',\n      tipo_atendimento: r.tipo_atendimento ?? r.tipo ?? 'Acolhimento',\n\n      almoco,\n      final_expediente,\n\n      // Parâmetros de pausa (defaults alinhados às regras combinadas)\n      almoco_ante_min: num(r.almoco_ante_min ?? r.almoco_antecedencia_min, 20),\n      almoco_duracao_min: num(r.almoco_duracao_min, 60),\n      saida_ante_min: num(r.saida_ante_min, 20),\n\n      // Carimbos de tempo úteis ao Distribuidor\n      timestamp: r.timestamp ?? null,\n      ultima_execucao: r.ultima_execucao ?? null\n    }\n  };\n});\n"
+      },
+      "id": "39cd17e7-019b-471e-bce4-07b07f8cf6b3",
+      "name": "Agrupa Leads And Responsaveis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4480,
+        528
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=11115992&filter[statuses][0][status_id]=85286344",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9eb7740c-c9ba-45af-80a8-2c72c7b23424",
+      "name": "Get Atendimento1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -4944,
+        624
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "tipo_atendimento",
+              "value": "Atendimento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "84a76058-15e4-4ef3-a7d9-83778bccd5bb",
+      "name": "Select distribuicao_academico2",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4944,
+        448
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Distribuicao1 — capacidade + pausas (almoço e saída)\n * - Disponível se: status ok (ativo, distribuir, almoço/expediente ativos) E NÃO em pausa\n *    - Almoço: intervalo [almoco - ante , almoco + duracao]\n *    - Saída:  intervalo [saida - ante , saida]\n * - Depois aplica capacidade (ocupacao < limite)\n * - Se houver gente disponível por status mas todos lotados => FALHA (capacidade esgotada)\n */\n\n// ===================== Helpers \"safe\" para $items =====================\nfunction safeItems(name){ try{ const a=$items(name); return Array.isArray(a)?a:[]; } catch { return []; } }\nfunction toArrayJson(arr){ return (Array.isArray(arr)?arr:[]).map(i => i?.json ?? i); }\n\n// ===================== Normalização e datas =====================\nconst norm = s => String(s ?? '').normalize('NFD').replace(/\\p{Diacritic}/gu,'').toLowerCase().trim();\n\n// Aceita: ISO (ex: 2025-07-19 08:55:08), \"dd/MM/yy - HH:mm\" ou \"dd/MM/yy HH:mm\"\nfunction parseDateFlexible(input){\n  if(!input) return null;\n  if(input instanceof Date) return isNaN(input.getTime())?null:input;\n\n  const s = String(input).trim();\n\n  // Tenta Date direto (ISO ou parecido)\n  const d1 = new Date(s.replace(' - ', ' ')); // ajuda em \"dd/MM/yy - HH:mm\"\n  if(!isNaN(d1.getTime())) return d1;\n\n  // Tenta \"dd/MM/yy - HH:mm\" ou \"dd/MM/yyyy - HH:mm\"\n  const m = s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{2,4})\\s*-\\s*(\\d{2}):(\\d{2})$/)\n         || s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{2,4})\\s+(\\d{2}):(\\d{2})$/);\n  if(m){\n    let[_, dd, MM, yy, HH, mm] = m;\n    const yyyy = yy.length===2 ? (Number(yy)<70 ? 2000+Number(yy) : 1900+Number(yy)) : Number(yy);\n    const dt = new Date(yyyy, Number(MM)-1, Number(dd), Number(HH), Number(mm), 0);\n    return isNaN(dt.getTime()) ? null : dt;\n  }\n  return null;\n}\nfunction toMs(x){ const d=parseDateFlexible(x); return d?d.getTime():0; }\n\n// ===================== Hora atual em America/Sao_Paulo =====================\nfunction nowSP(){\n  const s = new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });\n  return new Date(s);\n}\n\n// ===================== Pausas (intervalos) =====================\n// Intervalo com bordas: [hora - anteMin , hora + duracaoMin + posMin]\nfunction emIntervaloComBordas(horaHHMMSS, anteMin, duracaoMin, posMin, refDateSP){\n  if(!horaHHMMSS || !(refDateSP instanceof Date)) return false;\n  const [H, M=0, S=0] = String(horaHHMMSS).split(':').map(Number);\n  if(!Number.isFinite(H)) return false;\n\n  const base = new Date(refDateSP);\n  base.setHours(H, M, S, 0);\n\n  const ini = new Date(base.getTime() - (Number(anteMin)||0)*60*1000);\n  const fim = new Date(base.getTime() + ((Number(duracaoMin)||0)+(Number(posMin)||0))*60*1000);\n\n  return refDateSP >= ini && refDateSP <= fim;\n}\n\n// ===================== 1) Coleta a lista (com fallbacks de nodes/campos) =====================\nconst candidatos = [\n  ...toArrayJson(safeItems('Agrupa Leads And Responsaveis1')),\n  ...toArrayJson(safeItems('Agrupa Leads And Responsaveis')),\n  ...toArrayJson(safeItems('Agrupa Leads Responsaveis1')),\n  ...toArrayJson(safeItems('Agrupa Leads Responsaveis')),\n];\nconst listaBase = candidatos.length ? candidatos : (Array.isArray($json.lista) ? $json.lista : []);\n\n// ===================== 2) Mapeia estrutura + disponibilidade/pausas/capacidade =====================\nconst referenciaAgora = nowSP();\n\nconst lista = listaBase.map(r => {\n  const id   = Number(r.id ?? r.responsible_user_id);\n  const nome = r.nome ?? r.responsavel ?? 'Sem Nome';\n  if(!Number.isFinite(id)) return null;\n\n  // ocupação atual (usa total_leads; se não houver, usa fila)\n  const ocupacao = Number(r.total_leads ?? r.fila ?? 0);\n  // limite por pessoa (ou 10 se vier vazio)\n  const limite   = Number(r.volume_distribuicao ?? 10);\n\n  // status originais\n  const status_final            = r.status_final ?? 'Distribuir';\n  const status_almoco           = r.status_almoco ?? 'Ativo';\n  const status_final_expediente = r.status_final_expediente ?? 'Ativo';\n  const ativo_inativo           = r.ativo_inativo ?? 'Ativo';\n\n  // flags de status\n  const ativo        = norm(ativo_inativo) === 'ativo';\n  const naoDistribui = ['nao distribuir','não distribuir'].includes(norm(status_final));\n  const okAlmoco     = norm(status_almoco) === 'ativo';\n  const okExpediente = norm(status_final_expediente) === 'ativo';\n\n  // parâmetros de pausa\n  const almocoDuracaoMin = Number(r.almoco_duracao_min ?? 60); // 1h\n  const almocoAnteMin    = Number(r.almoco_ante_min ?? r.almoco_antecedencia_min ?? 20); // 20 min antes do almoço\n  const saidaAnteMin     = Number(r.saida_ante_min ?? 20); // 20 min antes de ir embora\n\n  // horários (aceita múltiplas variantes de nomes)\n  const almocoHora = r.almoco_inicio ?? r.almoco ?? r.almoco_real ?? null;   // \"HH:MM:SS\"\n  const saidaHora  = r.expediente_fim ?? r.final_expediente ?? null;         // \"HH:MM:SS\"\n\n  // aplica regras de pausa:\n  // - Almoço: [almoco - 20min , almoco + 60min]\n  const pausaAlmoco = emIntervaloComBordas(almocoHora, almocoAnteMin, almocoDuracaoMin, 0, referenciaAgora);\n  // - Saída:  [saida - 20min , saida]\n  const pausaFim    = emIntervaloComBordas(saidaHora,  saidaAnteMin, /*duracao*/0, /*pos*/0, referenciaAgora);\n\n  // disponibilidade por status + pausas\n  const disponivelStatus = (ativo && !naoDistribui && okAlmoco && okExpediente && !pausaAlmoco && !pausaFim);\n\n  // regra de capacidade\n  const capOk = ocupacao < limite;\n\n  // timestamps para prioridade\n  const tsOrig = r.timestamp ?? null;              // ISO\n  const tsFmt  = r.ultima_execucao ?? null;        // \"dd/MM/yy - HH:mm\"\n  const _ts    = toMs(tsOrig ?? tsFmt);\n\n  return {\n    id, nome,\n    ocupacao, limite,\n    status_final, status_almoco, status_final_expediente, ativo_inativo,\n    almocoDuracaoMin, almocoAnteMin, saidaAnteMin,\n    almocoHora, saidaHora, pausaAlmoco, pausaFim,\n    disponivelStatus, capOk,\n    timestamp_original: tsOrig, timestamp_formatado: tsFmt, _ts,\n  };\n}).filter(x => x && Number.isFinite(x.id));\n\n// ===================== 3) Filtro por status/pausa e por capacidade; ordenação =====================\nconst agora = Date.now();\n\nconst candidatosStatus = lista.filter(x => x.disponivelStatus);\nconst candidatosCap    = candidatosStatus.filter(x => x.capOk);\n\n// Se tem gente disponível por status, mas TODOS estão lotados => FALHA\nif (candidatosStatus.length > 0 && candidatosCap.length === 0) {\n  const proxima_ordem_debug = candidatosStatus.map(x => ({\n    id: x.id, nome: x.nome,\n    fila_atual: x.ocupacao, limite: x.limite,\n    disponibilidade: 'INDISPONIVEL_CAPACIDADE',\n    status_final: x.status_final,\n    status_almoco: x.status_almoco,\n    status_final_expediente: x.status_final_expediente,\n    almoco_duracao_min: x.almocoDuracaoMin,\n    almoco_ante_min: x.almocoAnteMin,\n    saida_ante_min: x.saidaAnteMin,\n    pausaAlmoco: x.pausaAlmoco,\n    pausaFim: x.pausaFim,\n    almoco_hora: x.almocoHora ?? null,\n    saida_hora:  x.saidaHora ?? null,\n    timestamp_original: x.timestamp_original ?? null,\n    timestamp_formatado: x.timestamp_formatado ?? null,\n  }));\n  return [{\n    json: {\n      status: 'FALHA',\n      motivo: 'Capacidade esgotada (todos os consultores estão com ocupação >= limite)',\n      proxima_ordem: proxima_ordem_debug,\n      lista: []\n    }\n  }];\n}\n\n// Ordena SOMENTE quem passou por status+pausa e capacidade\nconst disponiveis = candidatosCap.sort((a,b) => {\n  // 1) quem está há mais tempo sem receber\n  const diffA = (a._ts > 0) ? (agora - a._ts) : -1;\n  const diffB = (b._ts > 0) ? (agora - b._ts) : -1;\n  if (diffA !== diffB) return diffB - diffA;\n\n  // 2) menor ocupação\n  if (a.ocupacao !== b.ocupacao) return a.ocupacao - b.ocupacao;\n\n  // 3) nome (estável)\n  return String(a.nome).localeCompare(String(b.nome), 'pt-BR');\n});\n\n// Debug/monitoramento\nconst proxima_ordem = disponiveis.map(x => ({\n  id: x.id,\n  nome: x.nome,\n  fila_atual: x.ocupacao,\n  limite: x.limite,\n  disponibilidade: 'DISPONIVEL',\n  status_final: x.status_final,\n  status_almoco: x.status_almoco,\n  status_final_expediente: x.status_final_expediente,\n  almoco_duracao_min: x.almocoDuracaoMin,\n  almoco_ante_min: x.almocoAnteMin,\n  saida_ante_min: x.saidaAnteMin,\n  pausaAlmoco: x.pausaAlmoco,\n  pausaFim: x.pausaFim,\n  almoco_hora: x.almocoHora ?? null,\n  saida_hora:  x.saidaHora ?? null,\n  timestamp_formatado: x.timestamp_formatado ?? null,\n}));\n\n// ===================== 4) Saída =====================\nconst escolhido = disponiveis[0];\n\nreturn [{\n  json: disponiveis.length\n    ? { status: 'OK', id_responsavel: Number(escolhido.id), proxima_ordem, lista: disponiveis }\n    : { status: 'FALHA', motivo: 'Nenhum responsável disponível', proxima_ordem: [], lista: [] }\n}];\n"
+      },
+      "id": "1ca72ee4-b74b-4058-8c4f-ed78922d4618",
+      "name": "Distribuicao1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4272,
+        528
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id_responsavel }}",
+            "fila": "={{ $json.proxima_ordem[0].fila_atual }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "f6416157-ba3d-4fcb-8cb4-071f260246ab",
+      "name": "Atualiza Fila Postgres2",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4048,
+        528
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8da44cd4-9282-4b91-bd26-a391c0e055e5",
+              "leftValue": "={{ $('Distribuicao1').item.json.status }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3808,
+        528
+      ],
+      "id": "bf236037-c058-49b8-aac4-4213dcfa3320",
+      "name": "IF Status OK - Distribuir2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8da44cd4-9282-4b91-bd26-a391c0e055e5",
+              "leftValue": "={{ $('Distribuicao').item.json.status }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3504,
+        -64
+      ],
+      "id": "8c8662f4-e009-4093-b461-617b886c4896",
+      "name": "IF Status OK - Distribuir"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===================== Helpers \"safe\" para $items =====================\nfunction safeItems(nodeName) {\n  try {\n    const arr = $items(nodeName);\n    return Array.isArray(arr) ? arr : [];\n  } catch (e) {\n    return [];\n  }\n}\nfunction toArrayJson(arr) {\n  return (Array.isArray(arr) ? arr : []).map(i => i?.json ?? i);\n}\n\n// ===================== Normalização de datas =====================\n// Aceita: ISO (ex: 2025-07-19 08:55:08), \"dd/MM/yy - HH:mm\" ou \"dd/MM/yy HH:mm\"\nfunction parseDateFlexible(input) {\n  if (!input) return null;\n  if (input instanceof Date) return isNaN(input.getTime()) ? null : input;\n\n  const s = String(input).trim();\n\n  // Tenta Date direto (ISO ou parecido)\n  const d1 = new Date(s.replace(' - ', ' ')); // ajuda em \"dd/MM/yy - HH:mm\"\n  if (!isNaN(d1.getTime())) return d1;\n\n  // Tenta \"dd/MM/yy - HH:mm\" ou \"dd/MM/yyyy - HH:mm\"\n  const m = s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{2,4})\\s*-\\s*(\\d{2}):(\\d{2})$/)\n           || s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{2,4})\\s+(\\d{2}):(\\d{2})$/);\n  if (m) {\n    let [_, dd, MM, yy, HH, mm] = m;\n    let yyyy = yy.length === 2 ? (Number(yy) < 70 ? 2000 + Number(yy) : 1900 + Number(yy)) : Number(yy);\n    const month = Number(MM) - 1;\n    const dt = new Date(yyyy, month, Number(dd), Number(HH), Number(mm), 0);\n    return isNaN(dt.getTime()) ? null : dt;\n  }\n  return null;\n}\nfunction toMs(input) {\n  const d = parseDateFlexible(input);\n  return d ? d.getTime() : 0;\n}\n\n// ===================== Hora atual em America/Sao_Paulo =====================\nfunction nowSP() {\n  const s = new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });\n  return new Date(s);\n}\n\n// ===================== Intervalos de pausa (com antecedência) =====================\n// Retorna true se refDateSP está dentro de [hora - anteMin , hora + duracaoMin + posMin]\nfunction emIntervaloComBordas(horaHHMMSS, anteMin, duracaoMin, posMin, refDateSP) {\n  if (!horaHHMMSS || !(refDateSP instanceof Date)) return false;\n  const [H, M = 0, S = 0] = String(horaHHMMSS).split(':').map(Number);\n  if (!Number.isFinite(H)) return false;\n\n  const base = new Date(refDateSP);\n  base.setHours(H, M, S, 0);\n\n  const ante   = (Number(anteMin)    || 0) * 60 * 1000;\n  const dur    = (Number(duracaoMin) || 0) * 60 * 1000;\n  const pos    = (Number(posMin)     || 0) * 60 * 1000;\n\n  const ini = new Date(base.getTime() - ante);\n  const fim = new Date(base.getTime() + dur + pos);\n\n  return refDateSP >= ini && refDateSP <= fim;\n}\n\n// ===================== 1) Monta LISTA a partir do(s) node(s) \"Agrupa...\" =====================\nconst candidatos = [\n  ...toArrayJson(safeItems('Agrupa Leads And Responsaveis1')),\n  ...toArrayJson(safeItems('Agrupa Leads And Responsaveis')),\n];\nconst listaBase = candidatos.length ? candidatos : (Array.isArray($json.lista) ? $json.lista : []);\n\n// ===================== 2) Mapeia cada responsável e calcula flags + capacidade =====================\nconst referenciaAgora = nowSP();\nconst dow = referenciaAgora.getDay();\nconst fimDeSemana = (dow === 0 || dow === 6);\n\nconst lista = listaBase.map(r => {\n  const id   = Number(r.id ?? r.responsible_user_id);\n  const nome = r.nome ?? r.responsavel ?? \"Sem Nome\";\n  if (!Number.isFinite(id)) return null;\n\n  // ocupação (fila atual) e limite\n  const ocupacao = Number(r.total_leads ?? r.fila ?? 0);\n  const limite   = Number(r.volume_distribuicao ?? 10);\n  const filaOk   = ocupacao < limite;\n\n  // parâmetros de pausa (defaults)\n  const almocoAnteMin    = Number(r.almoco_ante_min ?? r.almoco_antecedencia_min ?? 20); // 20 min antes do almoço\n  const almocoDuracaoMin = Number(r.almoco_duracao_min ?? 60);                            // 60 min de almoço\n  const saidaAnteMin     = Number(r.saida_ante_min ?? 20);                                // 20 min antes de ir embora\n\n  // campos de horário\n  const almocoHora = r.almoco ?? r.almoco_inicio ?? null;          // \"HH:MM:SS\"\n  const saidaHora  = r.final_expediente ?? r.expediente_fim ?? null;\n\n  // status originais (para debug)\n  const tipo_atendimento        = r.tipo_atendimento ?? 'Acolhimento';\n  const status_almoco           = r.status_almoco ?? 'Ativo';\n  const status_final_expediente = r.status_final_expediente ?? 'Ativo';\n  const ativo_inativo           = r.ativo_inativo ?? 'Ativo';\n\n  // =============== (3) FLAGS de disponibilidade ===============\n  const tipo       = (tipo_atendimento === 'Acolhimento');\n  const ativo      = (ativo_inativo === 'Ativo');\n  const almocoOK   = (status_almoco === 'Ativo');\n  const expediente = (status_final_expediente === 'Ativo');\n\n  // =============== (2) Pausas (agora com antecedência) ===============\n  // Almoço: [almoco - almocoAnteMin , almoco + almocoDuracaoMin]\n  const pausaAlmoco = !fimDeSemana && emIntervaloComBordas(almocoHora, almocoAnteMin, almocoDuracaoMin, 0, referenciaAgora);\n  // Saída:  [saida - saidaAnteMin , saida]\n  const pausaFim    = emIntervaloComBordas(saidaHora,  saidaAnteMin, 0, 0, referenciaAgora);\n\n  // =============== timestamps (para prioridade) ===============\n  const timestamp_original  = r.timestamp ?? null;           // ISO ou \"yyyy-mm-dd HH:MM:SS\"\n  const timestamp_formatado = r.ultima_execucao ?? null;     // \"dd/MM/yy - HH:mm\"\n  const _ts = toMs(timestamp_original ?? timestamp_formatado);\n\n  // =============== (4) Critério final de status (ordem de bloqueio) ===============\n  let status = 'DISPONIVEL';\n  let motivo = 'OK';\n\n  if (!tipo)                { status = 'INDISPONIVEL'; motivo = 'TIPO'; }\n  else if (!ativo)          { status = 'INDISPONIVEL'; motivo = 'INATIVO'; }\n  else if (!almocoOK)       { status = 'INDISPONIVEL'; motivo = 'ALMOCO_STATUS'; }\n  else if (!expediente)     { status = 'INDISPONIVEL'; motivo = 'EXPEDIENTE_STATUS'; }\n  else if (!filaOk)         { status = 'INDISPONIVEL'; motivo = 'LIMITE'; }\n  else if (pausaAlmoco)     { status = 'INDISPONIVEL'; motivo = 'PAUSA_ALMOCO_INTERVALO'; }\n  else if (pausaFim)        { status = 'INDISPONIVEL'; motivo = 'PAUSA_SAIDA_INTERVALO'; }\n\n  return {\n    id, nome,\n    fila_atual: ocupacao,\n    limite,\n    filaOk,\n\n    // flags\n    tipo, ativo, almoco: almocoOK, expediente,\n    pausaAlmoco, pausaFim,\n\n    // parâmetros usados\n    almoco_ante_min: almocoAnteMin,\n    almoco_duracao_min: almocoDuracaoMin,\n    saida_ante_min: saidaAnteMin,\n\n    // horários para debug\n    almoco_hora: almocoHora,\n    saida_hora:  saidaHora,\n\n    // status final calculado\n    status, motivo,\n\n    // tempo p/ prioridade\n    timestamp_original,\n    timestamp_formatado,\n    _ts\n  };\n}).filter(Boolean);\n\n// ===================== 3) Seleciona candidatos DISPONIVEL; ordena =====================\nconst agora = Date.now();\n\nconst disponiveis = lista\n  .filter(x => x.status === 'DISPONIVEL')\n  .sort((a, b) => {\n    // PRIORIDADE 1: quem está há mais tempo sem receber (maior (agora - _ts))\n    const diffA = (a._ts > 0) ? (agora - a._ts) : -1;\n    const diffB = (b._ts > 0) ? (agora - b._ts) : -1;\n    if (diffA !== diffB) return diffB - diffA;\n\n    // PRIORIDADE 2: menor fila\n    if (a.fila_atual !== b.fila_atual) return a.fila_atual - b.fila_atual;\n\n    // PRIORIDADE 3: nome\n    return String(a.nome).localeCompare(String(b.nome), 'pt-BR');\n  });\n\n// Para debug/monitoramento\nconst proxima_ordem = disponiveis.map(x => ({\n  id: Number(x.id),\n  nome: x.nome,\n  fila_atual: Number(x.fila_atual ?? 0),\n  limite: Number(x.limite ?? 10),\n  disponibilidade: 'DISPONIVEL',\n  motivo: x.motivo,\n  almoco: x.almoco,\n  expediente: x.expediente,\n  almoco_ante_min: x.almoco_ante_min,\n  almoco_duracao_min: x.almoco_duracao_min,\n  saida_ante_min: x.saida_ante_min,\n  pausaAlmoco: x.pausaAlmoco,\n  pausaFim: x.pausaFim,\n  almoco_hora: x.almoco_hora ?? null,\n  saida_hora:  x.saida_hora ?? null,\n  timestamp_original: x.timestamp_original ?? null,\n  timestamp_formatado: x.timestamp_formatado ?? null\n}));\n\n// ===================== 4) Resultado =====================\nconst escolhido = disponiveis[0] ?? null;\n\nconst payload = {\n  status: escolhido ? 'OK' : 'FALHA',\n  motivo: escolhido ? 'OK' : 'Nenhum responsável disponível',\n  // campos usados pelo IF e pelo Postgres:\n  id_responsavel: escolhido ? Number(escolhido.id) : null,\n  fila_para_setar: escolhido ? Number(escolhido.fila_atual ?? 0) : null,\n  should_update_pg: !!escolhido,\n  // info adicional\n  proxima_ordem,\n  lista: escolhido ? disponiveis : lista\n};\n\nreturn [{ json: payload }];\n"
+      },
+      "id": "9f3690ee-fd92-40e3-b456-d742686fce36",
+      "name": "Distribuicao",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4176,
+        -64
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "tipo_atendimento",
+              "value": "Acolhimento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "193ec651-c489-42a4-bc66-a8758d7ddb46",
+      "name": "Select distribuicao_academico",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4928,
+        -160
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=11116680&filter[statuses][0][status_id]=85291940",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "23f11452-227f-41f9-8cdd-45a929435a71",
+      "name": "Get Atendimento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -4928,
+        16
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Entradas ===\nconst leadsRaw = $items('Get Atendimento');\nconst responsaveisRaw = $items('Select distribuicao_academico'); // \"Distribuição 1\" (Supabase)\n\n// === Config ===\nconst LUNCH_MINUTES = 60; // duração do almoço em minutos\n\n// === Utils ===\nconst normalize = (s) => (s ?? '')\n  .toString()\n  .normalize('NFD')\n  .replace(/[\\u0300-\\u036f]/g, '')\n  .trim()\n  .toLowerCase();\n\nconst getCF = (lead, fieldId) => {\n  const arr = lead?.custom_fields_values ?? [];\n  const hit = arr.find(cf => cf.field_id === fieldId);\n  return hit?.values?.[0]?.value ?? null;\n};\n\n// Hora atual (segundos desde 00:00:00) em America/Sao_Paulo\nconst nowSPSeconds = (() => {\n  const fmt = new Intl.DateTimeFormat('pt-BR', {\n    hour: '2-digit', minute: '2-digit', second: '2-digit',\n    hour12: false, timeZone: 'America/Sao_Paulo'\n  });\n  const parts = Object.fromEntries(fmt.formatToParts(new Date()).map(p => [p.type, p.value]));\n  const h = Number(parts.hour || 0);\n  const m = Number(parts.minute || 0);\n  const s = Number(parts.second || 0);\n  return h * 3600 + m * 60 + s;\n})();\n\nconst parseHMS = (hhmmss) => {\n  if (typeof hhmmss !== 'string') return null;\n  const m = hhmmss.trim().match(/^(\\d{1,2}):(\\d{2}):(\\d{2})$/);\n  if (!m) return null;\n  const h = Number(m[1]), mi = Number(m[2]), s = Number(m[3]);\n  if (h > 23 || mi > 59 || s > 59) return null;\n  return h * 3600 + mi * 60 + s;\n};\n\nconst fmtHMS = (sec) => {\n  if (sec == null) return null;\n  let s = Math.max(0, Math.floor(sec)) % 86400;\n  const h = String(Math.floor(s / 3600)).padStart(2, '0');\n  s %= 3600;\n  const m = String(Math.floor(s / 60)).padStart(2, '0');\n  const ss = String(s % 60).padStart(2, '0');\n  return `${h}:${m}:${ss}`;\n};\n\n// === Índices da Distribuição 1 (Supabase) ===\nconst dist1 = responsaveisRaw.map(r => r.json || r);\n\nconst idToResp = new Map();\nconst nameToId = new Map();\n\nfor (const r of dist1) {\n  const id = Number(r.id ?? r?.json?.id);\n  const nome = r.responsavel ?? r?.json?.responsavel ?? r?.json?.nome;\n  if (!Number.isFinite(id) || !nome) continue;\n\n  idToResp.set(id, r);\n  nameToId.set(normalize(nome), id);\n}\n\n// === Parse dos Leads (Kommo) ===\nlet leads = [];\ntry {\n  const dataStr = leadsRaw?.[0]?.json?.data;\n  if (dataStr) {\n    const parsed = JSON.parse(dataStr);\n    leads = parsed?._embedded?.leads ?? [];\n  }\n} catch (err) {\n  throw new Error(\"Erro ao parsear JSON de leads: \" + err.message);\n}\n\n// === Contagem alinhada à Distribuição 1 ===\nconst counts = {}; // chave: id(Supabase / responsável)\nfor (const lead of leads) {\n  // 1) Ultimo Consultor (1029785) -> 2) Consultor (294046)\n  let nomeConsultor = getCF(lead, 1029785) || getCF(lead, 294046);\n\n  let resolvedId = null;\n\n  // Resolver pelo nome do consultor na Distribuição 1\n  if (nomeConsultor) {\n    const key = normalize(nomeConsultor);\n    if (nameToId.has(key)) {\n      resolvedId = nameToId.get(key);\n    }\n  }\n\n  // Fallback: responsible_user_id (só se existir na Distribuição 1)\n  if (!resolvedId) {\n    const kommoOwnerId = Number(lead?.responsible_user_id);\n    if (idToResp.has(kommoOwnerId)) {\n      resolvedId = kommoOwnerId;\n    }\n  }\n\n  if (resolvedId) {\n    counts[resolvedId] = (counts[resolvedId] || 0) + 1;\n  }\n}\n\n/* ===========================================================\n   (Opcional) Mapa de Fila vindo do HTTP por linha {id,fila}\n   -> se o \"Get Atendimento\" NÃO traz 'fila' por linha (apenas leads),\n      ignore esse bloco e use 'counts' como fila.\n=========================================================== */\nconst filaByIdHTTP = new Map();\nfor (const it of (leadsRaw || [])) {\n  const row = it?.json ?? it ?? {};\n  const idHTTP = Number(row.id ?? row.user_id ?? row.responsible_user_id);\n  const filaHTTP = row.fila ?? row.queue ?? row.fila_atual ?? row.fila_total;\n  if (Number.isFinite(idHTTP) && filaHTTP !== undefined) {\n    filaByIdHTTP.set(idHTTP, filaHTTP);\n  }\n}\n\n// === Saída (pass-through de timestamps e status originais) + almoço + expediente + pausa ===\nconst out = dist1.map(r => {\n  const id   = Number(r.id ?? r?.json?.id);\n  const nome = r.responsavel ?? r?.json?.responsavel ?? r?.json?.nome ?? \"Sem Nome\";\n\n  const ativo_inativo            = r.ativo_inativo           ?? r?.json?.ativo_inativo;\n  const volume_distribuicao      = r.volume_distribuicao     ?? r?.json?.volume_distribuicao;\n\n  // Fila: 1) usa a do HTTP se existir por id; 2) senão usa a contagem de leads (HTTP Kommo)\n  const filaHTTPLinha = filaByIdHTTP.get(id);\n  const fila = (filaHTTPLinha !== undefined) ? filaHTTPLinha : (counts[id] || 0);\n\n  const pausa_distribuicao_min   = r.pausa_distribuicao      ?? r?.json?.pausa_distribuicao ?? 0;\n\n  // pass-through\n  const timestamp                = r.timestamp               ?? r?.json?.timestamp ?? null;\n  const ultima_execucao          = r.ultima_execucao         ?? r?.json?.ultima_execucao ?? null;\n  const status_almoco            = r.status_almoco           ?? r?.json?.status_almoco ?? null;\n  const status_final_expediente  = r.status_final_expediente ?? r?.json?.status_final_expediente ?? null;\n  const status_final             = r.status_final            ?? r?.json?.status_final ?? null;\n\n  // === Almoço ===\n  const almoco_base = r.almoco_real ?? r?.json?.almoco_real ?? r.almoco ?? r?.json?.almoco;\n  const lunchStartSec = parseHMS(almoco_base);\n  const lunchEndSec   = (lunchStartSec != null) ? (lunchStartSec + LUNCH_MINUTES * 60) : null;\n  const lunchEndNorm  = (lunchEndSec != null) ? (lunchEndSec % 86400) : null;\n\n  let em_almoco = false;\n  if (lunchStartSec != null && lunchEndSec != null) {\n    if (lunchEndSec >= lunchStartSec) {\n      em_almoco = nowSPSeconds >= lunchStartSec && nowSPSeconds < lunchEndSec;\n    } else {\n      em_almoco = (nowSPSeconds >= lunchStartSec) || (nowSPSeconds < lunchEndNorm);\n    }\n  }\n\n  const almoco_inicio = (lunchStartSec != null) ? fmtHMS(lunchStartSec) : null;\n  const almoco_fim    = (lunchEndSec   != null) ? fmtHMS(lunchEndSec)   : null;\n\n  // === Final do expediente ===\n  const expediente_base = r.final_expediente ?? r?.json?.final_expediente;\n  const expSec = parseHMS(expediente_base);\n\n  let em_expediente = true;\n  if (expSec != null) {\n    em_expediente = nowSPSeconds < expSec;\n  }\n\n  const expediente_fim = (expSec != null) ? fmtHMS(expSec) : null;\n\n  // === Pausa Distribuição ===\n  const pausaSegundos = (Number(pausa_distribuicao_min) || 0) * 60;\n\n  return {\n    json: {\n      id,\n      nome,\n      total_leads: counts[id] || 0,\n      ativo_inativo,\n      volume_distribuicao,\n      fila, // << agora vem do HTTP (linha) ou da contagem de leads do HTTP\n      pausa_distribuicao_min: Number(pausa_distribuicao_min) || 0,\n      pausa_distribuicao_fmt: fmtHMS(pausaSegundos),\n\n      // pass-through\n      timestamp,\n      ultima_execucao,\n      status_almoco,\n      status_final_expediente,\n      status_final,\n\n      // almoço\n      em_almoco,\n      almoco_inicio,\n      almoco_fim,\n      status_almoco_calculado: em_almoco ? 'Em Almoço' : 'Fora do Almoço',\n\n      // expediente\n      em_expediente,\n      expediente_fim,\n      status_expediente_calculado: em_expediente ? 'Em Expediente' : 'Fora do Expediente',\n    }\n  };\n});\n\nreturn out;\n"
+      },
+      "id": "a3c0bf26-3e11-4445-acb7-1a5c17179eb1",
+      "name": "Agrupa Leads And Responsaveis1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4416,
+        -64
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "id": "7e41d4a0-8c69-4e0c-9779-6e5968ea9192",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -4640,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id_responsavel }}",
+            "fila": "={{ $json.fila_para_setar }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "25b6a936-55d0-45ed-bcf0-d603d5939c32",
+      "name": "Atualiza Fila Postgres3",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -3712,
+        -80
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3daa0755-be6b-4c15-972a-8a2aa76a4782",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3968,
+        -64
+      ],
+      "id": "ecc23d72-1a75-4069-88ac-f0feafbde848",
+      "name": "If1"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Verfica Horario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verfica Horario": {
+      "main": [
+        [
+          {
+            "node": "If Dentro Horario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Dentro Horario": {
+      "main": [
+        [
+          {
+            "node": "Select distribuicao_academico",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Leads": {
+      "main": [
+        [
+          {
+            "node": "Extrair IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair IDs": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contatos": {
+      "main": [
+        [
+          {
+            "node": "Extrair Telefones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Telefones": {
+      "main": [
+        [
+          {
+            "node": "Update Contact1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Contatos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nada a Distribuir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Fila Postgres": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Contact1": {
+      "main": [
+        [
+          {
+            "node": "Update Lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Fila Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        []
+      ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nenhum agente disponível": {
+      "main": [
+        []
+      ]
+    },
+    "Get Leads1": {
+      "main": [
+        [
+          {
+            "node": "Extrair IDs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair IDs1": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contatos1": {
+      "main": [
+        [
+          {
+            "node": "Extrair Telefones1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Get Contatos1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nada a Distribuir1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Telefones1": {
+      "main": [
+        [
+          {
+            "node": "Update Contact3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Contact3": {
+      "main": [
+        [
+          {
+            "node": "Update Lead3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead3": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Fila Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes3": {
+      "main": [
+        []
+      ]
+    },
+    "Send message3": {
+      "main": [
+        [
+          {
+            "node": "Create new notes3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Fila Postgres1": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Postgres4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres1": {
+      "main": [
+        [
+          {
+            "node": "Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Verfica Horario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verfica Horario1": {
+      "main": [
+        [
+          {
+            "node": "If Dentro Horario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Dentro Horario1": {
+      "main": [
+        [
+          {
+            "node": "Select distribuicao_academico2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Atendimento1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres3": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres4": {
+      "main": [
+        [
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Agrupa Leads And Responsaveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupa Leads And Responsaveis": {
+      "main": [
+        [
+          {
+            "node": "Distribuicao1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Atendimento1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select distribuicao_academico2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Distribuicao1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Fila Postgres2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Fila Postgres2": {
+      "main": [
+        [
+          {
+            "node": "IF Status OK - Distribuir2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Status OK - Distribuir2": {
+      "main": [
+        [
+          {
+            "node": "Get Leads1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nenhum agente disponível1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Distribuicao": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select distribuicao_academico": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get Atendimento": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupa Leads And Responsaveis1": {
+      "main": [
+        [
+          {
+            "node": "Distribuicao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Agrupa Leads And Responsaveis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Fila Postgres3": {
+      "main": [
+        [
+          {
+            "node": "IF Status OK - Distribuir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Status OK - Distribuir": {
+      "main": [
+        [
+          {
+            "node": "Get Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nenhum agente disponível",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Fila Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    },
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Schedule Trigger1": [
+      {
+        "json": {
+          "timestamp": "2025-09-05T11:40:20.002-04:00",
+          "Readable date": "September 5th 2025, 11:40:20 am",
+          "Readable time": "11:40:20 am",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "05",
+          "Hour": "11",
+          "Minute": "40",
+          "Second": "20",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ],
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-09-11T18:13:15.001-04:00",
+          "Readable date": "September 11th 2025, 6:13:15 pm",
+          "Readable time": "6:13:15 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "11",
+          "Hour": "18",
+          "Minute": "13",
+          "Second": "15",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "8f8945ce-b96e-4acb-beee-c054298cba70",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-09-11T14:25:52.429Z",
+      "updatedAt": "2025-09-11T14:25:52.429Z",
+      "role": "workflow:owner",
+      "workflowId": "8OQzeZgaLqZDvjbB",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-25T19:56:58.514Z",
+      "updatedAt": "2025-07-25T19:56:58.514Z",
+      "id": "XC7egqniXPXmFKMH",
+      "name": "ACADEMICO CSV"
+    }
+  ]
+}
