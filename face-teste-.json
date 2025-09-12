@@ -1,0 +1,2180 @@
+{
+  "createdAt": "2025-09-02T16:11:01.031Z",
+  "updatedAt": "2025-09-11T21:37:17.000Z",
+  "id": "FLmE8Y3tgpijDo1Q",
+  "name": "face teste",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Texto da Imagem\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        5408
+      ],
+      "id": "28a6b5a4-4fab-408a-ba04-14e77b15c9cd",
+      "name": "facebook - vila prudente",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "9OnLulmMbPZY0G1z",
+          "name": "facebook - vila prudente"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        4080
+      ],
+      "id": "74edacca-062f-416d-93c3-c172f3b3e6aa",
+      "name": "facebook - taboao da serra jd mituzi",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "52n0B3FrLYY9S6Zq",
+          "name": "facebook - taboao da serra jd mituzi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Texto da Imagem\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3632,
+        5216
+      ],
+      "id": "ee6ecdfe-29b6-49e3-bdd4-b8d1d2126799",
+      "name": "facebook - barra funda",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "btoxogGcbamEZijf",
+          "name": "facebook - barra funda"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Texto da Imagem\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3648,
+        4944
+      ],
+      "id": "1fc1a343-8f8a-4c12-993b-3c733ee6fb1f",
+      "name": "facebook - capivari",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CCPPUHXMNYR0j9yx",
+          "name": "facebook - capivari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Texto da Imagem\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -2784,
+        5152
+      ],
+      "id": "2119c56b-f753-4778-a266-02397612ced8",
+      "name": "facebook - cruzeirodosulead",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "VEoW7ltv5umiWqtZ",
+          "name": "facebook - cruzeirodosulead"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Texto da Imagem\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3680,
+        4688
+      ],
+      "id": "d5260861-1cce-42f1-b2e3-ae8378b688c1",
+      "name": "facebook - freguesia do ó",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "YvOshuza0iPqsrI2",
+          "name": "facebook - freguesia do ó"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -2784,
+        5376
+      ],
+      "id": "2fdeb391-9de4-473a-8ea9-0cab6ff105c9",
+      "name": "facebook - sapopemba",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "tCCjVBOMJ644GBRA",
+          "name": "facebook - sapopemba"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        4304
+      ],
+      "id": "a9a0b1f8-7ef4-46cf-8df8-cbc7ebfb362e",
+      "name": "facebook - polo taboao centro",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "MU559gvZeOdNlIz1",
+          "name": "facebook - polo taboao centro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        3888
+      ],
+      "id": "9655da1e-65f4-4195-a19c-559768162963",
+      "name": "facebook - itapira",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "9Phxd7b3ekdfGUy4",
+          "name": "facebook - itapira"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3648,
+        3728
+      ],
+      "id": "22a96702-ae4b-4cb0-83c4-3ec64a328bc6",
+      "name": "facebook - ibirapuera",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "NGzPHn7jqAzAZxrb",
+          "name": "facebook - ibirapuera"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841471543575891",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        3648
+      ],
+      "id": "3f89599a-48e2-4c15-90b6-776241778e1a",
+      "name": "instagram - santana",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "BQeA5G24GBuKFGlF",
+          "name": "instagram - santana"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json[\"Id da 1º Imagem\"].match(/[-\\w]{25,}/)[0] }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -7008,
+        4624
+      ],
+      "id": "0ee50b74-256f-4d4d-8014-1260a2afc057",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://vtlbndvcgajcoajhcnnx.supabase.co/storage/v1/object/midia%20-%20posts/{{$binary.data.fileName || 'arquivo.jpg'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0bGJuZHZjZ2FqY29hamhjbm54Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODQ1NDU0NywiZXhwIjoyMDY0MDMwNTQ3fQ.J7lzALPmsv_6ZX9OvdL0RG_namMjLTstU9L7GNmCpms"
+            },
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0bGJuZHZjZ2FqY29hamhjbm54Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODQ1NDU0NywiZXhwIjoyMDY0MDMwNTQ3fQ.J7lzALPmsv_6ZX9OvdL0RG_namMjLTstU9L7GNmCpms"
+            },
+            {
+              "name": "Content-Type",
+              "value": "={{$binary.data.mimeType || 'image/jpeg'}}"
+            },
+            {
+              "name": "x-upsert",
+              "value": "true"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -6832,
+        4624
+      ],
+      "id": "e9d01d4b-4321-4a69-9183-24821e0ab8de",
+      "name": "upload no bucket"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5347433a-2cd5-4432-96c1-ae171aeef325",
+              "name": "Key",
+              "value": "=https://vtlbndvcgajcoajhcnnx.supabase.co/storage/v1/object/public/{{ encodeURI($json[\"Key\"]) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -6624,
+        4608
+      ],
+      "id": "31fcea14-5bc8-41d8-bb95-cfe4b2676521",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841471543575891",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        3648
+      ],
+      "id": "6b6311cb-a979-44bb-8a63-f636ef238f7c",
+      "name": "instagram - santana1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "BQeA5G24GBuKFGlF",
+          "name": "instagram - santana"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json[\"Texto da Imagem\"] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        4464
+      ],
+      "id": "8ee2f32d-f469-4b64-9d33-efecaa93c892",
+      "name": "facebook -  santana",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "wBYCTEriVRNrwi9d",
+          "name": "facebook - santana"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json[\"Id da 1º Imagem\"].match(/[-\\w]{25,}/)[0] }}\n",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -4192,
+        4816
+      ],
+      "id": "535963ce-be50-478f-b9b5-e1718c64faed",
+      "name": "Download file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841469496977519",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        3840
+      ],
+      "id": "d9e802ab-c40b-4a2e-8940-eb23e6fc6801",
+      "name": "instagram - barra funda",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "pcKl8g69fNravU32",
+          "name": "instagram - barra funda"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841469496977519",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        3840
+      ],
+      "id": "235f175e-dfb7-4c78-b6c0-41edb20b20b7",
+      "name": "instagram - barra funda1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "pcKl8g69fNravU32",
+          "name": "instagram - barra funda"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841457149857909",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        4032
+      ],
+      "id": "f02c820a-2c4b-4e34-9890-6a9bdb61a0b9",
+      "name": "instagram - capivari",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "h05v1pZPcPGkuuvG",
+          "name": "instagram - capivari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841457149857909",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        4032
+      ],
+      "id": "684beb47-57c2-4d7e-b60a-94e5e582545a",
+      "name": "instagram - capivari1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "h05v1pZPcPGkuuvG",
+          "name": "instagram - capivari"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841465734676647",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        4224
+      ],
+      "id": "fb7a0822-1c92-4bbb-91f2-75aef84a2478",
+      "name": "instagram - cruzeirodosulead",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "EniYaLf4qXOkni1o",
+          "name": "instagram - cruzeirodosulead"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841465734676647",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        4224
+      ],
+      "id": "ec158fc1-c4f2-4b0e-a34d-0f2cbc2bce4e",
+      "name": "instagram - cruzeirodosulead1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "EniYaLf4qXOkni1o",
+          "name": "instagram - cruzeirodosulead"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841455975185849",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        4416
+      ],
+      "id": "8d66949a-d239-46a2-8db0-ff3b8cb1e41f",
+      "name": "instagram - freguesia do o",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "49Q7ftSHi70QrCYB",
+          "name": "instagram - freguesia do ó"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841455975185849",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        4416
+      ],
+      "id": "9eb64831-3ba5-4c33-84c8-d4c14193c664",
+      "name": "instagram - freguesia do o1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "BQeA5G24GBuKFGlF",
+          "name": "instagram - santana"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841470200515191",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Get row(s) in sheet1').item.json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        4592
+      ],
+      "id": "a5b09814-5878-443f-86ff-b0006175062d",
+      "name": "instagram - ibirapuera",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "FZdFfYdTEJvf1NT3",
+          "name": "instagram - ibirapuera"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841470200515191",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5808,
+        4608
+      ],
+      "id": "31075583-acc2-4e00-a996-3c7c73c0c493",
+      "name": "instagram - ibirapuera1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "FZdFfYdTEJvf1NT3",
+          "name": "instagram - ibirapuera"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841470040982193",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        4800
+      ],
+      "id": "0e1841f7-c259-456e-9ec4-88cea6558f24",
+      "name": "instagram - itapira",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "zqVcz8jrlPwDFLxC",
+          "name": "instagram - itapira"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841470040982193",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        4800
+      ],
+      "id": "eb67d3c6-732a-46e3-bf98-da6dd5d46ad9",
+      "name": "instagram - itapira1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "zqVcz8jrlPwDFLxC",
+          "name": "instagram - itapira"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841456122302004",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        4992
+      ],
+      "id": "74fc0790-5601-4816-b741-1fdcd55bf7e8",
+      "name": "instagram - jd mituzi",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "YIcMZ8BGiuluiXek",
+          "name": "instagram - jd mituzi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841456122302004",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        4992
+      ],
+      "id": "9fec0679-ddbf-4b67-ad48-d9b165bc7b99",
+      "name": "instagram - jd mituzi1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "YIcMZ8BGiuluiXek",
+          "name": "instagram - jd mituzi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841470112438916",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Get row(s) in sheet1').item.json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6016,
+        5168
+      ],
+      "id": "49f6adc4-6ae3-44a6-9f6f-838cd73632ec",
+      "name": "instagram - morumbi",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "mV5Igu67SG1ZAtRZ",
+          "name": "face - morumbi - llt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841470112438916",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5824,
+        5184
+      ],
+      "id": "111182a2-0b8e-4cc2-a30b-9bd7af7ee30c",
+      "name": "instagram - morumbi1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "BQeA5G24GBuKFGlF",
+          "name": "instagram - santana"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841456140510029",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        5376
+      ],
+      "id": "d74a2e8c-b9a7-42e1-b5fb-9e9f88edc3db",
+      "name": "instagram - sapopemba",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "zn9DHx6wiVOdJxL1",
+          "name": "instagram - sapopemba"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841456140510029",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        5376
+      ],
+      "id": "ee1cb6f3-c96a-4b61-924d-75fa93e19237",
+      "name": "instagram - sapopemba1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "BQeA5G24GBuKFGlF",
+          "name": "instagram - santana"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841455688815684",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Get row(s) in sheet1').item.json['Texto da Imagem'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        5568
+      ],
+      "id": "8929ada3-be5a-4539-8265-d3b218125f5c",
+      "name": "instagram - taboao da serra centro",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "sT18TyEmT6KdC2mH",
+          "name": "instagram - taboao da serra centro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841455688815684",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5760,
+        5568
+      ],
+      "id": "b33eabbe-6076-47c0-bda6-a78d74f5d2fa",
+      "name": "instagram - taboao da serra centro1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "sT18TyEmT6KdC2mH",
+          "name": "instagram - taboao da serra centro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841455818982466",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $json.Key }}"
+              },
+              {
+                "name": "caption",
+                "value": "Muitos sonham em viver do futebol. Mas poucos enxergam quem faz o jogo acontecer fora das quatro linhas.  Profissionais de Educação Física atuam onde a mágica acontece: ⚽ na preparação física 🛡️ na prevenção de lesões 💨 no condicionamento individual 📈 na evolução da performance  É ciência, estratégia e dedicação — tudo aplicado ao esporte que move o país.  🎓 E você, quer fazer parte disso? Na Cruzeiro do Sul Virtual, você se prepara pra transformar sua paixão em carreira!"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -6000,
+        5760
+      ],
+      "id": "52e901ed-41d0-4235-8021-ad23ea304aa7",
+      "name": "instagram - vila prudente",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "ZfYgzgCf2lHytYxo",
+          "name": "instagram - vila prudente"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841455818982466",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -5776,
+        5760
+      ],
+      "id": "bd522873-5f08-4eae-9abb-07564a36aa91",
+      "name": "instagram - vila prudente1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "ZfYgzgCf2lHytYxo",
+          "name": "instagram - vila prudente"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## \n*INSTAGRAM*",
+        "height": 2368,
+        "width": 2672,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -8176,
+        3520
+      ],
+      "id": "b670fe14-7b0c-429c-aeb0-4131767c599d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## *FACEBOOK*\n",
+        "height": 2432,
+        "width": 1728,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -4960,
+        3568
+      ],
+      "id": "4e194c5d-c9c0-42f7-b86e-5f6047476170",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c",
+          "mode": "list",
+          "cachedResultName": "Planilha - Posts Facebook e Instagram ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Data - Postagem",
+              "lookupValue": "={{ $now.toFormat('dd/MM/yyyy') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -4736,
+        4880
+      ],
+      "id": "08d34889-5269-48b1-9023-38d6412b4171",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c",
+          "mode": "list",
+          "cachedResultName": "Planilha - Posts Facebook e Instagram ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Data - Postagem",
+              "lookupValue": "=11/09/2025"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -7552,
+        4656
+      ],
+      "id": "fa1063ac-cf97-406a-8acb-4b6f8ec13c9f",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -7776,
+        4656
+      ],
+      "id": "f495daff-f3ae-4905-9ea5-1d54ab218754",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4912,
+        4832
+      ],
+      "id": "2b4bbe6d-5210-4b6e-88d7-660fe30a36ea",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Id da 2º Imagem'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notExists",
+                      "singleValue": true
+                    },
+                    "id": "48b159ce-0ad4-4677-9f83-e511ca4cc06f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Post Único"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -7344,
+        4656
+      ],
+      "id": "cf411b36-55e2-4fd5-802c-21494d5a8b15",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Id da 2º Imagem'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notExists",
+                      "singleValue": true
+                    },
+                    "id": "48b159ce-0ad4-4677-9f83-e511ca4cc06f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Post Único"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -4560,
+        4848
+      ],
+      "id": "818107b9-3e82-48af-b702-10a0be8f2a5a",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "content": "## *FACEBOOK* - CAROSSEL\n\n",
+        "height": 464,
+        "width": 1728,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3120,
+        6448
+      ],
+      "id": "a3d5419f-7db4-45b5-a80f-2c4372a74244",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = items[0].json;\n\nconst keys = Object.keys(row).filter(\n  k => k.toLowerCase().includes('id da') && k.toLowerCase().includes('imagem')\n);\n\nfunction extractId(urlOrId) {\n  if (!urlOrId) return null;\n  const m1 = String(urlOrId).match(/\\/file\\/d\\/([^/]+)/);\n  if (m1) return m1[1];\n  const m2 = String(urlOrId).match(/[?&]id=([^&]+)/);\n  if (m2) return m2[1];\n  if (/^[A-Za-z0-9_-]{20,}$/.test(String(urlOrId))) return String(urlOrId);\n  return null;\n}\n\nconst out = [];\nfor (const k of keys) {\n  const id = extractId(row[k]);\n  if (id) {\n    out.push({\n      json: {\n        tipo: 'imagem',   // <-- ADICIONADO\n        driveFileId: id,\n        url: `https://drive.google.com/uc?export=download&id=${id}`\n      }\n    });\n  }\n}\n\n// item de contagem\nout.push({\n  json: {\n    tipo: 'contagem',    // <-- ADICIONADO\n    totalIds: out.length\n  }\n});\n\nreturn out;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3024,
+        6656
+      ],
+      "id": "47f3d83a-b05d-4897-a380-ecba1394769c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c80e0d03-16b3-4f1e-bf1b-d7459194d9f5",
+                    "leftValue": "={{ $json.tipo }}",
+                    "rightValue": "imagem",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2816,
+        6640
+      ],
+      "id": "a2e86c46-2bf2-4459-872b-028ac8233f6f",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "486302287897529",
+        "edge": "photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "url",
+                "value": "={{ $json.url }}"
+              },
+              {
+                "name": "published",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -2272,
+        6672
+      ],
+      "id": "02f7fad1-e660-4765-8335-66f8d839df2c",
+      "name": "Facebook Graph API1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "mV5Igu67SG1ZAtRZ",
+          "name": "face - morumbi - llt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.driveFileId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2640,
+        6656
+      ],
+      "id": "b050545f-6ea6-4917-922e-2fd808ec642d",
+      "name": "Download file2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -2480,
+        6672
+      ],
+      "id": "d6f96ff4-98c2-44aa-b112-7e7cc2573262",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "// junta todos os PHOTO_ID em attached_media\nconst attached = items\n  .map(i => i.json.id)\n  .filter(Boolean)\n  .map(id => ({ media_fbid: id }));\n\nreturn [{\n  json: {\n    attached_media: attached\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2064,
+        6656
+      ],
+      "id": "b5c4f804-3046-4abf-8b9f-9038fbac2c1d",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: { attached_media: [ { media_fbid: \"111\" }, { media_fbid: \"222\" }, ... ] }\n\nconst msg = $items('Get row(s) in sheet')[0].json['Texto da Imagem'] || '';\n\nconst body = { message: msg };\n\n// Transformar o array em campos attached_media[0], attached_media[1], ...\n(items[0].json.attached_media || []).forEach((m, i) => {\n  // o Graph exige o valor como JSON string\n  body[`attached_media[${i}]`] = JSON.stringify({ media_fbid: m.media_fbid });\n});\n\nreturn [{ json: body }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        6672
+      ],
+      "id": "9b632b6b-b96d-49e8-bab9-637c02952259",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/486302287897529/feed?access_token=EAAJnch7hXsIBPR8GcStbD2Lg565DVGCUVBsq2WhR4B270YeQnC1tDbYFw1vrZAu1ZAFioeZCdhNduke66SkWhT0NytyyeWzpYWwa9p5ixhJ0rDZC2E4ZAAFE4sRKB3LrbAOTfvC0hvmp7H5XxP7Q0417WZBlWZAK1aelKTvOortUtUW3Ny7kZBkbunAFyQf48cmBz71vV3xJ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            },
+            {
+              "name": "attached_media[2]",
+              "value": "={{ $json['attached_media[2]'] }}"
+            },
+            {
+              "name": "attached_media[3]",
+              "value": "={{ $json['attached_media[3]'] }}"
+            },
+            {
+              "name": "attached_media[4]",
+              "value": "={{ $json['attached_media[4]'] }}"
+            },
+            {
+              "name": "attached_media[5]",
+              "value": "={{ $json['attached_media[5]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1680,
+        6640
+      ],
+      "id": "48a8146f-a219-4ccb-9d35-6c1bdd24e622",
+      "name": "postar cruzeirodosulead"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "486302287897529",
+        "edge": "photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "url",
+                "value": "={{ $json.url }}"
+              },
+              {
+                "name": "published",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        3568
+      ],
+      "id": "4188484a-99f1-469e-988f-d1a8da076e79",
+      "name": "facebook morumbi",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "mV5Igu67SG1ZAtRZ",
+          "name": "face - morumbi - llt"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "facebook - itapira": {
+      "main": [
+        []
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "upload no bucket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload no bucket": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "instagram - ibirapuera",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "instagram - morumbi",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "instagram - taboao da serra centro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - santana": {
+      "main": [
+        [
+          {
+            "node": "instagram - santana1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - barra funda": {
+      "main": [
+        [
+          {
+            "node": "instagram - barra funda1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - capivari": {
+      "main": [
+        [
+          {
+            "node": "instagram - capivari1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - cruzeirodosulead": {
+      "main": [
+        [
+          {
+            "node": "instagram - cruzeirodosulead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - freguesia do o": {
+      "main": [
+        [
+          {
+            "node": "instagram - freguesia do o1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - ibirapuera": {
+      "main": [
+        [
+          {
+            "node": "instagram - ibirapuera1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - itapira": {
+      "main": [
+        [
+          {
+            "node": "instagram - itapira1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - jd mituzi": {
+      "main": [
+        [
+          {
+            "node": "instagram - jd mituzi1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - morumbi": {
+      "main": [
+        [
+          {
+            "node": "instagram - morumbi1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - sapopemba": {
+      "main": [
+        [
+          {
+            "node": "instagram - sapopemba1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - taboao da serra centro": {
+      "main": [
+        [
+          {
+            "node": "instagram - taboao da serra centro1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "instagram - vila prudente": {
+      "main": [
+        [
+          {
+            "node": "instagram - vila prudente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "facebook - ibirapuera",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - polo taboao centro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Download file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file2": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Facebook Graph API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "postar cruzeirodosulead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e11bfa71-86d8-4f2c-b090-0593978f4c47",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-09-02T16:11:01.037Z",
+      "updatedAt": "2025-09-02T16:11:01.037Z",
+      "role": "workflow:owner",
+      "workflowId": "FLmE8Y3tgpijDo1Q",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
