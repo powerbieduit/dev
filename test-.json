@@ -1,10 +1,10 @@
 {
-  "createdAt": "2025-08-04T18:25:57.012Z",
-  "updatedAt": "2025-08-04T18:38:48.000Z",
-  "id": "aRjKBmpDR1SS1I2u",
+  "createdAt": "2025-08-25T16:34:26.782Z",
+  "updatedAt": "2025-08-25T16:34:50.000Z",
+  "id": "5JMG5m99IBFw0o5v",
   "name": "test",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -28,8 +28,17 @@
   },
   "staticData": null,
   "meta": null,
-  "pinData": {},
-  "versionId": "6ed67ac3-16f0-42a1-8736-230809e397b7",
-  "triggerCount": 1,
+  "pinData": null,
+  "versionId": "b5f7fcdb-cc99-4d8c-9f8c-cab8788c3837",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-08-25T16:34:26.791Z",
+      "updatedAt": "2025-08-25T16:34:26.791Z",
+      "role": "workflow:owner",
+      "workflowId": "5JMG5m99IBFw0o5v",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
