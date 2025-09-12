@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-25T19:56:25.963Z",
-  "updatedAt": "2025-08-04T17:28:00.000Z",
+  "updatedAt": "2025-08-21T20:39:41.000Z",
   "id": "YLRdJAd0DgnKuK4q",
   "name": "criacao_leads_soead",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {},
@@ -445,6 +445,22 @@
     },
     {
       "parameters": {
+        "httpMethod": "POST",
+        "path": "50394c72-1fe1-4a09-93b4-a19095a13e71",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2992,
+        400
+      ],
+      "id": "fadd5b4a-ec4f-490e-9ac9-095831cfc1a7",
+      "name": "Webhook",
+      "webhookId": "50394c72-1fe1-4a09-93b4-a19095a13e71"
+    },
+    {
+      "parameters": {
         "resource": "leads",
         "operation": "createLeads",
         "collection": {
@@ -471,6 +487,10 @@
                   {
                     "data": "{\"id\":688279,\"type\":\"select\"}",
                     "value": "Site - Anhanguera"
+                  },
+                  {
+                    "data": "{\"id\":673258,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields').item.json.Tipo }}"
                   }
                 ]
               },
@@ -498,29 +518,13 @@
         208
       ],
       "id": "39c02de9-33eb-4204-926a-860277de91f6",
-      "name": "cria lead (eduit new)",
+      "name": "cria lead",
       "credentials": {
         "kommoOAuth2Api": {
           "id": "nVF4jy6NK0rf5oed",
           "name": "Kommo BU"
         }
       }
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "50394c72-1fe1-4a09-93b4-a19095a13e71",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        -2992,
-        400
-      ],
-      "id": "fadd5b4a-ec4f-490e-9ac9-095831cfc1a7",
-      "name": "Webhook",
-      "webhookId": "50394c72-1fe1-4a09-93b4-a19095a13e71"
     }
   ],
   "connections": {
@@ -561,7 +565,7 @@
       "main": [
         [
           {
-            "node": "cria lead (eduit new)",
+            "node": "cria lead",
             "type": "main",
             "index": 0
           }
@@ -674,7 +678,10 @@
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "dCpCqA316QocWWea"
+    "errorWorkflow": "dCpCqA316QocWWea",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
   },
   "staticData": null,
   "meta": {
@@ -686,31 +693,32 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
-            "content-length": "62",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+            "content-length": "75",
             "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "pt-BR,pt;q=0.9",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-PT,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             "content-type": "application/json",
             "origin": "https://www.soead.com.br",
-            "priority": "u=3, i",
+            "priority": "u=1, i",
             "referer": "https://www.soead.com.br/",
+            "save-data": "on",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "189.6.255.25",
+            "x-forwarded-for": "197.235.222.192",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "189.6.255.25"
+            "x-real-ip": "197.235.222.192"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Daniel",
-            "celular": "55997127864",
-            "tipo": "Graduação"
+            "nome": "Santos Jeremias ",
+            "celular": "845599433",
+            "tipo": "Pós-Graduação"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/50394c72-1fe1-4a09-93b4-a19095a13e71",
           "executionMode": "production"
@@ -718,7 +726,16 @@
       }
     ]
   },
-  "versionId": "c7db6bee-56b6-4c4a-af87-273371f57a9b",
+  "versionId": "fbc29ad6-0a79-4e86-8c6d-d8a1e8e37cb3",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T19:56:25.965Z",
+      "updatedAt": "2025-07-25T19:56:25.965Z",
+      "role": "workflow:owner",
+      "workflowId": "YLRdJAd0DgnKuK4q",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
