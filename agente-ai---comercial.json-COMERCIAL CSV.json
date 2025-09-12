@@ -1,0 +1,1196 @@
+{
+  "createdAt": "2025-07-25T20:01:33.539Z",
+  "updatedAt": "2025-07-28T16:53:03.000Z",
+  "id": "2SKJkpwjkFB4NYB0",
+  "name": "AGENTE AI - COMERCIAL.json",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "=Você é um vendedor de cursos da Universidade Cruzeiro do Sul, atendendo clientes via WhatsApp. Os cursos são oferecidos nas seguintes modalidades:\n\n- EaD Digital (100% online)\n- EaD com Aulas ao Vivo\n- Semipresencial\n\nA matrícula é feita após o cliente mandar os dados, você terá que decidir distribuir o atendimento ou marcar algo para que seja possível transferir para um HUMANO, que irá fazer a inscrção com base nos dados recebidos do cliente.\n\nSempre que o cliente mencionar interesse em um curso, siga esta lógica:\n\n1. **Consulte a base vetorial com o nome do curso ou sinônimo informado.**\n2. Ao encontrar o curso, informe ao cliente:\n   - Nome oficial do curso  \n   - Grau (Bacharelado, Tecnólogo ou Licenciatura)  \n   - Modalidades disponíveis (EaD Digital, EaD com Aulas ao Vivo, Semipresencial)  \n   - Duração  \n   - Valor da mensalidade (se disponível)\n\n3. Se o curso **não for encontrado na base vetorial**, diga:\n> “Esse curso não está disponível na nossa lista no momento. Posso te indicar algo parecido?”\n\n4. **Nunca finalize o atendimento sem fazer uma pergunta.**  \n   Estimule sempre o próximo passo para manter a conversa ativa e não queimar a venda.\n\n---\n\n### ✅ Caso o cliente deseje iniciar a matrícula:\n\n- Peça os seguintes dados:\n  - Nome completo  \n  - CPF  \n  - RG  \n  - Data de nascimento  \n  - CEP  \n  - E-mail\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        4624,
+        1104
+      ],
+      "id": "3c6535d3-b920-4a29-b097-c2e3e929f8fa",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4400,
+        1328
+      ],
+      "id": "8bde4a41-f15f-4f06-b88c-ac42b7600e7a",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "16453113-a457-4ecc-82d8-5b6e31cc357e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        768
+      ],
+      "id": "0600b747-352b-4032-ab58-a429e100d53a",
+      "name": "Webhook",
+      "webhookId": "16453113-a457-4ecc-82d8-5b6e31cc357e"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b426ae6e-821d-4c12-9e64-a41f03c3ae71",
+              "name": "Quem mandou",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "294ecd94-36d3-445d-8c4d-21e2e81d8d9c",
+              "name": "Instancia",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "47471d97-6f9d-4118-9874-e823e42e7ba0",
+              "name": "Mensagem",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "d244d349-9217-4ebd-ab40-0e156b08f23b",
+              "name": "id da Mensagem",
+              "value": "={{ $json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "587d58d0-1307-4eeb-ae76-fe96c2996181",
+              "name": "Nome da Pessoa",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "ff9c0fe9-f0a6-4d34-8172-5468e3fcf8d0",
+              "name": "Tipo da Mensagem",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "bb4149a8-a833-4e2b-98bb-4e7954e10607",
+              "name": "fromme",
+              "value": "={{ $json.body.data.key.fromMe }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        864
+      ],
+      "id": "2e75e838-da25-4736-8ed4-0f79584d3be3",
+      "name": "dados"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.Instancia }} {{ $json['Quem mandou'] }}",
+        "sessionTTL": 3600,
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        2672,
+        832
+      ],
+      "id": "9a48dc8e-11f2-4b8e-8f58-dff67804e7c6",
+      "name": "Redis Chat Memory"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        5424,
+        1104
+      ],
+      "id": "04431a56-7c91-4db3-91c5-4f181a1805af",
+      "name": "Enviar texto",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Tipo da Mensagem'] }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5ee7ff91-98b0-467d-a19f-e3c54198fb79"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6fcc891f-db95-4578-b517-244f1703cbe5",
+                    "leftValue": "={{ $json['Tipo da Mensagem'] }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        832,
+        864
+      ],
+      "id": "a9c00cd8-48da-42de-8aca-68eb480e5ee2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c2cbe5d-e3cf-4037-bdcb-6e37d0bc1e21",
+              "name": "message",
+              "value": "={{ $json.Mensagem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1712,
+        768
+      ],
+      "id": "9ce7379c-c637-4791-80c1-ad3f609dc15a",
+      "name": "Set Text Message"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "830a96ef-3049-4dc4-bb8d-b62a0a6081b5",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1920,
+        864
+      ],
+      "id": "eb6c4f6a-5829-4ec3-884e-2b0b2badc8d7",
+      "name": "message"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        960
+      ],
+      "id": "3bb6572e-74e2-4e96-b223-f922bddad86c",
+      "name": "Obter m dia em base64",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mpeg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        960
+      ],
+      "id": "9251c9d4-3ca7-4e71-9857-8429c3591fcb",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "whisper-large-v3-turbo"
+            },
+            {
+              "name": "temperature",
+              "value": "0"
+            },
+            {
+              "name": "response_format",
+              "value": "verbose_json"
+            },
+            {
+              "name": "language",
+              "value": "pt"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        960
+      ],
+      "id": "7785237f-1cb8-426d-bb65-8af4247a617e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d379d0ad-0cc7-4b42-bfc2-deb09a2082f3",
+              "name": "message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1712,
+        960
+      ],
+      "id": "d05c331a-3856-479f-9a80-4d639b052831",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5c62f786-248f-4011-b113-14c7ca2498b9",
+              "leftValue": "={{ $('dados').item.json.fromme }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2144,
+        864
+      ],
+      "id": "e0861c27-c43c-4b67-a290-1ef5012cffad",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('dados').item.json.Instancia }} {{ $('dados').item.json['Quem mandou'] }} block",
+        "value": "true",
+        "expire": true,
+        "ttl": 300
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2368,
+        704
+      ],
+      "id": "135a3834-fed9-4473-a7e6-1abc2e641dc4",
+      "name": "Block"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        2592,
+        608
+      ],
+      "id": "a6985cad-ddcd-406c-a861-e4d734c4606a",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "isBlocked",
+        "key": "={{ $('dados').item.json.Instancia }} {{ $('dados').item.json['Quem mandou'] }} block",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2368,
+        1008
+      ],
+      "id": "23e6327b-95d8-44a2-965c-5790bbccf458",
+      "name": "Redis"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7990f32e-5b4b-409a-b074-e6ac24c28cb7",
+              "leftValue": "={{ $json.isBlocked }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2640,
+        1008
+      ],
+      "id": "b7ab0c08-5442-4671-8778-217ba5a14aae",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "user",
+              "message": "={{ $('message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        2944,
+        912
+      ],
+      "id": "45ad33c6-06e1-4796-bf6d-7613c6a0ce02",
+      "name": "Chat Memory Manager1"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('dados').item.json.Instancia }} {{ $('dados').item.json['Quem mandou'] }} temp",
+        "messageData": "={{ $('message').item.json.message }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        1104
+      ],
+      "id": "95e835d3-04ae-4226-90e3-089b381a4bff",
+      "name": "Redis1"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3312,
+        1104
+      ],
+      "id": "cef5a4d6-0f14-489f-a3b5-ad67a3f3bd9f",
+      "name": "Wait",
+      "webhookId": "4b3f1836-8f2c-4545-af20-551cb73e93f2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('dados').item.json.Instancia }} {{ $('dados').item.json['Quem mandou'] }} temp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3520,
+        1104
+      ],
+      "id": "166257f3-0974-419b-98a8-37b214474507",
+      "name": "Redis2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1242396a-1bb4-4a63-aa69-0fa850e895c9",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3744,
+        1104
+      ],
+      "id": "63bd2ae6-d3ad-4d38-8a6b-f5fbf943708c",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('dados').item.json.Instancia }} {{ $('dados').item.json['Quem mandou'] }} temp"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3968,
+        1104
+      ],
+      "id": "912119d4-2fca-4ce3-8771-c72b1d475c90",
+      "name": "Redis3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e5569a56-4ebb-4efb-bf86-64d367502a8a",
+              "name": "message",
+              "value": "={{ $('Redis2').item.json.messages.join(\" \") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4192,
+        1104
+      ],
+      "id": "48321130-1043-43cf-85c3-a1fca1343ef3",
+      "name": "Mensagem Final"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5301d771-ff58-4d87-8f7e-2c5263cc1371",
+              "leftValue": "={{ $json.body.data.key.remoteJid }}",
+              "rightValue": "120363402640430803@g.us",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        768
+      ],
+      "id": "e80852e3-5bf1-4861-a07f-c6b556679547",
+      "name": "If3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        608,
+        672
+      ],
+      "id": "c70c6d78-a5b2-48f2-a07c-f36a85ff62e4",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        400
+      ],
+      "id": "883854fd-24c0-45b0-b5fc-05fd98f1ea1a",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        288
+      ],
+      "id": "08d3671c-4c35-4f9f-9064-302dc709272b",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use SEMPRE para passar *INFORMAÇÕES* sobre os cursos",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 3,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        4880,
+        1408
+      ],
+      "id": "b0d1f0f3-2473-4cd1-ab4e-67b0e883b46d",
+      "name": "consultar_cursos"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4960,
+        1600
+      ],
+      "id": "49813b88-176a-42dc-b332-bf50a86b6e16",
+      "name": "Embeddings OpenAI1"
+    },
+    {
+      "parameters": {
+        "content": "Converte Documentos em Vetorial \n",
+        "height": 580,
+        "width": 1380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "34beebbf-a8d6-4e70-ac42-e499b97197b8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "description": "O cliente precisa mandar os dados para fazer a inscrição."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        5168,
+        1408
+      ],
+      "id": "68d2ef72-59db-4da9-ba92-1211e62682ec",
+      "name": "Think"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        48,
+        112
+      ],
+      "id": "fa2935b3-1521-43e7-9da3-3855fc48cf2d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "13i82y-ENnRN3PMgnLtNVOUye92PPC_3W",
+          "mode": "list",
+          "cachedResultName": "informacoes_ead-semi.csv",
+          "cachedResultUrl": "https://drive.google.com/file/d/13i82y-ENnRN3PMgnLtNVOUye92PPC_3W/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        320,
+        80
+      ],
+      "id": "62c82976-d294-4f57-b51e-746522e67ea7",
+      "name": "Download file"
+    },
+    {
+      "parameters": {
+        "chunkSize": 20000,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        880,
+        448
+      ],
+      "id": "d8ee7d69-a91f-4dca-b734-a61ecb36f742",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "embeddingBatchSize": 32,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        80
+      ],
+      "id": "b5e8fa4a-85bb-4e04-bcf5-98c3b97d51ac",
+      "name": "Supabase Vector Store",
+      "alwaysOutputData": true
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Set Text Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Text Message": {
+      "main": [
+        [
+          {
+            "node": "message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "message": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Block": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem Final": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consultar_cursos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "consultar_cursos",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "6f473f38-2950-44f2-813f-1bb677d680f6",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T20:01:33.543Z",
+      "updatedAt": "2025-07-25T20:01:33.543Z",
+      "role": "workflow:owner",
+      "workflowId": "2SKJkpwjkFB4NYB0",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-25T20:00:36.295Z",
+      "updatedAt": "2025-07-25T20:00:36.295Z",
+      "id": "3759VYd0IlWAtU1B",
+      "name": "COMERCIAL CSV"
+    }
+  ]
+}
