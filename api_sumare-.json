@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-01T18:08:25.175Z",
-  "updatedAt": "2025-08-25T09:11:53.000Z",
+  "updatedAt": "2025-09-10T14:22:49.000Z",
   "id": "Bytg5Eu5Z9nlt1Q7",
   "name": "api_sumare",
   "active": true,
@@ -277,7 +277,7 @@
                   },
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
                   },
                   {
                     "data": "{\"id\":676343,\"type\":\"text\"}",
@@ -289,7 +289,7 @@
                   },
                   {
                     "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                    "value": "={{ $('filtro ids maiores').item.json.status }}"
                   },
                   {
                     "data": "{\"id\":662156,\"type\":\"text\"}",
@@ -298,6 +298,18 @@
                   {
                     "data": "{\"id\":662152,\"type\":\"text\"}",
                     "value": "={{\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"]\n}}"
+                  },
+                  {
+                    "data": "{\"id\":669742,\"type\":\"text\"}",
+                    "value": "={{ +$('filtro ids maiores').item.json.aluno }}"
+                  },
+                  {
+                    "data": "{\"id\":662148,\"type\":\"date\"}",
+                    "value": "={{ \n  DateTime\n    .fromFormat($('filtro ids maiores').item.json.dtInscricao, 'MM-dd-yyyy', { zone: 'utc' })\n    .startOf('day')\n    .toFormat('X')            // <-- timestamp em segundos (o que o Kommo quer)\n}}\n\n"
+                  },
+                  {
+                    "data": "{\"id\":662150,\"type\":\"date\"}",
+                    "value": "={{\n  $('filtro ids maiores').item.json.dtMatricula\n    ? DateTime\n        .fromFormat($('filtro ids maiores').item.json.dtMatricula, 'MM-dd-yyyy', { zone: 'utc' })\n        .startOf('day')\n        .toFormat('X')\n    : null\n}}\n"
                   }
                 ]
               }
@@ -515,7 +527,7 @@
                   },
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
                   },
                   {
                     "data": "{\"id\":676343,\"type\":\"text\"}",
@@ -527,7 +539,7 @@
                   },
                   {
                     "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                    "value": "={{ $('filtro ids maiores').item.json.status }}"
                   },
                   {
                     "data": "{\"id\":662156,\"type\":\"text\"}",
@@ -616,7 +628,7 @@
                   },
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
                   },
                   {
                     "data": "{\"id\":676343,\"type\":\"text\"}",
@@ -628,7 +640,7 @@
                   },
                   {
                     "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                    "value": "={{ $('filtro ids maiores').item.json.status }}"
                   },
                   {
                     "data": "{\"id\":662156,\"type\":\"text\"}",
@@ -651,7 +663,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3232,
+        3200,
         80
       ],
       "id": "7b043244-adea-4e89-8760-317bca3e058c",
@@ -765,8 +777,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3680,
-        96
+        3760,
+        240
       ],
       "id": "a93c5fdd-c701-40ea-8e92-fe2770d00e88",
       "name": "Wait",
@@ -833,7 +845,7 @@
                   },
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.celular }}"
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
                   },
                   {
                     "data": "{\"id\":688527,\"type\":\"text\"}",
@@ -841,7 +853,7 @@
                   },
                   {
                     "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.situacao }}"
+                    "value": "={{ $('filtro ids maiores').item.json.status }}"
                   },
                   {
                     "data": "{\"id\":676343,\"type\":\"text\"}",
@@ -850,6 +862,18 @@
                   {
                     "data": "{\"id\":669742,\"type\":\"text\"}",
                     "value": "={{ $('filtro ids maiores').item.json.aluno }}"
+                  },
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
+                  },
+                  {
+                    "data": "{\"id\":662148,\"type\":\"date\"}",
+                    "value": "={{ \n  DateTime\n    .fromFormat($('filtro ids maiores').item.json.dtInscricao, 'MM-dd-yyyy', { zone: 'utc' })\n    .startOf('day')\n    .toFormat('X')            // <-- timestamp em segundos (o que o Kommo quer)\n}}\n"
+                  },
+                  {
+                    "data": "{\"id\":662150,\"type\":\"date\"}",
+                    "value": "={{\n  $('filtro ids maiores').item.json.dtMatricula\n    ? DateTime\n        .fromFormat($('filtro ids maiores').item.json.dtMatricula, 'MM-dd-yyyy', { zone: 'utc' })\n        .startOf('day')\n        .toFormat('X')\n    : null\n}}\n"
                   }
                 ]
               },
@@ -874,7 +898,7 @@
       "typeVersion": 1,
       "position": [
         3104,
-        336
+        288
       ],
       "id": "2c4936b5-4d7a-462a-a688-02bd7f3c32f2",
       "name": "Create new leads",
@@ -946,7 +970,7 @@
                   },
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.celular || ''}}"
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular || ''}}"
                   },
                   {
                     "data": "{\"id\":688527,\"type\":\"text\"}",
@@ -954,7 +978,7 @@
                   },
                   {
                     "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                    "value": "={{ $('filtro ids maiores').item.json.status }}"
                   },
                   {
                     "data": "{\"id\":676343,\"type\":\"text\"}",
@@ -967,6 +991,10 @@
                   {
                     "data": "{\"id\":693635,\"type\":\"select\"}",
                     "value": "Recebida"
+                  },
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.nome }}"
                   }
                 ]
               },
@@ -1063,7 +1091,7 @@
                   },
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.celular || ''}}"
+                    "value": "=+55{{ $('filtro ids maiores').item.json.celular || ''}}"
                   },
                   {
                     "data": "{\"id\":688527,\"type\":\"text\"}",
@@ -1071,7 +1099,7 @@
                   },
                   {
                     "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.situacao || ''}}"
+                    "value": "={{ $('filtro ids maiores').item.json.status }}"
                   },
                   {
                     "data": "{\"id\":676343,\"type\":\"text\"}",
@@ -1080,6 +1108,10 @@
                   {
                     "data": "{\"id\":669742,\"type\":\"text\"}",
                     "value": "={{ $('filtro ids maiores').item.json.aluno || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('filtro ids maiores').item.json.nome }}"
                   }
                 ]
               },
@@ -1126,7 +1158,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "id do lead": "={{ $json._embedded.leads[0].id }}"
+            "id do lead": "={{ $json._embedded.leads[0].id }}\n"
           },
           "matchingColumns": [
             ""
@@ -1687,22 +1719,22 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-08-25T06:00:30.008-03:00",
-          "Readable date": "August 25th 2025, 6:00:30 am",
-          "Readable time": "6:00:30 am",
-          "Day of week": "Monday",
+          "timestamp": "2025-09-10T11:00:29.004-03:00",
+          "Readable date": "September 10th 2025, 11:00:29 am",
+          "Readable time": "11:00:29 am",
+          "Day of week": "Wednesday",
           "Year": "2025",
-          "Month": "August",
-          "Day of month": "25",
-          "Hour": "06",
+          "Month": "September",
+          "Day of month": "10",
+          "Hour": "11",
           "Minute": "00",
-          "Second": "30",
+          "Second": "29",
           "Timezone": "America/Sao_Paulo (UTC-03:00)"
         }
       }
     ]
   },
-  "versionId": "d71a1b2b-e33c-449c-9017-f2f4d6394532",
+  "versionId": "3d4a1021-6941-4f86-b4e7-7e7729e03066",
   "triggerCount": 1,
   "shared": [
     {
