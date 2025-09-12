@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T17:52:50.272Z",
-  "updatedAt": "2025-08-25T15:46:33.000Z",
+  "updatedAt": "2025-09-09T16:22:38.000Z",
   "id": "AdorfGfiq50Ph1tg",
   "name": "criacao_leads_soead V2",
   "active": true,
@@ -733,7 +733,7 @@
       }
     ]
   },
-  "versionId": "074c9248-693e-4fcd-9915-a6b6aff18ce6",
+  "versionId": "52eea502-85c4-4ad5-9f2a-a7c4ec28d4f5",
   "triggerCount": 1,
   "shared": [
     {
