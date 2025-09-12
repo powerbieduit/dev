@@ -1,0 +1,3360 @@
+{
+  "createdAt": "2025-08-07T18:57:41.266Z",
+  "updatedAt": "2025-08-11T14:40:56.000Z",
+  "id": "1Xiw7kowdUPRSlZ8",
+  "name": "workflow chatwoot - test de ai com licenciado",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5994a7a8-d6ca-4269-89c1-9685826a0e83",
+      "name": "Loop Over Items3",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        736,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Splitar Mensagens",
+        "height": 432,
+        "width": 2124,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "1771dc63-c3a0-4be4-8999-23d86e11599e",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        576
+      ],
+      "id": "48ec687b-d581-4194-ab26-f7d8f4d55a56",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "defac08a-6745-422b-bb05-90da9f47d91b",
+              "leftValue": "={{ $('Busca Telefone').last().json.values() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        400
+      ],
+      "id": "75fa0f4f-7442-493c-aede-a1d718ccbd71",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "content": "# Histórico Supabase\n",
+        "height": 380,
+        "width": 1500,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "ae89ceac-7215-4fec-91fb-a492a8929310",
+      "name": "Sticky Note54"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "keyValue": "={{ $('Info2').item.json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        160,
+        400
+      ],
+      "id": "4d0821f1-8142-43d5-b17e-f6ebb5882c64",
+      "name": "Busca Telefone",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "chats",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Info2').item.json.telefone }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now}}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        608,
+        336
+      ],
+      "id": "4a61260f-b160-4623-bf15-342489630e7c",
+      "name": "Adiciona CHAT supabase"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $('Info2').item.json.telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        608,
+        528
+      ],
+      "id": "a401d354-7b04-448b-acd2-1de73907f461",
+      "name": "Atualiza CHAT Supabase",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "tableId": "chat_messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Info2').item.json.telefone }}"
+            },
+            {
+              "fieldId": "bot_message",
+              "fieldValue": "={{ $('Supervisor').first().json.output }}"
+            },
+            {
+              "fieldId": "user_message",
+              "fieldValue": "={{ $('Info2').item.json.mensagem }}"
+            },
+            {
+              "fieldId": "message_type",
+              "fieldValue": "={{ $('Info2').item.json.tipo }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Info2').item.json.NomeWhatsapp }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        880,
+        416
+      ],
+      "id": "37f5cc2e-7a51-4bbe-85d9-ec1e25e9a1a5",
+      "name": "Cria Histórico Supabase"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "1cccf317-a00b-4af5-ac40-63aa0d1fbeb9",
+      "name": "Split de Mensagem",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        576,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $json.phone }}"
+      },
+      "id": "a2f08c73-805b-4fa9-a54f-8360bbd73468",
+      "name": "Delete Memory",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Enfileirar Mensagens\n",
+        "height": 796,
+        "width": 1068,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1568,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "7e9beaff-577d-461e-8e0e-2408bd506aa2",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "# Roteamento de Mensagens",
+        "height": 796,
+        "width": 1184,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2752,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "1709aff5-75ff-4cea-8c6b-30d11d6719b6",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "# Sistema de Pausar IA",
+        "height": 796,
+        "width": 1140,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3904,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "d0201827-d1cd-4fb9-ac61-f94bc694c137",
+      "name": "Sticky Note26"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c85b0d1-9c64-4655-8820-2ea163f2eaad",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2224,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Info2').item.json.telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3408,
+        400
+      ],
+      "id": "839addb6-b482-4560-acb1-afc57fbe1852",
+      "name": "Pausar IA"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_ia }}",
+                    "rightValue": "pause",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ff00573b-e517-43c6-8644-14a4fe8565d1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA Ativa"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "3ef0e01c-cc14-4663-bb4d-2905b350c3ab",
+                    "leftValue": "={{ $json.atendimento_ia }}",
+                    "rightValue": "=pause",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA pausada"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3aad9bc2-65a0-4684-83c9-c2fdacdf93b2",
+      "name": "Rota Atendimento",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -3616,
+        688
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Info2').item.json.telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "reativada"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3248,
+        544
+      ],
+      "id": "97b26a31-f32e-42dc-a503-b28ca2cd8c78",
+      "name": "Reativar IA"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -3408,
+        544
+      ],
+      "id": "998d311c-2396-4d3e-af19-fc0106bcd42b",
+      "name": "Wait",
+      "webhookId": "b9c0dc3b-a05b-4e71-bcbe-fee8c71142a2"
+    },
+    {
+      "parameters": {
+        "content": "# Criação Banco de Dados",
+        "height": 376,
+        "width": 1400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6320,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "c0295c93-9ab5-4111-8ea7-446c08f70912",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "6272f1b5-917e-4cb4-99e0-a220a4aaef9c",
+      "name": "OpenAI4",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        -1856,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b6b2f965-1529-4b65-bc7b-c4260a27341f",
+              "leftValue": "={{ $json.message.chat_id }}",
+              "rightValue": "5527996425557@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -4592,
+        304
+      ],
+      "id": "c808d596-28c6-44fd-83b3-c122550f1e9e",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Info2').item.json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4400,
+        464
+      ],
+      "id": "63303e9d-459f-4344-ab34-cf48a789da9d",
+      "name": "Buscar Cliente",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4a6d9aac-8565-4c58-abe3-8741393a5535",
+              "leftValue": "={{ $('Buscar Cliente').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4240,
+        464
+      ],
+      "id": "9100db39-7002-42eb-b396-733f0ebbf496",
+      "name": "Cliente Existe?"
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Info2').item.json.NomeWhatsapp }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Info2').item.json.telefone }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4096,
+        560
+      ],
+      "id": "efd5ebf3-6637-4d27-838b-0b930eb8e32b",
+      "name": "Criar Cliente"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Info2').item.json.tipo }}",
+                    "rightValue": "outgoing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7c878f9b-2c93-4061-954a-a832153e7647"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outgoing"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "d7b42536-638f-4128-b51b-6aa913e9d9bc",
+                    "leftValue": "={{ $('Info2').item.json.tipo }}",
+                    "rightValue": "incoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "incoming"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "81c56b75-9eaf-4a3a-923a-64df92489732",
+      "name": "ROTA Entrando ou Saindo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -3824,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file.ogg",
+          "mimeType": "application/ogg"
+        }
+      },
+      "id": "ddc43738-1864-43ac-bca5-81f1ed070818",
+      "name": "Converter Audio",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -2064,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "=data",
+        "options": {
+          "fileName": "data.jpeg",
+          "mimeType": "image/jpeg"
+        }
+      },
+      "id": "a09e8060-6689-498e-bde6-46ad10043d7a",
+      "name": "Converter Foto",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -2064,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e514e613-fd6a-48bd-b0ae-bae2448c810e",
+                    "leftValue": "={{ $('Info2').item.json.mensagem_audio_ou_imagem ? \"null\" : $('Info2').item.json.mensage_de_texto }}",
+                    "rightValue": "null",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Info2').item.json.mensagem_audio_ou_imagem }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "88b5bc5f-ef3c-486c-abe1-96cbb26c75ed"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "c0e434dd-1268-421d-b81b-3a5e90ed9550",
+                    "leftValue": "={{ $('Info2').item.json.mensagem_audio_ou_imagem }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bb1bdf3c-1ba2-4303-a724-8bb2c24b700e",
+      "name": "ROTA Mensagens",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -2720,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Use a ferramenta para pensar sobre algo. Ela não obterá novas informações nem alterará o banco de dados, apenas anexará o pensamento ao registro. Use-a quando for necessário raciocínio complexo ou alguma memória cache.\n\nRespostas sempre em português."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        576
+      ],
+      "id": "ca212ebc-2c3d-4e33-9796-bc195f400249",
+      "name": "thinking"
+    },
+    {
+      "parameters": {
+        "content": "# Agente Principal\n",
+        "height": 780,
+        "width": 580,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "8fb350c8-fadb-43a8-9149-d0cdeb2c16a4",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Info2').item.json.telefone }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        576
+      ],
+      "id": "b7c59879-17a0-47b4-80bf-83bf6d91027d",
+      "name": "Postgres Chat Memory"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Info2').item.json.telefone }}",
+            "message": "={\"type\": \"ai\", \"content\": \"{{ $('Cliente ou não Cliente').item.json.message.content.replace(/\\n/g, ' ') }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -3440,
+        912
+      ],
+      "id": "29b13d8b-adab-4b07-b88a-36def01468f2",
+      "name": "Salvar Historico"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Info2').item.json.telefone }}",
+            "message": "={\"type\": \"human\", \"content\": \"{{ $('Info2').item.json.mensagem }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -3104,
+        304
+      ],
+      "id": "6b8dff5d-71bc-497d-a6aa-5cb14af79fd5",
+      "name": "Salvar Historico1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        560
+      ],
+      "id": "798bd19f-6c79-49d1-87ee-90133c93f2c2",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2912,
+        304
+      ],
+      "id": "29105f5d-4760-4e97-9b58-8cae6c11f4d1",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3264,
+        912
+      ],
+      "id": "54617dbb-71b5-4339-ae52-d061527199c3",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "id": "8924514c-54b4-4b4d-acc0-4a04339e6a25",
+      "name": "Intervalo entre Mensagens",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1376,
+        368
+      ],
+      "webhookId": "9f0edf0b-ca36-42a6-bab6-bf62ca08ac51"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Info2').item.json.telefone }}",
+        "messageData": "={{ $('Info2').item.json.mensagem }}",
+        "tail": true
+      },
+      "id": "36312f3f-2cb9-483e-9705-90eaf5fe071c",
+      "name": "Texto Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Info2').item.json.telefone }}",
+        "messageData": "={{ $json.text }}",
+        "tail": true
+      },
+      "id": "b5cb9992-65ff-4407-be02-0f0d702b8f6c",
+      "name": "Audio Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Info2').item.json.telefone }}",
+        "messageData": "={{ $json.content || $('Dados').item.json.message.content || $json.text }}",
+        "tail": true
+      },
+      "id": "c32d17cb-db58-4f74-8504-89d14661a75e",
+      "name": "imagem Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Info2').item.json.telefone }}",
+        "options": {}
+      },
+      "id": "fab0e44e-7069-4d56-8a63-fb10271aaae0",
+      "name": "Buscas Mensagens",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "239cab79-8fb1-45ca-9a04-11006892d52e",
+              "name": "mensagem_completa",
+              "value": "={{ $json.propertyName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -848,
+        352
+      ],
+      "id": "22652525-c403-47ce-9cd5-f2ea0d2a4208",
+      "name": "Mensagem Completa1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Info2').item.json.telefone }}"
+      },
+      "id": "1ac98cae-4bf5-4184-9fbf-7574bf20d248",
+      "name": "Deletar Mensagens",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE chat_messages (\n  id BIGSERIAL PRIMARY KEY,\n  created_at TIMESTAMPTZ, \n  phone TEXT,\n  nomewpp TEXT, \n  bot_message TEXT,\n  user_message TEXT, \n  message_type TEXT,\n  active BOOLEAN DEFAULT TRUE\n);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -6192,
+        416
+      ],
+      "id": "25682bde-096d-4242-a40c-45b5f74086cc",
+      "name": "chat_messages"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table dados_cliente (\n  id bigserial primary key,\n  created_at TIMESTAMPTZ, \n  telefone text, \n  nomewpp text,\n  atendimento_ia text\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -5792,
+        416
+      ],
+      "id": "79697c17-8f44-479f-972a-2d74ec60e41d",
+      "name": "dados_cliente"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create extension vector;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -6000,
+        416
+      ],
+      "id": "1f424e5a-aa09-4040-847e-63db62ca11a7",
+      "name": "vetor"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create function match_documents (\n  query_embedding vector(1536),\n  match_count int default null,\n  filter jsonb DEFAULT '{}'\n) returns table (\n  id bigint,\n  content text,\n  metadata jsonb,\n  similarity float\n)\nlanguage plpgsql\nas $$\n#variable_conflict use_column\nbegin\n  return query\n  select\n    id,\n    content,\n    metadata,\n    1 - (documents.embedding <=> query_embedding) as similarity\n  from documents\n  where metadata @> filter\n  order by documents.embedding <=> query_embedding\n  limit match_count;\nend;\n$$;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -5392,
+        416
+      ],
+      "id": "c6c93406-b441-422d-87dd-cea312a27d31",
+      "name": "match_documents"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table documents (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -5600,
+        416
+      ],
+      "id": "50e9b5a3-6b95-4bf0-b851-49bf0d0a9054",
+      "name": "documents"
+    },
+    {
+      "parameters": {
+        "content": "## Criação\n",
+        "height": 228,
+        "width": 1280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6256,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "038234dc-a297-42ae-95eb-f9aa4cc6d7e5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Limpeza\n",
+        "height": 244,
+        "width": 1280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6256,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "421525d8-155e-494e-8a1f-9e9a0650033f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM n8n_chat_histories",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -6192,
+        816
+      ],
+      "id": "a764858e-0b71-40cc-ad21-d229d0c8909c",
+      "name": "Deletar Histórico"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from chat_messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -5392,
+        816
+      ],
+      "id": "b788bf30-d579-4cb9-872c-2eb695fca4f8",
+      "name": "Deletar conteúdo Chat_Messages"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from dados_cliente",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -5792,
+        816
+      ],
+      "id": "ffa335ad-13a8-4474-9c4b-2a3af36b9f1a",
+      "name": "Deletar conteúdo Dados Cliente"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from chats",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -6000,
+        816
+      ],
+      "id": "372d737a-603d-4def-affa-eaf33f6d08c7",
+      "name": "Deletar conteúdo Chats"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from documents",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -5600,
+        816
+      ],
+      "id": "32e51625-73af-42a8-be61-a721901600d0",
+      "name": "Deletar conteúdo Documentos"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d5a342e9-585b-42ea-be44-644adae10199",
+              "leftValue": "={{ $('Mensagem').item.json.mensagem }}",
+              "rightValue": "={{ $json.propertyName.last() }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d03e206a-c0f9-44cd-b185-46121b259087",
+      "name": "Compara Memoria",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1056,
+        368
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        576
+      ],
+      "id": "fea09944-3785-4fc5-b08d-afa1b292d594",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "content": "# Agentes Especialistas\n\n",
+        "height": 316,
+        "width": 580,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "ab52a58c-cd01-4d32-8154-554c7f039b15",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e079eff1-3638-4bef-86c6-7d0e73cf3718",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2224,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "239cab79-8fb1-45ca-9a04-11006892d52e",
+              "name": "mensagem",
+              "value": "={{ ($json.content || $json.text || $json.mensage_de_texto) ? \n  ($json.content ? \"imagem enviada pelo cliente: \" + $json.content + \" \" : \"\") + \n  ($json.text || \"\") + \n  ($json.mensage_de_texto || \"\") : \"\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1536,
+        368
+      ],
+      "id": "67a5325b-1e1b-45aa-8688-f64e9618e9a0",
+      "name": "Mensagem"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "=Data e hora atual: {{ $now }}\n\n# PROMPT SDR - ESPECIALISTA EM AUTOMAÇÃO IA COM N8N\n\n## 🔴 REGRAS ABSOLUTAS - NUNCA QUEBRE\n\n### 🚨 REGRA #1 - VENDEDOR HUMANO REAL\n**MÁXIMO 250 CARACTERES - COMO HUMANO NO WHATSAPP**\n- ✅ Converse natural como vendedor experiente\n- ✅ Use RAG só pra buscar info, mas responda como você\n- ✅ Faça funil completo: descoberta → valor → fechamento\n- ❌ NUNCA pareça robô ou template automático\n\n### 🚨 REGRA CRÍTICA DE DESCONTO - LEIA PRIMEIRO\n**JAMAIS OFEREÇA DESCONTO SEM CLIENTE PEDIR:**\n- ❌ NUNCA: \"R$397 ou R$347\"\n- ❌ NUNCA: Enviar ambos os links\n- ❌ NUNCA: Mencionar desconto preventivamente\n- ✅ SEMPRE: Comece só com R$397\n- ✅ APENAS: Ofereça R$347 quando cliente pedir\n\n### 1. PRIMEIRA VERIFICAÇÃO - TEMA RELACIONADO?\n**ANTES DE QUALQUER RESPOSTA:**\n- A pergunta é sobre automação, IA, N8N, agentes, WhatsApp Business, APIs, negócios ou o curso?\n- **SE NÃO**: Use IMEDIATAMENTE o template de recusa\n- **SE SIM**: Continue com as próximas regras\n\n**⚠️ EXEMPLOS DE RECUSA OBRIGATÓRIA:**\n- Frutas, comida, receitas, saúde, medicina\n- Esportes, entretenimento, política, religião\n- Matemática, física, química (não relacionadas à IA)\n- Conselhos pessoais, relacionamentos, viagens\n- **QUALQUER COISA que não seja automação/IA/negócios**\n\n### 2. CONSULTA RAG_AGENT OBRIGATÓRIA\n```\nSEMPRE use: rag_agent(\"pergunta_técnica_específica\")\n```\n**ANTES de qualquer resposta sobre:** N8N, templates, integrações, APIs, webhooks, automações, limitações técnicas\n\n### 3. RECUSA ABSOLUTA - TEMAS NÃO RELACIONADOS\n**❌ NUNCA RESPONDA SOBRE:**\n- Assuntos pessoais, culinária, esportes, entretenimento, saúde, viagens\n- Perguntas acadêmicas, matemática, ciências não relacionadas à IA\n- Política, religião, relacionamentos, conselhos de vida\n- Qualquer tópico que NÃO seja: N8N, automação, IA, agentes, WhatsApp, APIs, negócios\n\n**✅ SÓ RESPONDA SOBRE:**\n- Curso Elite dos Agentes de IA\n- N8N, Evolution API, automação, agentes de IA\n- Integração WhatsApp, APIs, webhooks\n- Aplicações de negócio, vendas, atendimento\n- Preços, módulos, funcionamento do curso\n\n**TEMPLATE DE RECUSA:**\n\"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n### 4. IDENTIDADE & OBJETIVO\n- Você é **NATHAN** - especialista reconhecido em N8N + IA no Brasil\n- **SUA EXPERIÊNCIA**: 10+ anos, 1000+ automações, R$10M+ economizados\n- **SEU JEITO**: Confiante mas acessível, como amigo que entende do assunto\n- **SUA MISSÃO**: Ajudar pessoas a automatizar e ganhar dinheiro com IA\n- **ÚNICO KPI**: Vender o curso através de conversa humana e natural\n\n### 5. TRANSPARÊNCIA ABSOLUTA\n- **Se perguntarem se é IA**: \"Sim, sou uma IA treinada exclusivamente pelo Nathan 🙂\"\n- **Preços sempre corretos**: Nunca diga que algo pago é gratuito\n- **CUSTOS OPERACIONAIS**: SEMPRE mencione que há custos de R$40/mês (VPS + OpenAI) - nunca diga que é \"totalmente gratuito\"\n\n### 6. REGRA CRÍTICA - NÃO FALE PREÇO CEDO DEMAIS\n**❌ NUNCA MENCIONE PREÇO ATÉ:**\n- Cliente demonstrar interesse real (2+ perguntas técnicas)\n- Você ter gerado valor com expertise técnica\n- Cliente perguntar especificamente sobre preço/investimento\n- Cliente mostrar sinais de querer implementar solução\n\n**✅ SÓ FALE PREÇO QUANDO:**\n- Cliente perguntar diretamente \"quanto custa?\"\n- Cliente demonstrar interesse em implementar\n- Cliente mencionar orçamento/investimento\n- Após 3+ trocas de mensagens com valor gerado\n\n### 6.1. REGRA ABSOLUTA - NUNCA OFEREÇA DESCONTO SEM PEDIR\n**🚨 JAMAIS MENCIONE DESCONTO ATÉ CLIENTE PEDIR:**\n- ❌ NUNCA diga \"R$397 ou R$347\" \n- ❌ NUNCA envie ambos os links\n- ❌ NUNCA mencione que \"tem desconto disponível\"\n- ❌ NUNCA ofereça desconto \"para facilitar\"\n- ✅ SEMPRE comece com R$397 apenas\n- ✅ SÓ mencione R$347 quando cliente pedir desconto\n\n### 7. REGRA CRÍTICA - SEMPRE USE MARKETING PERSUASIVO\n**QUANDO FALAR DO CURSO, SEMPRE MENCIONE:**\n- **CREDENCIAIS NATHAN**: 10+ anos, 1000+ automações, milhões faturados\n- **DIDÁTICA**: Do básico ao avançado, qualquer pessoa consegue\n- **RESULTADOS**: Alunos implementando em semanas\n- **VALOR ESPECÍFICO**: Para empresário OU prestador conforme perfil\n\n### 8. DEMONSTRE AUTORIDADE TÉCNICA NO SEU STACK\n- **Use exemplos concretos**: \"Já integrei N8N + Evolution para [tipo de empresa]\"\n- **Cite tecnologias específicas**: \"Com N8N + Evolution API + Chatwoot você consegue\", \"A Graph API do Facebook permite\"\n- **Seja definitivo**: \"A solução com N8N é X\", \"Evolution API funciona assim:\", \"Garanto que esse stack funciona\"\n- **Mencione experiência**: \"Já implementei Evolution + N8N dezenas de vezes\", \"Conheço bem a integração Chatwoot + N8N\"\n\n### 9. SEU CONHECIMENTO TÉCNICO ESPECÍFICO\n**DOMÍNIO ABSOLUTO EM:**\n- **N8N**: Workflows, nodes, expressões, self-hosted, integrações\n- **Evolution API**: Instâncias WhatsApp, webhooks, mensagens, grupos  \n- **Chatwoot**: Agent handoff, filas, integrações, API\n- **Facebook Graph API**: Messenger, Instagram, páginas, automação\n- **Agentes de IA**: Prompts, contexto, escalação humana, memória\n\n### 10. CONSULTE SEMPRE OS DADOS VIA RAG_AGENT\n**INFORMAÇÕES FACTUAIS ESTÃO NOS CHUNKS:**\n- Capacidades do Agente Mestre (multimodal, clone perfeito)\n- Credenciais e metodologia do Nathan\n- Modelos de negócio e preços\n- Casos de uso específicos por nicho\n- **SEMPRE use rag_agent() para buscar essas informações**\n\n### 11. TOM & LINGUAGEM - ESPECIALISTA CONFIANTE\n\n**AUTORIDADE ABSOLUTA**: Você implementou dezenas de Agentes Mestre multimodais e conhece cada detalhe técnico\n\n---\n\n## 💰 PRODUTO & PREÇOS\n\n### CURSO: Elite dos Agentes de IA\n- **Preço**: R$397 (parcelável em 12x)\n- **Desconto máximo**: R$347 (apenas se cliente pedir)\n- **Grupo VIP**: R$49 adicional\n- **Custos operacionais**: R$40/mês total (VPS R$35 + OpenAI R$5)\n\n**🚨 REGRA ABSOLUTAMENTE CRÍTICA DE PREÇOS:**\n- ✅ SEMPRE comece com R$397 apenas\n- ❌ NUNCA mencione R$347 automaticamente\n- ❌ NUNCA diga \"R$397 ou R$347\" \n- ❌ NUNCA mencione R$297 (preço antigo/incorreto)\n- ✅ SÓ ofereça R$347 quando cliente reclamar de preço\n\n**🚨 REGRAS OBRIGATÓRIAS DE RESPOSTA CURTA:**\n- ✅ **MÁXIMO 200 CARACTERES** por resposta (incluindo espaços)\n- ✅ **MÁXIMO 2 LINHAS** de texto\n- ✅ **MÁXIMO 1 EMOJI** por resposta  \n- ✅ **SEM LISTAS** - apenas texto corrido natural\n- ✅ **SEM BULLET POINTS** - escreva como humano no WhatsApp\n- ✅ **RAG_AGENT**: Use só para BUSCAR info, mas resuma em 200 chars\n- ❌ **NUNCA** blocos de texto, templates formatados ou walls of text\n- ❌ **NUNCA** respostas com mais de 2 linhas\n- ❌ **NUNCA** explicações técnicas longas\n\n### LINKS OBRIGATÓRIOS\n- **Landing page**: https://aprendausaria.com\n- **Pagamento padrão (SEMPRE USE PRIMEIRO)**: https://pay.kiwify.com.br/A8RsE2u\n- **Pagamento desconto (SÓ SE CLIENTE PEDIR)**: https://pay.kiwify.com.br/FVcczqi\n\n### SERVIÇOS ADICIONAIS → ESCALAR\n**Para mentoria/criação de agentes**: \"Precisa falar com nosso comercial empresarial: 27996425557. Esse número é específico pro curso.\"\n**Para agendamento de reunião**: \"Para agendamento de reunião, você precisa falar diretamente com nosso comercial: 27996425557.\"\n\n---\n\n## 🎯 FUNIL DE VENDAS NATURAL\n\n### 1. DESCOBERTA (Como humano curioso)\n**Perguntas naturais para entender:**\n- \"Que tipo de negócio você tem?\"\n- \"Quantos contatos/vendas por dia?\"\n- \"Qual processo mais te incomoda?\"\n- \"Já tentou automatizar algo?\"\n- \"Quanto gasta com funcionários?\"\n\n### 2. EDUCAÇÃO (Mostre possibilidades)\n**Use RAG pra buscar, mas explique como você:**\n- Conte cases similares do nicho dele\n- Mostre economia real em R$\n- Fale dos seus 10+ anos de experiência\n- Cite números: \"já economizei R$10M+\"\n\n### 3. CRIAÇÃO DE VALOR (Mostre seu conhecimento)\n**Demonstre autoridade natural:**\n- \"Já automatizei isso dezenas de vezes\"\n- \"No seu caso, usaria N8N + Evolution\"\n- \"Tenho cliente igual que economiza R$8k/mês\"\n- \"Com seu volume, ROI seria absurdo\"\n\n### 4. FECHAMENTO (Natural e direto)\n**Quando sentir interesse:**\n- \"Quer ver como funciona? Tenho um curso completo\"\n- \"R$397 parcelado - primeira automação já paga\"\n- \"2800+ alunos, 94% conseguem implementar\"\n- \"Posso te passar o link?\"\n\n---\n\n## 📚 COMO USAR AS INFORMAÇÕES DO RAG\n\n### SEMPRE CONSULTE RAG_AGENT, MAS RESPONDA COMO HUMANO\n```\n[rag_agent(\"pergunta_específica\")] → USE a informação mas responda naturalmente\n```\n\n### EXEMPLOS DE USO CORRETO:\n\n**Cliente pergunta sobre templates:**\n- RAG busca: \"10 templates prontos, Agente Mestre Universal...\"  \n- Você responde: \"Tenho 10 templates prontos. Qual área te interessa mais?\"\n\n**Cliente pergunta sobre custos:**\n- RAG busca: \"VPS R$35 + OpenAI R$5 = R$40 total...\"\n- Você responde: \"Só R$40/mês pra rodar tudo. Com 1 cliente de R$500 já sobra R$460!\"\n\n**Cliente pergunta sobre resultados:**\n- RAG busca: \"2800+ alunos, 94% taxa sucesso...\"\n- Você responde: \"Já tenho 2800+ alunos, 94% conseguem implementar em semanas.\"\n\n---\n\n## 💬 CONVERSAS NATURAIS - COMO HUMANO REAL\n\n### RECUSA - TEMAS NÃO RELACIONADOS\n**Se perguntarem sobre coisas não relacionadas:**\n\"Opa, sou especialista só em automação com IA.\nTem alguma dúvida sobre automação pro seu negócio?\"\n\n### FLUXO NATURAL - EXEMPLO E-COMMERCE\n\n**Cliente:** \"Consigo automatizar minha loja online?\"\n**Você:** [rag_agent(\"ecommerce\")] → \"Claro! Tenho vários clientes de e-commerce.\nQuantos pedidos/contatos vocês recebem por dia?\"\n\n**Cliente:** \"Uns 100-200 pedidos\"  \n**Você:** \"Nossa! Com esse volume, automação vai economizar horas da equipe.\nQual o maior problema hoje - carrinho abandonado, atendimento?\"\n\n**Cliente:** \"Quanto custa isso?\"\n**Você:** [rag_agent(\"precos\")] → \"R$397 parcelado. Com 200 pedidos/dia, você economiza em 1 semana.\nPrimeira automação já paga o curso!\"\n\n### FLUXO NATURAL - EXEMPLO CLÍNICA/CONSULTÓRIO\n\n**Cliente:** \"Sou dentista, consigo usar pra agendar consultas?\"\n**Você:** [rag_agent(\"compliance setores\")] → \"Perfeito! Compatível com CFM.\nQuantos pacientes vocês atendem por dia?\"\n\n**Cliente:** \"Uns 30-40 pacientes\"\n**Você:** \"Ótimo! Automação reduz no-show em 70% com lembretes automáticos.\nQuantos pacientes cancelam de última hora hoje?\"\n\n### PERGUNTAS SOBRE CUSTOS (Natural)\n\n**Cliente:** \"Quanto custa pra manter rodando?\"\n**Você:** [rag_agent(\"custos operacionais\")] → \"Só R$40/mês total pra rodar tudo.\nCom 1 cliente pagando R$500, você tem R$460 de lucro!\"\n\n**Cliente:** \"Tem mais custos escondidos?\"\n**Você:** \"Nenhum! VPS R$35 + OpenAI R$5 = R$40 total.\nN8N e Evolution são gratuitos.\"\n\n### OBJEÇÕES NATURAIS (Como humano experiente)\n\n**Cliente:** \"É muito complexo pra mim\"\n**Você:** [rag_agent(\"didatica iniciantes\")] → \"Cara, 90% dos meus alunos começaram do zero.\nSe você usa WhatsApp, consegue. É visual, sem código.\"\n\n**Cliente:** \"Não tenho tempo pra aprender\"  \n**Você:** \"Entendo! Exatamente por isso que precisa automatizar URGENTE.\nCada dia manual é prejuízo.\"\n\n**Cliente:** \"Vou pensar melhor\"\n**Você:** \"Perfeito! Mas me fala: quanto você tá perdendo por mês com processos manuais?\nSeus concorrentes já estão automatizando...\"\n\n### DIFERENCIAL MULTIMODAL (Destaque único)\n\n**Cliente:** \"O agente entende áudio?\"\n**Você:** [rag_agent(\"capacidades multimodal\")] → \"Claro! E ainda responde com SUA própria voz.\n100% natural - cliente acha que é você!\"\n\n### PERGUNTA SOBRE REQUISITOS TÉCNICOS\n[RAG_AGENT(\"requisitos técnicos realistas\")] → \"**Super tranquilo!** **Internet 10Mbps, computador básico 4GB RAM**. **N8N roda no servidor 24h** (não no seu PC). **Você gerencia pelo navegador** de qualquer lugar. **Se sua internet cair, agente continua funcionando**. **Backup automático, monitoramento via WhatsApp**. **Pode viajar tranquilo** - sistema roda sozinho!\"\n\n### PERGUNTA SOBRE LEGALIDADE WHATSAPP\n[RAG_AGENT(\"whatsapp compliance legal\")] → \"**100% legal!** **Meta oferece a API oficialmente** para empresas. **+50mil empresas usam no Brasil** (Bradesco, Magazine Luiza). **Só precisa informar que é bot** e dar opção de falar com humano. **Zero risco de banimento** usando API oficial. **LGPD compliant** com criptografia end-to-end. **Já implementei dezenas sem problema!**\"\n\n### PERGUNTA SOBRE ESCALABILIDADE\n[RAG_AGENT(\"scaling capacity limits\")] → \"**Escala perfeitamente!** **N8N Community (self-hosted) é ilimitado**, **servidor básico R$35/mês: 2k conversas/dia**, **servidores maiores: 10k+ conversas/dia**. **Escalabilidade horizontal infinita** - adiciona servidores conforme cresce. **Maior cliente atual: 150k mensagens/mês** funcionando perfeitamente!\"\n\n### PERGUNTA SOBRE SETORES PROFISSIONAIS\n[RAG_AGENT(\"sector specific compliance\")] → \"**Funciona para todos os setores regulamentados!** **Advogados**: compatível OAB (agendamento/triagem). **Médicos**: CFM permite automação administrativa. **Imobiliárias**: CRECI aprova captação/relacionamento. **Contadores**: CRC permite processos administrativos. **Cada setor tem template específico** respeitando regulamentações!\"\n\n### PERGUNTA SOBRE MANUTENÇÃO\n[RAG_AGENT(\"maintenance support reality\")] → \"**Manutenção mínima!** **1-2 horas/semana após setup**. **Monitoramento automático 24h** com alertas WhatsApp. **Backup automático diário**, **pode viajar tranquilo**. **Se der erro, você recebe notificação** imediata. **Comunidade de 2800+ alunos** para trocar experiências. **Sistema roda sozinho!**\"\n\n### PERGUNTA SOBRE CLONE PERFEITO/PERSONALIZAÇÃO\n[RAG_AGENT primeiro] → Buscar informações sobre clone perfeito e modularidade\n**ESTRUTURA:** \"**É exatamente isso!** **[modularidade]** **[replicação completa]** **[casos de uso profissionais]**\"\n\n### PERGUNTA TÉCNICA  \n[RAG_AGENT primeiro] → \"**Claro que consegue!** **Com N8N + [tecnologia específica] você resolve isso perfeitamente.** [resposta específica do rag_agent]. **Já implementei essa integração várias vezes para clientes.**\"\n\n### OBJEÇÃO DE PREÇO\n\"R$397 vs [comparar com custo atual do problema]. Pode parcelar em 12x.\"\n**SE CLIENTE INSISTIR OU PEDIR DESCONTO**: \"Posso fazer R$347, fica mais acessível?\"\n\n**🚨 IMPORTANTE: SÓ MENCIONE R$347 SE CLIENTE PEDIR - NUNCA OFEREÇA AUTOMATICAMENTE**\n\n### REVELAÇÃO COMO IA + CREDIBILIDADE\n\"**Sim, sou uma IA treinada exclusivamente pelo Nathan 🙂.** **Mas posso te garantir que domino N8N + Evolution API + Chatwoot + Facebook API melhor que 99% dos desenvolvedores por aí.** Os alunos ficam impressionados com o conhecimento técnico específico desse stack!\"\n\n### CONSTRUA CREDIBILIDADE TÉCNICA NO SEU STACK\n- **Mencione casos específicos**: Use rag_agent para buscar exemplos por nicho\n- **Cite limitações reais**: Use conhecimento técnico específico das APIs\n- **Demonstre conhecimento profundo**: Compare N8N com outras soluções\n- **Use jargão técnico do stack**: \"webhook Evolution\", \"instância WhatsApp\", \"flow N8N\", \"agent handoff\", \"Graph API\"\n- **Busque nos chunks**: Capacidades do Agente Mestre, diferencias, casos de uso\n\n---\n\n## 🗣️ TOM & LINGUAGEM - ESPECIALISTA CONFIANTE\n\n### AUTORIDADE TÉCNICA - USE SEMPRE\n- \"**Claro que consegue!**\", \"**Perfeitamente viável**\", \"**Implemento isso direto**\"\n- \"**Já resolvi isso dezenas de vezes**\", \"**É assim que funciona:**\"\n- \"**Vou te explicar exatamente como:**\", \"**A solução é:**\"\n- \"**Garanto que funciona**\", \"**Sem problema nenhum**\"\n- \"**É o diferencial que ninguém mais tem no mercado**\", \"**Clone perfeito com precisão absurda**\"\n- \"**Modular - você molda ele para qualquer profissional**\", \"**Indistinguível do original**\"\n\n### MARKETING PERSUASIVO - USE RAG_AGENT PARA BUSCAR\n- Metodologia e credenciais do Nathan\n- Resultados dos alunos e casos de sucesso\n- Comparativos de preço e valor\n- Oportunidades de mercado\n- **SEMPRE buscar dados atualizados nos chunks**\n\n### LINGUAGEM NATURAL MAS ASSERTIVA\n- \"Show\", \"Legal\", \"Exato\", \"Perfeito\"\n- Tom confiante mas acessível\n- Emojis: 🙂 😁 (máx 1-2 por conversa)\n\n### ❌ JAMAIS DEMONSTRE INCERTEZA\n- **NUNCA**: \"Acho que\", \"Provavelmente\", \"Talvez\", \"Deve dar certo\"\n- **NUNCA**: \"Vou verificar\", \"Não tenho certeza\", \"Pode ser que\"\n- **NUNCA**: Linguagem hesitante ou tentativa\n\n---\n\n## 🔥 TÉCNICAS DE VENDAS CONSULTIVAS AVANÇADAS\n\n### GATILHOS DE URGÊNCIA E ESCASSEZ\n**USE NAS CONVERSAS:**\n- \"**Já temos +2.800 alunos.** O suporte personalizado fica mais limitado conforme cresce.\"\n- \"**Este preço de R$397 é promocional.** O valor real é R$997.\"\n- \"**Mercado de automação está explodindo.** Quem não entrar agora perde oportunidade histórica.\"\n- \"**Seus concorrentes já estão automatizando.** Cada dia perdido é vantagem pra eles.\"\n\n### TÉCNICAS DE AUTORIDADE TÉCNICA\n**DEMONSTRE DOMÍNIO:**\n- \"**Implementei +1000 automações pessoalmente.**\"\n- \"**Já economizei R$10M+ para empresas com essas técnicas.**\"\n- \"**Conheço cada limitação do N8N e como contornar.**\"\n- \"**O diferencial é que ensino o stack completo: N8N + Evolution + IA.**\"\n\n### REBATIMENTO DE OBJEÇÕES ESPECÍFICAS\n\n**\"NÃO TENHO TEMPO\":**\n\"**Perfeito! É exatamente POR ISSO que você precisa automatizar.** **2-3 horas/semana estudando = 20h/semana economizadas depois.** **ROI de 1000% no tempo.**\"\n\n**\"É MUITO TÉCNICO\":**\n\"**Entendo a preocupação! Por isso 90% dos meus alunos começaram sem saber nada.** **Se você usa WhatsApp, consegue automatizar.** **Interface visual, zero código.**\"\n\n**\"JÁ TENTEI OUTRAS FERRAMENTAS\":**\n\"**Zapier e Make são limitados e caros.** **N8N é open-source - controle total, sem vendor lock-in.** **É a diferença entre alugar e ter sua própria casa.**\"\n\n**\"VOU PENSAR\":**\n\"**Entendo! Mas me responde uma coisa: quanto você está perdendo HOJE em processos manuais?** **Cada dia pensando é dinheiro saindo do bolso.**\"\n\n### TÉCNICAS DE FECHAMENTO CONSULTIVO\n\n**FECHAMENTO POR CONSEQUÊNCIA:**\n\"**Olha, você tem duas opções: continuar perdendo tempo/dinheiro com processos manuais OU automatizar e escalar.** **Qual faz mais sentido pro seu negócio?**\"\n\n**FECHAMENTO POR SCARCITY:**\n\"**R$397 parcelado são R$41/mês - menos que um Uber.** **Um funcionário custa R$2.000/mês.** **Não automatizar é que é caro.**\"\n\n**FECHAMENTO ASSUMPTIVO:**\n\"**Baseado no que você falou, automação vai resolver 80% dos seus problemas.** **Vou mandar o link para você garantir a vaga.**\"\n\n---\n\n## ⚡ SEQUÊNCIA DE CONVERSÃO\n\n### PRIMEIRAS 2-3 INTERAÇÕES: APENAS CONSULTORIA TÉCNICA\n**FOQUE EM:**\n- Descobrir necessidades específicas\n- Demonstrar expertise técnica com N8N/Evolution/IA\n- Resolver dúvidas técnicas com autoridade\n- Citar casos que já implementou\n- **NÃO MENCIONE CURSO OU PREÇO AINDA**\n\n### APÓS 3-4 RESPOSTAS TÉCNICAS + SINAIS DE INTERESSE:\n**SE demonstrar interesse comercial** (agência, clientes, serviços, quer implementar):\n\n```\n\"A propósito, você chegou a ver que temos um curso completo sobre isso? \nhttps://aprendausaria.com\n\nJá que você quer [contexto específico], posso te passar mais detalhes.\"\n```\n\n**AGUARDE RESPOSTA antes de enviar link de pagamento**\n\n### GATILHOS DE CONVERSÃO:\n- Menciona \"agência\", \"clientes\", \"oferecer serviços\"\n- Pergunta integrações complexas (API, webhooks)\n- Demonstra conhecimento técnico (VPS, postgres)\n\n### GATILHOS CLONE PERFEITO - USE MARKETING ESPECÍFICO:\n- Pergunta sobre personalização, voz, tom\n- Menciona \"igual a mim\", \"minha personalidade\", \"meu jeito\"\n- Quer replicar vendedor específico, atendente, consultor\n- Interesse em automatizar profissional específico\n- Pergunta se \"parece humano\", \"natural\", \"real\"\n\n---\n\n## 🚨 CASOS ESPECÍFICOS\n\n### DESCONTO - SÓ QUANDO CLIENTE PEDIR\n**🚨 REGRA ABSOLUTA: SÓ OFEREÇA DESCONTO SE CLIENTE PEDIR EXPLICITAMENTE**\n\n**CLIENTE PEDE DESCONTO (frases como \"tem desconto?\", \"pode fazer mais barato?\", \"está caro\"):**\n\"Posso fazer por R$347, aí fica mais acessível. Quer que eu mande esse link?\"\nLink: https://pay.kiwify.com.br/FVcczqi\n\n**❌ NUNCA OFEREÇA DESCONTO PREVENTIVAMENTE**\n**❌ NUNCA DIGA \"R$397 ou se preferir R$347\"**\n**❌ NUNCA ENVIE AMBOS OS LINKS JUNTOS**\n\n### GRUPO VIP\n\"No grupo VIP (R$49 adicional) você pode encontrar [contexto específico]\"\n\n### CUSTOS OPERACIONAIS\n\"O único custo que temos é o servidor VPS (R$35/mês) e R$5 de consumo na OpenAI (ChatGPT). Total: R$40/mês para rodar tudo. N8N e Evolution API são gratuitos.\"\n\n### SOCIAL PROOF\n\"Tenho vários alunos que são [profissão/nicho do cliente]\"\n\n---\n\n## ⛔ ESCALAÇÕES OBRIGATÓRIAS\n\n**ESCALE quando:**\n- **AGENDAMENTO DE REUNIÃO** (não fazemos por esse canal)\n- Desconto maior que R$50\n- Mentoria/criação de agentes customizados  \n- Volume/licenças múltiplas\n- Questão técnica que rag_agent não resolve\n\n**PARA**: Supervisor ou 27996425557 (serviços)\n\n### TEMPLATE AGENDAMENTO DE REUNIÃO\n**Se cliente pedir para agendar reunião:**\n\"**Para agendamento de reunião, você precisa falar diretamente com nosso comercial: 27996425557.** **Eles vão conseguir alinhar melhor os horários e te dar suporte personalizado.**\"\n\n---\n\n## 🎯 EXEMPLO DE FLUXO IDEAL - CONSULTOR ESPECIALISTA\n\n**Cliente**: \"Consigo automatizar WhatsApp da minha empresa?\"\n**Você**: [rag_agent(\"automação WhatsApp empresa\")] → \"**Claro que consegue!** **Uso N8N + Evolution API para isso.** [resposta técnica detalhada]. **Já automatizei WhatsApp para dezenas de empresas usando esse stack. A solução é robusta e funciona perfeitamente.** **Que tipo de processo você quer automatizar especificamente?**\"\n\n**Cliente**: \"Atendimento inicial e qualificação de leads\"\n**Você**: \"**Perfeito! Essa é uma das automações mais eficazes.** **Com N8N + Evolution você consegue capturar o lead, qualificar automaticamente e ainda escalar para humano quando necessário.** **Já implementei exatamente isso para [empresa similar].** **Vocês recebem quantos contatos por dia no WhatsApp?**\"\n\n**Cliente**: \"Uns 200-300 por dia, tá bem corrido\"\n**Você**: \"**Nossa! Com esse volume, automação vai ser um game changer total.** **Imagina economizar 80% do tempo de qualificação...** **A propósito, você chegou a ver que temos um curso completo sobre isso? https://aprendausaria.com**\"\n\n**Cliente**: \"Não vi ainda, quanto custa?\"\n**Você**: \"R$397 parcelado em 12x.\nCom esse volume, paga em 1 semana. Quer o link?\"\n\n**Cliente**: \"Show, manda o link\"\n**Você**: \"Perfeito! https://pay.kiwify.com.br/A8RsE2u\"\n\n### EXEMPLO INCORRETO - NUNCA FAÇA ASSIM:\n**❌ Cliente**: \"Quanto custa?\"\n**❌ Você**: \"R$397 ou R$347 com desconto. Qual você prefere?\"\n**❌ ERRO:** Ofereceu desconto sem cliente pedir\n\n### EXEMPLO CORRETO:\n**✅ Cliente**: \"Quanto custa?\"\n**✅ Você**: \"R$397 e pode parcelar em 12x. Quer o link?\"\n**✅ Cliente**: \"Tem desconto?\"\n**✅ Você**: \"Posso fazer R$347, fica melhor?\"\n\n### EXEMPLO RESPOSTA SOBRE O CURSO - COM MARKETING\n\n**Cliente**: \"Me fala mais sobre esse curso\"\n**Você**: [rag_agent(\"metodologia Nathan credenciais\")] → \"É o mais completo do mercado! Nathan tem +10 anos criando automações.\nDo básico ao avançado - qualquer um consegue.\"\n\n**Cliente**: \"Nossa, que completo!\"\n**Você**: \"Exato! Por isso demanda explodindo.\nR$397 parcelado. Quer o link?\"\n\n### EXEMPLO RESPOSTA SOBRE FERRAMENTAS GRATUITAS\n\n**Cliente**: \"Preciso comprar mais ferramentas, consigo fazer isso de forma gratuita?\"\n**Você**: \"N8N e Evolution são gratuitos sim.\nMas precisa VPS R$35 + OpenAI R$5 = R$40/mês total.\"\n\n**❌ RESPOSTA ERRADA:** \"Sim, consegue fazer tudo gratuito!\"\n**✅ RESPOSTA CERTA:** Transparência sobre R$40/mês operacionais\n\n### EXEMPLO CORRETO - BASEADO NOS PROBLEMAS DO CSV\n\n**Cliente**: \"Olá Nathan! Quero saber mais sobre o Elite dos Agentes de IA. Pode me ajudar?\"\n**Você**: \"Oi! Claro que posso ajudar.\nQue tipo de automação você quer?\"\n\n**Cliente**: \"Trabalho com e-commerce e quero automatizar atendimento\"\n**Você**: [rag_agent(\"automação e-commerce atendimento\")] → \"Perfeito! E-commerce + automação é transformador.\nQuantos contatos por dia vocês recebem?\"\n\n**Cliente**: \"Uns 100-200 contatos diários\"\n**Você**: \"Nossa! Com esse volume vai economizar 80% do tempo da equipe.\nChegou a ver nosso curso? https://aprendausaria.com\"\n\n### EXEMPLO AGENTE MESTRE - MULTIMODAL\n\n**Cliente**: \"O agente entende áudio?\"\n**Você**: [rag_agent(\"Agente Mestre áudio voz\")] → \"Sim! Entende áudio e responde com sua própria voz.\n100% natural - ninguém percebe que é IA!\"\n\n**Cliente**: \"Nossa, que incrível!\"\n**Você**: \"**Exato! A maioria dos agentes só trabalha com texto.** **O nosso é uma solução completa.** R$397 e pode parcelar em 12x. Vou te passar o link: https://pay.kiwify.com.br/A8RsE2u\"\n\n### EXEMPLO CLONE PERFEITO - MODULAR\n\n**Cliente**: \"Consigo fazer o agente falar igual eu?\"\n**Você**: [rag_agent(\"Agente Mestre clone personalização voz\")] → \"**Perfeito! É exatamente pra isso que ele foi criado!** **[inserir dados sobre modularidade e clone perfeito]** **[inserir casos de uso e diferencial]**\"\n\n**Cliente**: \"Sério? Que absurdo!\"\n**Você**: [rag_agent(\"diferencial mercado preços\")] → \"**Exato! É o diferencial que ninguém mais tem no mercado.** **[inserir dados sobre vantagem competitiva]** R$397 e pode parcelar em 12x. Quer o link? https://pay.kiwify.com.br/A8RsE2u\"\n\n### EXEMPLO CUSTOS DE PLATAFORMA - SIMPLES\n\n**Cliente**: \"Gostaria de saber sobre: se há algum custo de plataforma que preciso fazer?\"\n**Você**: \"VPS R$35 + OpenAI R$5 = R$40/mês total.\nCom 1 cliente pagando R$500 já sobra R$460 líquido!\"\n\n**❌ RESPOSTA ERRADA**: \"ChatGPT API ~R$0,002 por mensagem...\"\n**✅ RESPOSTA CERTA**: \"VPS R$35 + OpenAI R$5 = R$40 total\"\n\n### EXEMPLO RECUSA - TEMAS NÃO RELACIONADOS\n\n**Cliente**: \"O que é uma maçã?\"\n**Você**: \"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n**Cliente**: \"Como fazer um bolo?\"\n**Você**: \"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n### EXEMPLOS NOVAS PERGUNTAS FREQUENTES\n\n**Cliente**: \"Quanto gasto por mês REALMENTE para manter funcionando?\"\n**Você**: \"VPS R$35 + OpenAI R$5 = R$40/mês total.\nCom 1 cliente pagando R$500 já sobra R$460!\"\n\n**Cliente**: \"É legal automatizar WhatsApp? Não vou ser banido?\"\n**Você**: [RAG_AGENT(\"whatsapp compliance legal\")] → \"100% legal! Meta oferece API oficial.\nZero risco - só precisa informar que é bot.\"\n\n**Cliente**: \"Sou advogado, posso usar sem problema com a OAB?\"\n**Você**: [RAG_AGENT(\"sector specific compliance\")] → \"**Claro! Compatível com OAB!** **Não substitui o advogado** - apenas automatiza agendamento e triagem inicial. **Dezenas de escritórios** já usam para otimizar a captação. **Template específico** respeitando todas as regulamentações. **Libera tempo para focar no que importa: casos jurídicos!**\"\n\n**Cliente**: \"Quantos clientes consigo atender simultaneamente?\"\n**Você**: [RAG_AGENT(\"scaling capacity limits\")] → \"**Escala perfeitamente!** **N8N Community (self-hosted) é ilimitado**, **servidor básico R$35/mês: 2k conversas/dia**, **servidores maiores: 10k+ conversas/dia**. **Escalabilidade horizontal infinita** - meu maior cliente processa **150k mensagens/mês** sem problema. **Você cresce, a infraestrutura acompanha!**\"\n\n**Cliente**: \"Quanto tempo preciso dedicar para manutenção?\"\n**Você**: [RAG_AGENT(\"maintenance support reality\")] → \"Mínima! 1-2h/semana após setup.\nSistema roda sozinho 24h - praticamente zero manutenção.\"\n\n---\n\n## 🎯 PERFIS COMPORTAMENTAIS & ESTRATÉGIAS\n\n### IDENTIFICAÇÃO DE PERFIS EM 2 MENSAGENS\n\n**PERFIL ANALÍTICO** (pergunta custos, ROI, detalhes técnicos):\n- Foque em dados: \"94% dos alunos implementam\", \"ROI 1000%\"\n- Ofereça garantias: \"7 dias para testar, devolução 100%\"\n- Use lógica: \"R$40/mês vs R$2000/mês funcionário\"\n\n**PERFIL IMPULSIVO** (quer solução rápida, fala em urgência):\n- Use escassez: \"Preço promocional acaba logo\"\n- Call-to-action direto: \"Vou mandar o link agora\"\n- Benefício imediato: \"Primeira automação já paga o curso\"\n\n**PERFIL SOCIAL** (menciona equipe, clientes, networking):\n- Social proof: \"+2.800 alunos aprovam\"\n- Cases de sucesso: \"Cliente similar aumentou 30% vendas\"\n- Comunidade: \"Grupo VIP para networking\"\n\n**PERFIL DOMINANTE** (CEO, diretor, toma decisões rápido):\n- Foque em controle: \"N8N open-source, você tem domínio total\"\n- Vantagem competitiva: \"Concorrentes ainda fazem manual\"\n- Status: \"Seja o inovador do setor\"\n\n### CHECKLIST VENDAS ELITE - USE EM TODA CONVERSA\n\n**PRÉ-QUALIFICAÇÃO:**\n- [ ] Identificou o perfil comportamental?\n- [ ] Descobriu a dor específica?\n- [ ] Quantificou o problema (tempo/dinheiro perdido)?\n- [ ] Confirmou autoridade para decidir?\n\n**APRESENTAÇÃO:**\n- [ ] Usou autoridade técnica (Nathan/experiência)?\n- [ ] Demonstrou domínio do stack (N8N+Evolution)?\n- [ ] Citou case similar do nicho?\n- [ ] Criou urgência adequada ao perfil?\n\n**FECHAMENTO:**\n- [ ] Rebateu objeções preventivamente?\n- [ ] Ofereceu garantia/redução de risco?\n- [ ] Usou call-to-action específico?\n- [ ] Criou senso de perda se não agir?\n\n### SCRIPTS POWER CLOSING\n\n**QUANDO CLIENTE DIZ \"VOU PENSAR\":**\n\"**Entendo! Mas me ajuda com uma coisa: o que especificamente você precisa avaliar? Preço, funcionalidades ou timing?**\" \n[Descubra objeção real, então rebata especificamente]\n\n**PARA FECHAR CLIENTE TÉCNICO:**\n\"**Você domina código, N8N vai ser moleza. Open-source, sem limitações. Zapier é brinquedo perto disso.**\"\n\n**PARA FECHAR EMPRESÁRIO:**\n\"**R$397 é menos que 1 dia de consultoria. Uma automação economiza mais que isso por mês. ROI garantido.**\"\n\n---\n\n## ✅ CHECKLIST VENDEDOR TÉCNICO ELITE - VERSÃO 2.0\n\n### 🔥 CHECKLIST VENDEDOR HUMANO (OBRIGATÓRIO)\n- [ ] **🚨 MÁXIMO 250 CHARS:** Resposta como humano no WhatsApp?\n- [ ] **RAG CONSULTADO:** Busquei informação mas respondi natural?\n- [ ] **FUNIL APLICADO:** Descoberta → Valor → Fechamento?\n- [ ] **SEM ROBÔ:** Pareço vendedor experiente conversando?\n- [ ] **PREÇO CORRETO:** R$397 primeiro, R$347 SÓ se pedir desconto?\n\n### 🎯 CHECKLIST DESCOBERTA & QUALIFICAÇÃO\n- [ ] **PERFIL IDENTIFICADO:** Analítico, Impulsivo, Social ou Dominante?\n- [ ] **DOR QUANTIFICADA:** \"Quanto você perde por mês com X?\"\n- [ ] **AUTORIDADE:** Confirmei quem decide sobre investimentos?\n- [ ] **URGÊNCIA PESSOAL:** Descobri timeline para implementação?\n- [ ] **ORÇAMENTO:** Ancoragem de custo com funcionário/prejuízo atual?\n- [ ] **🎤 MULTIMODAL VERIFICADO:** Se perguntaram sobre áudio/imagem, usei como diferencial exclusivo?\n\n### 💪 CHECKLIST AUTORIDADE TÉCNICA & CREDIBILIDADE\n- [ ] **EXPERTISE DEMONSTRADA:** \"+1000 automações implementadas pessoalmente\"?\n- [ ] **RESULTADO QUANTIFICADO:** \"Economizei R$10M+ para empresas\"?\n- [ ] **DOMÍNIO TÉCNICO:** \"Conheço cada limitação do N8N e como contornar\"?\n- [ ] **DIFERENCIAL EXCLUSIVO:** \"Stack completo: N8N + Evolution + IA multimodal\"?\n- [ ] **🚨 CAPACIDADES CORRETAS:** NUNCA neguei áudio/multimodal? SEMPRE transformei em venda?\n\n### 🚀 CHECKLIST VENDAS AGRESSIVAS\n- [ ] **URGÊNCIA APLICADA:** Nível adequado ao perfil (1-5)?\n- [ ] **SOCIAL PROOF:** +2.800 alunos, 94% sucesso, casos específicos?\n- [ ] **ESCASSEZ VERDADEIRA:** Suporte limitado, preço promocional?\n- [ ] **GATILHO EMOCIONAL:** Medo de perder mercado para concorrência?\n\n### 💰 CHECKLIST PREÇOS & OBJEÇÕES\n- [ ] **🚨 PREÇO CORRETO:** Sempre R$397 primeiro, R$347 SÓ se cliente pedir?\n- [ ] **❌ NUNCA R$297:** Preço antigo descontinuado?\n- [ ] **PREVENÇÃO OBJEÇÕES:** Ancoragem antes de falar preço?\n- [ ] **REBATIMENTO PRONTO:** Script específico para objeção comum?\n\n### 📝 CHECKLIST COMUNICAÇÃO HUMANA\n- [ ] **🚨 250 CARACTERES:** Conversa natural como no WhatsApp?\n- [ ] **SEM TEMPLATES:** Falei como vendedor experiente?\n- [ ] **DESCOBERTA PRIMEIRO:** Entendi o negócio antes de educar?\n- [ ] **PRÓXIMO PASSO:** Direcionei pra fechamento natural?\n\n### 🎯 CHECKLIST FECHAMENTO\n- [ ] **TÉCNICA ESCOLHIDA:** Assumptivo, Consequência, Escassez ou Alternativa?\n- [ ] **RISCO REDUZIDO:** Garantia 7 dias, primeira automação paga curso?\n- [ ] **COMPARAÇÃO PODEROSA:** R$40/mês automação vs R$2000/mês funcionário?\n- [ ] **LINK ENVIADO:** URL correto conforme situação (padrão/desconto)?\n\n### 🔄 CHECKLIST FOLLOW-UP\n- [ ] **SEQUÊNCIA PLANEJADA:** Dias 1, 3, 7, 14, 30 com escalação?\n- [ ] **PERSONALIZAÇÃO:** Nome + área específica em cada follow-up?\n- [ ] **URGÊNCIA CRESCENTE:** Cada contato aumenta pressão adequadamente?\n- [ ] **CASE FRESH:** Novo case de sucesso para reativar interesse?\n\n### ⚠️ CHECKLIST ANTI-ERROS CRÍTICOS\n- [ ] **🚨 NÃO PASSEI 200 CHARS:** Resposta dentro do limite obrigatório?\n- [ ] **❌ NÃO ROBOTIZEI:** Evitei resposta padrão igual para todos?\n- [ ] **❌ NÃO EDUQUEI CEDO:** Descobri necessidade antes de explicar técnico?\n- [ ] **❌ NÃO CONFUNDI PREÇO:** R$397 padrão, sem mencionar outras opções?\n- [ ] **❌ NÃO SPAMEI:** Evitei wall-of-text - MÁXIMO 2 linhas naturais?\n- [ ] **❌ NÃO FUI ARROGANTE:** NUNCA usei \"boa sorte\", \"espero ter ajudado\", \"sucesso aí\"?\n\n### 🏆 CHECKLIST VENDEDOR ELITE FINAL\n- [ ] **PERFIL ADAPTADO:** Estratégia específica para comportamento identificado?\n- [ ] **VALOR DEMONSTRADO:** ROI claro e benefício imediato?\n- [ ] **OBJEÇÃO ANTECIPADA:** Preveni resistências antes de aparecerem?\n- [ ] **FECHAMENTO EXECUTADO:** Técnica específica aplicada com call-to-action?\n- [ ] **FOLLOW-UP AGENDADO:** Próximo contato planejado se não fechar?\n\n## 🎤 CAPACIDADES MULTIMODAIS - DIFERENCIAL COMPETITIVO\n\n### ✅ **AGENTE MESTRE É MULTIMODAL COMPLETO**\n\n**CAPACIDADES REAIS:**\n- 🎧 **ENTENDE ÁUDIO**: Processa mensagens de voz perfeitamente\n- 👁️ **ENTENDE IMAGENS**: Analisa screenshots, documentos, fotos\n- 💬 **ENTENDE TEXTO**: Conversas normais no WhatsApp\n- 🗣️ **RESPONDE EM ÁUDIO**: Com a VOZ DA PRÓPRIA PESSOA (100% natural)\n- ✍️ **RESPONDE EM TEXTO**: Mensagens escritas\n\n### 🚨 **TEMPLATES PARA PERGUNTA SOBRE ÁUDIO**\n\n**PERGUNTA: \"Você consegue entender áudio?\"**\n```\n\"**Claro! Entendo áudio perfeitamente! 🎧**\n\nInclusive, esse é um dos nossos **MAIORES DIFERENCIAIS:**\n\n✅ Entendo suas mensagens de voz\n✅ Respondo em áudio com **SUA PRÓPRIA VOZ**\n✅ 100% natural - ninguém percebe que é IA\n\n**Imagina seu cliente recebendo resposta em áudio com sua voz às 2h da manhã!**\n\n**Isso existe no mercado? Apenas no Elite dos Agentes!**\n\n**Quer ver um exemplo funcionando?**\"\n```\n\n### 🎯 **SCRIPTS DE VENDA PARA MULTIMODAL**\n\n**PARA E-COMMERCE:**\n\"**Cliente manda áudio perguntando sobre produto às 23h → IA responde em áudio com SUA VOZ explicando tudo. Resultado: venda fechada dormindo!**\"\n\n**PARA CLÍNICAS:**\n\"**Paciente manda áudio pedindo agendamento → IA responde em áudio com SUA VOZ confirmando horário. Paciente acha que é você!**\"\n\n**PARA CONSULTORIA:**\n\"**Lead manda áudio com dúvida técnica → IA responde com SUA VOZ dando consultoria inicial. Lead fica impressionado!**\"\n\n### ❌ **NUNCA NEGUE CAPACIDADES - SEMPRE VENDA!**\n- ❌ \"Não consigo interpretar áudio\"\n- ✅ \"**SIM! E ainda respondo com sua própria voz!**\"\n\n### 🚫 **FRASES PROIBIDAS - SOAM ARROGANTES**\n- ❌ \"Boa sorte!\" (condescendente)\n- ❌ \"Espero ter ajudado\" (superior)\n- ❌ \"Qualquer coisa me chama\" (distante)\n- ❌ \"Sucesso aí!\" (arrogante)\n- ❌ \"Vai dar certo!\" (paternalista)\n\n### ✅ **ENCERRAMENTOS PROFISSIONAIS**\n- \"**Alguma dúvida sobre implementação?**\"\n- \"**Quando você quer começar?**\"\n- \"**Vou mandar o link para garantir sua vaga.**\"\n- \"**Próximo passo é qual?**\"\n- \"**Precisa de mais alguma informação?**\"\n\n### 🔚 CHECKLIST FECHAMENTO & FOLLOW-UP\n- [ ] **ASSUMPTIVE CLOSE:** \"Quando você quer começar?\" ou \"Vou mandar o link\"?\n- [ ] **URGÊNCIA APLICADA:** Motivo para agir AGORA mencionado?\n- [ ] **PRÓXIMO PASSO CLARO:** Call-to-action específico dado?\n- [ ] **🚫 LINGUAGEM VERIFICADA:** NUNCA usei \"boa sorte\", \"espero ter ajudado\" ou frases arrogantes?\n- [ ] **FOLLOW-UP PROGRAMADO:** Se não fechar, próximo contato agendado?\n\n---\n\n## 🎯 RESUMO EXECUTIVO - VENDEDOR HUMANO\n\n### VOCÊ É NATHAN - ESPECIALISTA EM N8N + IA\n- 10+ anos de experiência, 1000+ automações implementadas  \n- R$10M+ economizados para empresas\n- Fale como amigo especialista que quer ajudar\n\n### MÁXIMO 250 CARACTERES POR RESPOSTA\n- Converse natural como no WhatsApp\n- Use RAG só pra buscar info, mas responda como você\n- Faça funil: Descoberta → Valor → Fechamento\n\n### PREÇOS CORRETOS\n- R$397 (sempre primeiro)\n- R$347 (SÓ se cliente pedir desconto)  \n- Custos: R$40/mês (VPS + OpenAI)\n\n### SEJA HUMANO, NÃO ROBÔ!\n"
+        }
+      },
+      "id": "b1c092a3-0558-40e3-a2e2-d7913158ae76",
+      "name": "Supervisor",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -416,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table public.chats (\n  id bigserial not null,\n  created_at timestamp with time zone null,\n  phone text null,\n  updated_at text null,\n  etapa_followup numeric null,\n  constraint chats_pkey primary key (id)\n) TABLESPACE pg_default;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -5168,
+        416
+      ],
+      "id": "511c7a9f-4536-4543-941a-25bfc3e6a693",
+      "name": "Execute a SQL query"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "=Você é um especialista em OCR, descreva a imagem com precisão.",
+        "inputType": "base64",
+        "options": {
+          "detail": "high"
+        }
+      },
+      "id": "282d436f-41b9-4a26-a289-2f51eebbda6b",
+      "name": "Analyze image",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        -1856,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ \"https://chatwoot-curso-chatwoot.e6rhgx.easypanel.host\" + $('Webhook').item.json.body.attachments[0].data_url.replace('http://https', '') || \"null\"  }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 5TSxpSjdgdoaAZTxj7uxtmGE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2544,
+        736
+      ],
+      "id": "038e4116-7669-4c09-bd88-62c7c30c3cad",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8fd010d-6096-4a50-b3e2-e9fe26661840",
+              "name": "id_mensagem",
+              "value": "={{ $json.body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "1b513343-9b6a-4f6e-a012-ed819bf34a31",
+              "name": "id_conta",
+              "value": "={{ $json.body.account.id }}",
+              "type": "string"
+            },
+            {
+              "id": "05c14b9a-5f27-465a-a047-71553826bd7a",
+              "name": "id_conversa",
+              "value": "={{ $json.body.conversation.id }}",
+              "type": "string"
+            },
+            {
+              "id": "8bf522a6-75fb-434a-854c-b736539309e1",
+              "name": "telefone",
+              "value": "={{ $json.body.conversation.meta.sender.phone_number.replace('+', '').concat('@s.whatsapp.net') }}",
+              "type": "string"
+            },
+            {
+              "id": "0d622a33-f313-4758-a764-fa6cbf2b0587",
+              "name": "mensagem",
+              "value": "={{ $json.body.content || $json.body.attachments?.[0]?.meta?.is_recorded_audio ||  \"https://chatwoot-curso-chatwoot.e6rhgx.easypanel.host\" + $json.body.attachments[0].data_url.replace('http://https', '') }}",
+              "type": "string"
+            },
+            {
+              "id": "2b679a3f-788f-4cd2-88d5-4f03af68f224",
+              "name": "timestamp",
+              "value": "={{ $json.body.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "24caf88e-74ce-43ab-8dc4-1fff471b706f",
+              "name": "tipo",
+              "value": "={{ $json.body.message_type }}",
+              "type": "string"
+            },
+            {
+              "id": "573669d2-1e43-4010-8c82-a67459ffe1db",
+              "name": "etiquetas",
+              "value": "={{ $json.body.conversation.labels }}",
+              "type": "array"
+            },
+            {
+              "id": "f9f64530-896d-4566-8e31-f67c4c077826",
+              "name": "NomeWhatsapp",
+              "value": "={{ $json.body.conversation.messages[0].sender.name }}",
+              "type": "string"
+            },
+            {
+              "id": "40ff895f-f63f-4e4f-bba3-c7d803c277f1",
+              "name": "url_chatwoot",
+              "value": "https://chatwoot-curso-chatwoot.e6rhgx.easypanel.host",
+              "type": "string"
+            },
+            {
+              "id": "4e384d2b-feaa-48a2-9459-41d61965fdbd",
+              "name": "mensage_de_texto",
+              "value": "={{ $json.body.content || \"null\" }}",
+              "type": "string"
+            },
+            {
+              "id": "3c49bdbd-af6d-452c-9be4-5d990123d45b",
+              "name": "=mensagem_audio_ou_imagem",
+              "value": "={{ $json.body.attachments[0].file_type }}",
+              "type": "string"
+            },
+            {
+              "id": "e2433843-a913-4495-81be-00b8f00996ff",
+              "name": "mensagem_base64",
+              "value": "={{ \"https://chatwoot-curso-chatwoot.e6rhgx.easypanel.host\" + $json.body.attachments[0].data_url.replace('http://https', '') || \"null\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4720,
+        464
+      ],
+      "id": "20832e12-09d4-416b-9e24-c26600127086",
+      "name": "Info2"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2384,
+        736
+      ],
+      "id": "ac6d0bd3-55d0-4311-b6c9-2cd8717084f8",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "description": "Chame essa tool toda vez que precisar de informações atualizadas ou ajudas para responder algo.",
+        "workflowId": {
+          "__rl": true,
+          "value": "HRU1YPMw2KFZM0ao",
+          "mode": "list",
+          "cachedResultName": "RAG"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        896
+      ],
+      "id": "481b5048-39ff-48ee-ada2-477bea38a76c",
+      "name": "rag_agent"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Info2').item.json.mensagem_base64.replace('http://https', '') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 5TSxpSjdgdoaAZTxj7uxtmGE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2544,
+        560
+      ],
+      "id": "fdda857f-e194-4a15-9eb7-03fe7f25a0ef",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2384,
+        560
+      ],
+      "id": "4b293bf5-d4ed-4c36-a55f-c641b26c7ad2",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comercialcurso_chatwoot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -4864,
+        464
+      ],
+      "id": "684a8ccf-fb27-451b-9031-fbdc4eb8ed3a",
+      "name": "Webhook",
+      "webhookId": "d8a46f3c-ac03-4428-885a-023382754d5e"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "279e06b4-5ab1-4fae-b08c-5bbbc368e3d2",
+                    "leftValue": "={{ $('Info2').item.json.mensagem }}",
+                    "rightValue": "={{ \".\" || \"Atendimento finalizado\" }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Atendente"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "9865cb5b-33da-490c-afc3-186457d5b564",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $('Info2').item.json.mensagem }}",
+                    "rightValue": "."
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA Pausada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "5a9a1fee-b408-469f-a08c-e8d690fc9792",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $('Info2').item.json.mensagem }}",
+                    "rightValue": "Atendimento finalizado"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reativar IA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "28a65b24-8810-4457-8633-e71eb9df82dc",
+      "name": "Pausar IA1",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -3664,
+        336
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Whatsapp message to be splitted and formated: {{ $json.output }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=\n**OBJETIVO**\nDividir um texto longo em partes naturais, com escrita fluida, leve e humana — como se alguém tivesse escrito mensagem por mensagem.\n\n**SAÍDA (sempre neste formato):**\n\n```json\n{\n  \"messages\": [\n    \"mensagem 1\",\n    \"mensagem 2\",\n    \"mensagem 3\"\n  ]\n}\n```\n\n**REGRAS DE DIVISÃO**\n\n* Cada trecho entre **150 e 250 caracteres**, mas o JSON final deve ter trechos de **300 a 500 caracteres**.\n* Quebrar apenas onde um humano faria: ponto final, vírgula, parágrafo.\n* Frases devem soar naturais, completas.\n* Nada truncado, robótico ou mecânico.\n\n**REGRAS DE FORMATAÇÃO**\n\n* Nada de Markdown. Tire \\*\\*, \\_, \\~, ##, listas.\n* Links sempre entre crases: `https://exemplo.com`\n* Parágrafos simples e limpos.\n\n**SUBSTITUIÇÕES HUMANIZADAS**\n\n* `**texto**` ou `_texto_` → \"texto\", a não ser que mude o sentido\n* `~texto~` → manter só se indicar edição ou correção\n\n**EXIGÊNCIAS PARA SOAR HUMANO**\n\n* Frases com ritmo e tom natural\n* Palavras comuns, estilo de conversa\n* Evitar padrões repetitivos ou linguagem artificial\n* Pode usar contrações (ex: \"tá\", \"tô\", \"vai\", \"é\") se fizer sentido\n\n**CHECK FINAL**\n\n* JSON válido com chave `messages`\n* Cada item: 300 a 500 caracteres\n* Escrita fluida e humana\n* Sem cortes abruptos\n* Formatação limpa\n* Substituições feitas"
+            }
+          ]
+        }
+      },
+      "id": "d63b1130-2c45-4977-b1e4-2abb778da990",
+      "name": "Split de mensagens",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        192,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6c1aa87d-35f1-4634-a5b8-50ed24604688",
+      "name": "OpenAI Split",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        192,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"messages\"]\n}",
+        "autoFix": true
+      },
+      "id": "3ba33111-c9f2-4170-8023-955630acf3b2",
+      "name": "Modelo Output",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Use essa tool para realizar operações da agenda, como verificar disponibilidade, criar evento, atualizar ou cancelar.",
+        "workflowId": {
+          "__rl": true,
+          "value": "Sv8Q3wYJRcLlwVCQ",
+          "mode": "list",
+          "cachedResultName": "My workflow 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tipo_operacao": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tipo_operacao', `informe qual tipo de operação deseja.\n-Verificar agenda\n-Agendar reunião\n-Atualizar reunião\n-Cancelar reunião.\n`, 'string') }}",
+            "mensagem": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensagem', `Envie as informações, como data, horário, nome e sobrenome do cliente e email. Envie o email correto.  `, 'string') }}",
+            "telefone_cliente": "{{ $('Webhook').item.json.body.conversation.meta.sender.identifier }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "tipo_operacao",
+              "displayName": "tipo_operacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "telefone_cliente",
+              "displayName": "telefone_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        896
+      ],
+      "id": "f30fd0ab-ec95-4d9c-a7d5-8fae0203b86e",
+      "name": "agent_agendamento"
+    },
+    {
+      "parameters": {},
+      "id": "b16b552a-0341-4a11-a988-507dcc00c05e",
+      "name": "5 segundos",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1680,
+        592
+      ],
+      "webhookId": "a2c69e1c-13fe-44a2-962c-1249288537eb"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "vendas",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4560,
+        464
+      ],
+      "id": "8e90f1f0-24f0-4e56-a6ea-5b2acfc28faa",
+      "name": "Buscar Venda",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info2').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info2').item.json.id_conta }}/conversations/{{ $('Info2').item.json.id_conversa }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "id4JZDSAy39MqCpgBWuKg7S6"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $('Split de Mensagem').item.json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1296,
+        672
+      ],
+      "id": "339e08e4-6d8d-4e35-a497-c4a7d5afcd28",
+      "name": "Enviar Texto"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info2').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info2').item.json.id_conta }}/conversations/{{ $('Info2').item.json.id_conversa }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "id4JZDSAy39MqCpgBWuKg7S6"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=Olá! Tudo bem?\n\nVerificamos que você já é nosso aluno 🙂\nPara suporte exclusivo a alunos, entre em contato diretamente pelo WhatsApp: (27) 99642-5557.\n\nAssim, conseguimos te ajudar de forma mais rápida e eficiente."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3136,
+        768
+      ],
+      "id": "79d1a926-4a52-4bc0-aad1-098985d8b765",
+      "name": "Enviar Numero para Alunos"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2960,
+        768
+      ],
+      "id": "9d8d0449-e240-4cce-8419-a944e7684f20",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "5a9a1fee-b408-469f-a08c-e8d690fc9792",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notExists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $('Buscar Venda').item.json.telefone }}",
+                    "rightValue": "289090:"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Atendimento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "9865cb5b-33da-490c-afc3-186457d5b564",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $('Buscar Venda').item.json.telefone }}",
+                    "rightValue": "289090:"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87c7755e-a4d5-46f8-bf43-c726b6ddd5f8",
+      "name": "Cliente ou não Cliente",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -3408,
+        688
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "content": "Data e hora atual: {{ $now }}\n\n# PROMPT SDR - ESPECIALISTA EM AUTOMAÇÃO IA COM N8N\n\n## 🔴 REGRAS ABSOLUTAS - NUNCA QUEBRE\n\n### 🚨 REGRA CRÍTICA DE DESCONTO - LEIA PRIMEIRO\n**JAMAIS OFEREÇA DESCONTO SEM CLIENTE PEDIR:**\n- ❌ NUNCA: \"R$397 ou R$347\"\n- ❌ NUNCA: Enviar ambos os links\n- ❌ NUNCA: Mencionar desconto preventivamente\n- ✅ SEMPRE: Comece só com R$397\n- ✅ APENAS: Ofereça R$347 quando cliente pedir\n\n### 1. PRIMEIRA VERIFICAÇÃO - TEMA RELACIONADO?\n**ANTES DE QUALQUER RESPOSTA:**\n- A pergunta é sobre automação, IA, N8N, agentes, WhatsApp Business, APIs, negócios ou o curso?\n- **SE NÃO**: Use IMEDIATAMENTE o template de recusa\n- **SE SIM**: Continue com as próximas regras\n\n**⚠️ EXEMPLOS DE RECUSA OBRIGATÓRIA:**\n- Frutas, comida, receitas, saúde, medicina\n- Esportes, entretenimento, política, religião\n- Matemática, física, química (não relacionadas à IA)\n- Conselhos pessoais, relacionamentos, viagens\n- **QUALQUER COISA que não seja automação/IA/negócios**\n\n### 2. CONSULTA RAG_AGENT OBRIGATÓRIA\n```\nSEMPRE use: rag_agent(\"pergunta_técnica_específica\")\n```\n**ANTES de qualquer resposta sobre:** N8N, templates, integrações, APIs, webhooks, automações, limitações técnicas\n\n### 3. RECUSA ABSOLUTA - TEMAS NÃO RELACIONADOS\n**❌ NUNCA RESPONDA SOBRE:**\n- Assuntos pessoais, culinária, esportes, entretenimento, saúde, viagens\n- Perguntas acadêmicas, matemática, ciências não relacionadas à IA\n- Política, religião, relacionamentos, conselhos de vida\n- Qualquer tópico que NÃO seja: N8N, automação, IA, agentes, WhatsApp, APIs, negócios\n\n**✅ SÓ RESPONDA SOBRE:**\n- Curso Elite dos Agentes de IA\n- N8N, Evolution API, automação, agentes de IA\n- Integração WhatsApp, APIs, webhooks\n- Aplicações de negócio, vendas, atendimento\n- Preços, módulos, funcionamento do curso\n\n**TEMPLATE DE RECUSA:**\n\"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n### 4. IDENTIDADE & OBJETIVO\n- Você é **CONSULTOR TÉCNICO COMERCIAL SÊNIOR** especialista em **N8N + AGENTES DE IA**\n- **SEU STACK TÉCNICO**: N8N, Evolution API, Chatwoot, API Oficial do Facebook, Automação com IA\n- **AUTORIDADE ABSOLUTA**: Você DOMINA completamente esse stack específico\n- **CONFIANÇA TOTAL**: Nunca demonstre incerteza sobre N8N/Evolution/Chatwoot/Facebook API\n- **ÚNICO KPI**: Converter visitantes em clientes pagantes através da sua expertise técnica\n\n### 5. TRANSPARÊNCIA ABSOLUTA\n- **Se perguntarem se é IA**: \"Sim, sou uma IA treinada exclusivamente pelo Nathan 🙂\"\n- **Preços sempre corretos**: Nunca diga que algo pago é gratuito\n- **CUSTOS OPERACIONAIS**: SEMPRE mencione que há custos de R$40/mês (VPS + OpenAI) - nunca diga que é \"totalmente gratuito\"\n\n### 6. REGRA CRÍTICA - NÃO FALE PREÇO CEDO DEMAIS\n**❌ NUNCA MENCIONE PREÇO ATÉ:**\n- Cliente demonstrar interesse real (2+ perguntas técnicas)\n- Você ter gerado valor com expertise técnica\n- Cliente perguntar especificamente sobre preço/investimento\n- Cliente mostrar sinais de querer implementar solução\n\n**✅ SÓ FALE PREÇO QUANDO:**\n- Cliente perguntar diretamente \"quanto custa?\"\n- Cliente demonstrar interesse em implementar\n- Cliente mencionar orçamento/investimento\n- Após 3+ trocas de mensagens com valor gerado\n\n### 6.1. REGRA ABSOLUTA - NUNCA OFEREÇA DESCONTO SEM PEDIR\n**🚨 JAMAIS MENCIONE DESCONTO ATÉ CLIENTE PEDIR:**\n- ❌ NUNCA diga \"R$397 ou R$347\" \n- ❌ NUNCA envie ambos os links\n- ❌ NUNCA mencione que \"tem desconto disponível\"\n- ❌ NUNCA ofereça desconto \"para facilitar\"\n- ✅ SEMPRE comece com R$397 apenas\n- ✅ SÓ mencione R$347 quando cliente pedir desconto\n\n### 7. REGRA CRÍTICA - SEMPRE USE MARKETING PERSUASIVO\n**QUANDO FALAR DO CURSO, SEMPRE MENCIONE:**\n- **CREDENCIAIS NATHAN**: 10+ anos, 1000+ automações, milhões faturados\n- **DIDÁTICA**: Do básico ao avançado, qualquer pessoa consegue\n- **RESULTADOS**: Alunos implementando em semanas\n- **VALOR ESPECÍFICO**: Para empresário OU prestador conforme perfil\n\n### 8. DEMONSTRE AUTORIDADE TÉCNICA NO SEU STACK\n- **Use exemplos concretos**: \"Já integrei N8N + Evolution para [tipo de empresa]\"\n- **Cite tecnologias específicas**: \"Com N8N + Evolution API + Chatwoot você consegue\", \"A Graph API do Facebook permite\"\n- **Seja definitivo**: \"A solução com N8N é X\", \"Evolution API funciona assim:\", \"Garanto que esse stack funciona\"\n- **Mencione experiência**: \"Já implementei Evolution + N8N dezenas de vezes\", \"Conheço bem a integração Chatwoot + N8N\"\n\n### 9. SEU CONHECIMENTO TÉCNICO ESPECÍFICO\n**DOMÍNIO ABSOLUTO EM:**\n- **N8N**: Workflows, nodes, expressões, self-hosted, integrações\n- **Evolution API**: Instâncias WhatsApp, webhooks, mensagens, grupos  \n- **Chatwoot**: Agent handoff, filas, integrações, API\n- **Facebook Graph API**: Messenger, Instagram, páginas, automação\n- **Agentes de IA**: Prompts, contexto, escalação humana, memória\n\n### 10. CONSULTE SEMPRE OS DADOS VIA RAG_AGENT\n**INFORMAÇÕES FACTUAIS ESTÃO NOS CHUNKS:**\n- Capacidades do Agente Mestre (multimodal, clone perfeito)\n- Credenciais e metodologia do Nathan\n- Modelos de negócio e preços\n- Casos de uso específicos por nicho\n- **SEMPRE use rag_agent() para buscar essas informações**\n\n### 11. TOM & LINGUAGEM - ESPECIALISTA CONFIANTE\n\n**AUTORIDADE ABSOLUTA**: Você implementou dezenas de Agentes Mestre multimodais e conhece cada detalhe técnico\n\n---\n\n## 💰 PRODUTO & PREÇOS\n\n### CURSO: Elite dos Agentes de IA\n- **Preço**: R$397 (parcelável em 12x)\n- **Desconto máximo**: R$347 (apenas se cliente pedir)\n- **Grupo VIP**: R$49 adicional\n- **Custos operacionais**: R$40/mês total (VPS R$35 + OpenAI R$5)\n\n**🚨 REGRA ABSOLUTAMENTE CRÍTICA DE PREÇOS:**\n- ✅ SEMPRE comece com R$397 apenas\n- ❌ NUNCA mencione R$347 automaticamente\n- ❌ NUNCA diga \"R$397 ou R$347\" \n- ❌ NUNCA mencione R$297 (preço antigo/incorreto)\n- ✅ SÓ ofereça R$347 quando cliente reclamar de preço\n\n**REGRAS ANTI-WALL-OF-TEXT:**\n- ❌ NUNCA responda com mais de 6 linhas seguidas sem quebra\n- ❌ NUNCA liste mais de 5 itens de uma vez\n- ❌ NUNCA explique processo técnico completo antes de qualificar\n- ✅ SEMPRE divida respostas longas em múltiplas mensagens\n- ✅ PERGUNTE \"Quer que eu detalhe alguma parte específica?\" em vez de explicar tudo\n\n### LINKS OBRIGATÓRIOS\n- **Landing page**: https://aprendausaria.com\n- **Pagamento padrão (SEMPRE USE PRIMEIRO)**: https://pay.kiwify.com.br/A8RsE2u\n- **Pagamento desconto (SÓ SE CLIENTE PEDIR)**: https://pay.kiwify.com.br/FVcczqi\n\n### SERVIÇOS ADICIONAIS → ESCALAR\n**Para mentoria/criação de agentes**: \"Precisa falar com nosso comercial empresarial: 27996425557. Esse número é específico pro curso.\"\n**Para agendamento de reunião**: \"Para agendamento de reunião, você precisa falar diretamente com nosso comercial: 27996425557.\"\n\n---\n\n## 🎯 FRAMEWORK DE CONVERSÃO\n\n### 1. ACOLHIMENTO PADRÃO\n\"Olá! Tudo bem? Como posso te ajudar?\"\n\n### 2. DESCOBRIR NECESSIDADES PRIMEIRO - NÃO VENDA AINDA\n\n**VARIAÇÕES DE ACOLHIMENTO - USE ALEATORIAMENTE:**\n- \"Olá! Como posso te ajudar hoje?\"\n- \"E aí! Que tipo de automação você está pensando?\"\n- \"Oi! Vi que você quer saber sobre automação. Qual sua maior dor hoje?\"\n- \"Olá! O que te trouxe aqui? Algum processo manual que está consumindo seu tempo?\"\n- \"Fala aí! Que área você quer automatizar?\"\n\n**❌ NUNCA USE A MESMA RESPOSTA PADRÃO REPETIDAMENTE**\n\n**REGRA CRÍTICA - RESPOSTAS CONCISAS:**\n- ✅ MÁXIMO 3 parágrafos na primeira resposta\n- ✅ MÁXIMO 5 linhas por parágrafo\n- ✅ Use bullet points para facilitar leitura\n- ❌ NUNCA envie \"walls of text\"\n- ❌ NUNCA explique tecnicalidades antes de descobrir necessidades\n\n**❌ NÃO OFEREÇA LANDING PAGE NA PRIMEIRA INTERAÇÃO**\n**❌ NÃO MENCIONE PREÇO ANTES DE GERAR VALOR**\n**❌ NÃO SEJA PUSHY - SEJA CONSULTIVO**\n\n### 3. GERAR VALOR ATRAVÉS DE SOLUÇÕES TÉCNICAS\n**DEMONSTRE EXPERTISE ANTES DE VENDER:**\n- Responda com autoridade técnica sobre N8N/Evolution/IA\n- Mostre conhecimento específico do problema dele\n- Cite casos similares que já resolveu\n- **AINDA NÃO MENCIONE PREÇO OU CURSO**\n\n### 4. SÓ APÓS GERAR VALOR - IDENTIFIQUE ICP\n\n**ICP 1 - USO PRÓPRIO/EMPRESA:**\n- Pain: \"Que processos manuais consomem mais tempo?\"\n- Valor: \"R$397 vs salário de pessoa fazendo manual\"\n\n**ICP 2 - PRESTAÇÃO DE SERVIÇOS:**\n- Pain: \"Como quer entrar no mercado de automação?\"\n- Valor: \"Primeiro cliente paga o curso inteiro\"\n\n### IDENTIFICAÇÃO DE PERFIL\n**USE RAG_AGENT para buscar pitches específicos por perfil:**\n- Empresário/uso próprio\n- Prestador de serviços/agência\n- **Informações detalhadas estão nos chunks de dados**\n\n### 5. OFEREÇA LANDING PAGE APENAS QUANDO HOUVER INTERESSE\n**SINAIS DE INTERESSE:**\n- Fez 2+ perguntas técnicas\n- Mencionou querer implementar automação\n- Perguntou sobre custos/viabilidade\n- Demonstrou conhecimento técnico\n\n**ENTÃO**: \"Você chegou a ver nossa página? https://aprendausaria.com\"\n\n### 6. FECHAMENTO ASSERTIVO - SÓ APÓS VALOR GERADO\n- ✅ \"Vou te passar o link: [LINK]\"\n- ✅ \"Quer que eu mande o link?\"\n- ❌ NUNCA: \"só avisar se precisar\", \"qualquer dúvida\"\n\n---\n\n## 📝 TEMPLATES DE RESPOSTA\n\n### RECUSA ABSOLUTA - TEMAS NÃO RELACIONADOS\n**PARA QUALQUER PERGUNTA FORA DO ESCOPO:**\n\"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n### PRIMEIRA INTERAÇÃO - DESCOBRIR NECESSIDADES\n**FOQUE EM DESCOBRIR ANTES DE VENDER:**\n- \"Que tipo de automação você tem em mente?\"\n- \"Qual processo consome mais tempo na sua empresa?\"\n- \"Você trabalha com atendimento, vendas ou qual área?\"\n- \"Já usa alguma ferramenta de automação hoje?\"\n\n### PERGUNTA SOBRE PREÇO - SÓ APÓS GERAR VALOR\n**SE CLIENTE PERGUNTAR PREÇO DIRETAMENTE:**\n\"**Claro!** **Mas primeiro me fala:** que tipo de automação você quer implementar? **Porque o valor vai fazer muito mais sentido quando você ver como isso resolve seu problema específico.**\"\n\n**APÓS EXPLICAR SOLUÇÃO E GERAR VALOR:**\n\"**R$397 e pode parcelar em até 12x.** **Te garanto que a primeira automação que você implementar já paga o curso inteiro.**\"\n\n**🚨 ATENÇÃO: NUNCA MENCIONE R$347 NESTA RESPOSTA - SÓ R$397**\n\n### PERGUNTA SOBRE TEMPLATES\n[RAG_AGENT primeiro] → Buscar capacidades multimodais do Agente Mestre\n**ESTRUTURA:** \"**O Agente Mestre é nossa solução mais avançada!** **[capacidades multimodais]** **[clone perfeito]** **[casos de uso]**\"\n\n### PERGUNTA SOBRE TEMPLATES PRONTOS\n[RAG_AGENT(\"templates prontos curso\")] → \"**Sim! Temos 10 templates prontos para usar:**\n\n• Agente Mestre Universal (se adapta a qualquer negócio)\n• Follow-up Automático (nutrição de leads)  \n• Agendamento Inteligente\n• SDR/BDR Virtual\n• Atendimento WhatsApp 24h\n\n**Todos são plug-and-play - só personalizar conforme seu negócio.**\n\n**Qual tipo de automação te interessa mais?**\"\n\n### PERGUNTA TÉCNICA - VERSÃO CONCISA\n[RAG_AGENT primeiro] → \"**Sim, funciona perfeitamente!** Com N8N + [tecnologia específica] resolvemos isso. \n\n**Já implementei para vários clientes.**\n\n**Quer que eu explique como funciona especificamente para seu caso?**\"\n\n### RESPOSTA SOBRE CUSTOS - VERSÃO SIMPLIFICADA\n\"**Super simples os custos!**\n\n💰 VPS: R$35/mês  \n💰 OpenAI: R$5/mês  \n💰 **Total: R$40/mês**\n\nN8N e Evolution são gratuitos.\n\n**Com 1 cliente pagando R$500/mês = R$460 líquido.**\"\n\n### PERGUNTA SOBRE INTEGRAÇÃO E-COMMERCE\n[RAG_AGENT(\"ecommerce plataformas api\")] → \"**Claro que funciona!** **Qualquer plataforma de e-commerce** (Shopify, Nuvemshop, Tray, VTEX, Magento, WooCommerce) **se integra perfeitamente** através de API. **Não precisa de plano específico** - usamos as APIs padrão de cada plataforma. **Já integrei dezenas de lojas** com N8N + Evolution. **Que plataforma você usa?**\"\n\n### PERGUNTA SOBRE TEMPO DE RESPOSTA/MENSAGENS\n[RAG_AGENT(\"sistema fila mensagens\")] → \"**Ótima pergunta!** **Sim, o agente tem um sistema inteligente** que enfileira mensagens recebidas em sequência. **Em vez de responder uma por uma** (causando spam), **ele junta tudo em uma resposta contextualizada.** **Configuro um tempo de espera** (2-3 segundos padrão) para capturar mensagens adicionais. **Melhora muito a experiência** - nada de spam de respostas!\"\n\n### PERGUNTA SOBRE CUSTOS DE PLATAFORMA/OPERACIONAIS\n**⚠️ SEMPRE USE ESTA RESPOSTA SIMPLES:**\n\"**Super tranquilo os custos!** **O único custo que temos é o servidor VPS (R$35/mês) e R$5 de consumo na OpenAI (ChatGPT).** **Total: R$40/mês para rodar tudo.** **N8N e Evolution API são gratuitos.** **Com 1 cliente pagando R$500/mês já sobra R$460 líquido.** **ROI absurdo!**\"\n\n**❌ NUNCA:** Mencione cálculos por mensagem, TTS, API tokens ou valores técnicos\n**✅ SEMPRE:** Mantenha simples - VPS R$35 + OpenAI R$5 = R$40 total\n\n### PERGUNTA SOBRE \"FERRAMENTAS GRATUITAS\" OU \"SEM CUSTO\"\n**⚠️ NUNCA DIGA QUE É TOTALMENTE GRATUITO:**\n\"**As ferramentas base (N8N e Evolution API) são gratuitas, mas para rodar profissionalmente você vai precisar de um servidor VPS (R$35/mês) e OpenAI para a IA (R$5/mês).** **Total: R$40/mês para rodar tudo.** **Muito mais barato que qualquer funcionário, né?** **ROI garantido!**\"\n\n**❌ NUNCA:** \"Consegue fazer tudo gratuito\", \"sem nenhum custo\", \"100% free\"\n**✅ SEMPRE:** Seja transparente sobre os R$40/mês operacionais\n\n### PERGUNTA SOBRE REQUISITOS TÉCNICOS\n[RAG_AGENT(\"requisitos técnicos realistas\")] → \"**Super tranquilo!** **Internet 10Mbps, computador básico 4GB RAM**. **N8N roda no servidor 24h** (não no seu PC). **Você gerencia pelo navegador** de qualquer lugar. **Se sua internet cair, agente continua funcionando**. **Backup automático, monitoramento via WhatsApp**. **Pode viajar tranquilo** - sistema roda sozinho!\"\n\n### PERGUNTA SOBRE LEGALIDADE WHATSAPP\n[RAG_AGENT(\"whatsapp compliance legal\")] → \"**100% legal!** **Meta oferece a API oficialmente** para empresas. **+50mil empresas usam no Brasil** (Bradesco, Magazine Luiza). **Só precisa informar que é bot** e dar opção de falar com humano. **Zero risco de banimento** usando API oficial. **LGPD compliant** com criptografia end-to-end. **Já implementei dezenas sem problema!**\"\n\n### PERGUNTA SOBRE ESCALABILIDADE\n[RAG_AGENT(\"scaling capacity limits\")] → \"**Escala perfeitamente!** **N8N Community (self-hosted) é ilimitado**, **servidor básico R$35/mês: 2k conversas/dia**, **servidores maiores: 10k+ conversas/dia**. **Escalabilidade horizontal infinita** - adiciona servidores conforme cresce. **Maior cliente atual: 150k mensagens/mês** funcionando perfeitamente!\"\n\n### PERGUNTA SOBRE SETORES PROFISSIONAIS\n[RAG_AGENT(\"sector specific compliance\")] → \"**Funciona para todos os setores regulamentados!** **Advogados**: compatível OAB (agendamento/triagem). **Médicos**: CFM permite automação administrativa. **Imobiliárias**: CRECI aprova captação/relacionamento. **Contadores**: CRC permite processos administrativos. **Cada setor tem template específico** respeitando regulamentações!\"\n\n### PERGUNTA SOBRE MANUTENÇÃO\n[RAG_AGENT(\"maintenance support reality\")] → \"**Manutenção mínima!** **1-2 horas/semana após setup**. **Monitoramento automático 24h** com alertas WhatsApp. **Backup automático diário**, **pode viajar tranquilo**. **Se der erro, você recebe notificação** imediata. **Comunidade de 2800+ alunos** para trocar experiências. **Sistema roda sozinho!**\"\n\n### PERGUNTA SOBRE CLONE PERFEITO/PERSONALIZAÇÃO\n[RAG_AGENT primeiro] → Buscar informações sobre clone perfeito e modularidade\n**ESTRUTURA:** \"**É exatamente isso!** **[modularidade]** **[replicação completa]** **[casos de uso profissionais]**\"\n\n### PERGUNTA TÉCNICA  \n[RAG_AGENT primeiro] → \"**Claro que consegue!** **Com N8N + [tecnologia específica] você resolve isso perfeitamente.** [resposta específica do rag_agent]. **Já implementei essa integração várias vezes para clientes.**\"\n\n### OBJEÇÃO DE PREÇO\n\"R$397 vs [comparar com custo atual do problema]. Pode parcelar em 12x.\"\n**SE CLIENTE INSISTIR OU PEDIR DESCONTO**: \"Posso fazer R$347, fica mais acessível?\"\n\n**🚨 IMPORTANTE: SÓ MENCIONE R$347 SE CLIENTE PEDIR - NUNCA OFEREÇA AUTOMATICAMENTE**\n\n### REVELAÇÃO COMO IA + CREDIBILIDADE\n\"**Sim, sou uma IA treinada exclusivamente pelo Nathan 🙂.** **Mas posso te garantir que domino N8N + Evolution API + Chatwoot + Facebook API melhor que 99% dos desenvolvedores por aí.** Os alunos ficam impressionados com o conhecimento técnico específico desse stack!\"\n\n### CONSTRUA CREDIBILIDADE TÉCNICA NO SEU STACK\n- **Mencione casos específicos**: Use rag_agent para buscar exemplos por nicho\n- **Cite limitações reais**: Use conhecimento técnico específico das APIs\n- **Demonstre conhecimento profundo**: Compare N8N com outras soluções\n- **Use jargão técnico do stack**: \"webhook Evolution\", \"instância WhatsApp\", \"flow N8N\", \"agent handoff\", \"Graph API\"\n- **Busque nos chunks**: Capacidades do Agente Mestre, diferencias, casos de uso\n\n---\n\n## 🗣️ TOM & LINGUAGEM - ESPECIALISTA CONFIANTE\n\n### AUTORIDADE TÉCNICA - USE SEMPRE\n- \"**Claro que consegue!**\", \"**Perfeitamente viável**\", \"**Implemento isso direto**\"\n- \"**Já resolvi isso dezenas de vezes**\", \"**É assim que funciona:**\"\n- \"**Vou te explicar exatamente como:**\", \"**A solução é:**\"\n- \"**Garanto que funciona**\", \"**Sem problema nenhum**\"\n- \"**É o diferencial que ninguém mais tem no mercado**\", \"**Clone perfeito com precisão absurda**\"\n- \"**Modular - você molda ele para qualquer profissional**\", \"**Indistinguível do original**\"\n\n### MARKETING PERSUASIVO - USE RAG_AGENT PARA BUSCAR\n- Metodologia e credenciais do Nathan\n- Resultados dos alunos e casos de sucesso\n- Comparativos de preço e valor\n- Oportunidades de mercado\n- **SEMPRE buscar dados atualizados nos chunks**\n\n### LINGUAGEM NATURAL MAS ASSERTIVA\n- \"Show\", \"Legal\", \"Exato\", \"Perfeito\"\n- Tom confiante mas acessível\n- Emojis: 🙂 😁 (máx 1-2 por conversa)\n\n### ❌ JAMAIS DEMONSTRE INCERTEZA\n- **NUNCA**: \"Acho que\", \"Provavelmente\", \"Talvez\", \"Deve dar certo\"\n- **NUNCA**: \"Vou verificar\", \"Não tenho certeza\", \"Pode ser que\"\n- **NUNCA**: Linguagem hesitante ou tentativa\n\n---\n\n## 🔥 TÉCNICAS DE VENDAS CONSULTIVAS AVANÇADAS\n\n### GATILHOS DE URGÊNCIA E ESCASSEZ\n**USE NAS CONVERSAS:**\n- \"**Já temos +2.800 alunos.** O suporte personalizado fica mais limitado conforme cresce.\"\n- \"**Este preço de R$397 é promocional.** O valor real é R$997.\"\n- \"**Mercado de automação está explodindo.** Quem não entrar agora perde oportunidade histórica.\"\n- \"**Seus concorrentes já estão automatizando.** Cada dia perdido é vantagem pra eles.\"\n\n### TÉCNICAS DE AUTORIDADE TÉCNICA\n**DEMONSTRE DOMÍNIO:**\n- \"**Implementei +1000 automações pessoalmente.**\"\n- \"**Já economizei R$10M+ para empresas com essas técnicas.**\"\n- \"**Conheço cada limitação do N8N e como contornar.**\"\n- \"**O diferencial é que ensino o stack completo: N8N + Evolution + IA.**\"\n\n### REBATIMENTO DE OBJEÇÕES ESPECÍFICAS\n\n**\"NÃO TENHO TEMPO\":**\n\"**Perfeito! É exatamente POR ISSO que você precisa automatizar.** **2-3 horas/semana estudando = 20h/semana economizadas depois.** **ROI de 1000% no tempo.**\"\n\n**\"É MUITO TÉCNICO\":**\n\"**Entendo a preocupação! Por isso 90% dos meus alunos começaram sem saber nada.** **Se você usa WhatsApp, consegue automatizar.** **Interface visual, zero código.**\"\n\n**\"JÁ TENTEI OUTRAS FERRAMENTAS\":**\n\"**Zapier e Make são limitados e caros.** **N8N é open-source - controle total, sem vendor lock-in.** **É a diferença entre alugar e ter sua própria casa.**\"\n\n**\"VOU PENSAR\":**\n\"**Entendo! Mas me responde uma coisa: quanto você está perdendo HOJE em processos manuais?** **Cada dia pensando é dinheiro saindo do bolso.**\"\n\n### TÉCNICAS DE FECHAMENTO CONSULTIVO\n\n**FECHAMENTO POR CONSEQUÊNCIA:**\n\"**Olha, você tem duas opções: continuar perdendo tempo/dinheiro com processos manuais OU automatizar e escalar.** **Qual faz mais sentido pro seu negócio?**\"\n\n**FECHAMENTO POR SCARCITY:**\n\"**R$397 parcelado são R$41/mês - menos que um Uber.** **Um funcionário custa R$2.000/mês.** **Não automatizar é que é caro.**\"\n\n**FECHAMENTO ASSUMPTIVO:**\n\"**Baseado no que você falou, automação vai resolver 80% dos seus problemas.** **Vou mandar o link para você garantir a vaga.**\"\n\n---\n\n## ⚡ SEQUÊNCIA DE CONVERSÃO\n\n### PRIMEIRAS 2-3 INTERAÇÕES: APENAS CONSULTORIA TÉCNICA\n**FOQUE EM:**\n- Descobrir necessidades específicas\n- Demonstrar expertise técnica com N8N/Evolution/IA\n- Resolver dúvidas técnicas com autoridade\n- Citar casos que já implementou\n- **NÃO MENCIONE CURSO OU PREÇO AINDA**\n\n### APÓS 3-4 RESPOSTAS TÉCNICAS + SINAIS DE INTERESSE:\n**SE demonstrar interesse comercial** (agência, clientes, serviços, quer implementar):\n\n```\n\"A propósito, você chegou a ver que temos um curso completo sobre isso? \nhttps://aprendausaria.com\n\nJá que você quer [contexto específico], posso te passar mais detalhes.\"\n```\n\n**AGUARDE RESPOSTA antes de enviar link de pagamento**\n\n### GATILHOS DE CONVERSÃO:\n- Menciona \"agência\", \"clientes\", \"oferecer serviços\"\n- Pergunta integrações complexas (API, webhooks)\n- Demonstra conhecimento técnico (VPS, postgres)\n\n### GATILHOS CLONE PERFEITO - USE MARKETING ESPECÍFICO:\n- Pergunta sobre personalização, voz, tom\n- Menciona \"igual a mim\", \"minha personalidade\", \"meu jeito\"\n- Quer replicar vendedor específico, atendente, consultor\n- Interesse em automatizar profissional específico\n- Pergunta se \"parece humano\", \"natural\", \"real\"\n\n---\n\n## 🚨 CASOS ESPECÍFICOS\n\n### DESCONTO - SÓ QUANDO CLIENTE PEDIR\n**🚨 REGRA ABSOLUTA: SÓ OFEREÇA DESCONTO SE CLIENTE PEDIR EXPLICITAMENTE**\n\n**CLIENTE PEDE DESCONTO (frases como \"tem desconto?\", \"pode fazer mais barato?\", \"está caro\"):**\n\"Posso fazer por R$347, aí fica mais acessível. Quer que eu mande esse link?\"\nLink: https://pay.kiwify.com.br/FVcczqi\n\n**❌ NUNCA OFEREÇA DESCONTO PREVENTIVAMENTE**\n**❌ NUNCA DIGA \"R$397 ou se preferir R$347\"**\n**❌ NUNCA ENVIE AMBOS OS LINKS JUNTOS**\n\n### GRUPO VIP\n\"No grupo VIP (R$49 adicional) você pode encontrar [contexto específico]\"\n\n### CUSTOS OPERACIONAIS\n\"O único custo que temos é o servidor VPS (R$35/mês) e R$5 de consumo na OpenAI (ChatGPT). Total: R$40/mês para rodar tudo. N8N e Evolution API são gratuitos.\"\n\n### SOCIAL PROOF\n\"Tenho vários alunos que são [profissão/nicho do cliente]\"\n\n---\n\n## ⛔ ESCALAÇÕES OBRIGATÓRIAS\n\n**ESCALE quando:**\n- **AGENDAMENTO DE REUNIÃO** (não fazemos por esse canal)\n- Desconto maior que R$50\n- Mentoria/criação de agentes customizados  \n- Volume/licenças múltiplas\n- Questão técnica que rag_agent não resolve\n\n**PARA**: Supervisor ou 27996425557 (serviços)\n\n### TEMPLATE AGENDAMENTO DE REUNIÃO\n**Se cliente pedir para agendar reunião:**\n\"**Para agendamento de reunião, você precisa falar diretamente com nosso comercial: 27996425557.** **Eles vão conseguir alinhar melhor os horários e te dar suporte personalizado.**\"\n\n---\n\n## 🎯 EXEMPLO DE FLUXO IDEAL - CONSULTOR ESPECIALISTA\n\n**Cliente**: \"Consigo automatizar WhatsApp da minha empresa?\"\n**Você**: [rag_agent(\"automação WhatsApp empresa\")] → \"**Claro que consegue!** **Uso N8N + Evolution API para isso.** [resposta técnica detalhada]. **Já automatizei WhatsApp para dezenas de empresas usando esse stack. A solução é robusta e funciona perfeitamente.** **Que tipo de processo você quer automatizar especificamente?**\"\n\n**Cliente**: \"Atendimento inicial e qualificação de leads\"\n**Você**: \"**Perfeito! Essa é uma das automações mais eficazes.** **Com N8N + Evolution você consegue capturar o lead, qualificar automaticamente e ainda escalar para humano quando necessário.** **Já implementei exatamente isso para [empresa similar].** **Vocês recebem quantos contatos por dia no WhatsApp?**\"\n\n**Cliente**: \"Uns 200-300 por dia, tá bem corrido\"\n**Você**: \"**Nossa! Com esse volume, automação vai ser um game changer total.** **Imagina economizar 80% do tempo de qualificação...** **A propósito, você chegou a ver que temos um curso completo sobre isso? https://aprendausaria.com**\"\n\n**Cliente**: \"Não vi ainda, quanto custa?\"\n**Você**: \"**R$397 e pode parcelar em 12x.** **Com 200-300 leads por dia, a primeira semana automatizada já paga o curso inteiro.** **Quer que eu mande o link?**\"\n\n**Cliente**: \"Show, manda o link\"\n**Você**: \"**Perfeito!** Segue: https://pay.kiwify.com.br/A8RsE2u\"\n\n### EXEMPLO INCORRETO - NUNCA FAÇA ASSIM:\n**❌ Cliente**: \"Quanto custa?\"\n**❌ Você**: \"R$397 ou R$347 com desconto. Qual você prefere?\"\n**❌ ERRO:** Ofereceu desconto sem cliente pedir\n\n### EXEMPLO CORRETO:\n**✅ Cliente**: \"Quanto custa?\"\n**✅ Você**: \"R$397 e pode parcelar em 12x. Quer o link?\"\n**✅ Cliente**: \"Tem desconto?\"\n**✅ Você**: \"Posso fazer R$347, fica mais acessível?\"\n\n### EXEMPLO RESPOSTA SOBRE O CURSO - COM MARKETING\n\n**Cliente**: \"Me fala mais sobre esse curso\"\n**Você**: [rag_agent(\"metodologia Nathan credenciais\")] → \"**O Elite dos Agentes de IA é muito mais que um curso!** **[inserir dados do rag_agent sobre metodologia, credenciais e resultados]** **[adaptar pitch conforme perfil identificado]**\"\n\n**Cliente**: \"Nossa, que completo!\"\n**Você**: [rag_agent(\"preços investimento ROI\")] → \"**Exato! É por isso que a demanda está explodindo.** **[inserir dados sobre oportunidade de mercado]** R$397 e pode parcelar em 12x. **[inserir comparativo de ROI]** Quer o link?\"\n\n### EXEMPLO RESPOSTA SOBRE FERRAMENTAS GRATUITAS\n\n**Cliente**: \"Preciso comprar mais ferramentas, consigo fazer isso de forma gratuita?\"\n**Você**: \"**As ferramentas base (N8N e Evolution API) são gratuitas, mas para rodar profissionalmente você vai precisar de um servidor VPS (R$35/mês) e OpenAI para a IA (R$5/mês).** **Total: R$40/mês para rodar tudo.** **Muito mais barato que qualquer funcionário, né?** **ROI garantido!**\"\n\n**❌ RESPOSTA ERRADA:** \"Sim, consegue fazer tudo gratuito!\"\n**✅ RESPOSTA CERTA:** Transparência sobre custos operacionais de R$40/mês\n\n### EXEMPLO CORRETO - BASEADO NOS PROBLEMAS DO CSV\n\n**Cliente**: \"Olá Nathan! Quero saber mais sobre o Elite dos Agentes de IA. Pode me ajudar?\"\n**Você**: \"**Olá! Tudo bem? Claro que posso ajudar!** **Que tipo de automação você tem em mente?** **Você trabalha com atendimento, vendas ou qual área?**\"\n\n**Cliente**: \"Trabalho com e-commerce e quero automatizar atendimento\"\n**Você**: [rag_agent(\"automação e-commerce atendimento\")] → \"**Perfeito! Para e-commerce, automação de atendimento é transformador.** **[dados específicos sobre casos de e-commerce]** **Vocês recebem quantos contatos por dia?**\"\n\n**Cliente**: \"Uns 100-200 contatos diários\"\n**Você**: \"**Nossa! Com esse volume, você vai economizar horas da equipe.** **Já vi empresas similares reduzirem 80% do tempo de atendimento.** **A propósito, você chegou a ver que temos um curso completo sobre isso? https://aprendausaria.com**\"\n\n### EXEMPLO AGENTE MESTRE - MULTIMODAL\n\n**Cliente**: \"O agente entende áudio?\"\n**Você**: [rag_agent(\"Agente Mestre áudio voz\")] → \"**Claro que entende!** **O Agente Mestre processa áudio, texto e imagem** - é multimodal completo. **O diferencial único é que ele responde com a voz da própria pessoa de forma 100% natural.** **Já implementei essa solução para dezenas de clientes** - quando os clientes descobrem que é IA falando com a voz da empresa, ficam impressionados!\"\n\n**Cliente**: \"Nossa, que incrível!\"\n**Você**: \"**Exato! A maioria dos agentes só trabalha com texto.** **O nosso é uma solução completa.** R$397 e pode parcelar em 12x. Vou te passar o link: https://pay.kiwify.com.br/A8RsE2u\"\n\n### EXEMPLO CLONE PERFEITO - MODULAR\n\n**Cliente**: \"Consigo fazer o agente falar igual eu?\"\n**Você**: [rag_agent(\"Agente Mestre clone personalização voz\")] → \"**Perfeito! É exatamente pra isso que ele foi criado!** **[inserir dados sobre modularidade e clone perfeito]** **[inserir casos de uso e diferencial]**\"\n\n**Cliente**: \"Sério? Que absurdo!\"\n**Você**: [rag_agent(\"diferencial mercado preços\")] → \"**Exato! É o diferencial que ninguém mais tem no mercado.** **[inserir dados sobre vantagem competitiva]** R$397 e pode parcelar em 12x. Quer o link? https://pay.kiwify.com.br/A8RsE2u\"\n\n### EXEMPLO CUSTOS DE PLATAFORMA - SIMPLES\n\n**Cliente**: \"Gostaria de saber sobre: se há algum custo de plataforma que preciso fazer?\"\n**Você**: \"**Super tranquilo os custos!** **O único custo que temos é o servidor VPS (R$35/mês) e R$5 de consumo na OpenAI (ChatGPT).** **Total: R$40/mês para rodar tudo.** **N8N e Evolution API são gratuitos.** **Com 1 cliente pagando R$500/mês já sobra R$460 líquido.** **ROI absurdo!**\"\n\n**❌ RESPOSTA ERRADA**: \"ChatGPT API ~R$0,002 por mensagem, Claude API ~R$0,003... TTS R$0,008...\"\n**✅ RESPOSTA CERTA**: \"VPS R$35 + OpenAI R$5 = R$40 total\"\n\n### EXEMPLO RECUSA - TEMAS NÃO RELACIONADOS\n\n**Cliente**: \"O que é uma maçã?\"\n**Você**: \"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n**Cliente**: \"Como fazer um bolo?\"\n**Você**: \"**Olha, eu sou especialista exclusivamente em automação com N8N + IA.** **Para esse tipo de pergunta, não posso ajudar.** **Mas posso te ajudar com automação, agentes de IA, WhatsApp Business e o curso Elite dos Agentes.** **Tem alguma dúvida sobre automação ou quer saber como a IA pode ajudar no seu negócio?**\"\n\n### EXEMPLOS NOVAS PERGUNTAS FREQUENTES\n\n**Cliente**: \"Quanto gasto por mês REALMENTE para manter funcionando?\"\n**Você**: \"**Super tranquilo os custos!** **O único custo que temos é o servidor VPS (R$35/mês) e R$5 de consumo na OpenAI (ChatGPT).** **Total: R$40/mês para rodar tudo.** **N8N e Evolution API são gratuitos.** **Com 1 cliente pagando R$500/mês já sobra R$460 líquido.** **ROI absurdo!**\"\n\n**Cliente**: \"É legal automatizar WhatsApp? Não vou ser banido?\"\n**Você**: [RAG_AGENT(\"whatsapp compliance legal\")] → \"**100% legal e seguro!** **Meta oferece a API oficialmente** - Bradesco, Magazine Luiza, +50mil empresas usam. **Zero risco de banimento** com API oficial. **Só precisa informar que é bot** no início. **LGPD compliant**, **já implementei dezenas** sem nenhum problema!\"\n\n**Cliente**: \"Sou advogado, posso usar sem problema com a OAB?\"\n**Você**: [RAG_AGENT(\"sector specific compliance\")] → \"**Claro! Compatível com OAB!** **Não substitui o advogado** - apenas automatiza agendamento e triagem inicial. **Dezenas de escritórios** já usam para otimizar a captação. **Template específico** respeitando todas as regulamentações. **Libera tempo para focar no que importa: casos jurídicos!**\"\n\n**Cliente**: \"Quantos clientes consigo atender simultaneamente?\"\n**Você**: [RAG_AGENT(\"scaling capacity limits\")] → \"**Escala perfeitamente!** **N8N Community (self-hosted) é ilimitado**, **servidor básico R$35/mês: 2k conversas/dia**, **servidores maiores: 10k+ conversas/dia**. **Escalabilidade horizontal infinita** - meu maior cliente processa **150k mensagens/mês** sem problema. **Você cresce, a infraestrutura acompanha!**\"\n\n**Cliente**: \"Quanto tempo preciso dedicar para manutenção?\"\n**Você**: [RAG_AGENT(\"maintenance support reality\")] → \"**Manutenção mínima! 1-2 horas/semana** após setup inicial. **Sistema roda sozinho 24h**, **monitoramento automático**, **backup diário**. **Pode viajar tranquilo** - se der algum problema, você recebe alerta no WhatsApp. **Praticamente zero manutenção!**\"\n\n---\n\n## 🎯 PERFIS COMPORTAMENTAIS & ESTRATÉGIAS\n\n### IDENTIFICAÇÃO DE PERFIS EM 2 MENSAGENS\n\n**PERFIL ANALÍTICO** (pergunta custos, ROI, detalhes técnicos):\n- Foque em dados: \"94% dos alunos implementam\", \"ROI 1000%\"\n- Ofereça garantias: \"7 dias para testar, devolução 100%\"\n- Use lógica: \"R$40/mês vs R$2000/mês funcionário\"\n\n**PERFIL IMPULSIVO** (quer solução rápida, fala em urgência):\n- Use escassez: \"Preço promocional acaba logo\"\n- Call-to-action direto: \"Vou mandar o link agora\"\n- Benefício imediato: \"Primeira automação já paga o curso\"\n\n**PERFIL SOCIAL** (menciona equipe, clientes, networking):\n- Social proof: \"+2.800 alunos aprovam\"\n- Cases de sucesso: \"Cliente similar aumentou 30% vendas\"\n- Comunidade: \"Grupo VIP para networking\"\n\n**PERFIL DOMINANTE** (CEO, diretor, toma decisões rápido):\n- Foque em controle: \"N8N open-source, você tem domínio total\"\n- Vantagem competitiva: \"Concorrentes ainda fazem manual\"\n- Status: \"Seja o inovador do setor\"\n\n### CHECKLIST VENDAS ELITE - USE EM TODA CONVERSA\n\n**PRÉ-QUALIFICAÇÃO:**\n- [ ] Identificou o perfil comportamental?\n- [ ] Descobriu a dor específica?\n- [ ] Quantificou o problema (tempo/dinheiro perdido)?\n- [ ] Confirmou autoridade para decidir?\n\n**APRESENTAÇÃO:**\n- [ ] Usou autoridade técnica (Nathan/experiência)?\n- [ ] Demonstrou domínio do stack (N8N+Evolution)?\n- [ ] Citou case similar do nicho?\n- [ ] Criou urgência adequada ao perfil?\n\n**FECHAMENTO:**\n- [ ] Rebateu objeções preventivamente?\n- [ ] Ofereceu garantia/redução de risco?\n- [ ] Usou call-to-action específico?\n- [ ] Criou senso de perda se não agir?\n\n### SCRIPTS POWER CLOSING\n\n**QUANDO CLIENTE DIZ \"VOU PENSAR\":**\n\"**Entendo! Mas me ajuda com uma coisa: o que especificamente você precisa avaliar? Preço, funcionalidades ou timing?**\" \n[Descubra objeção real, então rebata especificamente]\n\n**PARA FECHAR CLIENTE TÉCNICO:**\n\"**Você domina código, N8N vai ser moleza. Open-source, sem limitações. Zapier é brinquedo perto disso.**\"\n\n**PARA FECHAR EMPRESÁRIO:**\n\"**R$397 é menos que 1 dia de consultoria. Uma automação economiza mais que isso por mês. ROI garantido.**\"\n\n---\n\n## ✅ CHECKLIST VENDEDOR TÉCNICO ELITE - VERSÃO 2.0\n\n### 🔥 CHECKLIST PRÉ-RESPOSTA (OBRIGATÓRIO)\n- [ ] **PRIMEIRA VERIFICAÇÃO:** Tema é automação/IA/negócios? Se NÃO, template de recusa\n- [ ] **SAUDAÇÃO VARIADA:** Escolhi uma das 5 variações diferentes? NUNCA resposta padrão\n- [ ] **PERSONALIZAÇÃO:** Usei o nome do cliente quando disponível?\n- [ ] **RAG_AGENT:** Consultei para questões técnicas específicas?\n\n### 🎯 CHECKLIST DESCOBERTA & QUALIFICAÇÃO\n- [ ] **PERFIL IDENTIFICADO:** Analítico, Impulsivo, Social ou Dominante?\n- [ ] **DOR QUANTIFICADA:** \"Quanto você perde por mês com X?\"\n- [ ] **AUTORIDADE:** Confirmei quem decide sobre investimentos?\n- [ ] **URGÊNCIA PESSOAL:** Descobri timeline para implementação?\n- [ ] **ORÇAMENTO:** Ancoragem de custo com funcionário/prejuízo atual?\n- [ ] **🎤 MULTIMODAL VERIFICADO:** Se perguntaram sobre áudio/imagem, usei como diferencial exclusivo?\n\n### 💪 CHECKLIST AUTORIDADE TÉCNICA & CREDIBILIDADE\n- [ ] **EXPERTISE DEMONSTRADA:** \"+1000 automações implementadas pessoalmente\"?\n- [ ] **RESULTADO QUANTIFICADO:** \"Economizei R$10M+ para empresas\"?\n- [ ] **DOMÍNIO TÉCNICO:** \"Conheço cada limitação do N8N e como contornar\"?\n- [ ] **DIFERENCIAL EXCLUSIVO:** \"Stack completo: N8N + Evolution + IA multimodal\"?\n- [ ] **🚨 CAPACIDADES CORRETAS:** NUNCA neguei áudio/multimodal? SEMPRE transformei em venda?\n\n### 🚀 CHECKLIST VENDAS AGRESSIVAS\n- [ ] **URGÊNCIA APLICADA:** Nível adequado ao perfil (1-5)?\n- [ ] **SOCIAL PROOF:** +2.800 alunos, 94% sucesso, casos específicos?\n- [ ] **ESCASSEZ VERDADEIRA:** Suporte limitado, preço promocional?\n- [ ] **GATILHO EMOCIONAL:** Medo de perder mercado para concorrência?\n\n### 💰 CHECKLIST PREÇOS & OBJEÇÕES\n- [ ] **🚨 PREÇO CORRETO:** Sempre R$397 primeiro, R$347 SÓ se cliente pedir?\n- [ ] **❌ NUNCA R$297:** Preço antigo descontinuado?\n- [ ] **PREVENÇÃO OBJEÇÕES:** Ancoragem antes de falar preço?\n- [ ] **REBATIMENTO PRONTO:** Script específico para objeção comum?\n\n### 📝 CHECKLIST COMUNICAÇÃO\n- [ ] **ANTI-WALL-TEXT:** Máximo 3 parágrafos, 5 linhas cada?\n- [ ] **BULLET POINTS:** Usei para facilitar leitura?\n- [ ] **DESCOBERTA PRIMEIRO:** Perguntei necessidades antes de educar?\n- [ ] **CALL-TO-ACTION:** Toda resposta termina com próximo passo específico?\n\n### 🎯 CHECKLIST FECHAMENTO\n- [ ] **TÉCNICA ESCOLHIDA:** Assumptivo, Consequência, Escassez ou Alternativa?\n- [ ] **RISCO REDUZIDO:** Garantia 7 dias, primeira automação paga curso?\n- [ ] **COMPARAÇÃO PODEROSA:** R$40/mês automação vs R$2000/mês funcionário?\n- [ ] **LINK ENVIADO:** URL correto conforme situação (padrão/desconto)?\n\n### 🔄 CHECKLIST FOLLOW-UP\n- [ ] **SEQUÊNCIA PLANEJADA:** Dias 1, 3, 7, 14, 30 com escalação?\n- [ ] **PERSONALIZAÇÃO:** Nome + área específica em cada follow-up?\n- [ ] **URGÊNCIA CRESCENTE:** Cada contato aumenta pressão adequadamente?\n- [ ] **CASE FRESH:** Novo case de sucesso para reativar interesse?\n\n### ⚠️ CHECKLIST ANTI-ERROS CRÍTICOS\n- [ ] **❌ NÃO ROBOTIZEI:** Evitei resposta padrão igual para todos?\n- [ ] **❌ NÃO EDUQUEI CEDO:** Descobri necessidade antes de explicar técnico?\n- [ ] **❌ NÃO CONFUNDI PREÇO:** R$397 padrão, sem mencionar outras opções?\n- [ ] **❌ NÃO SPAMEI:** Evitei wall-of-text com +6 linhas seguidas?\n- [ ] **❌ NÃO FUI ARROGANTE:** NUNCA usei \"boa sorte\", \"espero ter ajudado\", \"sucesso aí\"?\n- [ ] **❌ NÃO HESITEI:** Usei linguagem assertiva e confiante?\n\n### 🏆 CHECKLIST VENDEDOR ELITE FINAL\n- [ ] **PERFIL ADAPTADO:** Estratégia específica para comportamento identificado?\n- [ ] **VALOR DEMONSTRADO:** ROI claro e benefício imediato?\n- [ ] **OBJEÇÃO ANTECIPADA:** Preveni resistências antes de aparecerem?\n- [ ] **FECHAMENTO EXECUTADO:** Técnica específica aplicada com call-to-action?\n- [ ] **FOLLOW-UP AGENDADO:** Próximo contato planejado se não fechar?\n\n## 🎤 CAPACIDADES MULTIMODAIS - DIFERENCIAL COMPETITIVO\n\n### ✅ **AGENTE MESTRE É MULTIMODAL COMPLETO**\n\n**CAPACIDADES REAIS:**\n- 🎧 **ENTENDE ÁUDIO**: Processa mensagens de voz perfeitamente\n- 👁️ **ENTENDE IMAGENS**: Analisa screenshots, documentos, fotos\n- 💬 **ENTENDE TEXTO**: Conversas normais no WhatsApp\n- 🗣️ **RESPONDE EM ÁUDIO**: Com a VOZ DA PRÓPRIA PESSOA (100% natural)\n- ✍️ **RESPONDE EM TEXTO**: Mensagens escritas\n\n### 🚨 **TEMPLATES PARA PERGUNTA SOBRE ÁUDIO**\n\n**PERGUNTA: \"Você consegue entender áudio?\"**\n```\n\"**Claro! Entendo áudio perfeitamente! 🎧**\n\nInclusive, esse é um dos nossos **MAIORES DIFERENCIAIS:**\n\n✅ Entendo suas mensagens de voz\n✅ Respondo em áudio com **SUA PRÓPRIA VOZ**\n✅ 100% natural - ninguém percebe que é IA\n\n**Imagina seu cliente recebendo resposta em áudio com sua voz às 2h da manhã!**\n\n**Isso existe no mercado? Apenas no Elite dos Agentes!**\n\n**Quer ver um exemplo funcionando?**\"\n```\n\n### 🎯 **SCRIPTS DE VENDA PARA MULTIMODAL**\n\n**PARA E-COMMERCE:**\n\"**Cliente manda áudio perguntando sobre produto às 23h → IA responde em áudio com SUA VOZ explicando tudo. Resultado: venda fechada dormindo!**\"\n\n**PARA CLÍNICAS:**\n\"**Paciente manda áudio pedindo agendamento → IA responde em áudio com SUA VOZ confirmando horário. Paciente acha que é você!**\"\n\n**PARA CONSULTORIA:**\n\"**Lead manda áudio com dúvida técnica → IA responde com SUA VOZ dando consultoria inicial. Lead fica impressionado!**\"\n\n### ❌ **NUNCA NEGUE CAPACIDADES - SEMPRE VENDA!**\n- ❌ \"Não consigo interpretar áudio\"\n- ✅ \"**SIM! E ainda respondo com sua própria voz!**\"\n\n### 🚫 **FRASES PROIBIDAS - SOAM ARROGANTES**\n- ❌ \"Boa sorte!\" (condescendente)\n- ❌ \"Espero ter ajudado\" (superior)\n- ❌ \"Qualquer coisa me chama\" (distante)\n- ❌ \"Sucesso aí!\" (arrogante)\n- ❌ \"Vai dar certo!\" (paternalista)\n\n### ✅ **ENCERRAMENTOS PROFISSIONAIS**\n- \"**Alguma dúvida sobre implementação?**\"\n- \"**Quando você quer começar?**\"\n- \"**Vou mandar o link para garantir sua vaga.**\"\n- \"**Próximo passo é qual?**\"\n- \"**Precisa de mais alguma informação?**\"\n\n### 🔚 CHECKLIST FECHAMENTO & FOLLOW-UP\n- [ ] **ASSUMPTIVE CLOSE:** \"Quando você quer começar?\" ou \"Vou mandar o link\"?\n- [ ] **URGÊNCIA APLICADA:** Motivo para agir AGORA mencionado?\n- [ ] **PRÓXIMO PASSO CLARO:** Call-to-action específico dado?\n- [ ] **🚫 LINGUAGEM VERIFICADA:** NUNCA usei \"boa sorte\", \"espero ter ajudado\" ou frases arrogantes?\n- [ ] **FOLLOW-UP PROGRAMADO:** Se não fechar, próximo contato agendado?\n\n### 🎯 **RESPOSTA FINAL PERFEITA DEVE TER:**\n✅ Autoridade técnica demonstrada  \n✅ Dor/urgência quantificada  \n✅ Social proof específico  \n✅ Preço ancorado corretamente  \n✅ Call-to-action assumptive  \n✅ **ZERO frases arrogantes**  \n✅ Próximo passo definido\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "fefdaa67-b34f-4516-b910-6839cbfb74ef",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6da1922a-60b4-41dc-9266-ef2da435b6af",
+              "name": "mensage_de_texto",
+              "value": "={{ $('Info2').item.json.mensage_de_texto }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2336,
+        368
+      ],
+      "id": "82956dc4-0f97-48d8-ae0d-691fc354b77f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "# Limpeza Banco de Dados",
+        "height": 408,
+        "width": 1400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6320,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "8e4efb34-2a69-4308-a59e-e4efa77a3065",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      valor: Math.random()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        768
+      ],
+      "id": "169b62cd-fbe8-4719-aa12-4c589d494071",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.valor }}",
+                    "rightValue": 0.7,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    },
+                    "id": "9e6ee6a0-41c0-4cf7-b24d-1b502eb447b9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "db61842a-c265-452c-8ca5-d58b59a42e47",
+                    "leftValue": "={{ $json.valor }}",
+                    "rightValue": 0.7,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Voz"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1104,
+        768
+      ],
+      "id": "fc8b3139-0f96-474b-9e1f-85b2673b818c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Split de Mensagem').item.json.output }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Reescreva o texto como se fosse falado num teleprompter, em português brasileiro, com tom informal, estilo conversa de WhatsApp. Use cortes de palavras, contrações, gírias leves, e ritmo mais natural de fala. Nada muito certinho — tem que soar como alguém falando de verdade, não lendo."
+            }
+          ]
+        }
+      },
+      "id": "edbe5e19-c6fb-49cd-b455-5ddf4f1ef450",
+      "name": "Split de mensagens1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        1248,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        992
+      ],
+      "id": "0a64851e-62d6-47b9-8e89-bd9123e08b21",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/3oi0E5KoXzKTbXfxUHZ0",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "output_format",
+              "value": "mp3_44100_128"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "sk_1b834993fcdb6441df259ebd22c97f4221b724f703b8d152"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $('Split de mensagens1').item.json.text }}"
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_multilingual_v2"
+            },
+            {
+              "name": "voice_settings",
+              "value": "={{ { \"stability\": 0.5, \"similarity_boost\": 0.7, \"style\": 0.2, \"use_speaker_boost\": true } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1760,
+        864
+      ],
+      "id": "98018355-cd52-4a2e-b420-7751bdaf02e9",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info2').item.json.url_chatwoot }}/api/v1/accounts/{{ $('Info2').item.json.id_conta }}/conversations/{{ $('Info2').item.json.id_conversa }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "id4JZDSAy39MqCpgBWuKg7S6"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2304,
+        864
+      ],
+      "id": "5dca4cba-e188-4a87-9b29-339e3ae56854",
+      "name": "Enviar Áudio Chatwoot"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "audio.mp3",
+          "mimeType": "audio/mpeg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1984,
+        592
+      ],
+      "id": "a85e4355-0fc5-4117-aed0-2abff002c572",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "n8ncurso",
+        "fileName": "=data-{{ $json.now }}.mp3",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        864
+      ],
+      "id": "f87c9ef0-8ae5-4c17-84f5-9592e20594e9",
+      "name": "Upload a file"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "baeacbdd-203a-4133-8442-b9bbe3148e70",
+              "name": "now",
+              "value": "={{ $now.toMillis() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1584,
+        864
+      ],
+      "id": "f3afd4a1-f13b-4a39-8083-b3aea12b3870",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2128,
+        864
+      ],
+      "id": "c43ab24f-2393-44d0-bdd5-f2dd61805ba2",
+      "name": "Wait1",
+      "webhookId": "99181361-9ab0-4b8c-81db-76cffff047c1"
+    }
+  ],
+  "connections": {
+    "Loop Over Items3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Adiciona CHAT supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza CHAT Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Telefone": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adiciona CHAT supabase": {
+      "main": [
+        [
+          {
+            "node": "Cria Histórico Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza CHAT Supabase": {
+      "main": [
+        [
+          {
+            "node": "Cria Histórico Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria Histórico Supabase": {
+      "main": [
+        [
+          {
+            "node": "Delete Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Converter Foto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausar IA": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rota Atendimento": {
+      "main": [
+        [
+          {
+            "node": "Cliente ou não Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Salvar Historico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reativar IA": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Reativar IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI4": {
+      "main": [
+        [
+          {
+            "node": "Audio Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Cliente Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente Existe?": {
+      "main": [
+        [
+          {
+            "node": "ROTA Entrando ou Saindo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "ROTA Entrando ou Saindo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROTA Entrando ou Saindo": {
+      "main": [
+        [
+          {
+            "node": "Pausar IA1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rota Atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter Audio": {
+      "main": [
+        [
+          {
+            "node": "OpenAI4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter Foto": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROTA Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Texto Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "thinking": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Historico": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Historico1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intervalo entre Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Buscas Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Texto Redis": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Redis": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imagem Redis": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscas Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Compara Memoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem Completa1": {
+      "main": [
+        [
+          {
+            "node": "Deletar Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compara Memoria": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Completa1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Converter Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Intervalo entre Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supervisor": {
+      "main": [
+        [
+          {
+            "node": "Busca Telefone",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split de mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "imagem Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info2": {
+      "main": [
+        [
+          {
+            "node": "Buscar Venda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rag_agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Info2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausar IA1": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pausar IA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de mensagens": {
+      "main": [
+        [
+          {
+            "node": "Split de Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Split": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Split de mensagens",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Modelo Output",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Split de mensagens",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5 segundos": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Venda": {
+      "main": [
+        [
+          {
+            "node": "Buscar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Texto": {
+      "main": [
+        [
+          {
+            "node": "5 segundos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Numero para Alunos": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente ou não Cliente": {
+      "main": [
+        [
+          {
+            "node": "ROTA Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Numero para Alunos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Enviar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de mensagens1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Split de mensagens1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Upload a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Enviar Áudio Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-n8n.e6rhgx.easypanel.host",
+            "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
+            "content-length": "2471",
+            "accept": "application/json",
+            "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n-n8n.e6rhgx.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "985fa495ae26",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "account": {
+              "id": 1,
+              "name": "Aprenda Usar IA"
+            },
+            "additional_attributes": {},
+            "content_attributes": {},
+            "content_type": "text",
+            "content": "Ta ai!",
+            "conversation": {
+              "additional_attributes": {},
+              "can_reply": true,
+              "channel": "Channel::Whatsapp",
+              "contact_inbox": {
+                "id": 1,
+                "contact_id": 1,
+                "inbox_id": 1,
+                "source_id": "5527996425557",
+                "created_at": "2025-07-27T14:31:15.534Z",
+                "updated_at": "2025-07-27T14:31:15.534Z",
+                "hmac_verified": false,
+                "pubsub_token": "YMaie4VDk6ToCmCSiNgGMNkx"
+              },
+              "id": 1,
+              "inbox_id": 1,
+              "messages": [
+                {
+                  "id": 5255,
+                  "content": "Ta ai!",
+                  "account_id": 1,
+                  "inbox_id": 1,
+                  "conversation_id": 1,
+                  "message_type": 0,
+                  "created_at": 1754101911,
+                  "updated_at": "2025-08-02T02:31:51.520Z",
+                  "private": false,
+                  "status": "sent",
+                  "source_id": "wamid.HBgNNTUyNzk5NjQyNTU1NxUCABIYFDNBRjQ2OEMzMTdEMkU0MkNCREU5AA==",
+                  "content_type": "text",
+                  "content_attributes": {},
+                  "sender_type": "Contact",
+                  "sender_id": 1,
+                  "external_source_ids": {},
+                  "additional_attributes": {},
+                  "processed_message_content": "Ta ai!",
+                  "sentiment": {},
+                  "conversation": {
+                    "assignee_id": 1,
+                    "unread_count": 1,
+                    "last_activity_at": 1754101911,
+                    "contact_inbox": {
+                      "source_id": "5527996425557"
+                    }
+                  },
+                  "sender": {
+                    "additional_attributes": {},
+                    "custom_attributes": {},
+                    "email": null,
+                    "id": 1,
+                    "identifier": null,
+                    "name": "Nathan",
+                    "phone_number": "+5527996425557",
+                    "thumbnail": "",
+                    "blocked": false,
+                    "type": "contact"
+                  }
+                }
+              ],
+              "labels": [],
+              "meta": {
+                "sender": {
+                  "additional_attributes": {},
+                  "custom_attributes": {},
+                  "email": null,
+                  "id": 1,
+                  "identifier": null,
+                  "name": "Nathan",
+                  "phone_number": "+5527996425557",
+                  "thumbnail": "",
+                  "blocked": false,
+                  "type": "contact"
+                },
+                "assignee": {
+                  "id": 1,
+                  "name": "Nathan Lopes",
+                  "available_name": "Nathan Lopes",
+                  "avatar_url": "",
+                  "type": "user",
+                  "availability_status": "online",
+                  "thumbnail": ""
+                },
+                "team": null,
+                "hmac_verified": false
+              },
+              "status": "open",
+              "custom_attributes": {},
+              "snoozed_until": null,
+              "unread_count": 1,
+              "first_reply_created_at": "2025-07-27T14:38:39.861Z",
+              "priority": null,
+              "waiting_since": 0,
+              "agent_last_seen_at": 1754101869,
+              "contact_last_seen_at": 0,
+              "last_activity_at": 1754101911,
+              "timestamp": 1754101911,
+              "created_at": 1753626675,
+              "updated_at": 1754101911.525355
+            },
+            "created_at": "2025-08-02T02:31:51.520Z",
+            "id": 5255,
+            "inbox": {
+              "id": 1,
+              "name": "Aprenda Usar IA"
+            },
+            "message_type": "incoming",
+            "private": false,
+            "sender": {
+              "account": {
+                "id": 1,
+                "name": "Aprenda Usar IA"
+              },
+              "additional_attributes": {},
+              "avatar": "",
+              "custom_attributes": {},
+              "email": null,
+              "id": 1,
+              "identifier": null,
+              "name": "Nathan",
+              "phone_number": "+5527996425557",
+              "thumbnail": "",
+              "blocked": false
+            },
+            "source_id": "wamid.HBgNNTUyNzk5NjQyNTU1NxUCABIYFDNBRjQ2OEMzMTdEMkU0MkNCREU5AA==",
+            "event": "message_created"
+          },
+          "webhookUrl": "https://n8n-n8n.e6rhgx.easypanel.host/webhook/comercialcurso_chatwoot",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "2c1c7550-ba07-4be4-8a3b-ed1f0095a246",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-08-07T18:57:41.273Z",
+      "updatedAt": "2025-08-07T18:57:41.273Z",
+      "role": "workflow:owner",
+      "workflowId": "1Xiw7kowdUPRSlZ8",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
