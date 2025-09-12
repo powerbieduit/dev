@@ -1,0 +1,4371 @@
+{
+  "createdAt": "2025-08-11T17:01:45.596Z",
+  "updatedAt": "2025-08-12T15:14:53.000Z",
+  "id": "6EXR58LI9m9fW0Z3",
+  "name": "agente_ai_csv - acad",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "9c41abc5-1463-4acc-8cea-6084ea8d3cc3",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        7808,
+        528
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5a4e99f2-4fa6-4b7a-8d73-d5c9012b3496",
+      "name": "Loop Over Items3",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        11648,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Splitar Mensagens",
+        "height": 640,
+        "width": 1500,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        10848,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "84a9ff73-924a-4294-87df-9efd7c875a15",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        9856,
+        368
+      ],
+      "id": "ac59725c-c164-4ad9-8bc1-b9839663d9c4",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        11664,
+        112
+      ],
+      "id": "5c92dd30-5fda-4082-bca0-d4e08baa6697",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "defac08a-6745-422b-bb05-90da9f47d91b",
+              "leftValue": "={{ $('Busca Telefone').last().json.values() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        11168,
+        96
+      ],
+      "id": "48bc0c73-eaba-48c2-9079-b82825f47279",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "content": "# Histórico Supabase\n",
+        "height": 380,
+        "width": 1500,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        10704,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "752a827e-0445-4b86-8f31-db1f1a8d6936",
+      "name": "Sticky Note54"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "keyValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11008,
+        96
+      ],
+      "id": "1a004d4c-34c3-4512-ba85-e5a9db798f31",
+      "name": "Busca Telefone",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "chats",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now}}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11440,
+        32
+      ],
+      "id": "39740dac-888d-4cdc-accc-a96548c84da8",
+      "name": "Adiciona CHAT supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11440,
+        208
+      ],
+      "id": "e3efba13-6001-4854-84a7-28b2127bba3b",
+      "name": "Atualiza CHAT Supabase",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "chat_messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            },
+            {
+              "fieldId": "bot_message",
+              "fieldValue": "={{ $('Consultor').first().json.output }}"
+            },
+            {
+              "fieldId": "user_message",
+              "fieldValue": "={{ $('Dados').first().json.message.content }}"
+            },
+            {
+              "fieldId": "message_type",
+              "fieldValue": "={{ $('Dados').first().json.body.event }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Dados').first().json.NomeWpp }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11872,
+        112
+      ],
+      "id": "103620ad-c67f-4438-aed4-ff478dea8d3e",
+      "name": "Cria Histórico Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "bbdadac4-776a-4260-81ac-e9a2b4074b92",
+      "name": "Split de Mensagem",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        11424,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "8e1cbc6c-2de7-4fe2-90c5-3e18a9251cb1",
+      "name": "1 segundo",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        12160,
+        496
+      ],
+      "webhookId": "9dda9bc8-7638-4d0c-89e1-75f23dfeeb0a"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Dados').first().json.Telefone }}"
+      },
+      "id": "4cdb75bc-1541-4854-a791-50b457a89a5d",
+      "name": "Delete Memory",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        12064,
+        112
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "documents",
+        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+        "topK": 6
+      },
+      "id": "0134821f-1c4c-4385-ac1e-402a8885cec5",
+      "name": "buscar_documentos",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        7952,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Enfileirar Mensagens\n",
+        "height": 780,
+        "width": 1100,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        6368,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "e71df1cf-37ed-4c36-ae02-2c95125ce9b1",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "# BUFFERING\n",
+        "height": 796,
+        "width": 2180,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4160,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "e08411ab-34a3-45fa-aba6-9016822ea846",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "# PAUSA",
+        "height": 780,
+        "width": 2004,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        912,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "2749c77a-24bc-4e27-b28c-8ce67ce0830c",
+      "name": "Sticky Note26"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bafe8d3c-534d-481e-9e1d-0c4f37476112",
+        "options": {}
+      },
+      "id": "09ec92af-12dc-47b8-b46d-8bb750791dbf",
+      "name": "Webhook EVO",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        320
+      ],
+      "webhookId": "bafe8d3c-534d-481e-9e1d-0c4f37476112"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "51ad8d33-e41b-4a71-9fa1-305a2320c684",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5200,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "a464e3a4-df8c-4c7c-812c-830966797c22",
+      "name": "OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        736,
+        1824
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Treinamento RAG",
+        "height": 920,
+        "width": 3264,
+        "color": 4
+      },
+      "id": "462f8647-9156-4208-a307-df422c19ed97",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        1312
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "f84e4e66-b96b-4fed-885b-fa3a32b09c38",
+      "name": "Insert into Supabase Vectorstore1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        1552
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "separator": "/n",
+        "chunkSize": 1200,
+        "chunkOverlap": 200
+      },
+      "id": "1c9cf262-6850-4885-b9e6-b9cc9e197ccf",
+      "name": "Character Text Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        1984
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "allFieldsExcept",
+        "fieldsToExclude": "rew_number",
+        "options": {}
+      },
+      "id": "effe389f-7fec-466c-8d57-3ea1149da78b",
+      "name": "Aggregate1",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2656,
+        1632
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "af46398d-91bd-4326-9e35-0f2ecd3b9194",
+      "name": "Download File1",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1696,
+        1616
+      ],
+      "executeOnce": false,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "id": "e2f13234-53df-4374-a297-61bf39791456",
+      "name": "Extract from Excel2",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2352,
+        1504
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook EVO').item.json.body.data.message.conversation || '' }}",
+        "options": {
+          "systemMessage": "={\n  \"name\": \"AgenteAperfeicoamentoDados\",\n  \"objectives\": [\n    \"Receber conteudo textual e aprimora-lo\",\n    \"Confirmar se ja ha questao equivalente no banco de dados\",\n    \"Inserir na base de dados a questao e resposta refinada\",\n    \"Quando solicitado para atualizar, nao executar nenhuma ferramenta\"\n  ],\n  \"tools\": [\n    {\n      \"name\": \"Verificar_conteudo_existente\",\n      \"description\": \"Examina se ha material semelhante antes da atualizacao, caso encontre deve ser eliminado ou modificado\"\n    },\n    {\n      \"name\": \"Modificar_base_dados\",\n      \"description\": \"Estabelece ou modifica registro na tabela usando as colunas: Questao e Resposta\"\n    }\n  ],\n  \"general_rules\": [\n    \"Nao fazer referencia a tabela ou as funcionalidades na comunicacao com o usuario\",\n    \"Sempre refinar o conteudo recebido antes de armazenar no sistema\",\n    \"Manter precisao e uniformidade ao completar os campos questao e resposta\",\n    \"Produzir respostas sem acentuacao ou simbolos especiais\"\n  ]\n}"
+        }
+      },
+      "id": "963a0802-3fcc-404f-a6fa-5819c0789e79",
+      "name": "Agente Treinamento RAG",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        816,
+        1568
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefoneCorreto }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        -48
+      ],
+      "id": "3828474a-6aa2-4d7f-abcf-08e1c7a9f3e4",
+      "name": "Pausar IA",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_ia }}",
+                    "rightValue": "pause",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ff00573b-e517-43c6-8644-14a4fe8565d1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA Ativa"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "3ef0e01c-cc14-4663-bb4d-2905b350c3ab",
+                    "leftValue": "={{ $json.atendimento_ia }}",
+                    "rightValue": "=pause",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA pausada"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "027fd7ed-20d7-44eb-8ac9-f70a38657042",
+      "name": "Rota Atendimento",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1984,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "9865cb5b-33da-490c-afc3-186457d5b564",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "leftValue": "={{ $('Dados').item.json.message.content }}",
+                    "rightValue": "Atendimento finalizado"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA Pausada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "5a9a1fee-b408-469f-a08c-e8d690fc9792",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $('Normal ou Treinamento').item.json.message.content }}",
+                    "rightValue": "Atendimento finalizado"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reativar IA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "63a40fcb-0a6d-4231-b153-c8070386e925",
+      "name": "Rotas1",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        1984,
+        32
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefoneCorreto }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "reativada"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2336,
+        112
+      ],
+      "id": "27c8325a-ba0d-4c1a-ba7b-f5c0536d547e",
+      "name": "Reativar IA",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11800d83-ecca-4f9c-a878-a2419db0c8e9",
+              "name": "=message.chat_id",
+              "value": "={{ $json.telefoneCorreto }}",
+              "type": "string"
+            },
+            {
+              "id": "c33f9527-e661-49e5-8e5e-64f3b430928a",
+              "name": "=message.content_type",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.extendedTextMessage ? 'text' : '' }}{{ $('Webhook EVO').item.json.body.data.message.conversation ? 'text' : '' }}{{ $('Webhook EVO').item.json.body.data.message.audioMessage ? 'audio' : '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage ? 'image' : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "06eba1c9-cff0-4f68-b6da-6bb0092466b7",
+              "name": "=message.content",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.extendedTextMessage?.text || '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage?.caption || '' }}{{ $('Webhook EVO').item.json.body.data.message.conversation || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b97f1af3-5361-46fc-9303-d644921231d8",
+              "name": "=message.timestamp",
+              "value": "={{ $('Webhook EVO').item.json.body.data.messageTimestamp.toDateTime('s').toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "dc3dc59c-90a3-4a45-bea2-de092c91083b",
+              "name": "=message.content_url",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.audioMessage?.url || '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage?.url || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "8b01a818-a456-476e-bace-adefe2f04eb4",
+              "name": "message.event",
+              "value": "={{ $('Webhook EVO').item.json.body.data.key.fromMe ? 'outcoming' : 'incoming' }}",
+              "type": "string"
+            },
+            {
+              "id": "886e3751-e39b-4fc6-98d1-3113eaeebbb4",
+              "name": "=body.event",
+              "value": "={{ $('Webhook EVO').item.json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "d04a0c6e-7842-41d2-bdb0-c0ce51d6dad7",
+              "name": "=Telefone",
+              "value": "={{ $json.telefoneCorreto }}",
+              "type": "string"
+            },
+            {
+              "id": "a57db642-3e13-452e-bb5b-19f7e9f3bd5d",
+              "name": "=NomeWhatsapp",
+              "value": "={{ $('Webhook EVO').item.json.body.data.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "f5fcee3e-a786-404b-8b92-0163e02c6615",
+              "name": "=Instance",
+              "value": "={{ $('Webhook EVO').item.json.body.instance }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3d1558fc-fdd2-4737-a26f-8d0bff2ee434",
+      "name": "Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2160,
+        112
+      ],
+      "id": "e7ba076e-1b5e-4a2c-92d8-c20b18008bc0",
+      "name": "Wait",
+      "webhookId": "bbd09eb9-024a-4497-a383-34e1316a4270"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do lead: {{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE\nAssistente especializado em buscar informações sobre **cursos de graduação**, **pós-graduação** e **processos de ingresso** na base vetorial da Cruzeiro do Sul.\n\n**⚠️ MISSÃO CRÍTICA: Enviar dados no formato EXATO que o VENDEDOR espera para interpretação automática!**\n\n**🚨 PROIBIÇÕES ABSOLUTAS:**\n- JAMAIS escreva: \"visite nosso site\"\n- JAMAIS escreva: \"entre em contato\" \n- JAMAIS escreva: \"nossa equipe\"\n- JAMAIS escreva: \"estará pronta para ajudar\"\n- JAMAIS escreva: \"Para se inscrever\"\n- JAMAIS adicione chamadas para ação genéricas\n\n**⚠️ REGRA ABSOLUTA: NUNCA responda sem buscar na base primeiro! Sempre use `buscar_documentos` para QUALQUER pergunta específica.**\n\n## 🚨 TEMPLATE EXATO OBRIGATÓRIO\n\n### PERGUNTA SOBRE PRIMEIRA GRADUAÇÃO/INGRESSO:\n**COPIE EXATAMENTE ESTE TEXTO - SEM ALTERAR UMA VÍRGULA:**\n\n```\n🎯 PROCESSO: Formas de Ingresso\n📋 EXPLICAÇÃO: Para iniciar sua primeira graduação, temos as seguintes opções disponíveis:\n\n✅ Vestibular online: Inscreva-se para realizar o vestibular na modalidade online.\n✅ Redação: Uma alternativa ao vestibular, onde você pode ingressar por meio de uma prova de redação.\n\n📂 CATEGORIA: qualificacao_ingresso\n```\n\n**🚨 IMPORTANTE: O TEXTO TERMINA EM \"redação.\" - NÃO ADICIONE MAIS NADA!**\n\n## ANÁLISE INTELIGENTE DA MENSAGEM\n\n### ETAPA 1: IDENTIFICAÇÃO DO CONTEÚDO PRINCIPAL\n**Analise TODA a mensagem e identifique se contém:**\n\n#### 🎓 PERGUNTA SOBRE CURSO GRADUAÇÃO (PROCESSAR):\n- **Nomes de cursos:** \"adm\", \"administração\", \"direito\", \"pedagogia\", \"enfermagem\", etc.\n- **Áreas específicas:** \"gestão\", \"recursos humanos\", \"contabilidade\", \"engenharia\", etc.\n- **Perguntas diretas:** \"tem curso de...\", \"vocês oferecem...\", \"quero fazer...\"\n- **Abreviações:** \"adm\" = administração, \"ed física\" = educação física, \"RH\" = recursos humanos\n\n#### 🎯 PERGUNTA SOBRE PÓS-GRADUAÇÃO (PROCESSAR):\n- **Palavras-chave:** \"pós\", \"pós-graduação\", \"especialização\", \"MBA\", \"mestrado\", \"lato sensu\"\n- **Cursos específicos:** \"MBA em gestão\", \"pós em direito\", \"especialização em...\"\n- **Perguntas diretas:** \"tem pós de...\", \"vocês oferecem MBA em...\", \"quero fazer especialização\"\n\n#### 📋 PERGUNTA SOBRE PROCESSO (PROCESSAR):\n- **Matrícula/Ingresso:** \"como me matricular\", \"processo de ingresso\", \"documentos\"\n- **Processos específicos:** \"segunda graduação\", \"transferência\", \"vestibular\", \"ENEM\"\n- **Dúvidas de processo:** \"como funciona\", \"preciso de que\", \"qual documento\"\n- **Modalidades:** \"semipresencial\", \"EAD\", \"presencial\", \"polo\", \"aulas\"\n- **Funcionamento:** \"tenho que ir\", \"como é\", \"funciona como\"\n\n#### 🚀 CONFIRMAÇÃO DE INTERESSE/INSCRIÇÃO (COLETAR DADOS):\n- **Confirmações positivas:** \"sim\", \"quero\", \"vamos\", \"ok\", \"beleza\", \"aceito\", \"concordo\"\n- **Interesse direto:** \"quero me inscrever\", \"vamos começar\", \"pode iniciar\"\n- **Após pergunta comercial:** Qualquer resposta positiva depois de CTA do vendedor\n\n### ETAPA 2: O QUE NÃO PROCESSAR (SAUDAÇÃO_GENERICA)\n\n#### ❌ APENAS quando a mensagem contém SOMENTE:\n- **Saudações isoladas:** \"oi\", \"olá\", \"boa tarde\", \"boa noite\", \"bom dia\"\n- **Cumprimentos simples:** \"tudo bem?\", \"como vai?\", \"e aí?\"\n- **Agradecimentos:** \"obrigado\", \"obrigada\", \"valeu\", \"tchau\"\n- **Expressões vazias:** \"opa\", \"eae\", \"salve\"\n\n#### ⚠️ **IMPORTANTE:** Se a mensagem contém saudação + pergunta específica, PROCESSE a pergunta!\n\n---\n\n## 🚨 FORMATOS DE OUTPUT CRÍTICOS (EXATOS PARA O VENDEDOR)\n\n### 🔄 FLUXO DE DECISÃO OBRIGATÓRIO\n\n```\nMENSAGEM RECEBIDA\n        ↓\nÉ APENAS saudação/cumprimento/agradecimento SEM pergunta?\n        ↓ SIM\n    RETORNAR: SAUDACAO_GENERICA\n        ↓ NÃO\nÉ confirmação de interesse/inscrição (sim, quero, vamos, ok)?\n        ↓ SIM\n    RETORNAR: COLETAR_DADOS\n        ↓ NÃO\nEXECUTAR buscar_documentos OBRIGATORIAMENTE\n        ↓\nEncontrou informações sobre CURSO GRADUAÇÃO específico?\n        ↓ SIM\n    RETORNAR: 📘 CURSO GRADUAÇÃO ENCONTRADO (formato estruturado)\n        ↓ NÃO\nEncontrou informações sobre PÓS-GRADUAÇÃO específica?\n        ↓ SIM\n    RETORNAR: 🎓 PÓS-GRADUAÇÃO ENCONTRADA (formato estruturado)\n        ↓ NÃO\nEncontrou informações sobre PROCESSO específico?\n        ↓ SIM\n    RETORNAR: 🎯 PROCESSO (formato estruturado)\n        ↓ NÃO\nPergunta é sobre \"como ingressar\" de forma genérica?\n        ↓ SIM\n    RETORNAR: 🎯 QUALIFICAÇÃO DE INGRESSO\n        ↓ NÃO\n    RETORNAR: RAG_SEM_RESULTADO: [termo buscado]\n```\n\n---\n\n## 📋 TEMPLATES DE OUTPUT OBRIGATÓRIOS\n\n### 1️⃣ SAUDAÇÃO (apenas para saudações isoladas):\n```\nSAUDACAO_GENERICA\n```\n\n### 2️⃣ COLETA DE DADOS (quando cliente confirma interesse):\n```\nCOLETAR_DADOS\n```\n\n### 3️⃣ CURSO GRADUAÇÃO ENCONTRADO (FORMATO EXATO - COM TODOS OS ÍCONES):\n**⚠️ SEMPRE INCLUA TODOS OS ÍCONES E CAMPOS OBRIGATÓRIOS:**\n```\n📘 Curso: [Nome Exato da Base]\n🎓 Nível: [Graduação/Tecnólogo/Superior]\n📲 Modalidade: [EAD Digital / EAD com aulas ao vivo / Presencial]\n⏰ Duração: [X semestres]\n💰 Matrícula: ISENTA\n💰 Investimento EAD Digital: R$[valor_exato]\n💰 Investimento EAD com aulas ao vivo: R$[valor_exato]\n✅ Status MEC: Reconhecido\n[Breve descrição do curso - máximo 2 linhas]\n```\n\n### 4️⃣ PÓS-GRADUAÇÃO ENCONTRADA (FORMATO EXATO - COM TODOS OS ÍCONES):\n**⚠️ SEMPRE INCLUA TODOS OS ÍCONES E CAMPOS OBRIGATÓRIOS:**\n```\n🎓 Pós-Graduação: [Nome Exato da Base]\n📜 Nível: [Pós-Graduação/MBA]\n⏰ Duração: [X meses]\n💰 Matrícula: ISENTA\n💰 Parcelas: [X]x de R$[valor_exato]\n💰 Valor Total: R$[valor_total_calculado]\n✅ Status MEC: Reconhecido\n[Breve descrição do curso - máximo 2 linhas]\n```\n\n**🚨 EXEMPLO REAL DE SAÍDA PÓS:**\n```\n🎓 Pós-Graduação: MBA em Gestão Financeira\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$110\n💰 Valor Total: R$1.870\n✅ Status MEC: Reconhecido\nForme-se em gestão financeira com foco em estratégias corporativas e análise de investimentos.\n```\n\n### 5️⃣ PERGUNTA ESPECÍFICA SOBRE VALOR/PREÇO GRADUAÇÃO:\n```\n💰 VALOR: [Nome do Curso]\n📘 Curso: [Nome Exato]\n💰 Investimento EAD Digital: R$[valor_exato]/mês\n💰 Investimento EAD com aulas ao vivo: R$[valor_exato]/mês\n✅ Matrícula: GRATUITA\n⏰ Duração: [X semestres]\n```\n\n### 6️⃣ PERGUNTA ESPECÍFICA SOBRE VALOR/PREÇO PÓS-GRADUAÇÃO:\n```\n💰 VALOR PÓS: [Nome do Curso]\n🎓 Pós-Graduação: [Nome Exato]\n💰 Parcelas: [X]x de R$[valor]/mês\n💰 Valor Total: R$[valor_total]\n✅ Matrícula: GRATUITA\n⏰ Duração: [X meses]\n```\n\n### 7️⃣ PROCESSO ESPECÍFICO ENCONTRADO:\n**🚨 REGRA CRÍTICA: TERMINE A EXPLICAÇÃO NO PONTO FINAL!**\n```\n🎯 PROCESSO: [Nome do Processo]\n📋 EXPLICAÇÃO: [Conteúdo EXATO encontrado na base - PARE NO PONTO FINAL]\n📂 CATEGORIA: [categoria_processo]\n```\n\n### 8️⃣ QUALIFICAÇÃO DE INGRESSO (perguntas genéricas sobre como ingressar):\n**🚨 FORMATO EXATO - NÃO MUDE NADA:**\n```\n🎯 PROCESSO: Formas de Ingresso\n📋 EXPLICAÇÃO: Para iniciar sua primeira graduação, temos as seguintes opções disponíveis:\n\n✅ Vestibular online: Inscreva-se para realizar o vestibular na modalidade online.\n✅ Redação: Uma alternativa ao vestibular, onde você pode ingressar por meio de uma prova de redação.\n\n📂 CATEGORIA: qualificacao_ingresso\n```\n\n### 9️⃣ NÃO ENCONTRADO:\n```\nRAG_SEM_RESULTADO: [nome exato do curso/processo buscado]\n```\n\n---\n\n## 🚨 REGRAS CRÍTICAS DE FORMATAÇÃO\n\n### ✅ QUANDO ENCONTRAR CURSO GRADUAÇÃO NA BASE:\n**SEMPRE retorne EXATAMENTE assim (com todos os ícones):**\n- 📘 Curso: [OBRIGATÓRIO]\n- 🎓 Nível: [OBRIGATÓRIO] \n- 📲 Modalidade: [OBRIGATÓRIO]\n- ⏰ Duração: [OBRIGATÓRIO]\n- 💰 Matrícula: ISENTA [OBRIGATÓRIO]\n- 💰 Investimento EAD Digital: R$[valor] [OBRIGATÓRIO]\n- 💰 Investimento EAD com aulas ao vivo: R$[valor] [OBRIGATÓRIO]\n- ✅ Status MEC: Reconhecido [OBRIGATÓRIO]\n\n### ✅ QUANDO ENCONTRAR PÓS-GRADUAÇÃO NA BASE:\n**SEMPRE retorne EXATAMENTE assim (com todos os ícones):**\n- 🎓 Pós-Graduação: [OBRIGATÓRIO]\n- 📜 Nível: [OBRIGATÓRIO] \n- ⏰ Duração: [OBRIGATÓRIO]\n- 💰 Matrícula: ISENTA [OBRIGATÓRIO]\n- 💰 Parcelas: [X]x de R$[valor] [OBRIGATÓRIO]\n- 💰 Valor Total: R$[valor_total] [OBRIGATÓRIO]\n- ✅ Status MEC: Reconhecido [OBRIGATÓRIO]\n\n**⚠️ NUNCA ESQUEÇA NENHUM ÍCONE OU CAMPO!**\n\n---\n\n## 🔍 DICIONÁRIO DE EQUIVALÊNCIAS AUTOMÁTICAS\n\n### GRADUAÇÃO - Reconheça e busque automaticamente:\n- **\"adm\"** → busque \"Administração\"\n- **\"rh\", \"recursos humanos\"** → busque \"Gestão de Recursos Humanos\"\n- **\"contábeis\", \"contabilidade\"** → busque \"Ciências Contábeis\"\n- **\"ed física\", \"educação física\"** → busque \"Educação Física\"\n- **\"sistemas\", \"TI\", \"tecnologia\"** → busque \"Sistemas de Informação\"\n- **\"enfermagem\"** → busque \"Enfermagem\" → FORMAT ESPECIAL SEMIPRESENCIAL\n- **\"pedagogia\"** → busque \"Pedagogia\"\n- **\"direito\"** → busque \"Direito\" (mas retorne RAG_SEM_RESULTADO)\n- **\"psicologia\"** → busque \"Psicologia\" (mas retorne RAG_SEM_RESULTADO)\n\n### PÓS-GRADUAÇÃO - Reconheça e busque automaticamente:\n- **\"mba gestão\"** → busque \"MBA em Gestão\"\n- **\"mba financeira\"** → busque \"MBA em Gestão Financeira\"\n- **\"pós direito\"** → busque \"Direito\" nos cursos de pós\n- **\"pós marketing\"** → busque \"Marketing\" nos cursos de pós\n- **\"especialização recursos humanos\"** → busque \"Gestão Estratégica de Pessoas\"\n- **\"mba rh\"** → busque \"MBA em Gestão Estratégica de Pessoas\"\n- **\"pós educação\"** → busque cursos de pós em educação\n- **\"mba ti\"** → busque \"MBA em Tecnologia da Informação\"\n\n---\n\n## ⚠️ VALIDAÇÕES OBRIGATÓRIAS ANTES DE ENVIAR\n\n**CHECKLIST CRÍTICO:**\n1. ✅ Executei `buscar_documentos` (exceto saudação pura)?\n2. ✅ Se encontrei curso graduação: usei TODOS os ícones obrigatórios (📘)?\n3. ✅ Se encontrei pós-graduação: usei TODOS os ícones obrigatórios (🎓)?\n4. ✅ Se encontrei processo: usei formato 🎯 PROCESSO?\n5. ✅ Valores são EXATOS da base (sem aproximação)?\n6. ✅ NÃO inventei nenhuma informação?\n7. ✅ Output está no formato que o VENDEDOR espera?\n8. ✅ Para pós: calculei valor total corretamente (parcelas × valor)?\n\n**JAMAIS FAÇA:**\n- Responder sobre curso sem buscar na base\n- Inventar valores ou informações\n- Usar conhecimento geral sobre educação\n- Retornar dados incompletos de curso\n- Esquecer ícones obrigatórios (📘, 🎓, 📲, ⏰, 💰, ✅)\n- Misturar informações de fontes diferentes\n- **Entregar dados de Direito ou Psicologia graduação (sempre RAG_SEM_RESULTADO)**\n- **ADICIONAR frases como \"visite nosso site\", \"entre em contato\", \"nossa equipe ajuda\"**\n\n**SEMPRE FAÇA:**\n- Execute busca obrigatória para qualquer pergunta específica\n- Use dados EXATOS da base vetorial\n- Inclua TODOS os ícones no formato correto\n- Para pós: calcule valor total (parcelas × valor mensal)\n- Valores precisos sem aproximação\n- Se não encontrar: RAG_SEM_RESULTADO: [termo exato]\n- **Seja DIRETO nas explicações - sem \"fluff\" comercial**\n\n---\n\n## 📝 EXEMPLOS PRÁTICOS DE SAÍDA\n\n### ✅ EXEMPLO 1: Cliente pergunta \"vocês tem MBA em gestão financeira?\"\n**OUTPUT CORRETO:**\n```\n🎓 Pós-Graduação: MBA em Gestão Financeira\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$110\n💰 Valor Total: R$1.870\n✅ Status MEC: Reconhecido\nEspecialize-se em gestão financeira corporativa com foco em análise de investimentos e estratégias financeiras.\n```\n\n### ✅ EXEMPLO 2: Cliente pergunta \"quanto custa pós em direito?\"\n**OUTPUT CORRETO:**\n```\n💰 VALOR PÓS: Direito Constitucional\n🎓 Pós-Graduação: Direito Constitucional\n💰 Parcelas: 17x de R$103/mês\n💰 Valor Total: R$1.751\n✅ Matrícula: GRATUITA\n⏰ Duração: 12 meses\n```\n\n### ✅ EXEMPLO 3: Cliente pergunta \"vocês tem administração?\" (graduação)\n**OUTPUT CORRETO:**\n```\n📘 Curso: Administração\n🎓 Nível: Graduação\n📲 Modalidade: EAD Digital / EAD com aulas ao vivo\n⏰ Duração: 8 semestres\n💰 Matrícula: ISENTA\n💰 Investimento EAD Digital: R$179\n💰 Investimento EAD com aulas ao vivo: R$249\n✅ Status MEC: Reconhecido\nForme-se em uma das profissões mais versáteis do mercado.\n```\n\n---\n\n## 🎯 LEMBRETE FINAL CRÍTICO\n\n**O VENDEDOR ESTÁ CONFIGURADO PARA INTERPRETAR AUTOMATICAMENTE:**\n- Dados com ícones 📘 = GRADUAÇÃO ENCONTRADA → RESPOSTA COMERCIAL GRADUAÇÃO\n- Dados com ícones 🎓 (pós) = PÓS-GRADUAÇÃO ENCONTRADA → RESPOSTA COMERCIAL PÓS\n- COLETAR_DADOS = Iniciar coleta de dados pessoais\n- RAG_SEM_RESULTADO = Distribuir para humano\n- SAUDACAO_GENERICA = Resposta de saudação\n\n**NUNCA MUDE ESTES FORMATOS! O SISTEMA DEPENDE DELES PARA FUNCIONAR AUTOMATICAMENTE!**\n\n*PARA ENFERMAGEM: Sempre mencionar que é modalidade SEMIPRESENCIAL (nunca EAD Digital)*\n\n**🆕 CÁLCULO DO VALOR TOTAL PÓS:**\nSempre calcule: Número de parcelas × Valor da parcela = Valor Total\nExemplo: 17 parcelas × R$110 = R$1.870\n"
+        }
+      },
+      "id": "5f42d2d5-4702-48cd-a7d7-9f62f5be760c",
+      "name": "Agente Rag",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        7776,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Configuração Banco de Dados",
+        "height": 840,
+        "width": 1400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4608,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "421729aa-63e9-4508-8ed0-c9c122caf53c",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "2fd8bbd9-e9e3-42a3-bd79-6ea83fe1555b",
+      "name": "Extract Document Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        1904
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "7f76adbe-6416-4d74-a1d4-9a229f04618c",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2288,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mimeType }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d324b22b-cdf4-4216-a5ac-7db17ab11851"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "2ae7faa7-a936-4621-a680-60c512163034",
+                    "leftValue": "={{ $json.mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "excel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8bd558b2-8c70-4edd-ab19-92540895ae46",
+                    "leftValue": "={{ $json.mimeType }}",
+                    "rightValue": "application/vnd.google-apps.spreadsheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CSV "
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "fc193b06-363b-4699-a97d-e5a850138b0e",
+                    "leftValue": "={{ $json.mimeType }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Google Docs"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 3
+        }
+      },
+      "id": "5d197c68-4ba2-4560-8ce8-73df895ac263",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1904,
+        1616
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4db77f2b-e8d7-40d2-a488-e513948b684a",
+      "name": "Summarize1",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        2864,
+        1616
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "942d8d79-adcb-4de0-a5a8-153fd0a64918",
+      "name": "Extract from Excel",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        1696
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "ade56c50-1520-4760-8df5-e99617d6d3ad",
+              "leftValue": "={{ $('Webhook EVO').item.json.body.data.message.imageMessage.caption }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5a35391d-a1ad-4192-ba50-03e57f453b37",
+      "name": "If6",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        6016,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Analise essa imagem e resuma pra mim o que ela é",
+        "inputType": "base64",
+        "options": {}
+      },
+      "id": "35c2507d-acd3-47a1-82b6-e111c8807290",
+      "name": "OpenAI2",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        5840,
+        512
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "adb5823a-701c-4dce-bdbe-21380be01386",
+      "name": "OpenAI4",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        5760,
+        224
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# RAG",
+        "height": 860,
+        "width": 788,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        7664,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "eca0bbee-57c7-4607-9be6-c7a9552fc1b9",
+      "name": "Sticky Note28"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        912,
+        304
+      ],
+      "id": "3c2449f1-b996-45c1-adb5-9e5b5b5a4f5b",
+      "name": "Buscar Cliente",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4a6d9aac-8565-4c58-abe3-8741393a5535",
+              "leftValue": "={{ $('Code').item.json.telefoneCorreto }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        208
+      ],
+      "id": "7bcf1cf4-0056-4183-ad31-95e68488a793",
+      "name": "Cliente Existe?"
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Dados').item.json.NomeWhatsapp }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        320
+      ],
+      "id": "07c4f693-ca23-4df4-a901-dca9d6db9e2b",
+      "name": "Criar Cliente",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Dados').item.json.message.event }}",
+                    "rightValue": "outcoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7c878f9b-2c93-4061-954a-a832153e7647"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outcoming"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "d7b42536-638f-4128-b51b-6aa913e9d9bc",
+                    "leftValue": "={{ $('Dados').item.json.message.event }}",
+                    "rightValue": "incoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "incoming"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "786d428d-cd76-4793-9680-82c2cf932c8a",
+      "name": "ROTA Entrando ou Saindo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1728,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file.ogg",
+          "mimeType": "application/ogg"
+        }
+      },
+      "id": "149328e8-0ce2-4826-bc7a-39742baeac7f",
+      "name": "Converter Audio",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        5584,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file.png",
+          "mimeType": "image/png"
+        }
+      },
+      "id": "f8c13784-2e03-4403-8add-b910d702ac42",
+      "name": "Converter Foto",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        5616,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "52aaf749-fe4f-44e4-880e-15b2bfc027f1",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "extendedTextMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e514e613-fd6a-48bd-b0ae-bae2448c810e",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "c0e434dd-1268-421d-b81b-3a5e90ed9550",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5a621160-ddcb-4583-aa51-5f2999c5fee4",
+      "name": "ROTA Mensagens",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        4512,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Use a ferramenta para pensar sobre algo. Veja se conversa faz sentido, não envie informações repetidas.\n\nRespostas sempre em português."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        10224,
+        400
+      ],
+      "id": "7395c02e-ea77-4973-a448-da6b1bd086af",
+      "name": "thinking"
+    },
+    {
+      "parameters": {
+        "content": "# Agente Principal\n",
+        "height": 780,
+        "width": 708,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        9760,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "e3beba7a-4f3e-4091-a9e5-ffda1cbd4f21",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.Telefone }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        10016,
+        384
+      ],
+      "id": "8357fe8b-be1c-4eed-90ce-8c560bb70313",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Dados').item.json.Telefone }}",
+            "message": "={\"type\": \"ai\", \"content\": \"{{ $('Normal ou Treinamento').item.json.message.content.replace(/\\n/g, ' ') }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2464,
+        416
+      ],
+      "id": "dd121bd3-ec42-4135-8b45-c6d76bdcbde3",
+      "name": "Salvar Historico",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Dados').item.json.Telefone }}",
+            "message": "={\"type\": \"human\", \"content\": \"{{ $('Normal ou Treinamento').item.json.message.content.replace(/\\n/g, ' ') }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2496,
+        -48
+      ],
+      "id": "e976a3d6-a8cf-47e7-828c-06e7ffb17d67",
+      "name": "Salvar Historico1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        7312,
+        384
+      ],
+      "id": "923a7008-a573-4556-932b-5c47c09aee93",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2688,
+        -48
+      ],
+      "id": "818eeb24-d913-4bf3-ba73-dfa15915aeac",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        432
+      ],
+      "id": "3c868fe7-2c29-4df4-a5ac-e764f59e5f37",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "id": "79a57d15-6dec-472e-a8ee-c31313678538",
+      "name": "Intervalo entre Mensagens",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6752,
+        192
+      ],
+      "webhookId": "e87edbc2-5cf1-4360-93d1-9786a6ea1d4c"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Code').item.json.telefoneCorreto }}",
+        "messageData": "={{ $('Dados').item.json.message.content }}",
+        "tail": true
+      },
+      "id": "360f1c37-bb9f-4663-9c0c-b5ca4cd9a5de",
+      "name": "Texto Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        5344,
+        -48
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $json.text }}",
+        "tail": true
+      },
+      "id": "37beeea7-e5fc-4113-bb70-9835481d20cf",
+      "name": "Audio Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        6000,
+        208
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $json.content.replace(/\\n/g, \"\\\\n\").replace(/['\"]/g, '').trim()  }}",
+        "tail": true
+      },
+      "id": "2f7c5e63-8feb-4ab4-92e3-617e3ad5fcfe",
+      "name": "imagem Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        6208,
+        384
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $('Dados').item.json.message.content }}, {{ $json.content.replace(/\\n/g, \"\\\\n\").replace(/['\"]/g, '').trim()  }}",
+        "tail": true
+      },
+      "id": "2a955822-9a86-44f6-b796-cb151ef12b72",
+      "name": "Imagem Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        6224,
+        608
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Dados').item.json.Telefone }}",
+        "options": {}
+      },
+      "id": "504d3662-831a-4476-af4d-25ef7cd1e544",
+      "name": "Buscas Mensagens",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        6912,
+        192
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "239cab79-8fb1-45ca-9a04-11006892d52e",
+              "name": "mensagem_completa",
+              "value": "={{ $json.propertyName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        7312,
+        192
+      ],
+      "id": "fa4bf18c-540a-46fd-9496-ba6562eb8fa6",
+      "name": "Mensagem Completa1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Code').item.json.telefoneCorreto }}"
+      },
+      "id": "ac75bbf7-a0cf-467f-bf1f-6e64315d619d",
+      "name": "Deletar Mensagens",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        7520,
+        192
+      ],
+      "credentials": {
+        "redis": {
+          "id": "YZXVKYORNr25luYM",
+          "name": "Redis - AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE chat_messages (\n  id BIGSERIAL PRIMARY KEY,\n  created_at TIMESTAMPTZ, \n  phone TEXT,\n  nomewpp TEXT, \n  bot_message TEXT,\n  user_message TEXT, \n  message_type TEXT,\n  active BOOLEAN DEFAULT TRUE\n);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        4736,
+        1568
+      ],
+      "id": "7b20f158-8195-441a-b7a8-5576fb5f3bec",
+      "name": "chat_messages",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table dados_cliente (\n  id bigserial primary key,\n  created_at TIMESTAMPTZ, \n  telefone text, \n  nomewpp text,\n  atendimento_ia text\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5136,
+        1568
+      ],
+      "id": "a2503268-69e8-40d6-a66a-c9842d834edf",
+      "name": "dados_cliente",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table chats (\n  id bigserial primary key,\n  created_at TIMESTAMPTZ, \n  phone text,\n  updated_at text\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5760,
+        1568
+      ],
+      "id": "b7852b4d-ddc8-4cc2-8a34-9b62af68fcb6",
+      "name": "chats",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create extension vector;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        4928,
+        1568
+      ],
+      "id": "4665bd8a-8f4b-4a0c-85c1-0a4e56a8b9b5",
+      "name": "vetor",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create function match_documents (\n  query_embedding vector(1536),\n  match_count int default null,\n  filter jsonb DEFAULT '{}'\n) returns table (\n  id bigint,\n  content text,\n  metadata jsonb,\n  similarity float\n)\nlanguage plpgsql\nas $$\n#variable_conflict use_column\nbegin\n  return query\n  select\n    id,\n    content,\n    metadata,\n    1 - (documents.embedding <=> query_embedding) as similarity\n  from documents\n  where metadata @> filter\n  order by documents.embedding <=> query_embedding\n  limit match_count;\nend;\n$$;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5536,
+        1568
+      ],
+      "id": "eb052388-ee61-4b93-bb42-e887b7a6232c",
+      "name": "match_documents",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table documents (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5328,
+        1568
+      ],
+      "id": "89e83e4a-27a1-47ac-bf3a-df534d5db8f3",
+      "name": "documents",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Criação\n",
+        "height": 324,
+        "width": 1280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4704,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "749cd366-2c8c-44d0-bcab-0d91d81b8a83",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Limpeza\n",
+        "height": 260,
+        "width": 1280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4704,
+        1888
+      ],
+      "typeVersion": 1,
+      "id": "fd81e8c7-90e0-4ab6-b1ea-06499b13d3db",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "9865cb5b-33da-490c-afc3-186457d5b564",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notStartsWith"
+                    },
+                    "leftValue": "={{ $json.message.content }}",
+                    "rightValue": "289090:"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rota normal"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "5a9a1fee-b408-469f-a08c-e8d690fc9792",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    },
+                    "leftValue": "={{ $json.message.content }}",
+                    "rightValue": "289090:"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Treinamento IA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "64a1fa60-e4fd-42d5-a654-c4a5be0923c3",
+      "name": "Normal ou Treinamento",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        480,
+        336
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM n8n_chat_histories",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        4800,
+        1952
+      ],
+      "id": "e6e03e87-0901-4ecb-8461-bd970beba1f6",
+      "name": "Deletar Histórico",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from chat_messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5744,
+        1968
+      ],
+      "id": "6508e0de-75bd-4441-90bd-e7cf0d245221",
+      "name": "Deletar conteúdo Chat_Messages",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from dados_cliente",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5264,
+        1968
+      ],
+      "id": "c280d4ab-6958-41fb-a675-fbb0da1b1e43",
+      "name": "Deletar conteúdo Dados Cliente",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from chats",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5024,
+        1968
+      ],
+      "id": "306a364b-6188-4c2d-a0a6-e54e9873dff2",
+      "name": "Deletar conteúdo Chats",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from documents",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        5488,
+        1952
+      ],
+      "id": "c4ace856-4db5-4c9b-855b-d95b88dc95ef",
+      "name": "Deletar conteúdo Documentos",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d5a342e9-585b-42ea-be44-644adae10199",
+              "leftValue": "={{ $('Mensagem').item.json.mensagem }}",
+              "rightValue": "={{ $json.propertyName?.last() }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "de73068f-e87c-4b11-aa62-26441dc771a8",
+      "name": "Compara Memoria",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7072,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        7696,
+        320
+      ],
+      "id": "8a897107-d137-4b1a-a367-f458ed0c7871",
+      "name": "OpenAI Chat Model RAG",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "fe6c9de2-5155-4412-9acd-5223f29d5633",
+      "name": "OpenAI Chat Docs",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        8080,
+        560
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "cc7f78a6-2180-400c-9347-667a0e651969",
+      "name": "Embeddings OpenAI Vector",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        7744,
+        656
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Whatsapp message to be splitted and formatted: {{ $json.output }}\n",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={\n  \"messages\": [\n    \"Você é um assistente que irá dividir uma mensagem longa de WhatsApp em partes menores, mantendo um tom humano e fluido, como em uma conversa natural.\",\n    \"Siga rigorosamente este formato de resposta JSON: {\\\"messages\\\": [\\\"mensagem 1\\\", \\\"mensagem 2\\\", \\\"mensagem 3\\\"]}\",\n    \"Utilize quebras de linha reais com \\\\n dentro das mensagens. Nunca retorne \\\\n escapado como \\\\\\\\n. Não coloque aspas em torno do JSON inteiro.\",\n    \"Cada mensagem deve ter entre 250 e 350 caracteres. Não quebre frases no meio. O texto deve ser fluido.\",\n    \"NÃO reescreva, adicione explicações ou expanda o conteúdo. Apenas divida a mensagem original conforme solicitado.\",\n    \"Prefira mensagens curtas e objetivas, focando somente no conteúdo da mensagem original.\",\n    \"Nunca gere mais que 3 mensagens. Se possível, faça em menos.\",\n    \"NUNCA retorne mensagens vazias.\",\n    \"Remova qualquer uso de negrito, itálico ou tachado. Não use marcadores de formatação.\",\n    \"Todo link começando com https:// deve estar entre crases. Exemplo: `https://drive.google.com/...`\",\n    \"Retorne somente o JSON formatado. Nenhum texto antes ou depois.\",\n    \"A entrada será passada assim: Whatsapp message to be splitted and formatted: {{ $json.output }}\"\n  ]\n}\n"
+            }
+          ]
+        }
+      },
+      "id": "ba0d616f-2826-4938-b226-93e276478c22",
+      "name": "Split de mensagens",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        11072,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b2cd3288-4c4a-461e-a37c-69690b62ba33",
+      "name": "OpenAI Split",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        11040,
+        656
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"output\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"messages\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" }\n        }\n      },\n      \"required\": [\"messages\"],\n      \"additionalProperties\": false\n    }\n  },\n  \"additionalProperties\": false,\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n}\n",
+        "autoFix": true
+      },
+      "id": "4dad2bca-c598-4f86-b05d-3393613ebe44",
+      "name": "Modelo Output",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        11232,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documents",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "neq",
+              "keyValue": "0"
+            }
+          ]
+        }
+      },
+      "id": "9d5ff6cc-5d7a-4ada-9ddb-13e7fdabc9e2",
+      "name": "Deleta linhas antigas",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        1616
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use esta ferramenta para pesquisar dados na planilha. Se localizar um treinamento com características similares, forneça o número da linha (row) onde ele se encontra para que as informações possam ser atualizadas.",
+        "documentId": {
+          "__rl": true,
+          "value": "1FWmUO9vX_i3WycqKza-R9yyyF1N_mQ-19-cfTA1Uvug",
+          "mode": "list",
+          "cachedResultName": "FAQ AI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWmUO9vX_i3WycqKza-R9yyyF1N_mQ-19-cfTA1Uvug/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "conteudo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWmUO9vX_i3WycqKza-R9yyyF1N_mQ-19-cfTA1Uvug/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        912,
+        1808
+      ],
+      "id": "fd01d82d-3f8f-49ad-91c6-c0fcbf417fe4",
+      "name": "Verificar_conteudo_existente",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Primeiro, verifique se há uma coluna parecida na planilha. Se encontrar uma correspondência, atualize os dados existentes; se não encontrar, adicione uma nova linha com as informações.",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1FWmUO9vX_i3WycqKza-R9yyyF1N_mQ-19-cfTA1Uvug",
+          "mode": "list",
+          "cachedResultName": "FAQ AI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWmUO9vX_i3WycqKza-R9yyyF1N_mQ-19-cfTA1Uvug/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "conteudo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWmUO9vX_i3WycqKza-R9yyyF1N_mQ-19-cfTA1Uvug/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Pergunta": "={{ $fromAI(\"Pergunta\",\"isso é a pergunta\") }}",
+            "Resposta": "={{ $fromAI(\"Resposta\",\"isso é a resposta\") }}"
+          },
+          "matchingColumns": [
+            "Pergunta"
+          ],
+          "schema": [
+            {
+              "id": "Pergunta",
+              "displayName": "Pergunta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Resposta",
+              "displayName": "Resposta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "fb21e9cb-498e-48bc-bdfb-59da13716c79",
+      "name": "Modificar_base_dados",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        1088,
+        1840
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "7dc79a11-e419-443d-8001-6e415941aa49",
+      "name": "Embeddings OpenAI Treinamento",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        3056,
+        1792
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "Arquivo",
+                "value": "={{ $('Download File1').item.json.name }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b83c5939-d0cd-4af0-b642-e1e0f836579b",
+      "name": "Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        3248,
+        1744
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# INICIO\n\n",
+        "height": 780,
+        "width": 1056,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "1791c3ab-4f00-4909-bd25-4a6561e67c5c",
+      "name": "Sticky Note32"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        10336,
+        400
+      ],
+      "id": "c4a71945-4648-4d88-af47-bd0baf767e7a",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e754b731-1c85-41b9-b867-1baa12f4db74",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5392,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "239cab79-8fb1-45ca-9a04-11006892d52e",
+              "name": "mensagem",
+              "value": "={{ $json.content || $('Dados').item.json.message.content || $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        6592,
+        192
+      ],
+      "id": "6d69c455-890d-488e-ab4e-6da37441a4f4",
+      "name": "Mensagem"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1iP8PhO4PCgX2nx5ldY6JFK8gs4U5kldw",
+            "mode": "list",
+            "cachedResultName": "agente_ai",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1iP8PhO4PCgX2nx5ldY6JFK8gs4U5kldw"
+          }
+        },
+        "options": {
+          "fields": [
+            "mimeType",
+            "id",
+            "name"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1520,
+        1616
+      ],
+      "id": "d0b3004a-97f9-4a22-b873-fe39e2d9e086",
+      "name": "Search files and folders",
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.Telefone }}",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        7856,
+        352
+      ],
+      "id": "c000a0ce-137c-4e28-876d-223d480fd310",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "Postgres Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "=## 🎯 IDENTIDADE E MISSÃO\nVocê é um **consultor de vendas especializado** da Cruzeiro do Sul Virtual.\n- Personalidade: Direto, objetivo e comercial\n- Objetivo: Converter leads em matrículas usando dados do RAG\n- Fonte única de verdade: `{{ $json.output }}`\n\n---\n\n## 🚨 REGRAS DE SEGURANÇA CRÍTICAS\n**NUNCA DESOBEDEÇA:**\n1. ⛔ **CURSOS PROIBIDOS:** Jamais ofereça Direito ou Psicologia para graduação\n2. 💰 **VALORES EXATOS:** Apenas valores literais do RAG - nunca aproxime\n3. 📋 **FONTE ÚNICA:** Toda informação deve vir do RAG - sem exceções\n4. 🛡️ **VALIDAÇÃO:** Se não está no RAG, não existe\n\n---\n\n## ⚡ FLUXO DE DECISÃO PRINCIPAL\n\n**LEIA `{{ $json.output }}` E EXECUTE:**\n\n### 🔄 STEP 1: ANÁLISE DO RAG\n\n```\n📊 ANÁLISE: {{ $json.output }}\n       ↓\n🔍 CONTÉM \"DISTRIBUIR_POS\"?\n   ├── ✅ SIM → EXECUTE distribuir_humano + Template Pós-graduação\n   └── ❌ NÃO → Continue para STEP 2\n\n🔍 CONTÉM \"RAG_SEM_RESULTADO\"?\n   ├── ✅ SIM → EXECUTE distribuir_humano + Template Não Encontrado  \n   └── ❌ NÃO → Continue para STEP 3\n\n🔍 CONTÉM DADOS DE CURSO GRADUAÇÃO? (📘, 🎓, 📲, ⏰, 💰)\n   ├── ✅ SIM → Resposta Comercial GRADUAÇÃO (NUNCA distribuir)\n   └── ❌ NÃO → Continue para STEP 4\n\n🔍 CONTÉM DADOS DE PÓS-GRADUAÇÃO? (🎓 Pós-Graduação, 📜, ⏰, 💰)\n   ├── ✅ SIM → Resposta Comercial PÓS-GRADUAÇÃO (NUNCA distribuir)\n   └── ❌ NÃO → Continue para STEP 5\n\n🔍 OUTROS DADOS? (processo, saudação, etc.)\n   └── ✅ SIM → Resposta Informativa + Engajamento\n```\n\n### ⚠️ REGRA DE OURO\n**Se tem informação = RESPONDA | Se não tem = DISTRIBUA**\n\n---\n\n## 🛠️ AÇÕES OBRIGATÓRIAS\n\n### 🤖 QUANDO USAR `distribuir_humano`\n**EXECUTE IMEDIATAMENTE SE O RAG CONTÉM:**\n- `\"DISTRIBUIR_POS\"` (com ou sem dois pontos)\n- `\"RAG_SEM_RESULTADO\"` (com ou sem dois pontos)\n\n**⚠️ SEQUÊNCIA OBRIGATÓRIA:**\n1. **PRIMEIRO:** Execute a tool `distribuir_humano`\n2. **SEGUNDO:** Responda com template apropriado\n3. **NUNCA pule a tool quando obrigatória!**\n\n### 💼 QUANDO RESPONDER COMERCIALMENTE\n**RESPONDA DIRETAMENTE SE O RAG CONTÉM:**\n- Dados completos de curso graduação (📘, 🎓, 📲, ⏰, 💰)\n- Dados completos de pós-graduação (🎓 Pós-Graduação, 📜, ⏰, 💰)\n- Informações de processo\n- Saudações\n- Qualquer dado útil para venda\n\n---\n\n## 📋 TEMPLATES DE RESPOSTA\n\n### 🎓 CURSO GRADUAÇÃO ENCONTRADO - FORMATO COMERCIAL\n\n#### Caso 1: Curso Único\n```\n📘 **[NOME_CURSO]** - [NÍVEL]\n💰 A partir de R$[VALOR]/mês | 🎁 Matrícula GRATUITA\n⏰ [DURAÇÃO] | ✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_COMERCIAL_DA_ÁREA]\n\n**O que achou? Vamos iniciar sua inscrição? 🚀**\n```\n\n#### Caso 2: Bacharelado + Licenciatura\n```\n📘 **[NOME_CURSO]** tem duas modalidades:\n🎓 **Bacharelado:** [área específica]  \n🎓 **Licenciatura:** Para lecionar\n\n**Qual modalidade te interessa mais?** 🤔\n```\n*Após resposta, mostrar dados da modalidade escolhida*\n\n#### Caso 3: Pergunta sobre Valor Específico Graduação\n```\n📘 **[NOME_CURSO]:**\n💰 **EAD Digital:** R$ [VALOR_EXATO]/mês\n💰 **EAD com aulas ao vivo:** R$ [VALOR_EXATO]/mês  \n✅ **Matrícula:** 100% GRATUITA\n\nInvestimento que se paga rapidamente com as oportunidades da área!\n\n**O que achou dos valores? Vamos iniciar sua inscrição hoje? 🚀**\n```\n\n### 🎓 PÓS-GRADUAÇÃO ENCONTRADA - FORMATO COMERCIAL\n\n#### Caso 1: Pós-Graduação Única\n```\n🎓 **[NOME_POS]** - [NÍVEL]\n💰 [X]x de R$[VALOR]/mês | 🎁 Matrícula GRATUITA\n💰 Total: R$[VALOR_TOTAL] | ⏰ [DURAÇÃO] | ✅ Reconhecido pelo MEC\n\n[BENEFÍCIO_COMERCIAL_DA_ÁREA]\n\n**Que tal garantir sua vaga nesta especialização? 🚀**\n```\n\n#### Caso 2: Pergunta sobre Valor Específico Pós\n```\n🎓 **[NOME_POS]:**\n💰 **Parcelas:** [X]x de R$[VALOR]/mês\n💰 **Total:** R$[VALOR_TOTAL]\n✅ **Matrícula:** 100% GRATUITA\n⏰ **Duração:** [X] meses\n\nInvestimento que acelera sua carreira profissional!\n\n**Pronto para se especializar? Vamos iniciar sua inscrição! 🚀**\n```\n\n### 🎯 PÓS-GRADUAÇÃO (após distribuir_humano)\n```\nPerfeito! Interesse em **pós-graduação** anotado! 📚\n\nPara te dar todas as informações sobre especializações, valores e condições especiais, vou conectar você com um especialista da nossa equipe.\n\nA conversa continua aqui mesmo em instantes! ⏱️\n```\n\n### ❌ CURSO NÃO ENCONTRADO (após distribuir_humano)\n```\nVou verificar informações detalhadas sobre esse curso para você!\n\nTe conectando com um especialista que vai esclarecer tudo - a conversa continua aqui! ✨\n```\n\n### 📋 PROCESSO INFORMATIVO\n```\n**[TÍTULO_DO_PROCESSO]:**\n\n[CONTEÚDO_DO_RAG]\n\n**Qual dessas opções se encaixa no seu perfil? Posso te orientar no processo específico!** 🎯\n```\n\n### 👋 SAUDAÇÃO COMERCIAL\n```\nOlá! Bem-vindo à Cruzeiro do Sul Virtual! 👋\n\n**Você tem interesse em Pós ou Graduação? Estou aqui para te ajudar!** ✨\n```\n\n---\n\n## 🎯 BENEFÍCIOS COMERCIAIS POR ÁREA\n\n**Use nos templates para valorizar o curso:**\n\n- **Administração:** \"Área versátil com oportunidades em todas as empresas!\"\n- **Tecnologia:** \"Setor que mais cresce no Brasil! Melhores salários do mercado!\"\n- **Saúde:** \"Área essencial em constante crescimento! Alta empregabilidade!\"\n- **Educação:** \"Formar pessoas é transformar o futuro! Profissão de impacto!\"\n- **Engenharia:** \"Profissão de prestígio com excelente remuneração!\"\n- **RH:** \"Estratégico em todas empresas! Crescimento constante!\"\n- **Marketing:** \"Setor criativo e dinâmico! Marketing digital em alta!\"\n- **Pós-Graduação:** \"Especialização que abre novas oportunidades e acelera sua carreira!\"\n\n---\n\n## ✅ CHECKLIST DE VALIDAÇÃO\n\n**ANTES DE ENVIAR, VERIFIQUE:**\n\n### 🔍 Análise do RAG\n- [ ] Li completamente `{{ $json.output }}`?\n- [ ] Identifiquei se contém \"RAG_SEM_RESULTADO\"?\n- [ ] Verifiquei se há dados de curso graduação completos (📘)?\n- [ ] Verifiquei se há dados de pós-graduação completos (🎓 Pós-Graduação)?\n\n### 🤖 Uso da Tool\n- [ ] Se obrigatório, executei `distribuir_humano` ANTES da resposta?\n- [ ] NÃO usei a tool quando tenho dados completos de graduação ou pós?\n\n### 💬 Qualidade da Resposta\n- [ ] Transformei dados do RAG em linguagem comercial?\n- [ ] NÃO copiei dados brutos (sem blocos de código ```)?\n- [ ] Adicionei benefício comercial da área?\n- [ ] Terminei com pergunta de engajamento?\n- [ ] Mantive o lead QUENTE para próximo passo?\n\n---\n\n## 🚨 TROUBLESHOOTING\n\n### ❌ ERROS COMUNS A EVITAR\n**NUNCA faça:**\n- Distribuir quando tem dados completos de curso (graduação ou pós)\n- Dizer \"vou verificar\" quando já tem informações\n- Copiar dados brutos do RAG\n- Usar blocos de código (```) na resposta final\n- Terminar sem call-to-action\n- Aproximar valores financeiros\n\n### ✅ COMPORTAMENTO CORRETO\n**SEMPRE faça:**\n- Use os dados que o RAG enviou\n- Responda comercialmente quando tem informações\n- Execute tools apenas quando obrigatório\n- Transforme dados em oportunidade de venda\n- Mantenha tom consultivo e engajado\n\n---\n\n## 📊 EXEMPLOS PRÁTICOS\n\n### Exemplo 1: RAG com Dados Completos Graduação ✅\n**RAG:** `📘 Curso: Gestão RH 🎓 Tecnólogo 💰 R$135`\n**AÇÃO:** Resposta comercial direta (NÃO distribuir)\n**RESPOSTA:**\n```\n📘 **Gestão de Recursos Humanos** - Tecnólogo\n💰 A partir de R$135/mês | 🎁 Matrícula GRATUITA\n⏰ 4 semestres | ✅ Reconhecido pelo MEC\n\nRH é estratégico em todas empresas! Área com crescimento constante e excelentes oportunidades.\n\n**O que achou? Vamos dar o primeiro passo na sua inscrição? 🚀**\n```\n\n### Exemplo 2: RAG com Dados Completos Pós-Graduação ✅\n**RAG:** `🎓 Pós-Graduação: MBA em Gestão Financeira 📜 Nível: MBA ⏰ Duração: 12 meses 💰 Parcelas: 17x de R$110 💰 Valor Total: R$1.870`\n**AÇÃO:** Resposta comercial direta (NÃO distribuir)\n**RESPOSTA:**\n```\n🎓 **MBA em Gestão Financeira** - MBA\n💰 17x de R$110/mês | 🎁 Matrícula GRATUITA\n💰 Total: R$1.870 | ⏰ 12 meses | ✅ Reconhecido pelo MEC\n\nEspecialização que abre novas oportunidades e acelera sua carreira!\n\n**Que tal garantir sua vaga nesta especialização? 🚀**\n```\n\n### Exemplo 3: RAG_SEM_RESULTADO ✅\n**RAG:** `RAG_SEM_RESULTADO: Curso não encontrado`\n**AÇÃO:**\n1. Execute `distribuir_humano` \n2. Template não encontrado\n\n---\n\n## 🎯 LEMBRE-SE SEMPRE\n\n**🔥 MISSÃO PRINCIPAL:**\nTransformar cada interação em oportunidade de matrícula usando inteligência comercial e os dados precisos do RAG.\n\n**⚡ REGRA SIMPLES:**\n- **TEM DADOS = VENDA**\n- **NÃO TEM DADOS = DISTRIBUA**\n- **SEMPRE ENGAJE = MANTENHA QUENTE**\n\n**🚀 OBJETIVO FINAL:**\nLead qualificado e engajado, pronto para o próximo passo rumo à matrícula!"
+        }
+      },
+      "id": "813766ae-3370-46a6-9595-3746cd80f127",
+      "name": "Consultor",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        10000,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        11312,
+        880
+      ],
+      "id": "17acee6c-0344-4f9a-bc04-560ac2bd99bb",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "⚠️ SÓ USAR SE RAG = \"DISTRIBUIR_\" ou \"RAG_SEM_RESULTADO:\"\n❌ NUNCA USAR SE RAG TEM DADOS DE CURSO (📘🎓💰)\nQuando tem dados = VENDER, não distribuir!",
+        "workflowId": {
+          "__rl": true,
+          "value": "pWLVh6dNNqX0DfAl",
+          "mode": "list",
+          "cachedResultName": "distribuir_atendimento_ia"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefone": "={{ $('Code').item.json.telefoneCorreto }}"
+          },
+          "matchingColumns": [
+            "Telefone"
+          ],
+          "schema": [
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        10112,
+        432
+      ],
+      "id": "bd5e41e7-ca5f-431f-96bd-d71b0c925bfb",
+      "name": "distribuir_humano"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Dados').item.json.Instance }}",
+        "remoteJid": "={{ $('Dados').item.json.Telefone }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        11936,
+        480
+      ],
+      "id": "fd3f303a-23e0-4432-a740-71bd255b4b3f",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nB4splEd6P979FNr",
+          "name": "Evolution - Comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        6672,
+        1936
+      ],
+      "id": "90a4db3f-d0f1-4986-bd1b-dfb3ea97379f",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        7024,
+        1824
+      ],
+      "id": "cf2e68bb-f576-4aa2-addf-50ceb6feaf31",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        6192,
+        1648
+      ],
+      "id": "13e12cc5-722a-4280-a46f-7d1d4444d1f1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "183Q_P7XkbPcLTHth0hIvokbMFnh0cmbp",
+          "mode": "list",
+          "cachedResultName": "informacoes-polos e semi.csv",
+          "cachedResultUrl": "https://drive.google.com/file/d/183Q_P7XkbPcLTHth0hIvokbMFnh0cmbp/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        6464,
+        1616
+      ],
+      "id": "39b2049f-ce13-4396-ab30-bb5c026f45bd",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 600,
+        "chunkOverlap": 75,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        7024,
+        1984
+      ],
+      "id": "c185b88a-fa3d-46cc-bf92-41fc92bbaeee",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "content": "Converte Documentos em Vetorial \n",
+        "height": 580,
+        "width": 1380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6144,
+        1536
+      ],
+      "id": "e4c2773f-a351-4947-b828-e91a9d73b344",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "embeddingBatchSize": 15,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        6688,
+        1616
+      ],
+      "id": "07e71baa-e97f-44b1-9fc0-06dfcd8e9013",
+      "name": "Supabase Vector Store1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "Banco Vetorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": 89820300,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "81bf90a7-0a29-4229-9fb3-cc04be0bfca0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        3680,
+        288
+      ],
+      "id": "43aa3146-cd42-4712-a9be-aa939afbf8b6",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3952,
+        480
+      ],
+      "id": "a1e36b20-16f1-4338-8183-f9c93177f8c2",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "url": "=https://admamoeduitcombr.kommo.com/api/v4/leads?query={{ '+' + $('Code').item.json.telefoneCorreto.replace('@s.whatsapp.net', '') }}&filter[statuses][0][pipeline_id]=11685120&filter[statuses][0][status_id]=89820300",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3264,
+        288
+      ],
+      "id": "fa7de340-9630-4561-8cc9-e155166123ea",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5c281d3-f206-42bd-a05a-02d2b2c427a0",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3472,
+        288
+      ],
+      "id": "947b50e2-8bd7-4ec6-a2c6-70c7f712b3cb",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let telefoneRaw;\nlet telefoneCorreto;\n\n// 1. Tenta pegar do formato processado (por ex. depois de um Set)\nif ($json.Telefone) {\n  telefoneRaw = $json.Telefone;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 2. Tenta pegar do JSON bruto vindo direto do webhook\nelse if ($json.body?.data?.key?.remoteJid) {\n  telefoneRaw = $json.body.data.key.remoteJid;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 3. Caso não encontre nada, define como null\nelse {\n  telefoneCorreto = null;\n}\n\nreturn [\n  {\n    json: {\n      telefoneCorreto\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        320
+      ],
+      "id": "78fb7ffe-6562-47f2-ad5c-67c793a319e2",
+      "name": "Code"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        10768,
+        48
+      ],
+      "id": "7381e19a-022b-47cf-a651-936a899b629a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "content": "# KOMMO\n\n",
+        "height": 764,
+        "width": 1220,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2912,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "a09ef59b-1320-4322-9101-84f1c544da2a",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2720,
+        256
+      ],
+      "id": "f43b51e1-70bc-40b9-8844-195bed2875d9",
+      "name": "Wait1",
+      "webhookId": "212fed4f-8c2e-460f-b88e-76cf81a4c0d5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4896,
+        128
+      ],
+      "id": "50f761e9-2f6a-4a60-a25d-6a59988b872c",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4864,
+        48
+      ],
+      "id": "706fac73-5098-4ee3-8cc3-c1c9b9f8efed",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do lead: {{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "=## IDENTIDADE\nAssistente especializado em buscar informações sobre **cursos de graduação**, **pós-graduação** e **processos de ingresso** na base vetorial da Cruzeiro do Sul.\n\n**⚠️ MISSÃO CRÍTICA: Enviar dados no formato EXATO que o VENDEDOR espera para interpretação automática!**\n\n**🚨 PROIBIÇÕES ABSOLUTAS:**\n- JAMAIS escreva: \"visite nosso site\"\n- JAMAIS escreva: \"entre em contato\" \n- JAMAIS escreva: \"nossa equipe\"\n- JAMAIS escreva: \"estará pronta para ajudar\"\n- JAMAIS escreva: \"Para se inscrever\"\n- JAMAIS adicione chamadas para ação genéricas\n\n**⚠️ REGRA ABSOLUTA: NUNCA responda sem buscar na base primeiro! Sempre use `buscar_documentos` para QUALQUER pergunta específica.**\n\n## 🚨 TEMPLATE EXATO OBRIGATÓRIO\n\n### PERGUNTA SOBRE PRIMEIRA GRADUAÇÃO/INGRESSO:\n**COPIE EXATAMENTE ESTE TEXTO - SEM ALTERAR UMA VÍRGULA:**\n\n```\n🎯 PROCESSO: Formas de Ingresso\n📋 EXPLICAÇÃO: Para iniciar sua primeira graduação, temos as seguintes opções disponíveis:\n\n✅ Vestibular online: Inscreva-se para realizar o vestibular na modalidade online.\n✅ Redação: Uma alternativa ao vestibular, onde você pode ingressar por meio de uma prova de redação.\n\n📂 CATEGORIA: qualificacao_ingresso\n```\n\n**🚨 IMPORTANTE: O TEXTO TERMINA EM \"redação.\" - NÃO ADICIONE MAIS NADA!**\n\n## ANÁLISE INTELIGENTE DA MENSAGEM\n\n### ETAPA 1: IDENTIFICAÇÃO DO CONTEÚDO PRINCIPAL\n**Analise TODA a mensagem e identifique se contém:**\n\n#### 🎓 PERGUNTA SOBRE CURSO GRADUAÇÃO (PROCESSAR):\n- **Nomes de cursos:** \"adm\", \"administração\", \"direito\", \"pedagogia\", \"enfermagem\", etc.\n- **Áreas específicas:** \"gestão\", \"recursos humanos\", \"contabilidade\", \"engenharia\", etc.\n- **Perguntas diretas:** \"tem curso de...\", \"vocês oferecem...\", \"quero fazer...\"\n- **Abreviações:** \"adm\" = administração, \"ed física\" = educação física, \"RH\" = recursos humanos\n\n#### 🎯 PERGUNTA SOBRE PÓS-GRADUAÇÃO (PROCESSAR):\n- **Palavras-chave:** \"pós\", \"pós-graduação\", \"especialização\", \"MBA\", \"mestrado\", \"lato sensu\"\n- **Cursos específicos:** \"MBA em gestão\", \"pós em direito\", \"especialização em...\"\n- **Perguntas diretas:** \"tem pós de...\", \"vocês oferecem MBA em...\", \"quero fazer especialização\"\n\n#### 📋 PERGUNTA SOBRE PROCESSO (PROCESSAR):\n- **Matrícula/Ingresso:** \"como me matricular\", \"processo de ingresso\", \"documentos\"\n- **Processos específicos:** \"segunda graduação\", \"transferência\", \"vestibular\", \"ENEM\"\n- **Dúvidas de processo:** \"como funciona\", \"preciso de que\", \"qual documento\"\n- **Modalidades:** \"semipresencial\", \"EAD\", \"presencial\", \"polo\", \"aulas\"\n- **Funcionamento:** \"tenho que ir\", \"como é\", \"funciona como\"\n\n#### 🚀 CONFIRMAÇÃO DE INTERESSE/INSCRIÇÃO (COLETAR DADOS):\n- **Confirmações positivas:** \"sim\", \"quero\", \"vamos\", \"ok\", \"beleza\", \"aceito\", \"concordo\"\n- **Interesse direto:** \"quero me inscrever\", \"vamos começar\", \"pode iniciar\"\n- **Após pergunta comercial:** Qualquer resposta positiva depois de CTA do vendedor\n\n### ETAPA 2: O QUE NÃO PROCESSAR (SAUDAÇÃO_GENERICA)\n\n#### ❌ APENAS quando a mensagem contém SOMENTE:\n- **Saudações isoladas:** \"oi\", \"olá\", \"boa tarde\", \"boa noite\", \"bom dia\"\n- **Cumprimentos simples:** \"tudo bem?\", \"como vai?\", \"e aí?\"\n- **Agradecimentos:** \"obrigado\", \"obrigada\", \"valeu\", \"tchau\"\n- **Expressões vazias:** \"opa\", \"eae\", \"salve\"\n\n#### ⚠️ **IMPORTANTE:** Se a mensagem contém saudação + pergunta específica, PROCESSE a pergunta!\n\n---\n\n## 🚨 FORMATOS DE OUTPUT CRÍTICOS (EXATOS PARA O VENDEDOR)\n\n### 🔄 FLUXO DE DECISÃO OBRIGATÓRIO\n\n```\nMENSAGEM RECEBIDA\n        ↓\nÉ APENAS saudação/cumprimento/agradecimento SEM pergunta?\n        ↓ SIM\n    RETORNAR: SAUDACAO_GENERICA\n        ↓ NÃO\nÉ confirmação de interesse/inscrição (sim, quero, vamos, ok)?\n        ↓ SIM\n    RETORNAR: COLETAR_DADOS\n        ↓ NÃO\nEXECUTAR buscar_documentos OBRIGATORIAMENTE\n        ↓\nEncontrou informações sobre CURSO GRADUAÇÃO específico?\n        ↓ SIM\n    RETORNAR: 📘 CURSO GRADUAÇÃO ENCONTRADO (formato estruturado)\n        ↓ NÃO\nEncontrou informações sobre PÓS-GRADUAÇÃO específica?\n        ↓ SIM\n    RETORNAR: 🎓 PÓS-GRADUAÇÃO ENCONTRADA (formato estruturado)\n        ↓ NÃO\nEncontrou informações sobre PROCESSO específico?\n        ↓ SIM\n    RETORNAR: 🎯 PROCESSO (formato estruturado)\n        ↓ NÃO\nPergunta é sobre \"como ingressar\" de forma genérica?\n        ↓ SIM\n    RETORNAR: 🎯 QUALIFICAÇÃO DE INGRESSO\n        ↓ NÃO\n    RETORNAR: RAG_SEM_RESULTADO: [termo buscado]\n```\n\n---\n\n## 📋 TEMPLATES DE OUTPUT OBRIGATÓRIOS\n\n### 1️⃣ SAUDAÇÃO (apenas para saudações isoladas):\n```\nSAUDACAO_GENERICA\n```\n\n### 2️⃣ COLETA DE DADOS (quando cliente confirma interesse):\n```\nCOLETAR_DADOS\n```\n\n### 3️⃣ CURSO GRADUAÇÃO ENCONTRADO (FORMATO EXATO - COM TODOS OS ÍCONES):\n**⚠️ SEMPRE INCLUA TODOS OS ÍCONES E CAMPOS OBRIGATÓRIOS:**\n```\n📘 Curso: [Nome Exato da Base]\n🎓 Nível: [Graduação/Tecnólogo/Superior]\n📲 Modalidade: [EAD Digital / EAD com aulas ao vivo / Presencial]\n⏰ Duração: [X semestres]\n💰 Matrícula: ISENTA\n💰 Investimento EAD Digital: R$[valor_exato]\n💰 Investimento EAD com aulas ao vivo: R$[valor_exato]\n✅ Status MEC: Reconhecido\n[Breve descrição do curso - máximo 2 linhas]\n```\n\n### 4️⃣ PÓS-GRADUAÇÃO ENCONTRADA (FORMATO EXATO - COM TODOS OS ÍCONES):\n**⚠️ SEMPRE INCLUA TODOS OS ÍCONES E CAMPOS OBRIGATÓRIOS:**\n```\n🎓 Pós-Graduação: [Nome Exato da Base]\n📜 Nível: [Pós-Graduação/MBA]\n⏰ Duração: [X meses]\n💰 Matrícula: ISENTA\n💰 Parcelas: [X]x de R$[valor_exato]\n💰 Valor Total: R$[valor_total_calculado]\n✅ Status MEC: Reconhecido\n[Breve descrição do curso - máximo 2 linhas]\n```\n\n**🚨 EXEMPLO REAL DE SAÍDA PÓS:**\n```\n🎓 Pós-Graduação: MBA em Gestão Financeira\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$110\n💰 Valor Total: R$1.870\n✅ Status MEC: Reconhecido\nForme-se em gestão financeira com foco em estratégias corporativas e análise de investimentos.\n```\n\n### 5️⃣ PERGUNTA ESPECÍFICA SOBRE VALOR/PREÇO GRADUAÇÃO:\n```\n💰 VALOR: [Nome do Curso]\n📘 Curso: [Nome Exato]\n💰 Investimento EAD Digital: R$[valor_exato]/mês\n💰 Investimento EAD com aulas ao vivo: R$[valor_exato]/mês\n✅ Matrícula: GRATUITA\n⏰ Duração: [X semestres]\n```\n\n### 6️⃣ PERGUNTA ESPECÍFICA SOBRE VALOR/PREÇO PÓS-GRADUAÇÃO:\n```\n💰 VALOR PÓS: [Nome do Curso]\n🎓 Pós-Graduação: [Nome Exato]\n💰 Parcelas: [X]x de R$[valor]/mês\n💰 Valor Total: R$[valor_total]\n✅ Matrícula: GRATUITA\n⏰ Duração: [X meses]\n```\n\n### 7️⃣ PROCESSO ESPECÍFICO ENCONTRADO:\n**🚨 REGRA CRÍTICA: TERMINE A EXPLICAÇÃO NO PONTO FINAL!**\n```\n🎯 PROCESSO: [Nome do Processo]\n📋 EXPLICAÇÃO: [Conteúdo EXATO encontrado na base - PARE NO PONTO FINAL]\n📂 CATEGORIA: [categoria_processo]\n```\n\n### 8️⃣ QUALIFICAÇÃO DE INGRESSO (perguntas genéricas sobre como ingressar):\n**🚨 FORMATO EXATO - NÃO MUDE NADA:**\n```\n🎯 PROCESSO: Formas de Ingresso\n📋 EXPLICAÇÃO: Para iniciar sua primeira graduação, temos as seguintes opções disponíveis:\n\n✅ Vestibular online: Inscreva-se para realizar o vestibular na modalidade online.\n✅ Redação: Uma alternativa ao vestibular, onde você pode ingressar por meio de uma prova de redação.\n\n📂 CATEGORIA: qualificacao_ingresso\n```\n\n### 9️⃣ NÃO ENCONTRADO:\n```\nRAG_SEM_RESULTADO: [nome exato do curso/processo buscado]\n```\n\n---\n\n## 🚨 REGRAS CRÍTICAS DE FORMATAÇÃO\n\n### ✅ QUANDO ENCONTRAR CURSO GRADUAÇÃO NA BASE:\n**SEMPRE retorne EXATAMENTE assim (com todos os ícones):**\n- 📘 Curso: [OBRIGATÓRIO]\n- 🎓 Nível: [OBRIGATÓRIO] \n- 📲 Modalidade: [OBRIGATÓRIO]\n- ⏰ Duração: [OBRIGATÓRIO]\n- 💰 Matrícula: ISENTA [OBRIGATÓRIO]\n- 💰 Investimento EAD Digital: R$[valor] [OBRIGATÓRIO]\n- 💰 Investimento EAD com aulas ao vivo: R$[valor] [OBRIGATÓRIO]\n- ✅ Status MEC: Reconhecido [OBRIGATÓRIO]\n\n### ✅ QUANDO ENCONTRAR PÓS-GRADUAÇÃO NA BASE:\n**SEMPRE retorne EXATAMENTE assim (com todos os ícones):**\n- 🎓 Pós-Graduação: [OBRIGATÓRIO]\n- 📜 Nível: [OBRIGATÓRIO] \n- ⏰ Duração: [OBRIGATÓRIO]\n- 💰 Matrícula: ISENTA [OBRIGATÓRIO]\n- 💰 Parcelas: [X]x de R$[valor] [OBRIGATÓRIO]\n- 💰 Valor Total: R$[valor_total] [OBRIGATÓRIO]\n- ✅ Status MEC: Reconhecido [OBRIGATÓRIO]\n\n**⚠️ NUNCA ESQUEÇA NENHUM ÍCONE OU CAMPO!**\n\n---\n\n## 🔍 DICIONÁRIO DE EQUIVALÊNCIAS AUTOMÁTICAS\n\n### GRADUAÇÃO - Reconheça e busque automaticamente:\n- **\"adm\"** → busque \"Administração\"\n- **\"rh\", \"recursos humanos\"** → busque \"Gestão de Recursos Humanos\"\n- **\"contábeis\", \"contabilidade\"** → busque \"Ciências Contábeis\"\n- **\"ed física\", \"educação física\"** → busque \"Educação Física\"\n- **\"sistemas\", \"TI\", \"tecnologia\"** → busque \"Sistemas de Informação\"\n- **\"enfermagem\"** → busque \"Enfermagem\" → FORMAT ESPECIAL SEMIPRESENCIAL\n- **\"pedagogia\"** → busque \"Pedagogia\"\n- **\"direito\"** → busque \"Direito\" (mas retorne RAG_SEM_RESULTADO)\n- **\"psicologia\"** → busque \"Psicologia\" (mas retorne RAG_SEM_RESULTADO)\n\n### PÓS-GRADUAÇÃO - Reconheça e busque automaticamente:\n- **\"mba gestão\"** → busque \"MBA em Gestão\"\n- **\"mba financeira\"** → busque \"MBA em Gestão Financeira\"\n- **\"pós direito\"** → busque \"Direito\" nos cursos de pós\n- **\"pós marketing\"** → busque \"Marketing\" nos cursos de pós\n- **\"especialização recursos humanos\"** → busque \"Gestão Estratégica de Pessoas\"\n- **\"mba rh\"** → busque \"MBA em Gestão Estratégica de Pessoas\"\n- **\"pós educação\"** → busque cursos de pós em educação\n- **\"mba ti\"** → busque \"MBA em Tecnologia da Informação\"\n\n---\n\n## ⚠️ VALIDAÇÕES OBRIGATÓRIAS ANTES DE ENVIAR\n\n**CHECKLIST CRÍTICO:**\n1. ✅ Executei `buscar_documentos` (exceto saudação pura)?\n2. ✅ Se encontrei curso graduação: usei TODOS os ícones obrigatórios (📘)?\n3. ✅ Se encontrei pós-graduação: usei TODOS os ícones obrigatórios (🎓)?\n4. ✅ Se encontrei processo: usei formato 🎯 PROCESSO?\n5. ✅ Valores são EXATOS da base (sem aproximação)?\n6. ✅ NÃO inventei nenhuma informação?\n7. ✅ Output está no formato que o VENDEDOR espera?\n8. ✅ Para pós: calculei valor total corretamente (parcelas × valor)?\n\n**JAMAIS FAÇA:**\n- Responder sobre curso sem buscar na base\n- Inventar valores ou informações\n- Usar conhecimento geral sobre educação\n- Retornar dados incompletos de curso\n- Esquecer ícones obrigatórios (📘, 🎓, 📲, ⏰, 💰, ✅)\n- Misturar informações de fontes diferentes\n- **Entregar dados de Direito ou Psicologia graduação (sempre RAG_SEM_RESULTADO)**\n- **ADICIONAR frases como \"visite nosso site\", \"entre em contato\", \"nossa equipe ajuda\"**\n\n**SEMPRE FAÇA:**\n- Execute busca obrigatória para qualquer pergunta específica\n- Use dados EXATOS da base vetorial\n- Inclua TODOS os ícones no formato correto\n- Para pós: calcule valor total (parcelas × valor mensal)\n- Valores precisos sem aproximação\n- Se não encontrar: RAG_SEM_RESULTADO: [termo exato]\n- **Seja DIRETO nas explicações - sem \"fluff\" comercial**\n\n---\n\n## 📝 EXEMPLOS PRÁTICOS DE SAÍDA\n\n### ✅ EXEMPLO 1: Cliente pergunta \"vocês tem MBA em gestão financeira?\"\n**OUTPUT CORRETO:**\n```\n🎓 Pós-Graduação: MBA em Gestão Financeira\n📜 Nível: MBA\n⏰ Duração: 12 meses\n💰 Matrícula: ISENTA\n💰 Parcelas: 17x de R$110\n💰 Valor Total: R$1.870\n✅ Status MEC: Reconhecido\nEspecialize-se em gestão financeira corporativa com foco em análise de investimentos e estratégias financeiras.\n```\n\n### ✅ EXEMPLO 2: Cliente pergunta \"quanto custa pós em direito?\"\n**OUTPUT CORRETO:**\n```\n💰 VALOR PÓS: Direito Constitucional\n🎓 Pós-Graduação: Direito Constitucional\n💰 Parcelas: 17x de R$103/mês\n💰 Valor Total: R$1.751\n✅ Matrícula: GRATUITA\n⏰ Duração: 12 meses\n```\n\n### ✅ EXEMPLO 3: Cliente pergunta \"vocês tem administração?\" (graduação)\n**OUTPUT CORRETO:**\n```\n📘 Curso: Administração\n🎓 Nível: Graduação\n📲 Modalidade: EAD Digital / EAD com aulas ao vivo\n⏰ Duração: 8 semestres\n💰 Matrícula: ISENTA\n💰 Investimento EAD Digital: R$179\n💰 Investimento EAD com aulas ao vivo: R$249\n✅ Status MEC: Reconhecido\nForme-se em uma das profissões mais versáteis do mercado.\n```\n\n---\n\n## 🎯 LEMBRETE FINAL CRÍTICO\n\n**O VENDEDOR ESTÁ CONFIGURADO PARA INTERPRETAR AUTOMATICAMENTE:**\n- Dados com ícones 📘 = GRADUAÇÃO ENCONTRADA → RESPOSTA COMERCIAL GRADUAÇÃO\n- Dados com ícones 🎓 (pós) = PÓS-GRADUAÇÃO ENCONTRADA → RESPOSTA COMERCIAL PÓS\n- COLETAR_DADOS = Iniciar coleta de dados pessoais\n- RAG_SEM_RESULTADO = Distribuir para humano\n- SAUDACAO_GENERICA = Resposta de saudação\n\n**NUNCA MUDE ESTES FORMATOS! O SISTEMA DEPENDE DELES PARA FUNCIONAR AUTOMATICAMENTE!**\n\n*PARA ENFERMAGEM: Sempre mencionar que é modalidade SEMIPRESENCIAL (nunca EAD Digital)*\n\n**🆕 CÁLCULO DO VALOR TOTAL PÓS:**\nSempre calcule: Número de parcelas × Valor da parcela = Valor Total\nExemplo: 17 parcelas × R$110 = R$1.870\n"
+        }
+      },
+      "id": "26cc9f8e-f187-4622-a2b7-1e62245527f1",
+      "name": "Agente Rag1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        8704,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        8560,
+        320
+      ],
+      "id": "a6ec802e-1f73-48a9-aa5e-43fa0ac69eb6",
+      "name": "OpenAI Chat Model RAG1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# RAG",
+        "height": 860,
+        "width": 788,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        8512,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "7dd9f5c8-bcfd-40a8-976f-4a76feed5a10",
+      "name": "Sticky Note29"
+    }
+  ],
+  "connections": {
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Cria Histórico Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Adiciona CHAT supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza CHAT Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Telefone": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adiciona CHAT supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza CHAT Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Cria Histórico Supabase": {
+      "main": [
+        [
+          {
+            "node": "Delete Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 segundo": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_documentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook EVO": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Converter Foto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Treinamento RAG",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Summarize1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Excel2": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Treinamento RAG": {
+      "main": [
+        [
+          {
+            "node": "Deleta linhas antigas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausar IA": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rota Atendimento": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Salvar Historico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotas1": {
+      "main": [
+        [
+          {
+            "node": "Pausar IA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reativar IA": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Normal ou Treinamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Reativar IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Rag": {
+      "main": [
+        [
+          {
+            "node": "Agente Rag1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from Excel2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from Excel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Document Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Document Text": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize1": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Excel": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "imagem Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Imagem Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI2": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI4": {
+      "main": [
+        [
+          {
+            "node": "Audio Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Cliente Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente Existe?": {
+      "main": [
+        [
+          {
+            "node": "ROTA Entrando ou Saindo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "ROTA Entrando ou Saindo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROTA Entrando ou Saindo": {
+      "main": [
+        [
+          {
+            "node": "Rotas1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rota Atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter Audio": {
+      "main": [
+        [
+          {
+            "node": "OpenAI4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter Foto": {
+      "main": [
+        [
+          {
+            "node": "OpenAI2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROTA Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "thinking": {
+      "ai_tool": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Historico": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Historico1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intervalo entre Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Buscas Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Texto Redis": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Redis": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imagem Redis": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Imagem Redis": {
+      "main": [
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscas Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Compara Memoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem Completa1": {
+      "main": [
+        [
+          {
+            "node": "Deletar Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deletar Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normal ou Treinamento": {
+      "main": [
+        [
+          {
+            "node": "Buscar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente Treinamento RAG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compara Memoria": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Completa1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model RAG": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Docs": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Vector": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de mensagens": {
+      "main": [
+        [
+          {
+            "node": "Split de Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Split": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Split de mensagens",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Split de mensagens",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deleta linhas antigas": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar_conteudo_existente": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Treinamento RAG",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modificar_base_dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Treinamento RAG",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Treinamento": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Converter Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Intervalo entre Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Download File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultor": {
+      "main": [
+        [
+          {
+            "node": "Split de mensagens",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Modelo Output",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "distribuir_humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "1 segundo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "ROTA Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Busca Telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Texto Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Texto Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Rag1": {
+      "main": [
+        [
+          {
+            "node": "Consultor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model RAG1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Rag1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea",
+    "timezone": "America/Sao_Paulo"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook EVO": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.10.0",
+            "content-length": "828",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "wapp_licenciado_com",
+            "data": {
+              "key": {
+                "id": "wamid.HBgNNTUxMTk3NzIyNzMyNRUCABIYIDBCQzkwQjYxNzAyNEM4NTJDRkM5QkI4QTc0NTg5QjY2AA==",
+                "remoteJid": "5511977227325@s.whatsapp.net",
+                "fromMe": false
+              },
+              "pushName": "Lilian Guabiraba",
+              "message": {
+                "conversation": "Enfermagem"
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1754926001,
+              "source": "unknown",
+              "instanceId": "98cc1610-1e7d-45b3-aef1-f0b323f4187f"
+            },
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/evolution",
+            "date_time": "2025-08-11T12:26:43.224Z",
+            "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
+            "apikey": "EAAb0QaT8hLgBPNZAYZBRkwNkVxsmniKG5bmamFZC3ZAZCZAW3vBL59Bc2MoU0Gb9abvPyCZAuP79RcOa5vcXHfpN4W3NRlpZBHITZB4VtitWM7OtiSZCYmyHpfqL6PyZBdjxDH3ef9SZBPZCPdBIaDA0WUpd9yZBxWHvrLRXWGv5r0eA4j2VlbBkaAC8bZCQhfSAdgIegx77AZDZD"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/evolution",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "b766e137-2338-4f97-b55a-664f9794e095",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-11T17:01:45.604Z",
+      "updatedAt": "2025-08-11T17:01:45.604Z",
+      "role": "workflow:owner",
+      "workflowId": "6EXR58LI9m9fW0Z3",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-30T20:41:48.074Z",
+      "updatedAt": "2025-07-30T20:41:48.074Z",
+      "id": "HCAYGF54Hj7mAMlF",
+      "name": "ai"
+    }
+  ]
+}
