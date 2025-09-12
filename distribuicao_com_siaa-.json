@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-25T19:59:43.298Z",
-  "updatedAt": "2025-07-31T21:17:51.000Z",
+  "updatedAt": "2025-08-19T20:41:07.000Z",
   "id": "PUsf5iaWKnZY98Ix",
   "name": "distribuicao_com_siaa",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -713,7 +713,16 @@
       }
     ]
   },
-  "versionId": "4aa522e4-9a85-4da8-a10a-14c76ca4cff4",
+  "versionId": "4a9564ec-2f9a-489e-acaa-f969b8e76396",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T19:59:43.299Z",
+      "updatedAt": "2025-07-25T19:59:43.299Z",
+      "role": "workflow:owner",
+      "workflowId": "PUsf5iaWKnZY98Ix",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
