@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-29T16:14:26.177Z",
-  "updatedAt": "2025-07-31T14:34:13.000Z",
+  "updatedAt": "2025-08-21T21:18:42.000Z",
   "id": "BBocg4upLSYXmuWq",
   "name": "criacao_leads_sumaread",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -230,7 +230,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Define campos fixos\nconst camposFixos = ['id', 'name', 'telefone', 'email', 'curso'];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\nif (quantidade_encontrada === 0) {\n  // Se nenhum lead for encontrado, retorna campos vazios\n  const vazio = {\n    quantidade_encontrada,\n    id: \"\",\n    name: \"\",\n    telefone: \"\",\n    email: \"\",\n    curso: \"\"\n  };\n  return [{ json: vazio }];\n}\n\n// Seleciona o lead com menor ID\nconst leadEscolhido = leads.reduce((min, atual) => {\n  return atual.id < min.id ? atual : min;\n});\n\n// Extrai valores dos campos customizados\nconst fields = leadEscolhido.custom_fields_values || [];\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name?.toLowerCase().includes(nome.toLowerCase()))\n         ?.values?.[0]?.value ?? \"\";\n};\n\nconst resultado = {\n  quantidade_encontrada,\n  id: leadEscolhido.id,\n  name: leadEscolhido.name ?? \"\",\n  telefone: getCampo(\"telefone\"),\n  email: getCampo(\"email\"),\n  curso: getCampo(\"curso\")\n};\n\nreturn [{ json: resultado }];"
+        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Define campos fixos\nconst camposFixos = ['id', 'name', 'telefone', 'email', 'curso', 'origem'];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\nif (quantidade_encontrada === 0) {\n  // Se nenhum lead for encontrado, retorna campos vazios\n  const vazio = {\n    quantidade_encontrada,\n    id: \"\",\n    name: \"\",\n    telefone: \"\",\n    email: \"\",\n    curso: \"\",\n    origem: \"Site - Sumaré\"  // valor fixo mesmo sem leads\n  };\n  return [{ json: vazio }];\n}\n\n// Seleciona o lead com menor ID\nconst leadEscolhido = leads.reduce((min, atual) => {\n  return atual.id < min.id ? atual : min;\n});\n\n// Extrai valores dos campos customizados\nconst fields = leadEscolhido.custom_fields_values || [];\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name?.toLowerCase().includes(nome.toLowerCase()))\n         ?.values?.[0]?.value ?? \"\";\n};\n\nconst resultado = {\n  quantidade_encontrada,\n  id: leadEscolhido.id,\n  name: leadEscolhido.name ?? \"\",\n  telefone: getCampo(\"telefone\"),\n  email: getCampo(\"email\"),\n  curso: getCampo(\"curso\")\n};\n\nreturn [{ json: resultado }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -314,6 +314,12 @@
               "id": "c4256c50-7487-4aa2-9670-76a8733ca0de",
               "name": "Email",
               "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9bd6722b-4efc-4abb-9493-2a0b695303a4",
+              "name": "Origem",
+              "value": "Site - Sumaré",
               "type": "string"
             }
           ]
@@ -410,7 +416,7 @@
             {
               "id": "={{ $json.id }}",
               "pipeline_id": 11003376,
-              "status_id": 84400000,
+              "status_id": 84631604,
               "custom_fields_values": {
                 "custom_field": [
                   {
@@ -420,6 +426,15 @@
                   {
                     "data": "{\"id\":689125,\"type\":\"text\"}",
                     "value": "={{ $json.telefone }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      62864
+                    ]
                   }
                 ]
               }
@@ -681,11 +696,11 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
-            "content-length": "81",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36",
+            "content-length": "65",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             "content-type": "application/json",
             "origin": "https://www.sumaread.com.br",
             "priority": "u=1, i",
@@ -693,18 +708,18 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "200.173.181.128",
+            "x-forwarded-for": "179.87.10.24",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "200.173.181.128"
+            "x-real-ip": "179.87.10.24"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Silvia mara de freitas ",
-            "celular": "11 992170973 ",
+            "nome": "Quesia ",
+            "celular": "11 949088470 ",
             "tipo": "Graduação"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/6a929b6a-68f0-4912-8d58-53f68d84b0c0",
@@ -713,7 +728,16 @@
       }
     ]
   },
-  "versionId": "aacbe456-a858-49ec-a735-2c2b63d40fb9",
+  "versionId": "238fac9a-4591-4fa5-95a4-2bf68ccdd680",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-29T16:14:26.181Z",
+      "updatedAt": "2025-07-29T16:14:26.181Z",
+      "role": "workflow:owner",
+      "workflowId": "BBocg4upLSYXmuWq",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
