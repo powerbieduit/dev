@@ -1,0 +1,457 @@
+{
+  "createdAt": "2025-07-28T15:14:25.217Z",
+  "updatedAt": "2025-07-30T17:05:55.000Z",
+  "id": "EOrI6UQ1EyJ5Yh1i",
+  "name": "distribuicao_comercial_ai",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "843b6d2d-fafb-4955-af2b-e024a26bfc0a",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT responsavel_id, nome, qtd_leads_periodo, taxa_conversao FROM responsavel WHERE status = 'ativo';",
+        "additionalFields": {}
+      },
+      "id": "b69171ca-e0ec-4fcf-9dbc-18832fa175ae",
+      "name": "buscar_responsaveis",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        0,
+        512
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const lead = $json.lead || { lead_id: 'N/A' };\nconst responsaveis = $json.responsaveis;\n\nlet prompt = `Lead ID: ${lead.lead_id}\\n\\n`;\nprompt += `Critérios para escolha:\\n`;\nprompt += `1. Escolha o responsável com a maior categoria possível (ouro > prata > bronze).\\n`;\nprompt += `2. Se houver empate, escolha o de maior taxa de conversão.\\n`;\nprompt += `3. Persistindo empate, escolha o com menos mensagens pendentes.\\n`;\nprompt += `Responda apenas com o nome exato do escolhido.\\n\\n`;\nprompt += `Responsáveis disponíveis:\\n`;\nfor (const r of responsaveis) {\n  prompt += `- ${r.nome} [${r.categoria}], Taxa: ${(r.taxa_conversao*100).toFixed(1)}%, Ganhos: ${r.ganhos}, Perdidos: ${r.perdidos}, Msgs pendentes: ${r.msgs_pendentes}\\n`;\n}\n\nreturn [{\n  prompt,\n  lead_id: lead.lead_id,\n  contexto_decisao: { lead, responsaveis }\n}];\n"
+      },
+      "id": "9cc25c68-4745-4cb6-a770-1b900638cd90",
+      "name": "montar_prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        768,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Nome retornado pela IA\nconst nomeEscolhido = $json.choices[0].message.content.trim();\n\n// Resgata o contexto da decisão, com lead e responsaveis, do node anterior (o que monta o prompt)\nconst contexto = $items('montar_prompt')[0].json.contexto_decisao;\n\n// Busca o responsável pelo nome\nconst responsavel = contexto.responsaveis.find(r =>\n  r.nome.trim().toLowerCase() === nomeEscolhido.toLowerCase()\n);\n\n// Devolve lead_id, nome e responsavel_id\nreturn [{\n  nome_responsavel: nomeEscolhido,\n  responsavel_id: responsavel ? responsavel.responsavel_id : 'N/A',\n  lead_id: contexto.lead.lead_id || 'N/A',\n  contexto_decisao: contexto // para auditoria/log, se quiser\n}];\n\n"
+      },
+      "id": "73a4e9f7-b415-447c-9726-572f34c2f1a4",
+      "name": "extrair_nome",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE leads\nSET responsavel_id = (\n  SELECT responsavel_id\n  FROM responsavel\n  WHERE nome = $1\n  LIMIT 1\n)\nWHERE lead_id = $2;\n",
+        "additionalFields": {
+          "queryParams": "={{ JSON.stringify([$json.nome_responsavel, $json.lead_id]) }}"
+        }
+      },
+      "id": "da543709-600f-46c3-a709-59564377da8b",
+      "name": "atualizar_lead",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        224
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO distribuicao_lead (\n  lead_id,\n  responsavel_id,\n  data_distribuicao,\n  origem,\n  motivo,\n  ia_decision,\n  usuario_que_distribuiu,\n  contexto_decisao\n)\nVALUES (\n  $1,\n  (SELECT responsavel_id FROM responsavel WHERE nome = $2 LIMIT 1),\n  now(),\n  'IA',\n  'Distribuição automática por IA',\n  $2,\n  'n8n',\n  $3\n);\n",
+        "additionalFields": {
+          "queryParams": "=={{ [\n  $json.lead_id,\n  $json.nome_responsavel,\n  JSON.stringify($json.contexto_decisao)\n] }}\n\n"
+        }
+      },
+      "id": "67b70961-1375-4316-837d-9abbcf6ed04a",
+      "name": "logar_distribuicao",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        224
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        320,
+        224
+      ],
+      "id": "5c9fae83-c716-4891-9d04-4cea377dcc9f",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Nome retornado pela IA\nconst nomeEscolhido = $json.choices[0].message.content.trim();\n\n// Resgata o contexto da decisão, com lead e responsaveis, do node anterior (o que monta o prompt)\nconst contexto = $items('montar_prompt')[0].json.contexto_decisao;\n\n// Busca o responsável pelo nome\nconst responsavel = contexto.responsaveis.find(r =>\n  r.nome.trim().toLowerCase() === nomeEscolhido.toLowerCase()\n);\n\n// Devolve lead_id, nome e responsavel_id\nreturn [{\n  nome_responsavel: nomeEscolhido,\n  responsavel_id: responsavel ? responsavel.responsavel_id : 'N/A',\n  lead_id: contexto.lead.lead_id || 'N/A',\n  contexto_decisao: contexto // para auditoria/log, se quiser\n}];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1648,
+        224
+      ],
+      "id": "1124b583-4791-4a5c-bf47-2585a244f9ac",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  responsavel_id,\n  COUNT(*) AS total_leads,\n  COUNT(*) FILTER (WHERE data_ganho IS NOT NULL) AS ganhos,\n  COUNT(*) FILTER (WHERE data_perdido IS NOT NULL) AS perdidos\nFROM leads\nWHERE responsavel_id IS NOT NULL\nGROUP BY responsavel_id;\n",
+        "additionalFields": {}
+      },
+      "id": "09e766ce-9eb4-4b74-b024-8501eea89fb6",
+      "name": "buscar_leads_stats",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const responsaveis = $items('buscar_responsaveis').map(r => r.json);\nconst stats = $items('buscar_leads_stats').map(r => r.json);\nconst qtdLeadsPeriodo = $items('buscar_qtd_leads_periodo').map(r => r.json);\n\nfunction getStats(id) {\n  const s = stats.find(e => e.responsavel_id == id);\n  return {\n    ganhos: s ? parseInt(s.ganhos) : 0,\n    perdidos: s ? parseInt(s.perdidos) : 0,\n    total_leads: s ? parseInt(s.total_leads) : 0\n  };\n}\n\nfunction getQtdPeriodo(id) {\n  const q = qtdLeadsPeriodo.find(e => e.responsavel_id == id);\n  return q ? parseInt(q.qtd_leads_periodo) : 0;\n}\n\nconst responsaveisComTudo = responsaveis.map(r => {\n  const { ganhos, perdidos, total_leads } = getStats(r.responsavel_id);\n  const qtd_leads_periodo = getQtdPeriodo(r.responsavel_id);\n  const total = ganhos + perdidos;\n  const taxa = total > 0 ? ganhos / total : 0;\n  return {\n    ...r,\n    ganhos,\n    perdidos,\n    total_leads,\n    qtd_leads_periodo,\n    taxa_conversao: taxa,\n    // Categoria dinâmica como já mostramos\n  };\n});\n\n// ...segue para classificação dinâmica etc.\nreturn [{ responsaveis: responsaveisComTudo }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        224
+      ],
+      "id": "84b55423-f8af-4adc-bcc2-e248e5b8b8f4",
+      "name": "buscar_lead"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  responsavel_id,\n  COUNT(*) AS total_leads,\n  COUNT(*) FILTER (WHERE data_ganho IS NOT NULL) AS ganhos,\n  COUNT(*) FILTER (WHERE data_perdido IS NOT NULL) AS perdidos\nFROM leads\nWHERE timestamp_recebido >= NOW() - INTERVAL '90 days'\nGROUP BY responsavel_id;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        240
+      ],
+      "id": "460bb7a4-86eb-4728-8c4d-71acc1faefc6",
+      "name": "buscar_qtd_leads_periodo",
+      "credentials": {
+        "postgres": {
+          "id": "gv4NhIdkBb2qLSqQ",
+          "name": "Postgres CSV_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "requestMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "json"
+        },
+        "bodyParametersJson": "={{ {\n  \"model\": \"GPT‑4o mini\",\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"Você é um sistema de distribuição de leads. Responda somente com o nome exato do responsável escolhido, nada mais.\" },\n    { \"role\": \"user\", \"content\": $json.prompt }\n  ],\n  \"temperature\": 0,\n  \"max_tokens\": 20\n} }}"
+      },
+      "id": "98a93728-8546-4741-b688-d08eb9f400f8",
+      "name": "openai_request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        992,
+        224
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        2048,
+        160
+      ],
+      "id": "00334e39-5b1f-43a4-8cf3-b222b2e33dd5",
+      "name": "When chat message received",
+      "webhookId": "6931b0fb-1586-43d1-b752-b544db85cdff"
+    },
+    {
+      "parameters": {
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        2256,
+        160
+      ],
+      "id": "8f15473b-fafd-4805-9502-7138251a8229",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2464,
+        160
+      ],
+      "id": "48ea74e8-9284-42c0-951e-79399946a01d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "buscar_leads_stats",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "buscar_qtd_leads_periodo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "buscar_responsaveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_responsaveis": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "montar_prompt": {
+      "main": [
+        [
+          {
+            "node": "openai_request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extrair_nome": {
+      "main": [
+        [
+          {
+            "node": "atualizar_lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualizar_lead": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "buscar_lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "logar_distribuicao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_leads_stats": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_lead": {
+      "main": [
+        [
+          {
+            "node": "montar_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_qtd_leads_periodo": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "openai_request1": {
+      "main": [
+        [
+          {
+            "node": "extrair_nome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "19ecdee8-fd6e-4bfc-af5b-4497ba694476",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-07-28T15:14:25.221Z",
+      "updatedAt": "2025-07-28T15:14:25.221Z",
+      "role": "workflow:owner",
+      "workflowId": "EOrI6UQ1EyJ5Yh1i",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-25T20:00:36.295Z",
+      "updatedAt": "2025-07-25T20:00:36.295Z",
+      "id": "3759VYd0IlWAtU1B",
+      "name": "COMERCIAL CSV"
+    }
+  ]
+}
