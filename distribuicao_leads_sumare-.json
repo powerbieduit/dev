@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-30T14:52:24.312Z",
-  "updatedAt": "2025-07-30T16:54:54.000Z",
+  "updatedAt": "2025-08-21T20:45:51.000Z",
   "id": "VPqQBYMuouVBx0lL",
   "name": "distribuicao_leads_sumare",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -361,7 +361,16 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "80637736-277d-491a-8ae6-3ab51ebf4cd4",
+  "versionId": "62bc157d-9cf7-48be-b393-e9f691478df7",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-30T14:52:24.314Z",
+      "updatedAt": "2025-07-30T14:52:24.314Z",
+      "role": "workflow:owner",
+      "workflowId": "VPqQBYMuouVBx0lL",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
