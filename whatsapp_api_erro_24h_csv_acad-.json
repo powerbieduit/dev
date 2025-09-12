@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-07-25T19:54:42.891Z",
-  "updatedAt": "2025-07-31T17:23:09.000Z",
+  "updatedAt": "2025-08-25T15:45:21.000Z",
   "id": "0yCY00gWknlDKweJ",
   "name": "whatsapp_api_erro_24h_csv_acad",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
