@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T21:05:01.493Z",
-  "updatedAt": "2025-08-25T15:40:04.000Z",
+  "updatedAt": "2025-09-09T16:21:03.000Z",
   "id": "ta10t8dmOyScLzLf",
   "name": "distribuicao_leads_sumare V2",
   "active": true,
@@ -377,7 +377,7 @@
       }
     ]
   },
-  "versionId": "dac302de-7619-40d1-a9c9-840bb1cb7c3f",
+  "versionId": "4799a611-8288-4365-8cfc-d61b243ed207",
   "triggerCount": 1,
   "shared": [
     {
