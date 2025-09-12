@@ -1,0 +1,45 @@
+{
+  "createdAt": "2025-09-05T18:13:51.895Z",
+  "updatedAt": "2025-09-05T20:43:48.000Z",
+  "id": "U7xveIKKB5CnOYs4",
+  "name": "comercial msgfs",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "msgs_comercial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ecf7cb84-2d04-44ac-8db0-cb5fffe60f8d",
+      "name": "Webhook",
+      "webhookId": "644d7a33-ce6d-4dc3-b8f3-a4d598868307"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "d6314657-9fb1-47ae-9273-ceb7cdb4f9df",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-09-05T18:13:51.897Z",
+      "updatedAt": "2025-09-05T18:13:51.897Z",
+      "role": "workflow:owner",
+      "workflowId": "U7xveIKKB5CnOYs4",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
