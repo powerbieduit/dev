@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T21:00:44.158Z",
-  "updatedAt": "2025-08-25T15:51:36.000Z",
+  "updatedAt": "2025-09-09T16:22:02.000Z",
   "id": "Lec74yhTDupOfWxT",
   "name": "criacao_leads_sumaread V2",
   "active": true,
@@ -13,8 +13,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -880,
-        256
+        -1040,
+        352
       ],
       "id": "eac88f95-ef0a-420b-b51d-cfabff38ba06",
       "name": "Wait",
@@ -44,8 +44,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1376,
-        48
+        976,
+        160
       ],
       "id": "69dcf92e-8c68-4280-b969-fbbc55225a6f",
       "name": "cria contato",
@@ -83,8 +83,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -160,
-        176
+        -368,
+        352
       ],
       "id": "ad2a9cad-da32-4541-b2ce-8f9f44b506e4",
       "name": "If1"
@@ -96,8 +96,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -384,
-        176
+        -592,
+        352
       ],
       "id": "356a33fe-763c-44e0-873c-392a14db622a",
       "name": "Code"
@@ -113,8 +113,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -672,
-        208
+        -816,
+        352
       ],
       "id": "20cd387b-dfcf-4ddd-8568-7deb44c46950",
       "name": "procura lead1",
@@ -130,8 +130,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        64,
-        272
+        -144,
+        448
       ],
       "id": "11edfaa1-dd3d-4860-9b49-8f08efb6ed5b",
       "name": "Merge"
@@ -143,8 +143,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        288,
-        -16
+        80,
+        160
       ],
       "id": "6b7bfdd6-e970-4eed-aabe-637f4c87db72",
       "name": "Code1"
@@ -190,8 +190,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1056,
-        176
+        -1264,
+        256
       ],
       "id": "f80ef7ea-91e9-4c38-af4b-1d4207ad88c5",
       "name": "Edit Fields"
@@ -251,8 +251,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        288,
-        272
+        80,
+        448
       ],
       "id": "72213d2d-e5d1-4a2c-ac09-90f36a1457dd",
       "name": "Switch"
@@ -262,8 +262,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        512,
-        368
+        304,
+        544
       ],
       "id": "acde8cde-37fd-40e2-9ac3-32cd98ae18d4",
       "name": "No Operation, do nothing"
@@ -306,8 +306,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        512,
-        176
+        304,
+        352
       ],
       "id": "167e8e8e-e868-405e-b64f-2cc46fac97a9",
       "name": "recadastro",
@@ -373,8 +373,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1584,
-        32
+        1200,
+        160
       ],
       "id": "9165a50b-9a4b-4170-8fce-1f0e500bd612",
       "name": "cria lead (eduit new)",
@@ -394,8 +394,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -1280,
-        176
+        -1488,
+        256
       ],
       "id": "31e7c720-46dc-416f-9828-c959329df7d6",
       "name": "Webhook",
@@ -418,8 +418,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        64,
-        -16
+        -144,
+        160
       ],
       "id": "7c857d66-085c-4221-bc15-b85f8b3c5b9a",
       "name": "Get many rows",
@@ -455,8 +455,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        512,
-        -16
+        304,
+        160
       ],
       "id": "adfb9770-555c-48de-9cc4-90041e8040fb",
       "name": "Update a row",
@@ -484,8 +484,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        944,
-        -16
+        752,
+        160
       ],
       "id": "4195d550-a796-4786-866f-ef91ccd7cb81",
       "name": "Edit Fields1"
@@ -497,11 +497,538 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        720,
-        -16
+        528,
+        160
       ],
       "id": "1b495b9c-b56b-4000-9684-112703b7148e",
       "name": "Code2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "880e7b71-fbb8-4f91-91c3-14359444f0e4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1488,
+        1120
+      ],
+      "id": "e57cb40b-30bd-448b-a363-37062370e417",
+      "name": "Webhook1",
+      "webhookId": "880e7b71-fbb8-4f91-91c3-14359444f0e4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "31c410a6-9941-45fd-9e3b-7536194c7206",
+              "name": "tipo",
+              "value": "={{ $json.body.user_column_data[0].string_value }}",
+              "type": "string"
+            },
+            {
+              "id": "5ed3c871-a609-4c41-8649-a7dfe07a9e67",
+              "name": "nome",
+              "value": "={{ $json.body.user_column_data[1].string_value.replace('+', '') }}",
+              "type": "string"
+            },
+            {
+              "id": "f3a71701-7c91-4b76-98de-81b61004908f",
+              "name": "email",
+              "value": "={{ $json.body.user_column_data[3].string_value }}",
+              "type": "string"
+            },
+            {
+              "id": "27488890-7bf0-456b-a9c9-1340dc5cbf08",
+              "name": "telefone",
+              "value": "={{ $json.body.user_column_data[2].string_value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1264,
+        1120
+      ],
+      "id": "509a3646-334f-4f9b-9bca-1a22ff32446b",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1072,
+        1120
+      ],
+      "id": "2b0d495f-7800-4d3e-91cf-e5b4bef6371f",
+      "name": "Wait1",
+      "webhookId": "3fa03a24-3360-4e8b-982a-7571d3b418ad"
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Edit Fields2').item.json.nome }}",
+              "last_name": "=",
+              "responsible_user_id": "={{ $json.id_usuario }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
+                    "value": "={{ $('Edit Fields2').item.json.telefone }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        944,
+        928
+      ],
+      "id": "0f122e30-4d06-4421-895b-d9817061c6a1",
+      "name": "cria contato1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        1120
+      ],
+      "id": "888e40b0-8b35-4f5c-93ca-c367c0299f07",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Define campos fixos\nconst camposFixos = ['id', 'name', 'telefone', 'email', 'curso', 'origem'];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\nif (quantidade_encontrada === 0) {\n  // Se nenhum lead for encontrado, retorna campos vazios\n  const vazio = {\n    quantidade_encontrada,\n    id: \"\",\n    name: \"\",\n    telefone: \"\",\n    email: \"\",\n    curso: \"\",\n    origem: \"Site - Sumaré\"  // valor fixo mesmo sem leads\n  };\n  return [{ json: vazio }];\n}\n\n// Seleciona o lead com menor ID\nconst leadEscolhido = leads.reduce((min, atual) => {\n  return atual.id < min.id ? atual : min;\n});\n\n// Extrai valores dos campos customizados\nconst fields = leadEscolhido.custom_fields_values || [];\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name?.toLowerCase().includes(nome.toLowerCase()))\n         ?.values?.[0]?.value ?? \"\";\n};\n\nconst resultado = {\n  quantidade_encontrada,\n  id: leadEscolhido.id,\n  name: leadEscolhido.name ?? \"\",\n  telefone: getCampo(\"telefone\"),\n  email: getCampo(\"email\"),\n  curso: getCampo(\"curso\")\n};\n\nreturn [{ json: resultado }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        1120
+      ],
+      "id": "9193e23d-a57f-4656-a274-6c3fbdc56447",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $json.telefone }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        1120
+      ],
+      "id": "01b1986e-8939-4326-8a7e-92552ee2e86e",
+      "name": "procura lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -176,
+        1216
+      ],
+      "id": "46407698-91b9-4772-b4df-0ff70be9362d",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        928
+      ],
+      "id": "258a1f5e-3ca0-4d68-a030-39e9dd5dc571",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('procura lead').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
+                    "leftValue": "={{ $('procura lead').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        48,
+        1216
+      ],
+      "id": "b2498992-dbac-45a9-8d82-847762d0775a",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        272,
+        1312
+      ],
+      "id": "2c73a7cc-ab67-483f-8bae-caee6554e055",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.id }}",
+              "pipeline_id": 11003376,
+              "status_id": 84631604,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $json.name }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $json.telefone }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      62864
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        272,
+        1120
+      ],
+      "id": "5553c37a-1107-413e-b77f-be6141561df6",
+      "name": "recadastro1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distrib_sumare",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "ATIVO"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        912
+      ],
+      "id": "2bbb3d13-2b93-46ce-8b64-fed8f99fa16a",
+      "name": "Get many rows1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "distrib_sumare",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id_usuario",
+              "condition": "eq",
+              "keyValue": "={{ $('Get many rows1').item.json.id_usuario }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_lead",
+              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        272,
+        928
+      ],
+      "id": "774b7cb4-8049-490c-b9c0-6437e02c2a0b",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4132718e-6d72-4894-ae80-9ac7d6fe84f3",
+              "name": "id_usuario",
+              "value": "={{ $json.id_usuario }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        976
+      ],
+      "id": "7194bddf-ec4d-4885-8461-544e61ae5f57",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        928
+      ],
+      "id": "2ddae426-ee21-4128-b2ca-0c16eb228bb2",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Edit Fields2').item.json.nome }}",
+              "pipeline_id": 5617751,
+              "status_id": 49518221,
+              "responsible_user_id": "={{ $('Edit Fields3').item.json.id_usuario }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662138,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields2').item.json.nome }}"
+                  },
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields2').item.json.telefone }}"
+                  },
+                  {
+                    "data": "{\"id\":672274,\"type\":\"text\"}",
+                    "value": "={{$items(\"Code4\")[0].json.nome}}"
+                  },
+                  {
+                    "data": "{\"id\":673258,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields2').item.json.tipo }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "tags": [
+                  {
+                    "id": [
+                      175399
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        928
+      ],
+      "id": "d54c73b0-6dbd-487f-816f-3ae23bc7981b",
+      "name": "cria lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## google ads\n",
+        "height": 656,
+        "width": 2960,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        816
+      ],
+      "id": "73a91833-ae55-4cda-99ba-aa243aedc259",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## site sumaread\n",
+        "height": 656,
+        "width": 2960,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        80
+      ],
+      "id": "b65578be-c561-4615-9da3-2460af49a7c8",
+      "name": "Sticky Note1"
     }
   ],
   "connections": {
@@ -672,6 +1199,174 @@
           }
         ]
       ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "procura lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cria contato1": {
+      "main": [
+        [
+          {
+            "node": "cria lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get many rows1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "procura lead": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "recadastro1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows1": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "cria contato1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -687,39 +1382,105 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-            "content-length": "62",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36",
+            "content-length": "76",
             "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
+            "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             "content-type": "application/json",
             "origin": "https://www.sumaread.com.br",
+            "priority": "u=1, i",
             "referer": "https://www.sumaread.com.br/",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "191.183.36.92",
+            "x-forwarded-for": "191.39.133.37",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "191.183.36.92"
+            "x-real-ip": "191.39.133.37"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "rensto",
-            "celular": "11991425856",
+            "nome": "Aline f de oliveira ",
+            "celular": "11959311938",
             "tipo": "Graduação"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/criacao_leads_sumare",
           "executionMode": "production"
         }
       }
+    ],
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Google-Ads-Notifications",
+            "content-length": "859",
+            "accept-encoding": "gzip, deflate, br",
+            "content-type": "application/json",
+            "from": "Google-Ads-Notifications(at)GoogleAdsNotifications.com",
+            "x-forwarded-for": "66.249.83.105",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "66.249.83.105"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "lead_id": "01ed595ecffb187fc3c96e70d897f7d9a76873631a9588f68e0a45e45b0720bacd236bb5f57053a2fb28b180b7356c",
+            "user_column_data": [
+              {
+                "column_name": "Em que programa tem interesse?",
+                "string_value": "Graduação",
+                "column_id": "em_que_programa_tem_interesse?"
+              },
+              {
+                "column_name": "Full Name",
+                "string_value": "Carlos Eduardo",
+                "column_id": "FULL_NAME"
+              },
+              {
+                "column_name": "User Phone",
+                "string_value": "+5531997889919",
+                "column_id": "PHONE_NUMBER"
+              },
+              {
+                "column_name": "User Email",
+                "string_value": "qdedededed@gmail.com",
+                "column_id": "EMAIL"
+              },
+              {
+                "column_name": "City",
+                "string_value": "Contagem",
+                "column_id": "CITY"
+              }
+            ],
+            "api_version": "1.0",
+            "form_id": 75638173899,
+            "campaign_id": 19872554140,
+            "google_key": "0420e21a-689d-4483-8218-b31aac6494f9",
+            "is_test": false,
+            "gcl_id": "",
+            "adgroup_id": 0,
+            "creative_id": 0,
+            "asset_group_id": 6463687008,
+            "lead_stage": "Raw lead",
+            "lead_submit_time": "2025-08-28T19:42:35.697677Z"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/880e7b71-fbb8-4f91-91c3-14359444f0e4",
+          "executionMode": "production"
+        }
+      }
     ]
   },
-  "versionId": "74a77b11-13b2-4fa7-bcf7-1e9d88a94d4a",
-  "triggerCount": 1,
+  "versionId": "2ee80995-bc4b-4e0f-ab40-1cab6401230f",
+  "triggerCount": 2,
   "shared": [
     {
       "createdAt": "2025-08-19T21:00:44.163Z",
