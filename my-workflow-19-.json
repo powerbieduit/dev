@@ -1,0 +1,167 @@
+{
+  "createdAt": "2025-08-07T16:21:49.220Z",
+  "updatedAt": "2025-08-12T15:16:12.000Z",
+  "id": "BBBM6rxhPp28RffM",
+  "name": "My workflow 19",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "71d619f6-4606-4b40-8fb2-710dfefe04a3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "042d2a34-06e5-407e-869d-bf665213480d",
+      "name": "Webhook",
+      "webhookId": "71d619f6-4606-4b40-8fb2-710dfefe04a3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.data.key.fromMe }}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "6087530f-fed6-4617-bb36-69a1d8b6157d"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b90517c8-4f8b-41f1-9144-a6217fa32384",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "92574492-26e2-4847-9cb5-7dda2fd8aa69",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.10.0",
+            "content-length": "928",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "WhatsApp_Licenciado_Com_CSV",
+            "data": {
+              "key": {
+                "id": "wamid.HBgNNTUxMTk0MjY3MTE0MhUCABIYIDU0QTExNTJERjc2RTJCNUVEMDZGMEE2QkNGNEE2QzRCAA==",
+                "remoteJid": "5511942671142@s.whatsapp.net",
+                "fromMe": false
+              },
+              "pushName": "Daiane",
+              "message": {
+                "conversation": "Só vou fazer se conseguir me formar em 6 meses"
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1754583929,
+              "source": "unknown",
+              "instanceId": "98ca10e0-c895-470b-baeb-0da86d9f01f6"
+            },
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/71d619f6-4606-4b40-8fb2-710dfefe04a3",
+            "date_time": "2025-08-07T13:25:30.892Z",
+            "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
+            "apikey": "EAAb0QaT8hLgBPKwtsFw5HJimXncziGaYSlPU4ChUiTV0bPSDdwGTeiHVcqXbySvkDfLZCedHS9ZAj14jU7ZCqLkfWF6en4OZCDpfyfSwmfuf2uhSHDfgmF8SZCEsIrTxWwgxWT0ubVUZBm54G0GVqdOM8IvaWAH9wBR5ARvgqXGdqWh2aB6Nc37ZAaXhieB1ZBg3UrpAVgeA2cuwh2Pj76FJqzUVWZBnDMGOhmVEF5HzQKzsshwZDZD"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/71d619f6-4606-4b40-8fb2-710dfefe04a3",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "35db36f6-c93e-4357-9f33-abc61bf23447",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-07T16:21:49.223Z",
+      "updatedAt": "2025-08-07T16:21:49.223Z",
+      "role": "workflow:owner",
+      "workflowId": "BBBM6rxhPp28RffM",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
