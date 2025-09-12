@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-12T19:00:00.578Z",
-  "updatedAt": "2025-08-14T16:40:53.000Z",
+  "updatedAt": "2025-09-05T20:43:09.000Z",
   "id": "1jMKODbyXXgxral1",
   "name": "dashboard_disparos",
   "active": true,
@@ -9,7 +9,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH params AS (\n  SELECT \n    NULLIF('{{$json.query.data_inicio || \"\"}}','')::date AS data_inicio,\n    NULLIF('{{$json.query.data_fim || \"\"}}','')::date AS data_fim\n)\nSELECT json_build_object(\n  'ativacoes_por_dia',\n  COALESCE(\n    (\n      SELECT json_agg(row_to_json(a) ORDER BY a.dia)\n      FROM (\n        SELECT\n          t.data_ativacao AS dia,\n          COUNT(*) AS total\n        FROM ativacoes t\n        CROSS JOIN params p\n        WHERE (p.data_inicio IS NULL OR t.data_ativacao >= p.data_inicio)\n          AND (p.data_fim    IS NULL OR t.data_ativacao <= p.data_fim)\n        GROUP BY t.data_ativacao\n        ORDER BY t.data_ativacao\n      ) a\n    ),\n    '[]'::json\n  ),\n  'retornos_por_status',\n  COALESCE(\n    (\n      SELECT json_agg(row_to_json(b) ORDER BY b.quantidade DESC)\n      FROM (\n        SELECT\n          r.retorno,\n          COUNT(DISTINCT r.rgm) AS quantidade\n        FROM retorno_disparos r\n        CROSS JOIN params p\n        WHERE (p.data_inicio IS NULL OR r.data_registro::date >= p.data_inicio)  -- troque data_retorno se necessário\n          AND (p.data_fim    IS NULL OR r.data_registro::date <= p.data_fim)\n        GROUP BY r.retorno\n        ORDER BY COUNT(DISTINCT r.rgm) DESC\n      ) b\n    ),\n    '[]'::json\n  )\n) AS payload;\n",
+        "query": "WITH params AS (\n  SELECT \n    NULLIF('{{$json.query.data_inicio || \"\"}}','')::date AS data_inicio,\n    NULLIF('{{$json.query.data_fim   || \"\"}}','')::date AS data_fim\n),\n\n-- Último retorno por RGM na janela\nult_retorno AS (\n  SELECT DISTINCT ON (r.rgm)\n         r.rgm,\n         COALESCE(NULLIF(btrim(r.retorno), ''), 'SEM RESPOSTA') AS retorno\n  FROM retorno_disparos r\n  CROSS JOIN params p\n  WHERE (p.data_inicio IS NULL OR r.data_registro::date >= p.data_inicio)\n    AND (p.data_fim    IS NULL OR r.data_registro::date <= p.data_fim)\n  ORDER BY r.rgm, r.data_registro DESC\n)\n\nSELECT json_build_object(\n  'ativacoes_por_dia',\n  COALESCE(\n    (\n      SELECT json_agg(row_to_json(a) ORDER BY a.dia)\n      FROM (\n        SELECT\n          t.data_ativacao::date AS dia,\n          COUNT(*) AS total\n        FROM disparos t\n        CROSS JOIN params p\n        WHERE (p.data_inicio IS NULL OR t.data_ativacao::date >= p.data_inicio)\n          AND (p.data_fim    IS NULL OR t.data_ativacao::date <= p.data_fim)\n        GROUP BY t.data_ativacao::date\n        ORDER BY t.data_ativacao::date\n      ) a\n    ),\n    '[]'::json\n  ),\n  'retornos_por_status',\n  COALESCE(\n    (\n      SELECT json_agg(row_to_json(b) ORDER BY b.quantidade DESC)\n      FROM (\n        SELECT\n          u.retorno,\n          COUNT(*) AS quantidade\n        FROM ult_retorno u\n        GROUP BY u.retorno\n        ORDER BY COUNT(*) DESC\n      ) b\n    ),\n    '[]'::json\n  )\n) AS payload;\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
@@ -98,7 +98,6 @@
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
-            "if-none-match": "W/\"3d-VSYt6OOxvX8fYYSnw2JCeMp9raY\"",
             "origin": "https://painel.cruzeiroead.com.br",
             "priority": "u=1, i",
             "referer": "https://painel.cruzeiroead.com.br/",
@@ -108,17 +107,17 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "187.101.249.108",
+            "x-forwarded-for": "191.204.187.221",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "187.101.249.108"
+            "x-real-ip": "191.204.187.221"
           },
           "params": {},
           "query": {
-            "data_inicio": "2025-08-14",
-            "data_fim": "2025-08-13"
+            "data_inicio": "2025-08-26",
+            "data_fim": "2025-08-27"
           },
           "body": {},
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/dashboard",
@@ -127,7 +126,7 @@
       }
     ]
   },
-  "versionId": "f4790f4d-19a8-4a05-9ef9-9cca406e4167",
+  "versionId": "1385c8fb-5157-40e5-85df-ba4c37f8210a",
   "triggerCount": 1,
   "shared": [
     {
