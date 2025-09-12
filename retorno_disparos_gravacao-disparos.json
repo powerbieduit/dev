@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-12T15:08:41.007Z",
-  "updatedAt": "2025-08-25T15:38:46.000Z",
+  "updatedAt": "2025-09-05T20:43:10.000Z",
   "id": "vBQWXV2MCYF7Mduq",
   "name": "retorno_disparos_gravacao",
   "active": true,
@@ -189,7 +189,7 @@
     {
       "parameters": {
         "content": "* entrou para atendimento\n* sem resposta\n* rematricula feita\n",
-        "height": 1964,
+        "height": 2316,
         "width": 880
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -440,6 +440,66 @@
       "id": "f7dd9c42-f60a-4b00-bfc5-77068a399f11",
       "name": "sem interesse",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO disparos (rgm, data_ativacao)\nVALUES ('{{ $json.id_lead }}', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        560,
+        2112
+      ],
+      "id": "c23255e6-ef1c-4d43-bf56-f60b1bcce8e7",
+      "name": "Execute a SQL query7",
+      "credentials": {
+        "postgres": {
+          "id": "QDCGVsYyhaarkGj6",
+          "name": "Disparos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gravar-ativacao",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        48,
+        2112
+      ],
+      "id": "a11b437c-009c-4706-8449-38def8e899d7",
+      "name": "gravar-ativacao",
+      "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        2096
+      ],
+      "id": "a3d23493-8a37-4429-a388-ec34d612c9f4",
+      "name": "Edit Fields7"
     }
   ],
   "connections": {
@@ -596,18 +656,74 @@
           }
         ]
       ]
+    },
+    "gravar-ativacao": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
   },
   "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "7409e356-ff19-401f-9839-9e9c9bb69849",
-  "triggerCount": 7,
+  "pinData": {
+    "em-atendimento": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "195",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "b3316de8-75ac-42d9-b040-4eebbb93a809",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19380469",
+            "leads[add][0][status_id]": "83191468",
+            "leads[add][0][pipeline_id]": "10848776",
+            "account[id]": "31370511",
+            "account[subdomain]": "csvatendimento"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/entrou-na-fila",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "e037a5d7-963d-424c-a7fd-f3fd8472c755",
+  "triggerCount": 8,
   "shared": [
     {
       "createdAt": "2025-08-12T15:08:41.011Z",
