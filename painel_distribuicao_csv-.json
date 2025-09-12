@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T19:56:45.653Z",
-  "updatedAt": "2025-08-21T20:16:07.000Z",
+  "updatedAt": "2025-08-28T13:45:22.000Z",
   "id": "Omx94aT4or4GKS3w",
   "name": "painel_distribuicao_csv",
   "active": true,
@@ -38,8 +38,8 @@
       ],
       "credentials": {
         "postgres": {
-          "id": "Pq2u2kpM4UEc1q97",
-          "name": "Postgres distribuicao_academico"
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
         }
       }
     },
@@ -117,8 +117,8 @@
       ],
       "credentials": {
         "postgres": {
-          "id": "Pq2u2kpM4UEc1q97",
-          "name": "Postgres distribuicao_academico"
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
         }
       }
     },
@@ -246,8 +246,8 @@
       "name": "Postgres3",
       "credentials": {
         "postgres": {
-          "id": "Pq2u2kpM4UEc1q97",
-          "name": "Postgres distribuicao_academico"
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
         }
       }
     },
@@ -267,8 +267,8 @@
       "name": "Postgres",
       "credentials": {
         "postgres": {
-          "id": "Pq2u2kpM4UEc1q97",
-          "name": "Postgres distribuicao_academico"
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
         }
       }
     },
@@ -414,7 +414,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "5b05a64b-4998-4023-875f-1e869cd755e4",
+  "versionId": "13d1db01-abe3-4731-bba3-1a63ffdbd373",
   "triggerCount": 2,
   "shared": [
     {
