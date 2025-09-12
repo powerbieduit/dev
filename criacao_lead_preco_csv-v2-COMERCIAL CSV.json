@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T17:09:41.936Z",
-  "updatedAt": "2025-08-19T20:33:37.000Z",
+  "updatedAt": "2025-08-25T17:52:16.000Z",
   "id": "J8kEHhciQvV44PRs",
   "name": "criacao_lead_preco_csv V2",
   "active": true,
@@ -869,40 +869,42 @@
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
-            "content-length": "133",
+            "content-length": "249",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             "content-type": "application/json",
-            "origin": "https://www.ead.eduit.com.br",
+            "origin": "https://www.eduit.com.br",
             "priority": "u=1, i",
-            "referer": "https://www.ead.eduit.com.br/",
+            "referer": "https://www.eduit.com.br/",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "191.204.187.221",
+            "x-forwarded-for": "200.153.126.250",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "191.204.187.221"
+            "x-real-ip": "200.153.126.250"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Luan Mello VIllas Boas",
-            "email": "luanmvb@hotmail.com",
-            "celular": "11945722117",
-            "tipo": "Graduação",
-            "origem": "form-eadeduit"
+            "nome": "Jéssica Andreza Barbosa",
+            "email": "vilfredosilva@gmail.com",
+            "celular": "11997363479",
+            "curso": "Graduacao- cursos | Eduit New",
+            "politica_privacidade": true,
+            "gclid": "EAIaIQobChMI25eQz6umjwMV4YbCCB00MirEEAAYAyAAEgJOsfD_BwE",
+            "origem": "form-eduit"
           },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook-test/ddb18fa0-ee6e-420f-a502-0e5becb434de",
-          "executionMode": "test"
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/ddb18fa0-ee6e-420f-a502-0e5becb434de",
+          "executionMode": "production"
         }
       }
     ]
   },
-  "versionId": "2cfa9026-0dd9-4ee9-8f00-ae6a6b2a90ae",
+  "versionId": "939fffa7-bfb6-40a0-96b8-5b8cf0050215",
   "triggerCount": 1,
   "shared": [
     {
