@@ -1,0 +1,764 @@
+{
+  "createdAt": "2025-09-08T15:14:31.379Z",
+  "updatedAt": "2025-09-11T00:55:32.000Z",
+  "id": "IgOWFfW4ekpHKPrA",
+  "name": "feedback_conversas acad - csv",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM crm_messages\nWHERE whatsapp_to = '{{$json.data.custom_fields_values[0].values[0].value}}'\n  AND message_ts::date = CURRENT_DATE;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -400,
+        208
+      ],
+      "id": "5818cc5d-4440-49b1-851f-4e30d9bf44a5",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "9HdbVgjDeNXGxrxq",
+          "name": "Log_Conversa"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Entrada: vários itens (cada item = 1 mensagem)\n// Saída: 1 item por whatsapp_to, com métricas de tempo e estruturas para IA\nconst tz = 'America/Sao_Paulo';\n\nfunction fmtBR(tsStr) {\n  const d = new Date(tsStr);\n  return d.toLocaleString('pt-BR', { timeZone: tz, hour12: false });\n}\nfunction toBRDate(tsStr) {\n  return new Date(tsStr);\n}\nfunction toHHMMSS(totalSeconds) {\n  if (totalSeconds == null || !isFinite(totalSeconds)) return null;\n  const s = Math.max(0, Math.round(totalSeconds));\n  const h = Math.floor(s / 3600);\n  const m = Math.floor((s % 3600) / 60);\n  const sec = s % 60;\n  const pad = (n) => n.toString().padStart(2, '0');\n  return `${pad(h)}:${pad(m)}:${pad(sec)}`;\n}\n\n// Formata para TIME do Postgres: 'HH:MM:SS.mmm' (até 6 casas se quiser)\nfunction toPgTime(totalSeconds, fractionDigits = 3) {\n  if (totalSeconds == null || !isFinite(totalSeconds)) return null;\n  if (totalSeconds < 0) totalSeconds = 0;\n\n  // TIME não comporta >= 24h – retorne null para evitar erro\n  const maxSecs = 24 * 3600 - 1e-6; // um tiquinho abaixo de 24h\n  if (totalSeconds >= maxSecs) return null;\n\n  const pad2 = (n) => n.toString().padStart(2, '0');\n\n  const whole = Math.floor(totalSeconds);\n  const frac = Math.max(0, totalSeconds - whole);\n\n  const h = Math.floor(whole / 3600);\n  const m = Math.floor((whole % 3600) / 60);\n  const s = whole % 60;\n\n  if (fractionDigits <= 0) {\n    return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;\n  }\n  const fracStr = (Math.round(frac * Math.pow(10, fractionDigits))).toString().padStart(fractionDigits, '0');\n  return `${pad2(h)}:${pad2(m)}:${pad2(s)}.${fracStr}`;\n}\n\nfunction avg(arr) {\n  if (!arr.length) return null;\n  return arr.reduce((a,b)=>a+b,0) / arr.length;\n}\n\n// 1) Agrupar por whatsapp_to\nconst porNumero = new Map();\nfor (const item of items) {\n  const r = item.json;\n  const w = r.whatsapp_to || 'desconhecido';\n  if (!porNumero.has(w)) porNumero.set(w, []);\n  porNumero.get(w).push(r);\n}\n\nconst saida = [];\n\nfor (const [whats, listaRaw] of porNumero.entries()) {\n  // 2) Ordenar por timestamp\n  const lista = [...listaRaw].sort((a, b) => new Date(a.message_ts) - new Date(b.message_ts));\n\n  // 3) Transcript + estrutura messages\n  const linhas = [];\n  const msgs = [];\n  for (const r of lista) {\n    const quem = (r.direction === 'IN') ? 'Cliente' : (r.agent_id || 'Agente');\n    const quando = fmtBR(r.message_ts);\n    const texto = (r.message_text ?? '').toString().trim();\n\n    linhas.push(`[${quando}] ${quem}: ${texto}`);\n    msgs.push({\n      ts: quando,\n      sender: (r.direction === 'IN') ? 'Cliente' : (r.agent_id || 'Agente'),\n      role: r.direction === 'IN' ? 'user' : 'assistant',\n      text: texto,\n      // <<< NOVO: preservar agent_id bruto por mensagem (null para IN)\n      agent_id: r.agent_id ?? null,\n    });\n  }\n\n  // 4) Métricas de tempo\n  const firstTs = lista.length ? toBRDate(lista[0].message_ts).getTime() : null;\n  const lastTs  = lista.length ? toBRDate(lista[lista.length - 1].message_ts).getTime() : null;\n  const duracaoTotalSec = (firstTs != null && lastTs != null) ? (lastTs - firstTs) / 1000 : null;\n\n  // tempos de resposta IN -> próximo OUT\n  const diffsSec = [];\n  let primeiraRespostaSec = null;\n\n  const outs = lista.filter(m => m.direction === 'OUT');\n  for (const msg of lista) {\n    if (msg.direction !== 'IN') continue;\n    const tIN = toBRDate(msg.message_ts).getTime();\n    const proxOUT = outs.find(o => toBRDate(o.message_ts).getTime() > tIN);\n    if (proxOUT) {\n      const tOUT = toBRDate(proxOUT.message_ts).getTime();\n      const delta = (tOUT - tIN) / 1000;\n      diffsSec.push(delta);\n      if (primeiraRespostaSec == null) primeiraRespostaSec = delta;\n    }\n  }\n\n  const mediaRespostaSec = avg(diffsSec);\n\n  // 5) Contadores úteis\n  const totalIN = lista.filter(m => m.direction === 'IN').length;\n  const totalOUT = lista.filter(m => m.direction === 'OUT').length;\n\n  // 6) Agentes envolvidos na conversa\n  const outsComAgente = lista.filter(m => m.direction === 'OUT' && m.agent_id);\n  const agentesUnicos = [...new Set(outsComAgente.map(m => m.agent_id))];\n  const primeiroAgenteId = outsComAgente.length ? outsComAgente[0].agent_id : null;\n  const ultimoAgenteId   = outsComAgente.length ? outsComAgente[outsComAgente.length - 1].agent_id : null;\n\n  saida.push({\n    json: {\n      whatsapp_to: whats,\n      total_mensagens: lista.length,\n      total_cliente_IN: totalIN,\n      total_agente_OUT: totalOUT,\n\n      // <<< NOVOS CAMPOS DE AGENTE\n      agentes_ids: agentesUnicos,          // ex.: [\"Camila\"]\n      primeiro_agente_id: primeiroAgenteId, // ex.: \"Camila\"\n      ultimo_agente_id: ultimoAgenteId,     // ex.: \"Camila\"\n\n      // timestamps (texto)\n      primeira_mensagem_ts: lista.length ? fmtBR(lista[0].message_ts) : null,\n      ultima_mensagem_ts:   lista.length ? fmtBR(lista[lista.length - 1].message_ts) : null,\n\n      // duração total (número e formatos)\n      duracao_total_segundos: duracaoTotalSec,                    // use NUMERIC/DOUBLE no Supabase\n      duracao_total_hhmmss: toHHMMSS(duracaoTotalSec),            // string simples\n      duracao_total_time:   toPgTime(duracaoTotalSec, 3),         // **campo compatível com TIME 'HH:MM:SS.mmm'**\n\n      // primeira resposta do agente após o primeiro IN\n      primeira_resposta_segundos: primeiraRespostaSec,            // NUMERIC/DOUBLE\n      primeira_resposta_hhmmss: toHHMMSS(primeiraRespostaSec),\n      primeira_resposta_time:   toPgTime(primeiraRespostaSec, 3), // **TIME**\n\n      // tempo médio de resposta (IN -> próximo OUT)\n      tempo_medio_resposta_segundos: mediaRespostaSec,            // NUMERIC/DOUBLE\n      tempo_medio_resposta_hhmmss: toHHMMSS(mediaRespostaSec),\n      tempo_medio_resposta_time:   toPgTime(mediaRespostaSec, 3), // **TIME**\n\n      // transcript para IA + messages estruturado\n      transcript: linhas.join('\\n'),\n      messages: msgs\n    }\n  });\n}\n\nreturn saida;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        208
+      ],
+      "id": "9be224b9-ae54-4933-a4da-93c96d763821",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "conversas",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1504,
+        208
+      ],
+      "id": "ccbb14bc-d219-44d0-9e20-9980538c51ee",
+      "name": "Webhook",
+      "webhookId": "2e463232-decb-4722-a77e-6f4f4fea2be2"
+    },
+    {
+      "parameters": {
+        "url": "https://csvatendimento.kommo.com/api/v4/leads",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "with",
+              "value": "contacts"
+            },
+            {
+              "name": "query",
+              "value": "={{ $json.body[\"leads[add][0][id]\"] }}"
+            },
+            {
+              "name": "filter[statuses][0][pipeline_id]",
+              "value": "6961711"
+            },
+            {
+              "name": "filter[statuses][0][status_id]",
+              "value": "61685383"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRhMTQyMjYwYWE5YmY2MTU2YTkwMjg5ZDFiZTEzYjE5NDc2NmJmNjkxZTZlYTUzNzY2NmFjYTU2ODJkYzViMGM5NTdjMDMzZTg3ODkyYzg0In0.eyJhdWQiOiI1MzQyMjFiYy1mM2ZmLTQ2YjYtYWRlYi02N2I5NGRmNWEzYzEiLCJqdGkiOiI0YTE0MjI2MGFhOWJmNjE1NmE5MDI4OWQxYmUxM2IxOTQ3NjZiZjY5MWU2ZWE1Mzc2NjZhY2E1NjgyZGM1YjBjOTU3YzAzM2U4Nzg5MmM4NCIsImlhdCI6MTc1NzM1MDc3MiwibmJmIjoxNzU3MzUwNzcyLCJleHAiOjE3NzI3NTUyMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJ1c2VyX2ZsYWdzIjowLCJoYXNoX3V1aWQiOiJjNTNmM2RlZi05NDkxLTRjODMtYWUyZS0zNTliYjMzODc1YTUiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.rBJalBWuV7EEgkqaEeVz7EzDQ5BZb1o-F25MXIl-bgFmDGQG23EHQTl_Em79I4Uc5wO7rxv5hf8YUEX7SxVHy--MUPe0XI6uvYAGFJDbnXHeJ3Z3v31c-Tb0MIbG4u6zxsIxHp5Uy1tuFgSpya08FWGloImcFQ86_ivq_VvQc-TiMmOwDH7BxwMn9DHI9itY_dAtjxPSDEjodMz827I2fVXPxC-csYNrtcpvcKB2G0gGn9EPhcOyUd9oxnyVOWrLl9k6uxWvR8j5uWkj7LvENlaT3_DekX-O_6nS_PbAXxdZ7FuYWYMshKaxa2FBEAXuu7LHxDXkcKTiRv8GgBTIGQ"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1280,
+        208
+      ],
+      "id": "02a27597-a4e4-4630-be6b-ed40dd7bdda6",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6f3596e1-283b-4b60-bb07-7eefdaf14ea7",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1056,
+        208
+      ],
+      "id": "f3ffba76-56d4-4cfa-beb5-d1cb0c9397b4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "=https://csvatendimento.kommo.com/api/v4/contacts/{{ $json.data._embedded.leads[0]._embedded.contacts[0].id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRhMTQyMjYwYWE5YmY2MTU2YTkwMjg5ZDFiZTEzYjE5NDc2NmJmNjkxZTZlYTUzNzY2NmFjYTU2ODJkYzViMGM5NTdjMDMzZTg3ODkyYzg0In0.eyJhdWQiOiI1MzQyMjFiYy1mM2ZmLTQ2YjYtYWRlYi02N2I5NGRmNWEzYzEiLCJqdGkiOiI0YTE0MjI2MGFhOWJmNjE1NmE5MDI4OWQxYmUxM2IxOTQ3NjZiZjY5MWU2ZWE1Mzc2NjZhY2E1NjgyZGM1YjBjOTU3YzAzM2U4Nzg5MmM4NCIsImlhdCI6MTc1NzM1MDc3MiwibmJmIjoxNzU3MzUwNzcyLCJleHAiOjE3NzI3NTUyMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJ1c2VyX2ZsYWdzIjowLCJoYXNoX3V1aWQiOiJjNTNmM2RlZi05NDkxLTRjODMtYWUyZS0zNTliYjMzODc1YTUiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.rBJalBWuV7EEgkqaEeVz7EzDQ5BZb1o-F25MXIl-bgFmDGQG23EHQTl_Em79I4Uc5wO7rxv5hf8YUEX7SxVHy--MUPe0XI6uvYAGFJDbnXHeJ3Z3v31c-Tb0MIbG4u6zxsIxHp5Uy1tuFgSpya08FWGloImcFQ86_ivq_VvQc-TiMmOwDH7BxwMn9DHI9itY_dAtjxPSDEjodMz827I2fVXPxC-csYNrtcpvcKB2G0gGn9EPhcOyUd9oxnyVOWrLl9k6uxWvR8j5uWkj7LvENlaT3_DekX-O_6nS_PbAXxdZ7FuYWYMshKaxa2FBEAXuu7LHxDXkcKTiRv8GgBTIGQ"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -832,
+        208
+      ],
+      "id": "2efc3ec8-ef2d-4c5f-9134-3cee37732b69",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91c3defb-bf2e-4395-9db5-4b71ee51e221",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -608,
+        208
+      ],
+      "id": "5a753613-33cd-4a42-8eb2-d816396ebe85",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Aqui está a conversa de hoje com o cliente:\n:\n{{ $json.transcript }}",
+        "options": {
+          "systemMessage": "=Prompt Principal: Você é um analista de qualidade de atendimento. \n\nAnalise os FATOS da conversa e produza um feedback objetivo em até 5 linhas: \n\nFEEDBACK: Demanda: [O que EXATAMENTE o cliente pediu - seja específico] \n\nResolução: [O consultor resolveu? Parcialmente? Não resolveu? Cite ações concretas tomadas] Problemas Identificados: [Fatos objetivos: tempo de resposta excessivo, informação incorreta, não seguiu procedimento, cliente insatisfeito com resposta específica, etc.] Resultado: [Cliente ficou satisfeito/insatisfeito? Cancelou? Continuou? Pediu mais informações? Use evidências da conversa] \n\nUse apenas informações que estão EXPLÍCITAS na conversa Não faça suposições sobre sentimentos ou intenções Foque em ações concretas e resultados mensuráveis Se o cliente elogiou/reclamou, cite textualmente Indique tempo de duração se foi excessivo (>2h para questões simples)\n\n**SEMPRE INFORME O CONSULTOR QUE ESTÁ ATENDENDO:  {{ $json.messages[4].sender }} EM SEU FEEDBACK** \n\n**SEMPRE FORMATE SEU OUTPUT** com campos ESPECIFICADOS: \n\nPONTO POSITIVO:\nPONTO NEGATIVO:\nFEEDBACK\n\n**EXATAMENTE NESSA ORDEM!**\n\nResultado PRECISA SER EM JSON"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        208
+      ],
+      "id": "b2307f02-d02e-4ac4-b76e-d24445a7eac7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        512
+      ],
+      "id": "49c9c167-7bc9-44cd-b5e4-0a2152224d14",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "feedback",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "consultor",
+              "fieldValue": "={{ $('Code').item.json.agentes_ids[0] }}"
+            },
+            {
+              "fieldId": "feedback",
+              "fieldValue": "={{ $json.feedback_texto }}"
+            },
+            {
+              "fieldId": "ponto_positivo",
+              "fieldValue": "={{ $json.ponto_positivo }}"
+            },
+            {
+              "fieldId": "ponto_negativo",
+              "fieldValue": "={{ $json.ponto_negativo }}"
+            },
+            {
+              "fieldId": "tempo_atendimento",
+              "fieldValue": "={{ $('Code').item.json.duracao_total_hhmmss }}"
+            },
+            {
+              "fieldId": "tempo_medio_resposta",
+              "fieldValue": "={{ $('Code').item.json.tempo_medio_resposta_hhmmss }}"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        656,
+        224
+      ],
+      "id": "d0115b4a-d3cb-4b7d-842f-293d4ed4f4f0",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node (JavaScript)\n// Modo: Run Once for All Items\n\nfunction safeParse(jsonStr) {\n  if (typeof jsonStr !== 'string') return null;\n  try {\n    return JSON.parse(jsonStr);\n  } catch (e) {\n    // tenta extrair apenas o objeto {...} se vier com prefixo/sufixo\n    const s = jsonStr.indexOf('{');\n    const e2 = jsonStr.lastIndexOf('}');\n    if (s >= 0 && e2 >= 0) {\n      try { return JSON.parse(jsonStr.slice(s, e2 + 1)); } catch (_) {}\n    }\n    return null;\n  }\n}\n\nfunction splitFeedback(feedbackRaw) {\n  if (!feedbackRaw || typeof feedbackRaw !== 'string') {\n    return { Demanda: null, Resolução: null, \"Problemas Identificados\": null, Resultado: null };\n  }\n\n  // Labels que esperamos no texto do FEEDBACK:\n  const labels = [\"Demanda\", \"Resolução\", \"Problemas Identificados\", \"Resultado\"];\n\n  // Normaliza alguns acentos/variações (ex.: Resolucao sem acento)\n  const fb = feedbackRaw.replace(/Resolucao/gi, \"Resolução\");\n\n  const out = {};\n  for (let i = 0; i < labels.length; i++) {\n    const label = labels[i];\n    const next = labels[i + 1];\n    const pattern = new RegExp(\n      `${label}\\\\s*:\\\\s*([\\\\s\\\\S]*?)` + (next ? `${next}\\\\s*:` : `$`),\n      \"i\"\n    );\n    const m = fb.match(pattern);\n    out[label] = m ? m[1].trim().replace(/\\s+$/,'') : null;\n  }\n  return out;\n}\n\nconst results = items.map(item => {\n  const raw = item.json?.output ?? \"\";\n  const parsed = safeParse(raw) || {};\n\n  const pontoPositivo = parsed[\"PONTO POSITIVO\"] ?? null;\n  const pontoNegativo = parsed[\"PONTO NEGATIVO\"] ?? null;\n  const feedbackTexto = parsed[\"FEEDBACK\"] ?? null;\n\n  const partes = splitFeedback(feedbackTexto);\n\n  return {\n    json: {\n      ponto_positivo: pontoPositivo,\n      ponto_negativo: pontoNegativo,\n      feedback_texto: feedbackTexto,\n      demanda: partes[\"Demanda\"],\n      resolucao: partes[\"Resolução\"],\n      problemas_identificados: partes[\"Problemas Identificados\"],\n      resultado: partes[\"Resultado\"]\n    }\n  };\n});\n\n// *** IMPORTANTE ***\n// O Code node do n8n DEVE retornar um array de objetos\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        208
+      ],
+      "id": "96167c90-3abc-4517-a811-06146c365a52",
+      "name": "Code1"
+    }
+  ],
+  "connections": {
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Hook-Sender/1.0",
+            "content-length": "194",
+            "accept": "*/*",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "169.150.216.132",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.132",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "15909333",
+            "leads[add][0][status_id]": "61685383",
+            "leads[add][0][pipeline_id]": "6961711",
+            "account[id]": "31370511",
+            "account[subdomain]": "csvatendimento"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/conversas",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "HTTP Request": [
+      {
+        "json": {
+          "data": "{\"_page\":1,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/leads?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250\"}},\"_embedded\":{\"leads\":[{\"id\":15909333,\"name\":\"Damiao José Dos Santos\",\"price\":0,\"responsible_user_id\":8261837,\"group_id\":619452,\"status_id\":61685383,\"pipeline_id\":6961711,\"loss_reason_id\":null,\"created_by\":0,\"updated_by\":0,\"created_at\":1733188817,\"updated_at\":1757355286,\"closed_at\":null,\"closest_task_at\":null,\"is_deleted\":false,\"custom_fields_values\":[{\"field_id\":330876,\"field_name\":\"RGM\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"42180635\"}]},{\"field_id\":330926,\"field_name\":\"CPF\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"06611798340\"}]},{\"field_id\":330930,\"field_name\":\"Data de Matricula\",\"field_code\":null,\"field_type\":\"date\",\"values\":[{\"value\":1733108400}]},{\"field_id\":330938,\"field_name\":\"Curso\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Gestão De Recursos Humanos\"}]},{\"field_id\":330988,\"field_name\":\"Nivel\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Graduação\"}]},{\"field_id\":330992,\"field_name\":\"Polo\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Freguesia do Ó\"}]},{\"field_id\":334080,\"field_name\":\"Nome do Aluno\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Damiao\"}]},{\"field_id\":414754,\"field_name\":\"Ultima Fase\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"graduacao adimplente\"}]},{\"field_id\":294046,\"field_name\":\"Consultor\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Leticia\"}]},{\"field_id\":1003994,\"field_name\":\"Tipo do Atendimento\",\"field_code\":null,\"field_type\":\"select\",\"values\":[{\"value\":\"OUTROS\",\"enum_id\":1273066,\"enum_code\":null}]},{\"field_id\":419530,\"field_name\":\"Controle Fase\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Aguardando\"}]},{\"field_id\":1006798,\"field_name\":\"Controle Licenciado\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Sim\"}]},{\"field_id\":1005184,\"field_name\":\"Controle - Pagamento\",\"field_code\":null,\"field_type\":\"select\",\"values\":[{\"value\":\"Abril\",\"enum_id\":1271382,\"enum_code\":null}]},{\"field_id\":1014523,\"field_name\":\"Email Acadêmico\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"damiao.santos@cs.unicid.edu.br\"}]},{\"field_id\":1029779,\"field_name\":\"Data de Captura\",\"field_code\":null,\"field_type\":\"date\",\"values\":[{\"value\":1757300400}]},{\"field_id\":1029785,\"field_name\":\"Ultimo Consultor\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Leticia\"}]},{\"field_id\":1030716,\"field_name\":\"Controle - Captura\",\"field_code\":null,\"field_type\":\"select\",\"values\":[{\"value\":\"Aguardando\",\"enum_id\":1304910,\"enum_code\":null}]}],\"score\":null,\"account_id\":31370511,\"labor_cost\":null,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/leads/15909333?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250\"}},\"_embedded\":{\"tags\":[],\"companies\":[],\"contacts\":[{\"id\":18478307,\"is_main\":true,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/contacts/18478307?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250\"}}}]}}]}}"
+        }
+      }
+    ],
+    "Edit Fields": [
+      {
+        "json": {
+          "data": {
+            "_page": 1,
+            "_links": {
+              "self": {
+                "href": "https://csvatendimento.kommo.com/api/v4/leads?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250"
+              }
+            },
+            "_embedded": {
+              "leads": [
+                {
+                  "id": 15909333,
+                  "name": "Damiao José Dos Santos",
+                  "price": 0,
+                  "responsible_user_id": 8261837,
+                  "group_id": 619452,
+                  "status_id": 61685383,
+                  "pipeline_id": 6961711,
+                  "loss_reason_id": null,
+                  "created_by": 0,
+                  "updated_by": 0,
+                  "created_at": 1733188817,
+                  "updated_at": 1757355286,
+                  "closed_at": null,
+                  "closest_task_at": null,
+                  "is_deleted": false,
+                  "custom_fields_values": [
+                    {
+                      "field_id": 330876,
+                      "field_name": "RGM",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "42180635"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 330926,
+                      "field_name": "CPF",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "06611798340"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 330930,
+                      "field_name": "Data de Matricula",
+                      "field_code": null,
+                      "field_type": "date",
+                      "values": [
+                        {
+                          "value": 1733108400
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 330938,
+                      "field_name": "Curso",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Gestão De Recursos Humanos"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 330988,
+                      "field_name": "Nivel",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Graduação"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 330992,
+                      "field_name": "Polo",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Freguesia do Ó"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 334080,
+                      "field_name": "Nome do Aluno",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Damiao"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 414754,
+                      "field_name": "Ultima Fase",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "graduacao adimplente"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 294046,
+                      "field_name": "Consultor",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Leticia"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1003994,
+                      "field_name": "Tipo do Atendimento",
+                      "field_code": null,
+                      "field_type": "select",
+                      "values": [
+                        {
+                          "value": "OUTROS",
+                          "enum_id": 1273066,
+                          "enum_code": null
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 419530,
+                      "field_name": "Controle Fase",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Aguardando"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1006798,
+                      "field_name": "Controle Licenciado",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Sim"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1005184,
+                      "field_name": "Controle - Pagamento",
+                      "field_code": null,
+                      "field_type": "select",
+                      "values": [
+                        {
+                          "value": "Abril",
+                          "enum_id": 1271382,
+                          "enum_code": null
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1014523,
+                      "field_name": "Email Acadêmico",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "damiao.santos@cs.unicid.edu.br"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1029779,
+                      "field_name": "Data de Captura",
+                      "field_code": null,
+                      "field_type": "date",
+                      "values": [
+                        {
+                          "value": 1757300400
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1029785,
+                      "field_name": "Ultimo Consultor",
+                      "field_code": null,
+                      "field_type": "text",
+                      "values": [
+                        {
+                          "value": "Leticia"
+                        }
+                      ]
+                    },
+                    {
+                      "field_id": 1030716,
+                      "field_name": "Controle - Captura",
+                      "field_code": null,
+                      "field_type": "select",
+                      "values": [
+                        {
+                          "value": "Aguardando",
+                          "enum_id": 1304910,
+                          "enum_code": null
+                        }
+                      ]
+                    }
+                  ],
+                  "score": null,
+                  "account_id": 31370511,
+                  "labor_cost": null,
+                  "_links": {
+                    "self": {
+                      "href": "https://csvatendimento.kommo.com/api/v4/leads/15909333?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250"
+                    }
+                  },
+                  "_embedded": {
+                    "tags": [],
+                    "companies": [],
+                    "contacts": [
+                      {
+                        "id": 18478307,
+                        "is_main": true,
+                        "_links": {
+                          "self": {
+                            "href": "https://csvatendimento.kommo.com/api/v4/contacts/18478307?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "HTTP Request1": [
+      {
+        "json": {
+          "data": "{\"id\":18478307,\"name\":\"Damiao José Dos Santos\",\"first_name\":\"\",\"last_name\":\"\",\"responsible_user_id\":8261837,\"group_id\":619452,\"created_by\":0,\"updated_by\":0,\"created_at\":1733188817,\"updated_at\":1757355286,\"closest_task_at\":null,\"is_deleted\":false,\"is_unsorted\":false,\"custom_fields_values\":[{\"field_id\":288546,\"field_name\":\"Phone\",\"field_code\":\"PHONE\",\"field_type\":\"multitext\",\"values\":[{\"value\":\"+5511974222919\",\"enum_id\":206734,\"enum_code\":\"WORK\"}]}],\"account_id\":31370511,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/contacts/18478307?page=1&limit=250\"}},\"_embedded\":{\"tags\":[],\"companies\":[]}}"
+        }
+      }
+    ],
+    "Edit Fields1": [
+      {
+        "json": {
+          "data": {
+            "id": 18478307,
+            "name": "Damiao José Dos Santos",
+            "first_name": "",
+            "last_name": "",
+            "responsible_user_id": 8261837,
+            "group_id": 619452,
+            "created_by": 0,
+            "updated_by": 0,
+            "created_at": 1733188817,
+            "updated_at": 1757355286,
+            "closest_task_at": null,
+            "is_deleted": false,
+            "is_unsorted": false,
+            "custom_fields_values": [
+              {
+                "field_id": 288546,
+                "field_name": "Phone",
+                "field_code": "PHONE",
+                "field_type": "multitext",
+                "values": [
+                  {
+                    "value": "+5511974222919",
+                    "enum_id": 206734,
+                    "enum_code": "WORK"
+                  }
+                ]
+              }
+            ],
+            "account_id": 31370511,
+            "_links": {
+              "self": {
+                "href": "https://csvatendimento.kommo.com/api/v4/contacts/18478307?page=1&limit=250"
+              }
+            },
+            "_embedded": {
+              "tags": [],
+              "companies": []
+            }
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "b7a30e24-d275-4c06-9022-a560a38a46d8",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-09-08T15:14:31.382Z",
+      "updatedAt": "2025-09-08T15:14:31.382Z",
+      "role": "workflow:owner",
+      "workflowId": "IgOWFfW4ekpHKPrA",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
