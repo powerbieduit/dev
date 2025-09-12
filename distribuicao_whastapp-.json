@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-25T19:59:22.925Z",
-  "updatedAt": "2025-08-07T14:49:20.000Z",
+  "updatedAt": "2025-08-19T20:40:34.000Z",
   "id": "l0ogp2vNaEnvONQ3",
   "name": "distribuicao_whastapp",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -57,6 +57,7 @@
           "lead": [
             {
               "id": "={{ $('Code4').item.json.id }}",
+              "pipeline_id": 5481944,
               "responsible_user_id": "={{ $('Code5').item.json.Id }}"
             }
           ]
@@ -361,8 +362,49 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "2475852c-e9a8-463a-894a-538afd2cfad4",
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "196",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "73d13349-d516-44dc-b626-40298f0ff4e6",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19165803",
+            "leads[add][0][status_id]": "48539237",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/077036e1-5d46-4eea-85ad-e595b0848198",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "be171f7d-e091-4d7e-a37a-1fc9185a94a9",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T19:59:22.927Z",
+      "updatedAt": "2025-07-25T19:59:22.927Z",
+      "role": "workflow:owner",
+      "workflowId": "l0ogp2vNaEnvONQ3",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
