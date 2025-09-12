@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-21T18:16:54.049Z",
-  "updatedAt": "2025-08-25T10:02:27.000Z",
+  "updatedAt": "2025-09-08T17:38:45.000Z",
   "id": "15kmAHfNkXIOccRl",
   "name": "Mensagens_Acad",
   "active": true,
@@ -40,7 +40,7 @@
     },
     {
       "parameters": {
-        "jsCode": "/**\n * n8n Code (JavaScript) — Telefone (BR) + Timestamp (UTC p/ banco + BR com Z)\n * - Sem dependências externas\n * - Postgres: use coluna timestamptz (armazena em UTC)\n */\n\n// ===================== CONFIG =====================\nconst OVERWRITE_PHONE_IN_BODY = true;       // true -> sobrescreve body.userPhone com E.164\nconst OVERWRITE_TIMESTAMP_IN_BODY = true;   // true -> sobrescreve body.timestamp com UTC ISO (Z) para gravar no banco\nconst ASSUME_NAIVE_AS_TZ = 'America/Sao_Paulo'; // quando data vier sem timezone, assumir este fuso\nconst ASSUME_NAIVE_OFFSET_MIN = -180;       // fallback de offset (UTC-3) em minutos\n\n// ===================== HELPERS ====================\nconst ONLY_DIGITS = /[^\\d]/g;\n\nfunction cleanDigits(v) {\n  if (typeof v !== 'string') v = String(v ?? '');\n  return v.replace(ONLY_DIGITS, '');\n}\n\nfunction normalizePhoneBR(input) {\n  if (!input) return null;\n  let d = cleanDigits(input);\n\n  // remove zeros e redundâncias\n  d = d.replace(/^0+/, '');\n  if (d.startsWith('55') && d.length > 13) {\n    while (d.startsWith('555')) d = d.slice(2);\n  }\n\n  // assume BR se vier 10/11 dígitos\n  if (!d.startsWith('55')) {\n    if (d.length === 10 || d.length === 11) d = '55' + d;\n  }\n  if (!d.startsWith('55')) return null;\n\n  let national = d.slice(2);\n  if (national.length >= 11 && national[0] === '0') national = national.slice(1);\n\n  if (national.length !== 10 && national.length !== 11) {\n    const last11 = national.slice(-11);\n    const last10 = national.slice(-10);\n    if (last11.length === 11) national = last11;\n    else if (last10.length === 10) national = last10;\n  }\n  if (national.length !== 10 && national.length !== 11) return null;\n\n  const ddd = national.slice(0, 2);\n  let local = national.slice(2);\n\n  // heurística 9º dígito\n  if (national.length === 10 && ['6','7','8','9'].includes(local[0])) {\n    local = '9' + local;\n  }\n\n  if (!(local.length === 8 || local.length === 9)) return null;\n\n  const isMobile = local.length === 9;\n  const e164 = '+55' + ddd + local;\n\n  return { e164, ddd, local, isMobile };\n}\n\nfunction hasExplicitTZ(s) {\n  if (typeof s !== 'string') return false;\n  return /([zZ]|[+\\-]\\d{2}:\\d{2})$/.test(s.trim());\n}\n\n/**\n * Interpreta string \"naive\" como hora local do TZ assumido e converte para UTC ISO.\n * Formatos aceitos: YYYY-MM-DD[ T]HH:mm[:ss[.SSS]]\n */\nfunction parseNaiveAsTZToUTCISO(s, tz = ASSUME_NAIVE_AS_TZ, fallbackOffsetMin = ASSUME_NAIVE_OFFSET_MIN) {\n  const m = String(s ?? '').trim().match(\n    /^(\\d{4})[-/](\\d{2})[-/](\\d{2})(?:[ T](\\d{2}):(\\d{2})(?::(\\d{2})(?:\\.(\\d{1,3}))?)?)?$/\n  );\n  if (!m) return null;\n\n  const [ , Y, M, D, h='00', mnt='00', sec='00', ms='0' ] = m;\n  const y = Number(Y), mo = Number(M), d = Number(D);\n  const hh = Number(h), mm = Number(mnt), ss = Number(sec), mss = Number(ms.padEnd(3,'0'));\n\n  // instante \"local\" representado como UTC\n  const pseudoUTC = Date.UTC(y, mo - 1, d, hh, mm, ss, mss);\n\n  // calcula offset real do TZ assumido para esse instante\n  let offsetMin = fallbackOffsetMin;\n  try {\n    const fmt = new Intl.DateTimeFormat('en-US', {\n      timeZone: tz,\n      year: 'numeric', month: '2-digit', day: '2-digit',\n      hour: '2-digit', minute: '2-digit', second: '2-digit',\n      hourCycle: 'h23'\n    });\n    const parts = fmt.formatToParts(new Date(pseudoUTC));\n    const obj = Object.fromEntries(parts.map(p => [p.type, p.value]));\n    const tzLocalAsUTC = Date.UTC(\n      Number(obj.year), Number(obj.month)-1, Number(obj.day),\n      Number(obj.hour), Number(obj.minute), Number(obj.second)\n    );\n    offsetMin = Math.round((tzLocalAsUTC - pseudoUTC) / 60000);\n  } catch (_) {\n    // usa fallback\n  }\n\n  const realUTC = pseudoUTC - (offsetMin * 60000);\n  return new Date(realUTC).toISOString();\n}\n\n/**\n * Normaliza qualquer entrada para UTC ISO (Z).\n * - vazio -> agora (UTC)\n * - com TZ explícito -> respeita e converte\n * - \"naive\" -> assume America/Sao_Paulo e converte\n */\nfunction toUTCISO(val) {\n  if (!val) return new Date().toISOString();\n\n  if (typeof val === 'number') {\n    const d = new Date(val);\n    return isNaN(d) ? new Date().toISOString() : d.toISOString();\n  }\n\n  if (val instanceof Date) {\n    return isNaN(val) ? new Date().toISOString() : val.toISOString();\n  }\n\n  const s = String(val).trim();\n\n  if (hasExplicitTZ(s)) {\n    const d = new Date(s);\n    return isNaN(d) ? new Date().toISOString() : d.toISOString();\n  }\n\n  const iso = parseNaiveAsTZToUTCISO(s);\n  return iso ?? new Date().toISOString();\n}\n\n/**\n * Formata um UTC ISO para exibição em um timezone, devolvendo:\n *  - iso com offset correto (±hh:mm)\n *  - human dd/mm/yyyy HH:MM:SS\n */\nfunction formatInTZ(utcIso, tz = 'America/Sao_Paulo') {\n  const d = new Date(utcIso);\n  if (isNaN(d)) return { iso: null, human: null };\n\n  const fmt = new Intl.DateTimeFormat('en-CA', {\n    timeZone: tz,\n    year: 'numeric', month: '2-digit', day: '2-digit',\n    hour: '2-digit', minute: '2-digit', second: '2-digit',\n    hourCycle: 'h23'\n  });\n  const parts = fmt.formatToParts(d);\n  const obj = Object.fromEntries(parts.map(p => [p.type, p.value]));\n\n  // calcula offset do TZ nesse instante\n  const utcMs = d.getTime();\n  const tzLocalAsUTC = Date.UTC(\n    Number(obj.year), Number(obj.month) - 1, Number(obj.day),\n    Number(obj.hour), Number(obj.minute), Number(obj.second)\n  );\n  const offsetMin = Math.round((tzLocalAsUTC - utcMs) / 60000); // ex.: -180\n\n  const pad = (n) => String(n).padStart(2, '0');\n  const sign = offsetMin >= 0 ? '+' : '-';\n  const abs = Math.abs(offsetMin);\n  const offH = pad(Math.floor(abs / 60));\n  const offM = pad(abs % 60);\n\n  const iso = `${obj.year}-${obj.month}-${obj.day}T${obj.hour}:${obj.minute}:${obj.second}${sign}${offH}:${offM}`;\n  const human = `${obj.day}/${obj.month}/${obj.year} ${obj.hour}:${obj.minute}:${obj.second}`;\n\n  return { iso, human };\n}\n\n// ===================== PROCESS ====================\nreturn items.map(item => {\n  const j = item.json ?? {};\n  const body = (j.body && typeof j.body === 'object') ? { ...j.body } : {};\n\n  // ---- TELEFONE ----\n  const phoneRaw = body.userPhone ?? null;\n  const phoneNorm = normalizePhoneBR(phoneRaw);\n  if (OVERWRITE_PHONE_IN_BODY && phoneNorm?.e164) {\n    body.userPhone = phoneNorm.e164;\n  }\n\n  // ---- TIMESTAMP (BANCO: UTC) ----\n  const candidateTs = body.timestamp ?? j.timestamp ?? null;\n  const tsUTC = toUTCISO(candidateTs); // SEMPRE UTC ISO (Z) -> perfeito para timestamptz\n  const brView = formatInTZ(tsUTC, 'America/Sao_Paulo'); // só para exibição\n\n  if (OVERWRITE_TIMESTAMP_IN_BODY) {\n    body.timestamp = tsUTC; // este valor vai para o banco\n  }\n\n  // ---- SAÍDA ----\n  const out = {\n    ...j,\n    body,\n    phone_raw: phoneRaw ?? null,\n    phone_e164: phoneNorm?.e164 ?? null,\n    ddd: phoneNorm?.ddd ?? null,\n    local_number: phoneNorm?.local ?? null,\n    is_mobile: phoneNorm?.isMobile ?? null,\n\n    // Banco: UTC real\n    timestamp_db_utc: tsUTC,\n\n    // Exibição BR (humano)\n    timestamp_br_display: brView.human,\n\n    // Campo solicitado: sempre termina com 'Z' (forçado)\n    // Ex.: se brView.iso = 2025-08-23T10:50:50-03:00 => vira 2025-08-23T10:50:50Z\n    timestamp_br_iso_local: brView.iso.replace(/([+-]\\d{2}:\\d{2})$/, 'Z'),\n  };\n\n  return { json: out };\n});\n"
+        "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(({ json }) => {\n  const unifiedPhone = onlyDigits(json.phone ?? json.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(json.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(json.leadId),\n    phone: unifiedPhone,\n    text: (json.text ?? '').toString(),\n    agent: (json.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(json.timestamp),\n    tipo: (json.tipo ?? '').toString(),\n    meta: {\n      original: json,              // payload de entrada para auditoria\n      normalizedAt: new Date().toISOString()\n    }\n  };\n\n  // (Opcional) validações leves: marque erros sem quebrar o fluxo\n  out.meta.errors = [];\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -67,12 +67,13 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "lead_id": "={{ $json.body.leadId }}",
-            "message_ts": "={{ $json.timestamp_br_iso_local }}",
-            "message_text": "={{ $json.body.text }}",
-            "whatsapp_to": "={{ $json.phone_e164 }}",
-            "direction": "={{ $json.body.direction }}",
-            "agent_id": "={{ $json.body.agent }}"
+            "lead_id": "={{ $json.meta.original.body.leadId }}",
+            "message_ts": "={{ (() => {\n  const d = new Date($json.meta.original.body.timestamp);\n  d.setHours(d.getHours() - 3); // subtrai 3 horas\n  return d.toISOString();\n})() }}",
+            "message_text": "={{ $json.meta.original.body.text }}",
+            "whatsapp_to": "=+{{ $json.meta.original.body.phone || $json.meta.original.body.userPhone }}",
+            "direction": "={{ $json.meta.original.body.direction }}",
+            "agent_id": "={{ $json.meta.original.body.agent }}",
+            "tipo_mensagem": "={{ $json.meta.original.body.tipo }}"
           },
           "matchingColumns": [
             "id"
@@ -142,6 +143,16 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo_mensagem",
+              "displayName": "tipo_mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -398,7 +409,7 @@
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
-            "content-length": "663",
+            "content-length": "154",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
@@ -412,23 +423,23 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "191.19.210.218",
+            "x-forwarded-for": "189.47.99.101",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "191.19.210.218"
+            "x-real-ip": "189.47.99.101"
           },
           "params": {},
           "query": {},
           "body": {
-            "leadId": "18693494",
-            "text": "DownloadPara incluir DP's siga estes passos: *1.* Acesse seu portal do aluno e clique no menu \"REMATRÍCULA\". *2.* Leia e aceite os termos necessários e prossiga. *3.* Localize as opções de inclusão, como \"DP's e Adaptações\" *4.* Escolha o que deseja incluir e clique em \"INCLUIR\".Após selecionar todas as opções desejadas, clique em \"GRAVAR\". *_Após esse processo, as disciplinas serão disponibilizadas dentro de 72 horas. Lembre-se de aguardar essa liberação para acessar o conteúdo*",
+            "leadId": "19262487",
+            "phone": "5511945010493",
+            "text": "oi",
             "agent": "Admin Sistema",
             "direction": "OUT",
-            "userPhone": "(11) 98439-3285",
-            "id": "nnasgu",
-            "timestamp": "2025-08-23T16:50:50.233Z"
+            "timestamp": "2025-09-08T17:36:04.123Z",
+            "tipo": "Manual"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/capturakommo",
           "executionMode": "production"
@@ -436,7 +447,7 @@
       }
     ]
   },
-  "versionId": "349c7488-8f63-46d6-b618-17ac2d7d75cc",
+  "versionId": "068d9615-6133-480f-94db-2370352364b0",
   "triggerCount": 2,
   "shared": [
     {
