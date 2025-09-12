@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-07-25T20:00:37.121Z",
-  "updatedAt": "2025-08-02T00:20:10.000Z",
+  "updatedAt": "2025-08-22T21:11:20.000Z",
   "id": "BGwS0VUSWDtIeDgT",
   "name": "criacao_lead_preco_csv",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -16,7 +16,7 @@
       "typeVersion": 2,
       "position": [
         -3088,
-        432
+        320
       ],
       "id": "eea1d50e-5ec5-4d55-8cc3-a673619aa910",
       "name": "Webhook",
@@ -30,151 +30,11 @@
       "typeVersion": 1.1,
       "position": [
         -2640,
-        432
+        320
       ],
       "id": "b6a3b0e4-7258-49ae-93ea-251f3059b2d3",
       "name": "Wait",
       "webhookId": "e1a1207b-471b-4c47-8af9-84c0c6317ade"
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ",
-          "mode": "list",
-          "cachedResultName": "Distribuição_Cruzeiro",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 105457879,
-          "mode": "list",
-          "cachedResultName": "Distrib",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit#gid=105457879"
-        },
-        "filtersUI": {
-          "values": [
-            {
-              "lookupColumn": "Status",
-              "lookupValue": "Ativo"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [
-        -1744,
-        240
-      ],
-      "id": "4f2db441-ce1a-4fae-a0db-abe2855373a9",
-      "name": "get_consultor",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "WBAzBmkCdwnRet1o",
-          "name": "Google Sheets Mkt Eduit"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "documentId": {
-          "__rl": true,
-          "value": "1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ",
-          "mode": "list",
-          "cachedResultName": "Distribuição_Cruzeiro",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 105457879,
-          "mode": "list",
-          "cachedResultName": "Distrib",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit#gid=105457879"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Ultimo Lead": "={{new Date().toISOString()}}",
-            "row_number": "={{ $json.row_number }}"
-          },
-          "matchingColumns": [
-            "row_number"
-          ],
-          "schema": [
-            {
-              "id": "Nome",
-              "displayName": "Nome",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Id",
-              "displayName": "Id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Status",
-              "displayName": "Status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Ultimo Lead",
-              "displayName": "Ultimo Lead",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "row_number",
-              "displayName": "row_number",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "readOnly": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [
-        -1296,
-        240
-      ],
-      "id": "9d872f02-f510-4f78-9698-a5aa20317bdc",
-      "name": "update ultima exec",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "WBAzBmkCdwnRet1o",
-          "name": "Google Sheets Mkt Eduit"
-        }
-      }
     },
     {
       "parameters": {
@@ -184,7 +44,7 @@
           "contact": [
             {
               "name": "={{ $('Edit Fields').item.json.Nome }}",
-              "responsible_user_id": "={{ $('get_consultor').item.json.Id }}",
+              "responsible_user_id": "={{ $('Code1').item.json.Id }}",
               "custom_fields_values": {
                 "custom_field": [
                   {
@@ -201,7 +61,7 @@
       "typeVersion": 1,
       "position": [
         -1072,
-        240
+        128
       ],
       "id": "0def31e5-82a0-424c-b42e-0c49edd0cd7c",
       "name": "cria contato",
@@ -240,7 +100,7 @@
       "typeVersion": 2.2,
       "position": [
         -1968,
-        432
+        320
       ],
       "id": "41b35bca-d6d2-4d08-8390-ecfd1aa3fffb",
       "name": "If1"
@@ -253,7 +113,7 @@
       "typeVersion": 2,
       "position": [
         -2192,
-        432
+        320
       ],
       "id": "0956aa37-bc2a-4436-9784-decc2b040301",
       "name": "Code"
@@ -270,7 +130,7 @@
       "typeVersion": 1,
       "position": [
         -2416,
-        432
+        320
       ],
       "id": "057bcbba-1314-4b1e-a58c-c99aaa1c98c1",
       "name": "procura lead1",
@@ -287,20 +147,20 @@
       "typeVersion": 3.2,
       "position": [
         -1744,
-        544
+        432
       ],
       "id": "1f017a54-893b-4c77-89c7-2d112c5606a5",
       "name": "Merge"
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido)\n    }\n  }\n];\n"
+        "jsCode": "// Entrada: todos os consultores ativos, vindo do nó anterior\nconst rows = items;\n\n// Remover duplicados por ID\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const item of rows) {\n  const id = item.json.Id;\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(item);\n  }\n}\n\n// Ordenar por 'Ultimo Lead' (do mais antigo para o mais recente)\nunicos.sort((a, b) => {\n  return new Date(a.json[\"Ultimo Lead\"]) - new Date(b.json[\"Ultimo Lead\"]);\n});\n\n// Selecionar aleatoriamente entre os N menos recentes\nconst topN = 5;\nconst candidatos = unicos.slice(0, topN);\n\nif (candidatos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// Escolher aleatoriamente\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// Retornar com pairedItem\nreturn [\n  {\n    json: escolhido.json,\n    pairedItem: {\n      item: rows.indexOf(escolhido),\n    },\n  },\n];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
         -1520,
-        240
+        128
       ],
       "id": "1fe4ae45-edae-4f72-95c6-e555956e42f5",
       "name": "Code1"
@@ -347,7 +207,7 @@
       "typeVersion": 3.4,
       "position": [
         -2864,
-        432
+        320
       ],
       "id": "b64a4458-3a1e-4e03-8660-694620fbeb6a",
       "name": "Edit Fields"
@@ -410,7 +270,7 @@
       "typeVersion": 3.2,
       "position": [
         -1520,
-        512
+        416
       ],
       "id": "b73af8ae-8822-47e4-8afb-d358f913d3b2",
       "name": "Switch"
@@ -442,7 +302,7 @@
       "typeVersion": 1,
       "position": [
         -1296,
-        448
+        336
       ],
       "id": "9e9dae08-5cd7-45bd-acae-f8a3eb18c6be",
       "name": "recadastro",
@@ -513,7 +373,7 @@
       "typeVersion": 1,
       "position": [
         -400,
-        336
+        224
       ],
       "id": "058eeea7-f1e9-4349-b6e1-b97f88947675",
       "name": "cria lead1",
@@ -581,7 +441,7 @@
       "typeVersion": 3.2,
       "position": [
         -848,
-        240
+        128
       ],
       "id": "7d6f0b92-37a8-42dd-aa0a-cee27c8b98c6",
       "name": "Switch1"
@@ -594,7 +454,7 @@
       "typeVersion": 2,
       "position": [
         -624,
-        336
+        224
       ],
       "id": "81ee4dd1-7353-4bb4-a8d3-57555dcc1c8a",
       "name": "Code2"
@@ -655,7 +515,7 @@
       "typeVersion": 1,
       "position": [
         -624,
-        144
+        32
       ],
       "id": "2cf64f16-2660-40af-9ab7-91d911cd30cc",
       "name": "cria lead",
@@ -692,7 +552,7 @@
       "typeVersion": 1,
       "position": [
         -1296,
-        608
+        528
       ],
       "id": "2451adf4-2b89-422c-b972-7704125afc7e",
       "name": "Update leads",
@@ -719,8 +579,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -1088,
-        608
+        -1072,
+        528
       ],
       "id": "d4074cf5-aaa6-4793-b717-d73082b2db58",
       "name": "Create new notes",
@@ -728,6 +588,145 @@
         "kommoOAuth2Api": {
           "id": "nwQNgfBiNqLrzKlG",
           "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Cruzeiro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 105457879,
+          "mode": "list",
+          "cachedResultName": "Distrib",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit#gid=105457879"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Ativo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1744,
+        128
+      ],
+      "id": "30871acd-320c-4122-8da6-c4f2cfb3ed6a",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ",
+          "mode": "list",
+          "cachedResultName": "Distribuição_Cruzeiro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 105457879,
+          "mode": "list",
+          "cachedResultName": "Distrib",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bUMHfiNZZf25LYfGCHRKBuMQgna73JLdco-gKlt_OkQ/edit#gid=105457879"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "Ultimo Lead": "={{ $now.setZone(\"America/Sao_Paulo\").toFormat(\"dd/MM/yyyy HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Id",
+              "displayName": "Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo Lead",
+              "displayName": "Ultimo Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1296,
+        128
+      ],
+      "id": "e3cc3b0e-255b-4612-813c-b3ca24b5038d",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
         }
       }
     }
@@ -755,28 +754,6 @@
         ]
       ]
     },
-    "get_consultor": {
-      "main": [
-        [
-          {
-            "node": "Code1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "update ultima exec": {
-      "main": [
-        [
-          {
-            "node": "cria contato",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "cria contato": {
       "main": [
         [
@@ -792,7 +769,7 @@
       "main": [
         [
           {
-            "node": "get_consultor",
+            "node": "Get row(s) in sheet",
             "type": "main",
             "index": 0
           }
@@ -843,7 +820,7 @@
       "main": [
         [
           {
-            "node": "update ultima exec",
+            "node": "Update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -925,6 +902,28 @@
           }
         ]
       ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -942,33 +941,33 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
-            "content-length": "128",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "133",
             "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "pt-BR,pt;q=0.9",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
             "content-type": "application/json",
-            "origin": "https://www.cruzeiroead.com.br",
-            "priority": "u=3, i",
-            "referer": "https://www.cruzeiroead.com.br/",
+            "origin": "https://www.ead.eduit.com.br",
+            "priority": "u=1, i",
+            "referer": "https://www.ead.eduit.com.br/",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "201.81.1.205",
+            "x-forwarded-for": "191.204.187.221",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "201.81.1.205"
+            "x-real-ip": "191.204.187.221"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Andréa ",
-            "email": "andrea.silveirac@hotmail.com",
-            "celular": "11940253670",
-            "origem": "form-cruzeiro",
-            "tipo": "Graduação"
+            "nome": "CAIO VINICIUS PINHEIRO SILVA",
+            "email": "cas@gmail.com",
+            "celular": "11945010493",
+            "tipo": "Graduação",
+            "origem": "form-eadeduit"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/3a51a057-7120-4054-a36e-e17fb5f6c773",
           "executionMode": "production"
@@ -976,8 +975,17 @@
       }
     ]
   },
-  "versionId": "6bacd2c7-619b-4258-9d48-820b39541e68",
+  "versionId": "19b2dd36-cc7a-4f64-b9ab-620c3a826c51",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T20:00:37.124Z",
+      "updatedAt": "2025-07-25T20:00:37.124Z",
+      "role": "workflow:owner",
+      "workflowId": "BGwS0VUSWDtIeDgT",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": [
     {
       "createdAt": "2025-07-25T20:00:36.295Z",
