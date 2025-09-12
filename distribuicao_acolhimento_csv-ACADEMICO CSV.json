@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-07-25T23:06:18.610Z",
-  "updatedAt": "2025-08-25T16:28:52.000Z",
+  "updatedAt": "2025-08-28T13:41:12.000Z",
   "id": "NHUSwGJlEgOIn4QM",
   "name": "distribuicao_acolhimento_csv",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
