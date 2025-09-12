@@ -1,0 +1,1090 @@
+{
+  "createdAt": "2025-07-28T16:55:17.984Z",
+  "updatedAt": "2025-09-11T15:04:04.000Z",
+  "id": "HBp98F7cHlM5sJ86",
+  "name": "distribuicao_sem resposta - csv",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -272,
+        -416
+      ],
+      "id": "e53700ac-f868-4897-bb26-1409630e80a4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chats",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "updated_at",
+              "condition": "lt",
+              "keyValue": "={{ new Date(Date.now() - (3*60 + 10)*60*1000).toISOString() }}"
+            },
+            {
+              "keyName": "atendimento_kommo",
+              "condition": "is",
+              "keyValue": "null"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -416
+      ],
+      "id": "dfeacbc4-34c9-4da5-82a1-8262a5716b52",
+      "name": "Get many rows",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "null",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "02eaedca-5adb-42a1-b1eb-df57f7972c24"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "efe12c9c-9911-4eb4-9143-90ee00955700",
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        704,
+        -416
+      ],
+      "id": "ae961146-c211-438c-868c-bfaab1ac679b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        -416
+      ],
+      "id": "bf044ed5-c0fb-46c1-8f61-9348dc8666c9",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "n8n_chat_histories",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "keyValue": "={{ $json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -608
+      ],
+      "id": "c5d1041b-212d-45a4-bded-0278becfb4ef",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f1997386-faaa-4c05-95b4-49c50a7b522d",
+              "leftValue": "={{ $json.message.type }}",
+              "rightValue": "ai",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        -608
+      ],
+      "id": "439b9b3f-1182-455c-b547-86d407910e86",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Get a row').item.json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -704
+      ],
+      "id": "5fff56c6-1caf-45dc-9f4a-06d07dc2d9d7",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_kommo",
+              "fieldValue": "sim"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -512
+      ],
+      "id": "1de1e1f3-0170-44fc-9b20-2dcbf7a630b1",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1520,
+        -608
+      ],
+      "id": "2977ba50-f547-4f2c-86ca-328e3911cffb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [items[0]];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        -592
+      ],
+      "id": "ef2a4392-e6f3-4c02-9484-8d35700605f2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "phone",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -416
+      ],
+      "id": "50e6abda-3b9e-442b-a356-31731a90efa6",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        400,
+        -416
+      ],
+      "id": "cd9caae1-0dba-4e96-afcd-de8ce3e8bca2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Switch').item.json.phone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3760,
+        -704
+      ],
+      "id": "fd8ab2bc-df5d-4d97-811b-988e875fd420",
+      "name": "Update a row2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e283fa3a-89d7-4de3-8691-37d41d0bf85a",
+              "name": "retorno",
+              "value": "atendimento distribuido para consultor",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5008,
+        -448
+      ],
+      "id": "f6c996fb-69fb-4e1d-b2ba-febd4e12e54c",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields3').item.json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539246,
+              "responsible_user_id": "={{ $('Code6').item.json.id_lead }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":686789,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        -704
+      ],
+      "id": "4c1f056e-8e4c-4c1c-9ad1-2015a22d1af9",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Edit Fields3').item.json.data._embedded.leads[0]._embedded.contacts[0].id }}",
+              "responsible_user_id": "={{ $('Code6').item.json.id_lead }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3536,
+        -704
+      ],
+      "id": "1856dacc-5394-4a30-99cb-d7512272bee3",
+      "name": "Update contacts",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": 89820300,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "31970465-0401-4362-a00c-ebabea62c282"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": "="
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2416,
+        -608
+      ],
+      "id": "f6afa6a7-cc14-4b90-beeb-c85fb1186ac9",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "url": "=https://admamoeduitcombr.kommo.com/api/v4/leads?with=contacts&query={{ $json.telefone.replace(/@.*/,'') }}&filter[statuses][0][pipeline_id]=11685120&filter[statuses][0][status_id]=89820300",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1904,
+        -576
+      ],
+      "id": "8a3bd1bc-97e9-4b90-96af-6d823357ef5e",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a34904d7-386d-431c-960b-94fa85be51b0",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2208,
+        -576
+      ],
+      "id": "bc30c0e9-aada-4d58-90ac-d085c9026df2",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        -512
+      ],
+      "id": "014533ec-3b24-4961-ba13-317d06c93eb1",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chat_messages",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3984,
+        -704
+      ],
+      "id": "4bf3a17e-3846-430e-9f3d-552f9b646be8",
+      "name": "Get many rows2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ordena por created_at ASC e formata o histórico\nconst sorted = items.sort((a, b) => \n  new Date(a.json.created_at) - new Date(b.json.created_at)\n);\n\nconst conversation = sorted.map(row => {\n  const userMsg = row.json.user_message ? `Usuário: ${row.json.user_message}` : '';\n  const botMsg = row.json.bot_message ? `Bot: ${row.json.bot_message}` : '';\n  return [userMsg, botMsg].filter(Boolean).join('\\n');\n}).join('\\n\\n');\n\nreturn [{ json: { conversation } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4208,
+        -704
+      ],
+      "id": "6cf69966-0a33-488d-b665-a06cf06dc5e6",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um assistente que resume conversas trocadas via whatsapp entre um assistente virtual comercial da Cruzeiro do Sul e candidatos. \n\nSempre leia a conversa:\n\n{{$json.conversation}}\n\n\nResuma a conversa em poucas frases, destacando:\n- O que o candidato pediu e o curso que ela perguntou\n- As respostas que o assistente virtual forneceu\n\n**ANALISE** se o candidato parou de responder ",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        4432,
+        -704
+      ],
+      "id": "a3ac24c7-f447-4435-92bd-91dfba7df1d1",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4512,
+        -480
+      ],
+      "id": "6c462502-89ba-4b5d-90bf-e8b444debe8e",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Update leads').first().json._embedded.leads[0].id }}",
+              "text": "={{ $json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        4784,
+        -704
+      ],
+      "id": "d99d55a4-35d3-4cb9-b731-a6c174964e9f",
+      "name": "Create new notes1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items do nó anterior (Supabase)\nconst rows = items;\n\n// ===== Config =====\nconst DEFAULT_TOP_N = 5;\nconst TOP_N = Number(items?.[0]?.json?.TOP_N) > 0 ? Number(items[0].json.TOP_N) : DEFAULT_TOP_N;\n\n// ===== Helpers =====\nconst normNome = (v) => (v ?? \"\").trim().toLowerCase();\nconst getKey = (j) => j.id_lead ?? normNome(j.nome ?? j.Nome); // chave do consultor\nconst getTs = (j) => {\n  const s = j.ultimo_lead ?? j[\"Ultimo Lead\"] ?? j.ultimoLead;\n  const t = Date.parse(s);\n  return isNaN(t) ? Number.NEGATIVE_INFINITY : t; // sem/ruim => mais antigo\n};\n\n// ===== Dedup por consultor, mantendo o MAIS ANTIGO ultimo_lead =====\nconst byConsultor = new Map();\n/*\n Estrutura: key -> { idx, item, ts }\n Mantém aquele com ts MENOR (mais antigo) para representar o consultor.\n*/\nfor (let i = 0; i < rows.length; i++) {\n  const r = rows[i];\n  const j = r.json;\n\n  const keyRaw = getKey(j);\n  const key = (keyRaw == null || keyRaw === \"\") ? `__sem_chave_${i}` : String(keyRaw);\n\n  const ts = getTs(j);\n\n  const cur = byConsultor.get(key);\n  if (!cur || ts < cur.ts) {\n    byConsultor.set(key, { idx: i, item: r, ts });\n  }\n}\n\nconst unicos = Array.from(byConsultor.values());\n\nif (unicos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// ===== Ordenar do mais antigo -> mais recente =====\nunicos.sort((a, b) => a.ts - b.ts);\n\n// ===== Selecionar pool e sortear =====\nconst take = Math.min(TOP_N, unicos.length);\nconst candidatos = unicos.slice(0, take);\n\n// Sorteio uniforme\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// ===== Retorno preservando o índice original para pairedItem =====\nreturn [\n  {\n    json: escolhido.item.json,\n    pairedItem: { item: escolhido.idx },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2864,
+        -704
+      ],
+      "id": "793632c7-2f3b-439c-96c8-f1020d454aa6",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distrib_comercial",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "ATIVO"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        -704
+      ],
+      "id": "6bc50adb-beff-49e3-b920-ed01a8acbfa5",
+      "name": "Get many rows3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "distrib_comercial",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_lead",
+              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3088,
+        -704
+      ],
+      "id": "899e743f-26c0-4252-a160-bffbdd480aae",
+      "name": "Update a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        []
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row2": {
+      "main": [
+        [
+          {
+            "node": "Get many rows2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads": {
+      "main": [
+        [
+          {
+            "node": "Update contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update contacts": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Get many rows3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Update a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows3": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row3": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "4674eba7-8d32-457a-9324-b66fc893b4c2",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-28T16:55:17.986Z",
+      "updatedAt": "2025-07-28T16:55:17.986Z",
+      "role": "workflow:owner",
+      "workflowId": "HBp98F7cHlM5sJ86",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-30T20:41:48.074Z",
+      "updatedAt": "2025-07-30T20:41:48.074Z",
+      "id": "HCAYGF54Hj7mAMlF",
+      "name": "ai"
+    }
+  ]
+}
