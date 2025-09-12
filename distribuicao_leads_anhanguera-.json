@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-25T21:18:19.721Z",
-  "updatedAt": "2025-08-04T17:28:02.000Z",
+  "updatedAt": "2025-08-21T20:40:33.000Z",
   "id": "278LsyluypT5pJFv",
   "name": "distribuicao_leads_anhanguera",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -360,8 +360,49 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "09f8dc15-f55b-40aa-8059-cbea0476eca3",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "189",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "4694df67-9406-4276-8bc4-bcfb26719b4f",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "17586517",
+            "leads[add][0][status_id]": "84399996",
+            "leads[add][0][pipeline_id]": "11003376",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/DISTRIBUICAOBU",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "b27704dd-3b62-4900-ab4d-1c71689d6113",
   "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-07-25T21:18:19.723Z",
+      "updatedAt": "2025-07-25T21:18:19.723Z",
+      "role": "workflow:owner",
+      "workflowId": "278LsyluypT5pJFv",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
   "tags": []
 }
