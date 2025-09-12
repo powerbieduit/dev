@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T20:01:25.396Z",
-  "updatedAt": "2025-07-25T22:58:15.000Z",
+  "updatedAt": "2025-08-28T13:44:46.000Z",
   "id": "D1AqLQAUK63Fo0jZ",
   "name": "ativo_csv",
   "active": true,
@@ -241,7 +241,7 @@
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "string",
+              "type": "number",
               "canBeUsedToMatch": true,
               "removed": true
             }
@@ -262,8 +262,8 @@
       "executeOnce": true,
       "credentials": {
         "postgres": {
-          "id": "Pq2u2kpM4UEc1q97",
-          "name": "Postgres distribuicao_academico"
+          "id": "qYUQEV9RiMUYy4S5",
+          "name": "Distribuição Acadêmico"
         }
       }
     }
@@ -289,7 +289,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "945dc43f-0e50-4aea-8275-26255a687a59",
+  "versionId": "c263cf06-afe8-41de-b28e-2747af8e8b0b",
   "triggerCount": 1,
   "shared": [
     {
