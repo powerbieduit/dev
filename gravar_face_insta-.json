@@ -1,0 +1,221 @@
+{
+  "createdAt": "2025-08-21T06:09:27.104Z",
+  "updatedAt": "2025-08-21T06:49:15.000Z",
+  "id": "1Fz7a1CxBowxqN1Q",
+  "name": "gravar_face_insta",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "face-insta",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dd7ae175-4da5-484e-b3af-776119413c83",
+      "name": "Webhook",
+      "webhookId": "98b8b2d8-56ea-4923-8956-9592af041185"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gravar-face-insta",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        208
+      ],
+      "id": "8ac06604-7d93-4903-9d3c-756dc67fd97a",
+      "name": "Webhook1",
+      "webhookId": "98b8b2d8-56ea-4923-8956-9592af041185"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO \"face-insta\" (id_lead, created_at)\nVALUES ({{ $json.body['leads[add][0][id]'] }}, NOW());",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        -16
+      ],
+      "id": "30781bae-7eb3-4e54-be87-4f72973e66d0",
+      "name": "grava_leads",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) AS total_linhas\nFROM \"face-insta\";",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        304,
+        208
+      ],
+      "id": "2ed1fc0a-cf2c-484c-b1a0-7f06a1365d8d",
+      "name": "count",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        512,
+        208
+      ],
+      "id": "963c3d8a-47b5-4955-a35e-4978572660ff",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "grava_leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "grava_leads": {
+      "main": [
+        []
+      ]
+    },
+    "count": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "197",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "fffd42b6-742b-40a1-9d42-2349d80615be",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19211038",
+            "leads[add][0][status_id]": "89820300",
+            "leads[add][0][pipeline_id]": "11685120",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/face-insta",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "197",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "fffd42b6-742b-40a1-9d42-2349d80615be",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19211038",
+            "leads[add][0][status_id]": "89820300",
+            "leads[add][0][pipeline_id]": "11685120",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/face-insta",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "42f28aa3-53e2-4792-b32c-4bd296a76de6",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-08-21T06:09:27.113Z",
+      "updatedAt": "2025-08-21T06:09:27.113Z",
+      "role": "workflow:owner",
+      "workflowId": "1Fz7a1CxBowxqN1Q",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
