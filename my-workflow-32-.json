@@ -1,0 +1,53 @@
+{
+  "createdAt": "2025-09-03T22:19:35.874Z",
+  "updatedAt": "2025-09-05T20:43:49.000Z",
+  "id": "YBJMYCh4xnsLolgj",
+  "name": "My workflow 32",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vilamariana",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b15d46c6-6036-4106-a84f-d519da5be381",
+      "name": "Webhook",
+      "webhookId": "85f017a6-d77b-451d-ab50-9d08d2e3517b"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c499e75f-4716-437f-b4eb-a83703176840",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-09-03T22:19:35.876Z",
+      "updatedAt": "2025-09-03T22:19:35.876Z",
+      "role": "workflow:owner",
+      "workflowId": "YBJMYCh4xnsLolgj",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
