@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T21:05:01.493Z",
-  "updatedAt": "2025-09-09T16:21:03.000Z",
+  "updatedAt": "2025-10-15T14:17:20.000Z",
   "id": "ta10t8dmOyScLzLf",
   "name": "distribuicao_leads_sumare V2",
   "active": true,
@@ -15,8 +15,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        0,
-        0
+        -16,
+        16
       ],
       "id": "21256bbc-e758-4ab2-9b62-52e0e9da54e0",
       "name": "Webhook",
@@ -37,15 +37,15 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        224,
-        0
+        208,
+        16
       ],
       "id": "b06f4dd1-7326-4b4b-bea8-be57f12931bb",
       "name": "Get list of leads1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -56,8 +56,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        448,
-        0
+        432,
+        16
       ],
       "id": "09282436-f6d9-47b6-8634-3f2c4197c3e2",
       "name": "Code5"
@@ -83,6 +83,8 @@
           "lead": [
             {
               "id": "={{ $('Get list of leads1').item.json._embedded.leads[0].id }}",
+              "price": null,
+              "status_id": 0,
               "responsible_user_id": "={{ $json.id_usuario }}"
             }
           ]
@@ -91,15 +93,15 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1760,
-        0
+        1712,
+        16
       ],
       "id": "b59a58d2-fac5-4834-b023-6aa82268a318",
       "name": "Update leads1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -119,15 +121,15 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1984,
-        0
+        1936,
+        16
       ],
       "id": "6a8cd874-46b2-4821-a0a0-13b5390b2413",
       "name": "Update contacts",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -148,8 +150,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        672,
-        0
+        656,
+        16
       ],
       "id": "99509507-ed8c-4911-9bc8-b42ab10be450",
       "name": "Get many rows",
@@ -185,7 +187,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1040,
+        1072,
         16
       ],
       "id": "76a3dec8-92b0-41b6-a443-eba82e8b79d2",
@@ -214,8 +216,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1536,
-        0
+        1488,
+        16
       ],
       "id": "046624aa-a71b-4fc3-bb8f-96a65cb16170",
       "name": "Edit Fields"
@@ -227,7 +229,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1248,
+        1280,
         16
       ],
       "id": "91b3216f-c498-4102-80bf-8910e866b00d",
@@ -354,7 +356,7 @@
             "content-length": "188",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "ca7d41ba-ef51-47f2-9711-1d4acc0f4ed0",
+            "x-amocrm-requestid": "9b202a43-0299-418c-9855-2e3d0e622cc4",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
@@ -365,8 +367,8 @@
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "19122951",
-            "leads[add][0][status_id]": "49518221",
+            "leads[add][0][id]": "19579140",
+            "leads[add][0][status_id]": "56879135",
             "leads[add][0][pipeline_id]": "5617751",
             "account[id]": "30298412",
             "account[subdomain]": "sumaread"
@@ -377,7 +379,7 @@
       }
     ]
   },
-  "versionId": "4799a611-8288-4365-8cfc-d61b243ed207",
+  "versionId": "ffb0b7db-5363-45ac-b800-c515a585c6c5",
   "triggerCount": 1,
   "shared": [
     {
