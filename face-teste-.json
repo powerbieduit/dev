@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-09-02T16:11:01.031Z",
-  "updatedAt": "2025-09-11T21:37:17.000Z",
+  "updatedAt": "2025-09-29T16:10:17.000Z",
   "id": "FLmE8Y3tgpijDo1Q",
   "name": "face teste",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -19,7 +19,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json[\"Texto da Imagem\"] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -28,8 +28,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3664,
-        5408
+        -3744,
+        5168
       ],
       "id": "28a6b5a4-4fab-408a-ba04-14e77b15c9cd",
       "name": "facebook - vila prudente",
@@ -53,7 +53,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json['Texto da Imagem'] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -62,8 +62,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3664,
-        4080
+        -3776,
+        4128
       ],
       "id": "74edacca-062f-416d-93c3-c172f3b3e6aa",
       "name": "facebook - taboao da serra jd mituzi",
@@ -87,7 +87,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json[\"Texto da Imagem\"] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -96,8 +96,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3632,
-        5216
+        -3760,
+        4960
       ],
       "id": "ee6ecdfe-29b6-49e3-bdd4-b8d1d2126799",
       "name": "facebook - barra funda",
@@ -121,7 +121,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json[\"Texto da Imagem\"] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -130,8 +130,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3648,
-        4944
+        -3760,
+        4640
       ],
       "id": "1fc1a343-8f8a-4c12-993b-3c733ee6fb1f",
       "name": "facebook - capivari",
@@ -155,7 +155,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json[\"Texto da Imagem\"] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -164,8 +164,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -2784,
-        5152
+        -3792,
+        5504
       ],
       "id": "2119c56b-f753-4778-a266-02397612ced8",
       "name": "facebook - cruzeirodosulead",
@@ -189,7 +189,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json[\"Texto da Imagem\"] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -198,8 +198,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3680,
-        4688
+        -3792,
+        4512
       ],
       "id": "d5260861-1cce-42f1-b2e3-ae8378b688c1",
       "name": "facebook - freguesia do ó",
@@ -223,7 +223,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json['Texto da Imagem'] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -232,8 +232,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -2784,
-        5376
+        -3760,
+        4800
       ],
       "id": "2fdeb391-9de4-473a-8ea9-0cab6ff105c9",
       "name": "facebook - sapopemba",
@@ -257,7 +257,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json['Texto da Imagem'] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -266,8 +266,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3664,
-        4304
+        -3520,
+        5792
       ],
       "id": "a9a0b1f8-7ef4-46cf-8df8-cbc7ebfb362e",
       "name": "facebook - polo taboao centro",
@@ -291,7 +291,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json['Texto da Imagem'] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -300,8 +300,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3664,
-        3888
+        -3792,
+        3984
       ],
       "id": "9655da1e-65f4-4195-a19c-559768162963",
       "name": "facebook - itapira",
@@ -325,7 +325,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json['Texto da Imagem'] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -334,8 +334,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3648,
-        3728
+        -3744,
+        5664
       ],
       "id": "22a96702-ae4b-4cb0-83c4-3ec64a328bc6",
       "name": "facebook - ibirapuera",
@@ -370,8 +370,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        3648
+        1712,
+        6496
       ],
       "id": "3f89599a-48e2-4c15-90b6-776241778e1a",
       "name": "instagram - santana",
@@ -395,8 +395,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -7008,
-        4624
+        704,
+        7472
       ],
       "id": "0ee50b74-256f-4d4d-8014-1260a2afc057",
       "name": "Download file",
@@ -440,8 +440,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -6832,
-        4624
+        880,
+        7472
       ],
       "id": "e9d01d4b-4321-4a69-9183-24821e0ab8de",
       "name": "upload no bucket"
@@ -463,8 +463,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -6624,
-        4608
+        1088,
+        7456
       ],
       "id": "31fcea14-5bc8-41d8-bb95-cfe4b2676521",
       "name": "Edit Fields"
@@ -489,8 +489,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        3648
+        1936,
+        6496
       ],
       "id": "6b6311cb-a979-44bb-8a63-f636ef238f7c",
       "name": "instagram - santana1",
@@ -514,7 +514,7 @@
             "parameter": [
               {
                 "name": "message",
-                "value": "={{ $json[\"Texto da Imagem\"] }}"
+                "value": "={{ $json.summary }}"
               }
             ]
           }
@@ -523,8 +523,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -3664,
-        4464
+        -3808,
+        4304
       ],
       "id": "8ee2f32d-f469-4b64-9d33-efecaa93c892",
       "name": "facebook -  santana",
@@ -540,7 +540,7 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "={{ $json[\"Id da 1º Imagem\"].match(/[-\\w]{25,}/)[0] }}\n",
+          "value": "={{ $json.description.match(/\\/file\\/d\\/([a-zA-Z0-9_-]+)/)[1] }}",
           "mode": "id"
         },
         "options": {}
@@ -548,8 +548,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -4192,
-        4816
+        -5280,
+        4832
       ],
       "id": "535963ce-be50-478f-b9b5-e1718c64faed",
       "name": "Download file1",
@@ -584,8 +584,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        3840
+        1712,
+        6688
       ],
       "id": "d9e802ab-c40b-4a2e-8940-eb23e6fc6801",
       "name": "instagram - barra funda",
@@ -616,8 +616,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        3840
+        1936,
+        6688
       ],
       "id": "235f175e-dfb7-4c78-b6c0-41edb20b20b7",
       "name": "instagram - barra funda1",
@@ -652,8 +652,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        4032
+        1712,
+        6880
       ],
       "id": "f02c820a-2c4b-4e34-9890-6a9bdb61a0b9",
       "name": "instagram - capivari",
@@ -684,8 +684,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        4032
+        1936,
+        6880
       ],
       "id": "684beb47-57c2-4d7e-b60a-94e5e582545a",
       "name": "instagram - capivari1",
@@ -720,8 +720,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        4224
+        1712,
+        7072
       ],
       "id": "fb7a0822-1c92-4bbb-91f2-75aef84a2478",
       "name": "instagram - cruzeirodosulead",
@@ -752,8 +752,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        4224
+        1936,
+        7072
       ],
       "id": "ec158fc1-c4f2-4b0e-a34d-0f2cbc2bce4e",
       "name": "instagram - cruzeirodosulead1",
@@ -788,8 +788,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        4416
+        1712,
+        7264
       ],
       "id": "8d66949a-d239-46a2-8db0-ff3b8cb1e41f",
       "name": "instagram - freguesia do o",
@@ -820,8 +820,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        4416
+        1936,
+        7264
       ],
       "id": "9eb64831-3ba5-4c33-84c8-d4c14193c664",
       "name": "instagram - freguesia do o1",
@@ -856,8 +856,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        4592
+        1712,
+        7440
       ],
       "id": "a5b09814-5878-443f-86ff-b0006175062d",
       "name": "instagram - ibirapuera",
@@ -888,8 +888,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5808,
-        4608
+        1904,
+        7456
       ],
       "id": "31075583-acc2-4e00-a996-3c7c73c0c493",
       "name": "instagram - ibirapuera1",
@@ -924,8 +924,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        4800
+        1712,
+        7648
       ],
       "id": "0e1841f7-c259-456e-9ec4-88cea6558f24",
       "name": "instagram - itapira",
@@ -956,8 +956,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        4800
+        1936,
+        7648
       ],
       "id": "eb67d3c6-732a-46e3-bf98-da6dd5d46ad9",
       "name": "instagram - itapira1",
@@ -992,8 +992,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        4992
+        1712,
+        7840
       ],
       "id": "74fc0790-5601-4816-b741-1fdcd55bf7e8",
       "name": "instagram - jd mituzi",
@@ -1024,8 +1024,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        4992
+        1936,
+        7840
       ],
       "id": "9fec0679-ddbf-4b67-ad48-d9b165bc7b99",
       "name": "instagram - jd mituzi1",
@@ -1060,8 +1060,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6016,
-        5168
+        1696,
+        8016
       ],
       "id": "49f6adc4-6ae3-44a6-9f6f-838cd73632ec",
       "name": "instagram - morumbi",
@@ -1092,8 +1092,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5824,
-        5184
+        1888,
+        8032
       ],
       "id": "111182a2-0b8e-4cc2-a30b-9bd7af7ee30c",
       "name": "instagram - morumbi1",
@@ -1128,8 +1128,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        5376
+        1712,
+        8224
       ],
       "id": "d74a2e8c-b9a7-42e1-b5fb-9e9f88edc3db",
       "name": "instagram - sapopemba",
@@ -1160,8 +1160,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        5376
+        1936,
+        8224
       ],
       "id": "ee1cb6f3-c96a-4b61-924d-75fa93e19237",
       "name": "instagram - sapopemba1",
@@ -1196,8 +1196,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        5568
+        1712,
+        8416
       ],
       "id": "8929ada3-be5a-4539-8265-d3b218125f5c",
       "name": "instagram - taboao da serra centro",
@@ -1228,8 +1228,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5760,
-        5568
+        1952,
+        8416
       ],
       "id": "b33eabbe-6076-47c0-bda6-a78d74f5d2fa",
       "name": "instagram - taboao da serra centro1",
@@ -1264,8 +1264,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -6000,
-        5760
+        1712,
+        8608
       ],
       "id": "52e901ed-41d0-4235-8021-ad23ea304aa7",
       "name": "instagram - vila prudente",
@@ -1296,8 +1296,8 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -5776,
-        5760
+        1936,
+        8608
       ],
       "id": "bd522873-5f08-4eae-9abb-07564a36aa91",
       "name": "instagram - vila prudente1",
@@ -1311,15 +1311,15 @@
     {
       "parameters": {
         "content": "## \n*INSTAGRAM*",
-        "height": 2368,
+        "height": 2592,
         "width": 2672,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -8176,
-        3520
+        -464,
+        6368
       ],
       "id": "b670fe14-7b0c-429c-aeb0-4131767c599d",
       "name": "Sticky Note"
@@ -1328,58 +1328,17 @@
       "parameters": {
         "content": "## *FACEBOOK*\n",
         "height": 2432,
-        "width": 1728,
+        "width": 3856,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -4960,
-        3568
+        -6864,
+        3712
       ],
       "id": "4e194c5d-c9c0-42f7-b86e-5f6047476170",
       "name": "Sticky Note1"
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c",
-          "mode": "list",
-          "cachedResultName": "Planilha - Posts Facebook e Instagram ",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Página1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Lu3-CaxHIwAJaYbuCDRMrCee--QDP_Ng2s2AjmXXt3c/edit#gid=0"
-        },
-        "filtersUI": {
-          "values": [
-            {
-              "lookupColumn": "Data - Postagem",
-              "lookupValue": "={{ $now.toFormat('dd/MM/yyyy') }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        -4736,
-        4880
-      ],
-      "id": "08d34889-5269-48b1-9023-38d6412b4171",
-      "name": "Get row(s) in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "By4ggNOanXLS64XE",
-          "name": "powerbieduit"
-        }
-      }
     },
     {
       "parameters": {
@@ -1410,8 +1369,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -7552,
-        4656
+        160,
+        7504
       ],
       "id": "fa1063ac-cf97-406a-8acb-4b6f8ec13c9f",
       "name": "Get row(s) in sheet1",
@@ -1435,30 +1394,11 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -7776,
-        4656
+        -64,
+        7504
       ],
       "id": "f495daff-f3ae-4905-9ea5-1d54ab218754",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "triggerAtHour": 10
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        -4912,
-        4832
-      ],
-      "id": "2b4bbe6d-5210-4b6e-88d7-660fe30a36ea",
-      "name": "Schedule Trigger1"
     },
     {
       "parameters": {
@@ -1498,8 +1438,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -7344,
-        4656
+        368,
+        7504
       ],
       "id": "cf411b36-55e2-4fd5-802c-21494d5a8b15",
       "name": "Switch"
@@ -1518,12 +1458,11 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json['Id da 2º Imagem'] }}",
-                    "rightValue": "",
+                    "leftValue": "={{ $json.description }}",
+                    "rightValue": ",",
                     "operator": {
                       "type": "string",
-                      "operation": "notExists",
-                      "singleValue": true
+                      "operation": "notContains"
                     },
                     "id": "48b159ce-0ad4-4677-9f83-e511ca4cc06f"
                   }
@@ -1542,8 +1481,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -4560,
-        4848
+        -6064,
+        5136
       ],
       "id": "818107b9-3e82-48af-b702-10a0be8f2a5a",
       "name": "Switch1"
@@ -1552,27 +1491,27 @@
       "parameters": {
         "content": "## *FACEBOOK* - CAROSSEL\n\n",
         "height": 464,
-        "width": 1728,
+        "width": 1856,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -3120,
-        6448
+        -4800,
+        6384
       ],
       "id": "a3d5419f-7db4-45b5-a80f-2c4372a74244",
       "name": "Sticky Note2"
     },
     {
       "parameters": {
-        "jsCode": "const row = items[0].json;\n\nconst keys = Object.keys(row).filter(\n  k => k.toLowerCase().includes('id da') && k.toLowerCase().includes('imagem')\n);\n\nfunction extractId(urlOrId) {\n  if (!urlOrId) return null;\n  const m1 = String(urlOrId).match(/\\/file\\/d\\/([^/]+)/);\n  if (m1) return m1[1];\n  const m2 = String(urlOrId).match(/[?&]id=([^&]+)/);\n  if (m2) return m2[1];\n  if (/^[A-Za-z0-9_-]{20,}$/.test(String(urlOrId))) return String(urlOrId);\n  return null;\n}\n\nconst out = [];\nfor (const k of keys) {\n  const id = extractId(row[k]);\n  if (id) {\n    out.push({\n      json: {\n        tipo: 'imagem',   // <-- ADICIONADO\n        driveFileId: id,\n        url: `https://drive.google.com/uc?export=download&id=${id}`\n      }\n    });\n  }\n}\n\n// item de contagem\nout.push({\n  json: {\n    tipo: 'contagem',    // <-- ADICIONADO\n    totalIds: out.length\n  }\n});\n\nreturn out;\n"
+        "jsCode": "// Aceita:\n// 1) items = [ { json: { ...evento } }, ... ]\n// 2) items = [ { json: [ { ...evento }, ... ] } ]\n\nfunction extractDriveIds(text) {\n  const ids = new Set();\n  if (!text) return ids;\n  const s = String(text);\n\n  // Padrões mais comuns do Drive (arquivo)\n  const patterns = [\n    /https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/([A-Za-z0-9_-]{10,})/g,\n    /https?:\\/\\/drive\\.google\\.com\\/open\\?id=([A-Za-z0-9_-]{10,})/g,\n    /https?:\\/\\/drive\\.google\\.com\\/uc\\?(?:[^#\\s]*&)?id=([A-Za-z0-9_-]{10,})/g,\n    // se você também quiser aceitar links compartilhados encurtados do \"id=\":\n    /[?&]id=([A-Za-z0-9_-]{10,})/g,\n  ];\n\n  let m;\n  for (const re of patterns) {\n    while ((m = re.exec(s)) !== null) {\n      ids.add(m[1]);\n    }\n  }\n\n  return ids;\n}\n\n// Normaliza para uma lista de eventos\nconst events = Array.isArray(items[0]?.json)\n  ? items[0].json\n  : items.map(i => i.json);\n\nconst allIds = new Set();\n\nfor (const ev of events) {\n  // VARRE SOMENTE description e summary (onde estão seus links do Drive)\n  const parts = [];\n  if (ev?.description) parts.push(String(ev.description));\n  if (ev?.summary)     parts.push(String(ev.summary));\n\n  const blob = parts.join(' ');\n  const ids = extractDriveIds(blob);\n  ids.forEach(id => allIds.add(id));\n}\n\n// Saída: um item por arquivo + item de contagem\nconst out = [];\nfor (const id of allIds) {\n  out.push({\n    json: {\n      tipo: 'documento',\n      driveFileId: id,\n      url: `https://drive.google.com/uc?export=download&id=${id}`\n    }\n  });\n}\n\nout.push({\n  json: {\n    tipo: 'contagem',\n    totalIds: out.length // já é a quantidade de documentos (é calculado antes de adicionar este item)\n  }\n});\n\nreturn out;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3024,
-        6656
+        -4624,
+        6528
       ],
       "id": "47f3d83a-b05d-4897-a380-ecba1394769c",
       "name": "Code"
@@ -1593,7 +1532,7 @@
                   {
                     "id": "c80e0d03-16b3-4f1e-bf1b-d7459194d9f5",
                     "leftValue": "={{ $json.tipo }}",
-                    "rightValue": "imagem",
+                    "rightValue": "documento",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
@@ -1610,8 +1549,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -2816,
-        6640
+        -4448,
+        6512
       ],
       "id": "a2e86c46-2bf2-4459-872b-028ac8233f6f",
       "name": "Switch2"
@@ -1620,7 +1559,7 @@
       "parameters": {
         "httpRequestMethod": "POST",
         "graphApiVersion": "v23.0",
-        "node": "486302287897529",
+        "node": "313175648538354",
         "edge": "photos",
         "options": {
           "queryParameters": {
@@ -1640,15 +1579,15 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -2272,
-        6672
+        -3904,
+        6544
       ],
       "id": "02f7fad1-e660-4765-8335-66f8d839df2c",
       "name": "Facebook Graph API1",
       "credentials": {
         "facebookGraphApi": {
-          "id": "mV5Igu67SG1ZAtRZ",
-          "name": "face - morumbi - llt"
+          "id": "VEoW7ltv5umiWqtZ",
+          "name": "facebook - cruzeirodosulead"
         }
       }
     },
@@ -1657,16 +1596,16 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "={{ $json.driveFileId }}",
-          "mode": "id"
+          "mode": "id",
+          "value": "={{ $json.driveFileId }}"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -2640,
-        6656
+        -4272,
+        6528
       ],
       "id": "b050545f-6ea6-4917-922e-2fd808ec642d",
       "name": "Download file2",
@@ -1685,8 +1624,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -2480,
-        6672
+        -4112,
+        6544
       ],
       "id": "d6f96ff4-98c2-44aa-b112-7e7cc2573262",
       "name": "Split Out"
@@ -1698,29 +1637,481 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2064,
-        6656
+        -3696,
+        6528
       ],
       "id": "b5c4f804-3046-4abf-8b9f-9038fbac2c1d",
       "name": "Code1"
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: { attached_media: [ { media_fbid: \"111\" }, { media_fbid: \"222\" }, ... ] }\n\nconst msg = $items('Get row(s) in sheet')[0].json['Texto da Imagem'] || '';\n\nconst body = { message: msg };\n\n// Transformar o array em campos attached_media[0], attached_media[1], ...\n(items[0].json.attached_media || []).forEach((m, i) => {\n  // o Graph exige o valor como JSON string\n  body[`attached_media[${i}]`] = JSON.stringify({ media_fbid: m.media_fbid });\n});\n\nreturn [{ json: body }];\n"
+        "jsCode": "// Pega o evento\nconst event = $json;\n\n// Summary vem do Calendar Trigger\nconst msg = $('Google Calendar Trigger').first().json.summary || '';\n\n// Cria o corpo inicial\nconst body = { message: msg };\n\n// Conta imagens\nconst attached = event.attached_media || [];\nattached.forEach((m, i) => {\n  body[`attached_media[${i}]`] = JSON.stringify({ media_fbid: m.media_fbid });\n});\n\n// Adiciona a quantidade total\nbody.total_images = attached.length;\n\nreturn [{ json: body }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1888,
-        6672
+        -3520,
+        6544
       ],
       "id": "9b632b6b-b96d-49e8-bab9-637c02952259",
       "name": "Code2"
     },
     {
       "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "486302287897529",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.summary }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3728,
+        3760
+      ],
+      "id": "4188484a-99f1-469e-988f-d1a8da076e79",
+      "name": "facebook morumbi",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "mV5Igu67SG1ZAtRZ",
+          "name": "face - morumbi - llt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "calendarId": {
+          "__rl": true,
+          "value": "b62e4b1e49ce899965086ac092dfd1fc56f047fe9ea17fa692cb3c42c5b5cc57@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Posts Facebook e Instagram"
+        },
+        "triggerOn": "eventStarted",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [
+        -6464,
+        5104
+      ],
+      "id": "9a415013-0166-49cd-a3ae-eff134438108",
+      "name": "Google Calendar Trigger",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "akvVbUeMlrcKBgdU",
+          "name": "CALENDAR POSTS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.summary }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3712,
+        5296
+      ],
+      "id": "06c1b812-c027-4684-86dc-0b86172f5981",
+      "name": "facebook - campinas",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "hK0MJI2974n3taB3",
+          "name": "facebook campinas"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "b6b4f004-0375-4c63-aa7c-267c84c1f749"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "88cae18b-1f2e-4d75-af22-ce2e86a2919c",
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 3,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4204ed0b-9c65-443e-b4d7-d0ac2dc49b6b",
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 4,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a20d3d72-cebd-4775-a9aa-416cf680d1ee",
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 5,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1e18edb4-64f2-4e8e-a3a5-4e20fbba3e2e",
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 6,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a9b4ae73-973c-46f1-90c3-ac66b11ee346",
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 7,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9326ab13-3bb0-4d60-88e4-fd46a8327d58",
+                    "leftValue": "={{ $json.total_images }}",
+                    "rightValue": 8,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -3312,
+        6544
+      ],
+      "id": "9e57bd79-9c43-4f2a-82e5-47f02c106c2e",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "https://graph.facebook.com/v23.0/486302287897529/feed?access_token=EAAJnch7hXsIBPR8GcStbD2Lg565DVGCUVBsq2WhR4B270YeQnC1tDbYFw1vrZAu1ZAFioeZCdhNduke66SkWhT0NytyyeWzpYWwa9p5ixhJ0rDZC2E4ZAAFE4sRKB3LrbAOTfvC0hvmp7H5XxP7Q0417WZBlWZAK1aelKTvOortUtUW3Ny7kZBkbunAFyQf48cmBz71vV3xJ",
+        "url": "https://graph.facebook.com/v23.0/313175648538354feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2544,
+        6192
+      ],
+      "id": "79f71a5a-a16d-4fb5-9f07-da7365e1501e",
+      "name": "postar 2 imagens cruzeirodosulead1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/313175648538354feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            },
+            {
+              "name": "attached_media[2]",
+              "value": "={{ $json['attached_media[2]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2544,
+        6384
+      ],
+      "id": "07229ed8-7144-49e2-9e68-e08a7e9240c5",
+      "name": "postar 3 imagens cruzeirodosulead2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/313175648538354feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            },
+            {
+              "name": "attached_media[2]",
+              "value": "={{ $json['attached_media[2]'] }}"
+            },
+            {
+              "name": "attached_media[5]",
+              "value": "={{ $json['attached_media[5]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2528,
+        6560
+      ],
+      "id": "48a8146f-a219-4ccb-9d35-6c1bdd24e622",
+      "name": "postar 4 imagens cruzeirodosulead"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/313175648538354/feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            },
+            {
+              "name": "attached_media[2]",
+              "value": "={{ $json['attached_media[2]'] }}"
+            },
+            {
+              "name": "attached_media[3]",
+              "value": "={{ $json['attached_media[3]'] }}"
+            },
+            {
+              "name": "attached_media[4]",
+              "value": "={{ $json['attached_media[4]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2544,
+        6752
+      ],
+      "id": "54559225-6ef2-4441-8d72-79b5c3c41df8",
+      "name": "postar 5 imagens cruzeirodosulead1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/313175648538354feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -1766,47 +2157,133 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1680,
-        6640
+        -2592,
+        6944
       ],
-      "id": "48a8146f-a219-4ccb-9d35-6c1bdd24e622",
-      "name": "postar cruzeirodosulead"
+      "id": "47e34449-8f2a-48ad-b977-57318270c09a",
+      "name": "postar 6 imagens cruzeirodosulead"
     },
     {
       "parameters": {
-        "httpRequestMethod": "POST",
-        "graphApiVersion": "v23.0",
-        "node": "486302287897529",
-        "edge": "photos",
-        "options": {
-          "queryParameters": {
-            "parameter": [
-              {
-                "name": "url",
-                "value": "={{ $json.url }}"
-              },
-              {
-                "name": "published",
-                "value": "false"
-              }
-            ]
-          }
-        }
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/313175648538354feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            },
+            {
+              "name": "attached_media[2]",
+              "value": "={{ $json['attached_media[2]'] }}"
+            },
+            {
+              "name": "attached_media[3]",
+              "value": "={{ $json['attached_media[3]'] }}"
+            },
+            {
+              "name": "attached_media[4]",
+              "value": "={{ $json['attached_media[4]'] }}"
+            },
+            {
+              "name": "attached_media[5]",
+              "value": "={{ $json['attached_media[5]'] }}"
+            },
+            {
+              "name": "attached_media[6]",
+              "value": "={{ $json['attached_media[6]'] }}"
+            }
+          ]
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.facebookGraphApi",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        -3664,
-        3568
+        -2576,
+        7152
       ],
-      "id": "4188484a-99f1-469e-988f-d1a8da076e79",
-      "name": "facebook morumbi",
-      "credentials": {
-        "facebookGraphApi": {
-          "id": "mV5Igu67SG1ZAtRZ",
-          "name": "face - morumbi - llt"
-        }
-      }
+      "id": "0b4a3992-fb45-4bf5-9cb7-66288c2292ba",
+      "name": "postar 7 imagens cruzeirodosulead"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/313175648538354feed?access_token=EAAK7XZAAFf6EBPpf4ZAjBxaf7HTkwu4BMpODXxMw25oqvI0u1ZA2m4NxSaMQ61khP9Ur7UAeXBU58y5PZB7mNlYrD3XG27Q8WWieuLF0TfoCiIGN9dH1Qhaxxi2QyRjMXFhV81K8GkDZBkEDpTz0PZBLz3ZAbnCRalx9OMV3HvwiywE2uCrW3JfQmvwyfKZASYiSxogv",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "attached_media[0]",
+              "value": "={{ $json['attached_media[0]'] }}"
+            },
+            {
+              "name": "attached_media[1]",
+              "value": "={{ $json['attached_media[1]'] }}"
+            },
+            {
+              "name": "attached_media[2]",
+              "value": "={{ $json['attached_media[2]'] }}"
+            },
+            {
+              "name": "attached_media[3]",
+              "value": "={{ $json['attached_media[3]'] }}"
+            },
+            {
+              "name": "attached_media[4]",
+              "value": "={{ $json['attached_media[4]'] }}"
+            },
+            {
+              "name": "attached_media[5]",
+              "value": "={{ $json['attached_media[5]'] }}"
+            },
+            {
+              "name": "attached_media[6]",
+              "value": "={{ $json['attached_media[6]'] }}"
+            },
+            {
+              "name": "attached_media[7]",
+              "value": "={{ $json['attached_media[7]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2528,
+        7344
+      ],
+      "id": "094036d4-8b18-4b8b-bc63-15b624f0305b",
+      "name": "postar 8 imagens cruzeirodosulead1"
     }
   ],
   "connections": {
@@ -2002,15 +2479,59 @@
             "node": "facebook - polo taboao centro",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Get row(s) in sheet": {
-      "main": [
-        [
+          },
           {
-            "node": "Switch1",
+            "node": "facebook - sapopemba",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - capivari",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook -  santana",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - freguesia do ó",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - barra funda",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - vila prudente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - campinas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - cruzeirodosulead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - taboao da serra jd mituzi",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook - itapira",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "facebook morumbi",
             "type": "main",
             "index": 0
           }
@@ -2030,24 +2551,7 @@
     },
     "Schedule Trigger": {
       "main": [
-        [
-          {
-            "node": "Get row(s) in sheet1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Schedule Trigger1": {
-      "main": [
-        [
-          {
-            "node": "Get row(s) in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Switch": {
@@ -2149,7 +2653,71 @@
       "main": [
         [
           {
-            "node": "postar cruzeirodosulead",
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "postar 2 imagens cruzeirodosulead1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "postar 3 imagens cruzeirodosulead2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "postar 4 imagens cruzeirodosulead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "postar 5 imagens cruzeirodosulead1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "postar 6 imagens cruzeirodosulead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "postar 7 imagens cruzeirodosulead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "postar 8 imagens cruzeirodosulead1",
             "type": "main",
             "index": 0
           }
@@ -2158,14 +2726,65 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    },
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
+    },
+    "node:Google Calendar Trigger": {
+      "lastTimeChecked": "2025-10-21T13:00:36Z"
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "e11bfa71-86d8-4f2c-b090-0593978f4c47",
+  "pinData": {
+    "Google Calendar Trigger": [
+      {
+        "json": {
+          "kind": "calendar#event",
+          "etag": "\"3518321080298846\"",
+          "id": "2g4r0qbuft9pnv98tvjf7uiqgq",
+          "status": "confirmed",
+          "htmlLink": "https://www.google.com/calendar/event?eid=Mmc0cjBxYnVmdDlwbnY5OHR2amY3dWlxZ3EgYjYyZTRiMWU0OWNlODk5OTY1MDg2YWMwOTJkZmQxZmM1NmYwNDdmZTllYTE3ZmE2OTJjYjNjNDJjNWI1Y2M1N0Bn",
+          "created": "2025-09-29T15:38:47.000Z",
+          "updated": "2025-09-29T15:42:20.149Z",
+          "summary": "\"O mundo está cada vez mais focado em ações contra as mudanças climáticas, com metas globais para 2030 e pressão crescente para que empresas e cidades adotem práticas sustentáveis. Nesse cenário, profissionais de Gestão Ambiental são protagonistas na transformação necessária para um futuro mais verde. Além das áreas tradicionais, esses profissionais atuam em setores essenciais como: 🔹 Consultoria em pegada de carbono — ajudando empresas a reduzir emissões 🔹 Gestão de resíduos tecnológicos — descarte responsável de eletrônicos 🔹 Planejamento urbano sustentável — cidades pensadas para o equilíbrio ambiental 🔹 Educação ambiental corporativa — tornando empresas mais conscientes e responsáveis Na Cruzeiro do Sul Virtual, o curso EAD em Gestão Ambiental prepara você para essas e outras áreas que estão moldando o futuro do planeta. 🌍 Quer fazer parte dessa mudança? Conheça nossas opções no site com o link da bio!  \"",
+          "description": "<u><a href=\"https://drive.google.com/file/d/1pnjVl7SIZ1t8fMu67dBPSDPJsCgr0DyL/view?usp=drive_link\" target=\"_blank\" class=\"pastedDriveLink-0\">https://drive.google.com/file/d/1pnjVl7SIZ1t8fMu67dBPSDPJsCgr0DyL/view?usp=drive_link</a></u>",
+          "creator": {
+            "email": "caiovinips2012@gmail.com"
+          },
+          "organizer": {
+            "email": "b62e4b1e49ce899965086ac092dfd1fc56f047fe9ea17fa692cb3c42c5b5cc57@group.calendar.google.com",
+            "displayName": "Posts Facebook e Instagram",
+            "self": true
+          },
+          "start": {
+            "dateTime": "2025-09-29T12:43:00-03:00",
+            "timeZone": "America/Sao_Paulo"
+          },
+          "end": {
+            "dateTime": "2025-09-29T13:43:00-03:00",
+            "timeZone": "America/Sao_Paulo"
+          },
+          "iCalUID": "2g4r0qbuft9pnv98tvjf7uiqgq@google.com",
+          "sequence": 1,
+          "reminders": {
+            "useDefault": true
+          },
+          "eventType": "default"
+        }
+      }
+    ]
+  },
+  "versionId": "e65faa11-679a-42d8-8889-c40de762db34",
   "triggerCount": 2,
   "shared": [
     {
