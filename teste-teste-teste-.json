@@ -1,0 +1,339 @@
+{
+  "createdAt": "2025-08-04T15:40:33.613Z",
+  "updatedAt": "2025-08-04T18:20:28.000Z",
+  "id": "GjOia70Wohw1dUzj",
+  "name": "teste teste teste",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "957a41a9-a6f6-466f-b23d-17bf3398031a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        -96
+      ],
+      "id": "1aab5280-9224-43b0-8ad2-d978d7b29ac1",
+      "name": "Webhook",
+      "webhookId": "957a41a9-a6f6-466f-b23d-17bf3398031a"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "lead_status_history",
+          "mode": "list",
+          "cachedResultName": "lead_status_history"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.id_lead }}",
+            "status_id": "={{ $json.status_nome }}",
+            "timestamp": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_id",
+              "displayName": "status_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        16,
+        48
+      ],
+      "id": "f8c5c818-ab5d-461c-90e6-385512e7d02e",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "UH0D2nzipqnnRW0Y",
+          "name": "supabase_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega os dados brutos do corpo do webhook\nconst body = $json.body;\n\n// Extrai os campos necessários\nconst id_lead = body[\"leads[status][0][id]\"];\nconst status_id = body[\"leads[status][0][status_id]\"];\n\n// Mapeia o status_id para nome\nconst statusMap = {\n  \"48539240\": \"Contato inicial\",\n  \"48539243\": \"Sem resposta\",\n  \"48539246\": \"Em atendimento\",\n  \"74941508\": \"Aguardando Resposta\",\n  \"48539249\": \"Inscricao\",\n  \"48566195\": \"Processo Seletivo\",\n  \"48566198\": \"Em processo\",\n  \"48566201\": \"Aprovado/Reprovado\",\n  \"48566204\": \"Boleto Enviado\",\n  \"77728584\": \"Pagamento Confirmado\",\n  \"48566207\": \"Aceite\",\n  \"142\": \"Ganho\",\n  \"143\": \"Perdido\"\n};\n\nconst status_nome = statusMap[status_id] || \"Desconhecido\";\n\n// Retorna o objeto para o próximo node\nreturn [\n  {\n    json: {\n      id_lead,\n      status_id,\n      status_nome\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -96
+      ],
+      "id": "8349b750-de39-4d84-b18a-e74b557ca3b3",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status_nome }}",
+                    "rightValue": "=Ganho",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0036ca58-7996-474c-ba57-eb99d3aadf19"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -208,
+        -96
+      ],
+      "id": "64f9beaa-d84b-4565-8920-5129e62fb053",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "lead_status_history",
+          "mode": "list",
+          "cachedResultName": "lead_status_history"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.id_lead }}",
+            "status_id": "={{ $('Code').item.json.status_nome }}",
+            "timestamp": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_id",
+              "displayName": "status_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        -224
+      ],
+      "id": "6a22a97b-f675-4e0f-a1c9-5525054348ce",
+      "name": "Insert rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "UH0D2nzipqnnRW0Y",
+          "name": "supabase_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.randomDelayMinutes }}",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        -224
+      ],
+      "id": "e28dfdfb-dddf-4c0e-a412-7991f49ce82c",
+      "name": "Wait",
+      "webhookId": "6a94820b-72fc-4cd7-93d1-ac57db47a344"
+    },
+    {
+      "parameters": {
+        "jsCode": "const minMinutes = 1;\nconst maxMinutes = 10;\n\n// Gera um número inteiro aleatório entre 1 e 10\nconst randomDelayMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;\n\nreturn [{\n  json: {\n    ...$json,\n    randomDelayMinutes\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        -224
+      ],
+      "id": "998dfa5c-7d3d-488c-ba07-1fbdc61c5306",
+      "name": "Timer"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Timer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table1": {
+      "main": [
+        []
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Timer": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "168de0da-04b3-4260-bcc0-909cf6b41591",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-08-04T15:40:33.620Z",
+      "updatedAt": "2025-08-04T15:40:33.620Z",
+      "role": "workflow:owner",
+      "workflowId": "GjOia70Wohw1dUzj",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
