@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T15:46:42.173Z",
-  "updatedAt": "2025-08-19T20:40:08.000Z",
+  "updatedAt": "2025-10-07T19:49:54.000Z",
   "id": "rAHfokpq0wGiOghD",
   "name": "distribuicao_com_siaa V2",
   "active": true,
@@ -150,7 +150,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const minMinutes = 1;\nconst maxMinutes = 10;\n\n// Gera um número inteiro aleatório entre 1 e 10\nconst randomDelayMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;\n\nreturn [{\n  json: {\n    ...$json,\n    randomDelayMinutes\n  }\n}];"
+        "jsCode": "const minMinutes = 1;\nconst maxMinutes = 5;\n\n// Gera um número inteiro aleatório entre 1 e 10\nconst randomDelayMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;\n\nreturn [{\n  json: {\n    ...$json,\n    randomDelayMinutes\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -224,6 +224,49 @@
         "supabaseApi": {
           "id": "71OBWtC8t38iEtPO",
           "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "distribuicao_por_consultor",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id_lead",
+              "fieldValue": "={{ $('Update leads1').item.json._embedded.leads[0].id }}"
+            },
+            {
+              "fieldId": "consultor",
+              "fieldValue": "={{ $('Update a row').item.json.nome }}"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "origem",
+              "fieldValue": "=SIAA"
+            },
+            {
+              "fieldId": "id_consultor",
+              "fieldValue": "={{ $('Code1').item.json.id_lead }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2128,
+        16
+      ],
+      "id": "2816b138-3238-438e-96a6-a3385c54c33a",
+      "name": "Create a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     }
@@ -327,6 +370,17 @@
           }
         ]
       ]
+    },
+    "Update contacts1": {
+      "main": [
+        [
+          {
+            "node": "Create a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -336,8 +390,40 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "235277d9-4e51-424c-b99c-1626f7de6219",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "196",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "9086dd89-e820-41aa-a247-746ba2fde109",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19634479",
+            "leads[add][0][status_id]": "48539240",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/b5102c65-0263-4a97-ab6e-c183d6defe9c",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "1f5b7b4f-00c0-4401-86c8-7f8d2069db52",
   "triggerCount": 1,
   "shared": [
     {
