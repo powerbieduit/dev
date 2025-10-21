@@ -1,0 +1,77 @@
+{
+  "createdAt": "2025-07-26T04:24:11.469Z",
+  "updatedAt": "2025-07-28T16:53:12.000Z",
+  "id": "IXyEvrsMEWv4G6p5",
+  "name": "My workflow",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "receptivo",
+        "remoteJid": "=120363402640430803@g.us",
+        "messageText": "=⚠️ Erro de  Execução: {{ $json.execution.error.message }}\n\nWorkflow: {{ $json.workflow.name }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ab57010c-8cdf-443a-b718-1ff1b989e96e",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nB4splEd6P979FNr",
+          "name": "teste evo"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "d45bb663-fb60-4f36-a201-f24e472626bd",
+      "name": "Error Trigger"
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e5ac12af-4a98-4e2d-8d75-46a1645faa8f",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-07-26T04:24:11.471Z",
+      "updatedAt": "2025-07-26T04:24:11.471Z",
+      "role": "workflow:owner",
+      "workflowId": "IXyEvrsMEWv4G6p5",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
