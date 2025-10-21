@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-07-28T16:55:17.984Z",
-  "updatedAt": "2025-09-11T15:04:04.000Z",
+  "updatedAt": "2025-10-14T15:52:37.000Z",
   "id": "HBp98F7cHlM5sJ86",
   "name": "distribuicao_sem resposta - csv",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -11,7 +11,8 @@
         "rule": {
           "interval": [
             {
-              "field": "minutes"
+              "field": "minutes",
+              "minutesInterval": 10
             }
           ]
         }
@@ -20,7 +21,7 @@
       "typeVersion": 1.2,
       "position": [
         -272,
-        -416
+        -1120
       ],
       "id": "e53700ac-f868-4897-bb26-1409630e80a4",
       "name": "Schedule Trigger"
@@ -41,6 +42,11 @@
               "keyName": "atendimento_kommo",
               "condition": "is",
               "keyValue": "null"
+            },
+            {
+              "keyName": "recadastro",
+              "condition": "is",
+              "keyValue": "null"
             }
           ]
         }
@@ -49,7 +55,7 @@
       "typeVersion": 1,
       "position": [
         -48,
-        -416
+        -1120
       ],
       "id": "dfeacbc4-34c9-4da5-82a1-8262a5716b52",
       "name": "Get many rows",
@@ -118,8 +124,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        704,
-        -416
+        624,
+        -1184
       ],
       "id": "ae961146-c211-438c-868c-bfaab1ac679b",
       "name": "Switch"
@@ -129,8 +135,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1024,
-        -416
+        848,
+        -1088
       ],
       "id": "bf044ed5-c0fb-46c1-8f61-9348dc8666c9",
       "name": "No Operation, do nothing"
@@ -152,7 +158,7 @@
       "typeVersion": 1,
       "position": [
         848,
-        -608
+        -1280
       ],
       "id": "c5d1041b-212d-45a4-bded-0278becfb4ef",
       "name": "Get a row",
@@ -192,7 +198,7 @@
       "typeVersion": 2.2,
       "position": [
         1072,
-        -608
+        -1280
       ],
       "id": "439b9b3f-1182-455c-b547-86d407910e86",
       "name": "Filter"
@@ -223,7 +229,7 @@
       "typeVersion": 1,
       "position": [
         1296,
-        -704
+        -1376
       ],
       "id": "5fff56c6-1caf-45dc-9f4a-06d07dc2d9d7",
       "name": "Update a row",
@@ -260,7 +266,7 @@
       "typeVersion": 1,
       "position": [
         1296,
-        -512
+        -1184
       ],
       "id": "1de1e1f3-0170-44fc-9b20-2dcbf7a630b1",
       "name": "Update a row1",
@@ -277,7 +283,7 @@
       "typeVersion": 3.2,
       "position": [
         1520,
-        -608
+        -1280
       ],
       "id": "2977ba50-f547-4f2c-86ca-328e3911cffb",
       "name": "Merge"
@@ -289,8 +295,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1712,
-        -592
+        1744,
+        -1280
       ],
       "id": "ef2a4392-e6f3-4c02-9484-8d35700605f2",
       "name": "Code"
@@ -304,7 +310,7 @@
       "typeVersion": 1,
       "position": [
         176,
-        -416
+        -1120
       ],
       "id": "50e6abda-3b9e-442b-a356-31731a90efa6",
       "name": "Split Out"
@@ -317,7 +323,7 @@
       "typeVersion": 3,
       "position": [
         400,
-        -416
+        -1120
       ],
       "id": "cd9caae1-0dba-4e96-afcd-de8ce3e8bca2",
       "name": "Loop Over Items"
@@ -348,7 +354,7 @@
       "typeVersion": 1,
       "position": [
         3760,
-        -704
+        -1376
       ],
       "id": "fd8ab2bc-df5d-4d97-811b-988e875fd420",
       "name": "Update a row2",
@@ -359,29 +365,6 @@
           "name": "BANCO - AGENTE COMERCIAL"
         }
       }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "e283fa3a-89d7-4de3-8691-37d41d0bf85a",
-              "name": "retorno",
-              "value": "atendimento distribuido para consultor",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        5008,
-        -448
-      ],
-      "id": "f6c996fb-69fb-4e1d-b2ba-febd4e12e54c",
-      "name": "Edit Fields2"
     },
     {
       "parameters": {
@@ -410,7 +393,7 @@
       "typeVersion": 1,
       "position": [
         3312,
-        -704
+        -1376
       ],
       "id": "4c1f056e-8e4c-4c1c-9ad1-2015a22d1af9",
       "name": "Update leads",
@@ -438,7 +421,7 @@
       "typeVersion": 1,
       "position": [
         3536,
-        -704
+        -1376
       ],
       "id": "1856dacc-5394-4a30-99cb-d7512272bee3",
       "name": "Update contacts",
@@ -486,14 +469,14 @@
       "typeVersion": 3.2,
       "position": [
         2416,
-        -608
+        -1280
       ],
       "id": "f6afa6a7-cc14-4b90-beeb-c85fb1186ac9",
       "name": "Switch1"
     },
     {
       "parameters": {
-        "url": "=https://admamoeduitcombr.kommo.com/api/v4/leads?with=contacts&query={{ $json.telefone.replace(/@.*/,'') }}&filter[statuses][0][pipeline_id]=11685120&filter[statuses][0][status_id]=89820300",
+        "url": "=https://admamoeduitcombr.kommo.com/api/v4/leads?\nquery={{ $json.telefone.replace(/@.*/,'') }}&\nfilter[statuses][0][pipeline_id]=11685120&\nfilter[statuses][0][status_id]=89820300&with=contacts",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -512,8 +495,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1904,
-        -576
+        1968,
+        -1280
       ],
       "id": "8a3bd1bc-97e9-4b90-96af-6d823357ef5e",
       "name": "HTTP Request1"
@@ -535,8 +518,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2208,
-        -576
+        2192,
+        -1280
       ],
       "id": "bc30c0e9-aada-4d58-90ac-d085c9026df2",
       "name": "Edit Fields3"
@@ -546,8 +529,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        2640,
-        -512
+        2656,
+        -1120
       ],
       "id": "014533ec-3b24-4961-ba13-317d06c93eb1",
       "name": "No Operation, do nothing1"
@@ -570,7 +553,7 @@
       "typeVersion": 1,
       "position": [
         3984,
-        -704
+        -1376
       ],
       "id": "4bf3a17e-3846-430e-9f3d-552f9b646be8",
       "name": "Get many rows2",
@@ -590,78 +573,10 @@
       "typeVersion": 2,
       "position": [
         4208,
-        -704
+        -1376
       ],
       "id": "6cf69966-0a33-488d-b665-a06cf06dc5e6",
       "name": "Code1"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Você é um assistente que resume conversas trocadas via whatsapp entre um assistente virtual comercial da Cruzeiro do Sul e candidatos. \n\nSempre leia a conversa:\n\n{{$json.conversation}}\n\n\nResuma a conversa em poucas frases, destacando:\n- O que o candidato pediu e o curso que ela perguntou\n- As respostas que o assistente virtual forneceu\n\n**ANALISE** se o candidato parou de responder ",
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.7,
-      "position": [
-        4432,
-        -704
-      ],
-      "id": "a3ac24c7-f447-4435-92bd-91dfba7df1d1",
-      "name": "Basic LLM Chain1"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4.1-nano",
-          "mode": "list",
-          "cachedResultName": "gpt-4.1-nano"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        4512,
-        -480
-      ],
-      "id": "6c462502-89ba-4b5d-90bf-e8b444debe8e",
-      "name": "OpenAI Chat Model1",
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $('Update leads').first().json._embedded.leads[0].id }}",
-              "text": "={{ $json.text }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        4784,
-        -704
-      ],
-      "id": "d99d55a4-35d3-4cb9-b731-a6c174964e9f",
-      "name": "Create new notes1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "nwQNgfBiNqLrzKlG",
-          "name": "Kommo Comercial CSV"
-        }
-      }
     },
     {
       "parameters": {
@@ -671,7 +586,7 @@
       "typeVersion": 2,
       "position": [
         2864,
-        -704
+        -1376
       ],
       "id": "793632c7-2f3b-439c-96c8-f1020d454aa6",
       "name": "Code6"
@@ -694,7 +609,7 @@
       "typeVersion": 1,
       "position": [
         2640,
-        -704
+        -1376
       ],
       "id": "6bc50adb-beff-49e3-b920-ed01a8acbfa5",
       "name": "Get many rows3",
@@ -731,7 +646,7 @@
       "typeVersion": 1,
       "position": [
         3088,
-        -704
+        -1376
       ],
       "id": "899e743f-26c0-4252-a160-bffbdd480aae",
       "name": "Update a row3",
@@ -741,6 +656,155 @@
           "name": "Supabase Academico"
         }
       }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields3').all()[0].json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539246,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":31782,\"type\":\"text\"}",
+                    "value": "={{ $('Code2').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":31786,\"type\":\"text\"}",
+                    "value": "={{ $('Code2').item.json.nivel }}"
+                  },
+                  {
+                    "data": "{\"id\":304628,\"type\":\"text\"}",
+                    "value": "={{ $('Code2').item.json.nome_candidato }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        5440,
+        -1376
+      ],
+      "id": "98d77cc6-9c90-4b37-b189-e5ec781daa22",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e283fa3a-89d7-4de3-8691-37d41d0bf85a",
+              "name": "retorno",
+              "value": "atendimento distribuido para consultor",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5664,
+        -1120
+      ],
+      "id": "e5e971e5-5ab3-466c-bdad-574acd644cdc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Prompt para Agente de Resumo de Conversas\n\nVocê é um assistente especializado em resumir conversas do WhatsApp entre o assistente virtual comercial da Cruzeiro do Sul e candidatos.\n\n## Sua Tarefa\n\nAnalise a conversa completa abaixo e crie um resumo estruturado:\n\n{{$json.conversation}}\n\n## INSTRUÇÕES CRÍTICAS DE ANÁLISE\n\n1. **Leia TODA a conversa linha por linha** antes de fazer o resumo\n2. **Extraia informações REAIS** que aparecem nas mensagens - não invente ou generalize\n3. **Identifique a ÚLTIMA PERGUNTA ou solicitação do candidato** antes da conversa ser encerrada/distribuída\n4. **Forneça CONTEXTO SUFICIENTE** para que quem ler o resumo entenda a situação completa\n5. **Diferencie quem falou o quê** - separe mensagens do candidato das mensagens do assistente/robô\n\n## Informações para Identificar\n\n### Dados do Candidato\n- **Nome do candidato**: Qualquer menção ao nome (completo ou primeiro nome) nas mensagens\n- **Curso de interesse**: Nome exato do curso que o candidato perguntou ou demonstrou interesse\n- **Formação prévia**: Cursos que o candidato já concluiu ou está cursando (mencionados na conversa)\n- **Nível de interesse**: Graduação, Pós-graduação ou Não informado\n\n### Contexto da Conversa\n- **Perguntas feitas pelo candidato**: O que especificamente o candidato quis saber em cada momento\n- **Informações fornecidas pelo assistente**: Valores específicos, prazos, links, documentos, detalhes de inscrição\n- **Última interação do candidato**: A ÚLTIMA pergunta, dúvida ou solicitação feita pelo candidato antes do encerramento\n\n### Classificação de Níveis\n- **Graduação**: Bacharelado, licenciatura, tecnólogo (ex: Administração, Engenharia, Direito, Psicologia, Enfermagem)\n- **Pós-graduação**: MBA, especialização, mestrado, doutorado\n- **Não informado**: Quando não fica claro o nível de interesse\n\n## REGRAS ESPECIAIS\n\n### Para Conversas Sem Resposta do Assistente\n- Se o assistente NÃO respondeu às perguntas do candidato ainda: \"O assistente ainda não respondeu ao candidato\"\n- Se o candidato apenas enviou uma pergunta sem resposta: \"Não houve troca de mensagens ainda. O candidato perguntou sobre [assunto]\"\n- **NUNCA invente informações** que não foram fornecidas pelo assistente\n\n### Para a Última Pergunta do Candidato\n- **SEMPRE identifique qual foi a última pergunta ou solicitação do candidato**\n- **Inclua contexto**: explique brevemente o que o candidato busca antes de mencionar a última pergunta\n- **Exemplo**: \"A candidata quer fazer o curso de Química, ela já concluiu Pedagogia e na última mensagem perguntou se consegue eliminar matérias\"\n\n## Formato de Resposta Obrigatório\n\n**Resumo**: [3-7 frases descrevendo o que aconteceu na conversa. DEVE incluir: 1) O que o candidato busca (curso de interesse), 2) Informações relevantes de contexto (formação prévia, dúvidas anteriores), 3) A ÚLTIMA PERGUNTA ou solicitação feita pelo candidato. Seja específico e factual.]\n\n**Nome do candidato**: [Nome identificado na conversa ou \"Não informado\"]\n\n**Nível**: [Graduação/Pós-graduação/Não informado]\n\n**Curso**: [Nome exato do curso mencionado na conversa ou \"Não informado\"]\n\n**Última solicitação do candidato**: [Descreva especificamente qual foi a última pergunta, dúvida ou pedido feito pelo candidato antes da conversa ser encerrada]\n\n**Informações fornecidas pela IA**: [Liste especificamente o que a IA compartilhou: valores mencionados, links enviados, documentos solicitados, prazos informados, etc. Se a IA não respondeu ainda, escreva: \"Nenhuma informação fornecida ainda - aguardando resposta do assistente\"]\n\n**Status da conversa**: [Candidato respondeu/Candidato parou de responder/Aguardando resposta do assistente]\n\n## IMPORTANTE - CHECKLIST FINAL\n\nAntes de finalizar o resumo, verifique:\n\n- ✅ O resumo inclui a ÚLTIMA PERGUNTA do candidato?\n- ✅ O contexto está claro (curso desejado, formação prévia, etc.)?\n- ✅ Todas as informações vieram REALMENTE da conversa?\n- ✅ Não inventei nomes, valores ou detalhes?\n- ✅ Diferenciei o que o candidato disse do que o assistente respondeu?\n- ✅ Fui específico em vez de genérico?\n\n**Responda APENAS no formato acima, sem repetir estas instruções.**",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        4656,
+        -1360
+      ],
+      "id": "61136062-b6f7-4db3-9870-cfe070e69674",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4864,
+        -1136
+      ],
+      "id": "b7c22290-ab5a-457b-b2dc-bdb18cbe10f1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Update leads').first().json._embedded.leads[0].id }}",
+              "text": "={{ $json.resumo }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        5216,
+        -1376
+      ],
+      "id": "45709f9e-6e50-406e-aaef-f2cc5edd3cd7",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node Code para N8N - Extrator de campos do resumo\n// Este código processa o output do agente de resumo e separa os campos\n\nconst inputText = $input.all()[0].json.text;\n\n// Função para extrair valor após **Campo:**\nfunction extractField(text, fieldName) {\n  // Procura por **Campo:** seguido de qualquer coisa até a próxima linha com **\n  const lines = text.split('\\n');\n  let foundField = false;\n  let content = '';\n  \n  for (let i = 0; i < lines.length; i++) {\n    const line = lines[i].trim();\n    \n    // Se encontrou o campo que procuramos\n    if (line.toLowerCase().includes(`**${fieldName.toLowerCase()}:**`)) {\n      // Extrai o conteúdo da mesma linha após os **\n      const sameLine = line.replace(/\\*\\*.*?\\*\\*\\s*/, '').trim();\n      if (sameLine) {\n        content = sameLine;\n        break;\n      }\n      foundField = true;\n      continue;\n    }\n    \n    // Se já encontrou o campo e a linha atual é outro campo (**), para\n    if (foundField && line.startsWith('**')) {\n      break;\n    }\n    \n    // Se já encontrou o campo, adiciona o conteúdo\n    if (foundField && line) {\n      content += (content ? ' ' : '') + line;\n    }\n  }\n  \n  return content.trim();\n}\n\n// Extrai os campos do texto\nconst resumo = extractField(inputText, 'Resumo') || 'Não informado';\nconst nivel = extractField(inputText, 'Nível') || extractField(inputText, 'Nivel') || 'Não informado';\nconst curso = extractField(inputText, 'Curso') || 'Não informado';\nconst status = extractField(inputText, 'Status da conversa') || extractField(inputText, 'Status') || 'Não informado';\n\n// Retorna o objeto estruturado\nreturn [{\n  json: {\n    resumo: resumo,\n    nivel: nivel,\n    curso: curso,\n    status_conversa: status,\n    // Mantém o texto original para referência se necessário\n    texto_original: inputText,\n    // Debug - para ver o que está sendo processado\n    debug_lines: inputText.split('\\n')\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4992,
+        -1376
+      ],
+      "id": "a1e74132-12a6-42ad-83bb-a73c7e0121cb",
+      "name": "Code2"
     }
   ],
   "connections": {
@@ -971,40 +1035,7 @@
       "main": [
         [
           {
-            "node": "Basic LLM Chain1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Basic LLM Chain1": {
-      "main": [
-        [
-          {
-            "node": "Create new notes1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Basic LLM Chain1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new notes1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields2",
+            "node": "Basic LLM Chain",
             "type": "main",
             "index": 0
           }
@@ -1044,7 +1075,62 @@
         ]
       ]
     },
-    "Edit Fields2": {
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
       "main": [
         [
           {
@@ -1057,7 +1143,9 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
   },
   "staticData": {
     "node:Schedule Trigger": {
@@ -1067,8 +1155,26 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "4674eba7-8d32-457a-9324-b66fc893b4c2",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-10-09T16:30:13.002-04:00",
+          "Readable date": "October 9th 2025, 4:30:13 pm",
+          "Readable time": "4:30:13 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "October",
+          "Day of month": "09",
+          "Hour": "16",
+          "Minute": "30",
+          "Second": "13",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "f894861b-ad3d-42d9-a4c0-ac9d62c5fbc1",
   "triggerCount": 1,
   "shared": [
     {
