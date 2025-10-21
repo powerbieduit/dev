@@ -1,0 +1,2029 @@
+{
+  "createdAt": "2025-09-17T19:21:58.276Z",
+  "updatedAt": "2025-10-16T13:31:56.000Z",
+  "id": "DyzitYYFzUp0lNvg",
+  "name": "distribuicao_academico/ANH",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds"
+            }
+          ]
+        }
+      },
+      "id": "c97a1f3c-e11e-4612-b402-73b4ad165f8d",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        48
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        288
+      ],
+      "id": "2f0aa7dc-b9f4-4bb4-944b-a3650aac51b0",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\n// São Paulo (24h)\nconst fmt = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo',\n  hour12: false,\n  hour: '2-digit',\n  minute: '2-digit',\n  second: '2-digit',\n  weekday: 'short',\n});\n\nconst parts = fmt.formatToParts(now);\nconst get = (t) => parts.find(p => p.type === t)?.value ?? '';\n\nconst hour   = Number(get('hour'));\nconst minute = Number(get('minute'));\nconst second = Number(get('second'));\n\n// Normaliza o weekday: remove acento/pontuação e baixa caixa\nconst wdRaw = get('weekday');\nconst wdNorm = String(wdRaw)\n  .normalize('NFD').replace(/\\p{Diacritic}/gu, '')\n  .replace(/\\W+/g, '') // remove ponto/traços/esp.\n  .toLowerCase();\n\n// Mapa robusto (aceita \"sab\", \"sabado\", \"sáb.\", etc.)\nconst dayMap = {\n  dom: 0, domingo: 0,\n  seg: 1, segunda: 1,\n  ter: 2, terca: 2, terça: 2,\n  qua: 3, quarta: 3,\n  qui: 4, quinta: 4,\n  sex: 5, sexta: 5,\n  sab: 6, sabado: 6,\n};\nconst day = dayMap[wdNorm] ?? dayMap[wdNorm.slice(0,3)] ?? -1;\n\n// Janelas de atendimento\nconst inWeekWindow     = (h) => h >= 9 && h < 19; // seg–sex 09:00–18:59\nconst inSaturdayWindow = (h) => h >= 9 && h < 13; // sáb 09:00–12:59\n\nconst permitido =\n  (day >= 1 && day <= 5 && inWeekWindow(hour)) ||\n  (day === 6 && inSaturdayWindow(hour));\n\nreturn [{\n  json: {\n    status: permitido ? 'Permitido' : 'Fora do horário',\n    hora_SP: `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}:${String(second).padStart(2,'0')}`,\n    dia_da_semana: day,   // 0=dom ... 6=sáb\n    weekday_raw: wdRaw,   // só pra debug\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        48
+      ],
+      "id": "86c49388-58b4-4369-862c-6e7e28ecc819",
+      "name": "Verfica Horario"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "03628131-1b39-4bc1-8c07-2835de78e857",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Permitido",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -416,
+        48
+      ],
+      "id": "0d3bc21a-e4e6-43e5-8091-f8d9164403e6",
+      "name": "If Dentro Horario"
+    },
+    {
+      "parameters": {
+        "url": "https://academicosoead.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=7355323&filter[statuses][0][status_id]=60510447&with=contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijg1MmFlMWE2ZmUzNzk3OWY1NDk1YWRlNmQ1Y2QyODRjNTEwODc3MDI5NmJkMWJhNzMwMjdmNzQ0YTkxN2Y3YWIxMzQxYTkwOTFiNTY1MWRiIn0.eyJhdWQiOiJlMmRhYWM3Mi0yMWUwLTQxYmMtODRjZi04NzUyY2IzZjQwYTUiLCJqdGkiOiI4NTJhZTFhNmZlMzc5NzlmNTQ5NWFkZTZkNWNkMjg0YzUxMDg3NzAyOTZiZDFiYTczMDI3Zjc0NGE5MTdmN2FiMTM0MWE5MDkxYjU2NTFkYiIsImlhdCI6MTc1ODIwNjIwMiwibmJmIjoxNzU4MjA2MjAyLCJleHAiOjE4MzE1MDcyMDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMxNjk3MzQ3LCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiZTdjNjZjZGEtMzcyZC00YjU3LWI4MWQtYTg4MThlMGZiMjM5IiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.SqZZHlGXFpdcE7oD3IOqWexZ_o3maMkJ2E1LWpHz91IJMFEekentANdh6txCxxIs1jhA7ThezdgK9vpTVSHny1SMnRtOx4aL4dxSiar2hVYR9R4cfihvNsGoq3UUfgz3xzHyFuYqBnkMYh-7F8_GN-s0TrUHg1cl3fGPGVpR4d1i3sgUVatDrhQILOpa2e3p-F3EaD1p97ZqzdRI0R-UjB10K9qt6Qbuvk1-5V3-G5bBxJNJMR8hWcvLlK1sKUjFBhkcliZcwmG-gTAil5oaX9px_CtGale9haLWS5AhkjgoZckdhBIeWh5WpHwcx7i1qhuOXkSdo84VdVifbyJazw"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1216,
+        32
+      ],
+      "id": "aed41a3c-462e-4393-a94f-858473649dac",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1) $.json.data precisa existir e ser string não vazia\nif (typeof $json.data !== 'string' || !$json.data.trim()) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: '$.json.data ausente ou vazio' }\n  }];\n}\n\n// 2) Parse seguro\nlet parsed;\ntry {\n  parsed = JSON.parse($json.data);\n} catch (e) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: String(e.message) }\n  }];\n}\n\n// 3) Validar estrutura básica\nconst leads = parsed?._embedded?.leads;\nif (!Array.isArray(leads)) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: 'Estrutura inesperada: _embedded.leads não encontrado' }\n  }];\n}\nif (leads.length === 0) {\n  return [{\n    json: { error: 'Falha no parse Leads', detalhe: 'Nenhum lead retornado' }\n  }];\n}\n\n// 4) Pegar SEMPRE o primeiro lead do array\nconst lead = leads[0];\n\n// 5) Validar contato do primeiro lead\nconst contato = (lead._embedded?.contacts || []).find(c => c?.id && c?.is_main === true) \n              || (lead._embedded?.contacts || []).find(c => c?.id); // fallback: qualquer contato com id\n\nif (!contato) {\n  return [{\n    json: {\n      error: 'Falha no parse Leads',\n      detalhe: `Primeiro lead (id=${lead.id}) não possui contato válido`\n    }\n  }];\n}\n\n// 6) Montar saída de um ÚNICO item\nreturn [{\n  json: {\n    id_lead: lead.id,\n    id_contato: contato.id,\n    updated_at: lead.updated_at ?? null,\n    id_responsavel_atual: lead.responsible_user_id ?? null,\n    id_responsavel_novo: null, // preencha depois no fluxo\n    // opcional: inclua metadados úteis pra debug\n    pipeline_id: lead.pipeline_id ?? null,\n    status_id: lead.status_id ?? null,\n    // se quiser manter o payload do lead pra uso posterior, descomente:\n    // lead\n  }\n}];\n"
+      },
+      "name": "Extrair IDs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        32
+      ],
+      "id": "de3cf19f-6ee6-4609-a8d4-1d59ce7a76a7"
+    },
+    {
+      "parameters": {
+        "url": "https://academicosoead.kommo.com/api/v4/contacts",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filter[id][]",
+              "value": "={{ $json.id_contato }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijg1MmFlMWE2ZmUzNzk3OWY1NDk1YWRlNmQ1Y2QyODRjNTEwODc3MDI5NmJkMWJhNzMwMjdmNzQ0YTkxN2Y3YWIxMzQxYTkwOTFiNTY1MWRiIn0.eyJhdWQiOiJlMmRhYWM3Mi0yMWUwLTQxYmMtODRjZi04NzUyY2IzZjQwYTUiLCJqdGkiOiI4NTJhZTFhNmZlMzc5NzlmNTQ5NWFkZTZkNWNkMjg0YzUxMDg3NzAyOTZiZDFiYTczMDI3Zjc0NGE5MTdmN2FiMTM0MWE5MDkxYjU2NTFkYiIsImlhdCI6MTc1ODIwNjIwMiwibmJmIjoxNzU4MjA2MjAyLCJleHAiOjE4MzE1MDcyMDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMxNjk3MzQ3LCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiZTdjNjZjZGEtMzcyZC00YjU3LWI4MWQtYTg4MThlMGZiMjM5IiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.SqZZHlGXFpdcE7oD3IOqWexZ_o3maMkJ2E1LWpHz91IJMFEekentANdh6txCxxIs1jhA7ThezdgK9vpTVSHny1SMnRtOx4aL4dxSiar2hVYR9R4cfihvNsGoq3UUfgz3xzHyFuYqBnkMYh-7F8_GN-s0TrUHg1cl3fGPGVpR4d1i3sgUVatDrhQILOpa2e3p-F3EaD1p97ZqzdRI0R-UjB10K9qt6Qbuvk1-5V3-G5bBxJNJMR8hWcvLlK1sKUjFBhkcliZcwmG-gTAil5oaX9px_CtGale9haLWS5AhkjgoZckdhBIeWh5WpHwcx7i1qhuOXkSdo84VdVifbyJazw"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Contatos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1856,
+        16
+      ],
+      "id": "d32bbf70-e056-4fdc-822b-5cb71a8565ec",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const saida = [];\n\nconst leads = $items(\"Extrair IDs\");\nconst contatos = $items(\"Get Contatos\");\n\nfor (let i = 0; i < leads.length; i++) {\n  const lead = leads[i].json;\n\n  // Buscar o contato correspondente\n  const contatoItem = contatos.find(c => {\n    try {\n      const parsed = JSON.parse(c.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n      return contato?.id === lead.id_contato;\n    } catch (e) {\n      return false;\n    }\n  });\n\n  let telefone = null;\n  let nome_contato = null;\n\n  if (contatoItem) {\n    try {\n      const parsed = JSON.parse(contatoItem.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n\n      if (contato) {\n        nome_contato = contato.name ?? null;\n        const campoTelefone = contato.custom_fields_values?.find(f => f.field_code === 'PHONE');\n        if (campoTelefone && campoTelefone.values?.length > 0) {\n          telefone = campoTelefone.values[0].value ?? null;\n        }\n      }\n    } catch (e) {\n      // Ignora erros de parse\n    }\n  }\n\n  saida.push({\n    json: {\n      id_lead: lead.id_lead,\n      id_contato: lead.id_contato,\n      id_responsavel: lead.id_responsavel, // ← Mantendo o responsável vindo do Extrair IDs!\n      nome_contato,\n      telefone\n    }\n  });\n}\n\nreturn saida;\n"
+      },
+      "name": "Extrair Telefones",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        16
+      ],
+      "id": "47771dac-6ce4-4e30-a13c-6f4da17be8fe"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ce4ed228-41cd-4c47-b238-d73aa351bb08",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "Falha no parse Leads",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1648,
+        32
+      ],
+      "id": "dd88a346-b60d-4750-9a24-5a8699e2acbe",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1856,
+        208
+      ],
+      "id": "d5ca84b3-1323-4034-9572-0ba250b44a7c",
+      "name": "Nada a Distribuir"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        240
+      ],
+      "id": "d36c2436-7a85-4a82-aa5f-95cfc8160a5d",
+      "name": "Nenhum agente disponível"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Distribuicao').item.json.proxima_ordem[0].id }}",
+            "fila": "={{ $('Distribuicao').item.json.proxima_ordem[0].fila_atual + 1 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "bde8ce7d-5551-491f-8c24-3d26753d20ad",
+      "name": "Atualiza Fila Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2736,
+        16
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Extrair IDs').first().json.id_contato }}",
+              "responsible_user_id": "={{ +$('Distribuicao').item.json.proxima_ordem[0].id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        16
+      ],
+      "id": "88b9d3ad-3088-4efd-9bf5-43f9adbd594e",
+      "name": "Update Contact1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Extrair Telefones').first().json.id_lead }}",
+              "pipeline_id": 7362323,
+              "status_id": 60550623,
+              "responsible_user_id": "={{ +$('Distribuicao').item.json.proxima_ordem[0].id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        16
+      ],
+      "id": "0836cfad-5961-463d-aca0-f22972fda456",
+      "name": "Update Lead1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Extrair IDs').first().json.id_lead }}",
+              "text": "Oi! Tudo bem? Agora sou eu que vou te atender 🙂 Vi que você pediu ajuda sobre o seu curso. Se já deixou sua dúvida aqui na conversa, vou analisar e te responder rapidinho. Se ainda não explicou o que está acontecendo, pode me contar? Estou aqui para ajudar no que for preciso!"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3616,
+        16
+      ],
+      "id": "e20e825c-9a5d-44e2-844e-62781a41c312",
+      "name": "Create new notes",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "ultima_execucao": "={{    (() => {     const data = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));     const dia = String(data.getDate()).padStart(2, '0');     const mes = String(data.getMonth() + 1).padStart(2, '0');     const ano = String(data.getFullYear()).slice(-2);     const hora = String(data.getHours()).padStart(2, '0');     const minuto = String(data.getMinutes()).padStart(2, '0');     return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;   })()  }}",
+            "timestamp": "={{ new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"America/Sao_Paulo\" })) }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2960,
+        16
+      ],
+      "id": "8277cfc8-d1c2-4958-9ee1-4497764dd890",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "historico_distribuicao_anh",
+          "mode": "list",
+          "cachedResultName": "historico_distribuicao_anh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('Extrair Telefones').item.json.id_lead }}",
+            "id_responsavel": "={{ $json.id }}",
+            "tipo": "={{ $json.tipo_atendimento }}",
+            "data_distribuicao": "={{ $json.timestamp }}",
+            "tma_segundos": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_distribuicao",
+              "displayName": "data_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_fechamento",
+              "displayName": "data_fechamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tma_segundos",
+              "displayName": "tma_segundos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3184,
+        16
+      ],
+      "id": "916939b1-5d6e-4649-b4d2-553ab6ed9b3f",
+      "name": "Postgres3",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8da44cd4-9282-4b91-bd26-a391c0e055e5",
+              "leftValue": "={{ $('Distribuicao').item.json.status }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        48
+      ],
+      "id": "bfade03c-0119-4b7e-b7fc-c2fe31b9c960",
+      "name": "IF Status OK - Distribuir"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===================== Helpers \"safe\" para $items =====================\nfunction safeItems(nodeName) {\n  try {\n    const arr = $items(nodeName);\n    return Array.isArray(arr) ? arr : [];\n  } catch (e) {\n    return [];\n  }\n}\nfunction toArrayJson(arr) {\n  return (Array.isArray(arr) ? arr : []).map(i => i?.json ?? i);\n}\n\n// ===================== Normalização de datas =====================\n// Aceita: ISO (ex: 2025-07-19 08:55:08), \"dd/MM/yy - HH:mm\" ou \"dd/MM/yy HH:mm\"\nfunction parseDateFlexible(input) {\n  if (!input) return null;\n  if (input instanceof Date) return isNaN(input.getTime()) ? null : input;\n\n  const s = String(input).trim();\n\n  // Tenta Date direto (ISO ou parecido)\n  const d1 = new Date(s.replace(' - ', ' ')); // ajuda em \"dd/MM/yy - HH:mm\"\n  if (!isNaN(d1.getTime())) return d1;\n\n  // Tenta \"dd/MM/yy - HH:mm\" ou \"dd/MM/yyyy - HH:mm\"\n  const m = s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{2,4})\\s*-\\s*(\\d{2}):(\\d{2})$/)\n           || s.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{2,4})\\s+(\\d{2}):(\\d{2})$/);\n  if (m) {\n    let [_, dd, MM, yy, HH, mm] = m;\n    let yyyy = yy.length === 2 ? (Number(yy) < 70 ? 2000 + Number(yy) : 1900 + Number(yy)) : Number(yy);\n    const month = Number(MM) - 1;\n    const dt = new Date(yyyy, month, Number(dd), Number(HH), Number(mm), 0);\n    return isNaN(dt.getTime()) ? null : dt;\n  }\n  return null;\n}\nfunction toMs(input) {\n  const d = parseDateFlexible(input);\n  return d ? d.getTime() : 0;\n}\n\n// ===================== Hora atual em America/Sao_Paulo =====================\nfunction nowSP() {\n  const s = new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });\n  return new Date(s);\n}\n\n// ===================== Intervalos de pausa (com antecedência) =====================\n// Retorna true se refDateSP está dentro de [hora - anteMin , hora + duracaoMin + posMin]\nfunction emIntervaloComBordas(horaHHMMSS, anteMin, duracaoMin, posMin, refDateSP) {\n  if (!horaHHMMSS || !(refDateSP instanceof Date)) return false;\n  const [H, M = 0, S = 0] = String(horaHHMMSS).split(':').map(Number);\n  if (!Number.isFinite(H)) return false;\n\n  const base = new Date(refDateSP);\n  base.setHours(H, M, S, 0);\n\n  const ante   = (Number(anteMin)    || 0) * 60 * 1000;\n  const dur    = (Number(duracaoMin) || 0) * 60 * 1000;\n  const pos    = (Number(posMin)     || 0) * 60 * 1000;\n\n  const ini = new Date(base.getTime() - ante);\n  const fim = new Date(base.getTime() + dur + pos);\n\n  return refDateSP >= ini && refDateSP <= fim;\n}\n\n// ===================== 1) Coleta a LISTA do INPUT (com fallbacks) =====================\n// Tenta pegar os itens que chegaram neste node (Merge -> este node)\nlet inputItems = [];\ntry {\n  if (typeof $input !== 'undefined' && $input.all) {\n    // Code node moderno\n    inputItems = await $input.all();\n  }\n} catch (_) { /* ignore */ }\n\n// Fallbacks (Function node clássico expõe 'items'; ou ler de nodes anteriores)\nif (!Array.isArray(inputItems) || !inputItems.length) {\n  try { if (Array.isArray(items) && items.length) inputItems = items; } catch (_) {}\n}\nconst inputJsons = toArrayJson(inputItems);\n\n// Fallback extra: buscar pelos nodes nomeados (se você mantiver eles no fluxo)\nconst candidatosFallback = [\n  ...toArrayJson(safeItems('Agrupa Leads And Responsaveis1')),\n  ...toArrayJson(safeItems('Agrupa Leads And Responsaveis')),\n];\n\n// Fallback final: se algum node anterior colocou a lista em $json.lista\nlet listaProp = [];\ntry { if (Array.isArray($json?.lista)) listaProp = $json.lista; } catch (_) {}\n\n// Decide a fonte final\nconst listaBase = inputJsons.length ? inputJsons : (candidatosFallback.length ? candidatosFallback : listaProp);\n\n// ===================== 2) Mapeia cada responsável e calcula flags + capacidade =====================\nconst referenciaAgora = nowSP();\nconst dow = referenciaAgora.getDay();\nconst fimDeSemana = (dow === 0 || dow === 6);\n\nconst lista = (listaBase || []).map(r => {\n  const id   = Number(r.id ?? r.responsible_user_id);\n  const nome = r.nome ?? r.responsavel ?? \"Sem Nome\";\n  if (!Number.isFinite(id)) return null;\n\n  // ocupação (fila atual) e limite\n  const ocupacao = Number(r.total_leads ?? r.fila ?? 0);\n  const limite   = Number(r.volume_distribuicao ?? 10);\n  const filaOk   = ocupacao < limite;\n\n  // parâmetros de pausa (defaults)\n  const almocoAnteMin    = Number(r.almoco_ante_min ?? r.almoco_antecedencia_min ?? 20); // 20 min antes do almoço\n  const almocoDuracaoMin = Number(r.almoco_duracao_min ?? 60);                            // 60 min de almoço\n  const saidaAnteMin     = Number(r.saida_ante_min ?? 20);                                // 20 min antes de ir embora\n\n  // campos de horário\n  const almocoHora = r.almoco ?? r.almoco_inicio ?? r.almoco_real ?? null; // \"HH:MM:SS\"\n  const saidaHora  = r.final_expediente ?? r.expediente_fim ?? null;\n\n  // status originais (para debug)\n  const tipo_atendimento        = r.tipo_atendimento ?? 'Acolhimento';\n  const status_almoco           = r.status_almoco ?? 'Ativo';\n  const status_final_expediente = r.status_final_expediente ?? 'Ativo';\n  const ativo_inativo           = r.ativo_inativo ?? 'Ativo';\n\n  // =============== (3) FLAGS de disponibilidade ===============\n  // *** Correção: aceitar \"Atendimento\" OU \"Acolhimento\" como válidos ***\n  const tipoValido  = (tipo_atendimento === 'Atendimento' || tipo_atendimento === 'Acolhimento');\n  const ativo       = (ativo_inativo === 'Ativo');\n  const almocoOK    = (status_almoco === 'Ativo');\n  const expediente  = (status_final_expediente === 'Ativo');\n\n  // =============== (2) Pausas (agora com antecedência) ===============\n  // Almoço: [almoco - almocoAnteMin , almoco + almocoDuracaoMin]\n  const pausaAlmoco = !fimDeSemana && emIntervaloComBordas(almocoHora, almocoAnteMin, almocoDuracaoMin, 0, referenciaAgora);\n  // Saída:  [saida - saidaAnteMin , saida]\n  const pausaFim    = emIntervaloComBordas(saidaHora,  saidaAnteMin, 0, 0, referenciaAgora);\n\n  // =============== timestamps (para prioridade) ===============\n  const timestamp_original  = r.timestamp ?? null;           // ISO ou \"yyyy-mm-dd HH:MM:SS\"\n  const timestamp_formatado = r.ultima_execucao ?? null;     // \"dd/MM/yy - HH:mm\"\n  const _ts = toMs(timestamp_original ?? timestamp_formatado);\n\n  // =============== (4) Critério final de status (ordem de bloqueio) ===============\n  let status = 'DISPONIVEL';\n  let motivo = 'OK';\n\n  if (!tipoValido)       { status = 'INDISPONIVEL'; motivo = 'TIPO'; }\n  else if (!ativo)       { status = 'INDISPONIVEL'; motivo = 'INATIVO'; }\n  else if (!almocoOK)    { status = 'INDISPONIVEL'; motivo = 'ALMOCO_STATUS'; }\n  else if (!expediente)  { status = 'INDISPONIVEL'; motivo = 'EXPEDIENTE_STATUS'; }\n  else if (!filaOk)      { status = 'INDISPONIVEL'; motivo = 'LIMITE'; }\n  else if (pausaAlmoco)  { status = 'INDISPONIVEL'; motivo = 'PAUSA_ALMOCO_INTERVALO'; }\n  else if (pausaFim)     { status = 'INDISPONIVEL'; motivo = 'PAUSA_SAIDA_INTERVALO'; }\n\n  return {\n    id, nome,\n    fila_atual: ocupacao,\n    limite,\n    filaOk,\n\n    // flags\n    tipo: tipoValido, ativo, almoco: almocoOK, expediente,\n    pausaAlmoco, pausaFim,\n\n    // parâmetros usados\n    almoco_ante_min: almocoAnteMin,\n    almoco_duracao_min: almocoDuracaoMin,\n    saida_ante_min: saidaAnteMin,\n\n    // horários para debug\n    almoco_hora: almocoHora,\n    saida_hora:  saidaHora,\n\n    // status final calculado\n    status, motivo,\n\n    // tempo p/ prioridade\n    timestamp_original,\n    timestamp_formatado,\n    _ts\n  };\n}).filter(Boolean);\n\n// ===================== 3) Seleciona candidatos DISPONIVEL; ordena =====================\nconst agora = Date.now();\n\nconst disponiveis = lista\n  .filter(x => x.status === 'DISPONIVEL')\n  .sort((a, b) => {\n    // PRIORIDADE 1: quem está há mais tempo sem receber (maior (agora - _ts))\n    const diffA = (a._ts > 0) ? (agora - a._ts) : -1;\n    const diffB = (b._ts > 0) ? (agora - b._ts) : -1;\n    if (diffA !== diffB) return diffB - diffA;\n\n    // PRIORIDADE 2: menor fila\n    if (a.fila_atual !== b.fila_atual) return a.fila_atual - b.fila_atual;\n\n    // PRIORIDADE 3: nome\n    return String(a.nome).localeCompare(String(b.nome), 'pt-BR');\n  });\n\n// Para debug/monitoramento\nconst proxima_ordem = disponiveis.map(x => ({\n  id: Number(x.id),\n  nome: x.nome,\n  fila_atual: Number(x.fila_atual ?? 0),\n  limite: Number(x.limite ?? 10),\n  disponibilidade: 'DISPONIVEL',\n  motivo: x.motivo,\n  almoco: x.almoco,\n  expediente: x.expediente,\n  almoco_ante_min: x.almoco_ante_min,\n  almoco_duracao_min: x.almoco_duracao_min,\n  saida_ante_min: x.saida_ante_min,\n  pausaAlmoco: x.pausaAlmoco,\n  pausaFim: x.pausaFim,\n  almoco_hora: x.almoco_hora ?? null,\n  saida_hora:  x.saida_hora ?? null,\n  timestamp_original: x.timestamp_original ?? null,\n  timestamp_formatado: x.timestamp_formatado ?? null\n}));\n\n// ===================== 4) Resultado =====================\nconst escolhido = disponiveis[0] ?? null;\n\nconst payload = {\n  status: escolhido ? 'OK' : 'FALHA',\n  motivo: escolhido ? 'OK' : 'Nenhum responsável disponível',\n  // campos usados pelo IF e pelo Postgres:\n  id_responsavel: escolhido ? Number(escolhido.id) : null,\n  fila_para_setar: escolhido ? Number(escolhido.fila_atual ?? 0) : null,\n  should_update_pg: !!escolhido,\n  // info adicional\n  proxima_ordem,\n  lista: escolhido ? disponiveis : lista\n};\n\nreturn [{ json: payload }];\n"
+      },
+      "id": "b3c9793c-6a07-4df0-953e-772b8175b94c",
+      "name": "Distribuicao",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        48
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "tipo_atendimento",
+              "value": "Atendimento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4eee0252-7e21-4017-aee7-b71b2270c5ef",
+      "name": "Select distribuicao_academico",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -160,
+        -48
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://academicosoead.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=7362323&filter[statuses][0][status_id]=60550623",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijg1MmFlMWE2ZmUzNzk3OWY1NDk1YWRlNmQ1Y2QyODRjNTEwODc3MDI5NmJkMWJhNzMwMjdmNzQ0YTkxN2Y3YWIxMzQxYTkwOTFiNTY1MWRiIn0.eyJhdWQiOiJlMmRhYWM3Mi0yMWUwLTQxYmMtODRjZi04NzUyY2IzZjQwYTUiLCJqdGkiOiI4NTJhZTFhNmZlMzc5NzlmNTQ5NWFkZTZkNWNkMjg0YzUxMDg3NzAyOTZiZDFiYTczMDI3Zjc0NGE5MTdmN2FiMTM0MWE5MDkxYjU2NTFkYiIsImlhdCI6MTc1ODIwNjIwMiwibmJmIjoxNzU4MjA2MjAyLCJleHAiOjE4MzE1MDcyMDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMxNjk3MzQ3LCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiZTdjNjZjZGEtMzcyZC00YjU3LWI4MWQtYTg4MThlMGZiMjM5IiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.SqZZHlGXFpdcE7oD3IOqWexZ_o3maMkJ2E1LWpHz91IJMFEekentANdh6txCxxIs1jhA7ThezdgK9vpTVSHny1SMnRtOx4aL4dxSiar2hVYR9R4cfihvNsGoq3UUfgz3xzHyFuYqBnkMYh-7F8_GN-s0TrUHg1cl3fGPGVpR4d1i3sgUVatDrhQILOpa2e3p-F3EaD1p97ZqzdRI0R-UjB10K9qt6Qbuvk1-5V3-G5bBxJNJMR8hWcvLlK1sKUjFBhkcliZcwmG-gTAil5oaX9px_CtGale9haLWS5AhkjgoZckdhBIeWh5WpHwcx7i1qhuOXkSdo84VdVifbyJazw"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6cb4dbd3-2c18-409d-bf4a-f09c62cbcc9c",
+      "name": "Get Atendimento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -160,
+        128
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===============================================================\n// Agrupa Leads And Responsaveis1  (Run Once for All Items)\n// - Base de responsáveis: Select distribuicao_academico[2]\n// - Contagem de cards (fila): HTTP Get Atendimento[1] (Kommo)\n// ===============================================================\n\n// ----------------- Helpers -----------------\nfunction safeItems(nodeName) {\n  try { const arr = $items(nodeName); return Array.isArray(arr) ? arr : []; }\n  catch { return []; }\n}\nfunction toArrayJson(arr) {\n  return (Array.isArray(arr) ? arr : []).map(i => i?.json ?? i);\n}\nfunction num(x, def = NaN) {\n  const n = Number(x);\n  return Number.isFinite(n) ? n : def;\n}\n\n// ----------------- 0) Entradas -----------------\nlet respItems = safeItems('Select distribuicao_academico');\nif (!respItems.length) respItems = safeItems('Select distribuicao_academico2'); // fallback\nconst responsaveisRaw = toArrayJson(respItems);\n\nlet httpItems = safeItems('Get Atendimento');\nif (!httpItems.length) httpItems = safeItems('Get Atendimento1'); // fallback\nconst httpJsons = toArrayJson(httpItems);\n\n// ----------------- 1) Extrai TODOS os leads do HTTP -----------------\nconst leads = [];\nfor (const j of httpJsons) {\n  if (Array.isArray(j?._embedded?.leads)) {\n    leads.push(...j._embedded.leads);\n    continue;\n  }\n  if (typeof j?.data === 'string') {\n    try {\n      const parsed = JSON.parse(j.data);\n      if (Array.isArray(parsed?._embedded?.leads)) {\n        leads.push(...parsed._embedded.leads);\n      }\n    } catch { /* ignora */ }\n  }\n}\n\n// DEBUG: quantas páginas e quantos leads vieram?\nconsole.log('DEBUG Get Atendimento -> items:', httpJsons.length, 'total leads extraídos:', leads.length);\n\n// Se só veio 1 item e existir _links.next.href, muito provavelmente faltou paginar no HTTP.\ntry {\n  const first = httpJsons[0];\n  const hasNext = Boolean(first?._links?.next?.href || (typeof first?.data === 'string' && JSON.parse(first.data)?._links?.next?.href));\n  if (httpJsons.length === 1 && hasNext) {\n    console.log('ATENÇÃO: Existe _links.next.href no payload, mas o fluxo não buscou a próxima página. Configure paginação no HTTP node.');\n  }\n} catch { /* ignore */ }\n\n// ----------------- 2) Contagem por responsável (Kommo) -----------------\nconst counts = {};\nfor (const lead of leads) {\n  const rid = num(lead?.responsible_user_id, null);\n  if (rid == null) continue;\n  counts[rid] = (counts[rid] || 0) + 1;\n}\n\n// DEBUG: imprime contagem por owner\nconsole.log('DEBUG counts by responsible_user_id:', counts);\n\n// ----------------- 3) Normaliza responsáveis + injeta total_leads (HTTP) -----------------\nconst out = responsaveisRaw.map(r => {\n  // Na sua base, \"id\" é o responsible_user_id do Kommo\n  const kommoOwnerId =\n    num(r.id, NaN) ??\n    num(r.responsible_user_id, NaN) ??\n    num(r.responsavel_id, NaN);\n\n  const nome = r.responsavel ?? r.nome ?? 'Sem Nome';\n\n  const total_leads = Number.isFinite(kommoOwnerId) ? (counts[kommoOwnerId] || 0) : 0;\n\n  // DEBUG individual\n  console.log(`DEBUG linha: ${nome} (kommoOwnerId=${kommoOwnerId}) -> total_leads=${total_leads}`);\n\n  const almoco = r.almoco ?? r.almoco_inicio ?? r.almoco_real ?? null;        // \"HH:MM:SS\"\n  const final_expediente = r.final_expediente ?? r.expediente_fim ?? null;    // \"HH:MM:SS\"\n\n  return {\n    json: {\n      id: kommoOwnerId,\n      responsible_user_id: kommoOwnerId,\n      nome,\n      total_leads,\n      volume_distribuicao: num(r.volume_distribuicao, 10),\n      fila: num(r.fila, NaN),\n      ativo_inativo: r.ativo_inativo ?? 'Ativo',\n      status_almoco: r.status_almoco ?? 'Ativo',\n      status_final_expediente: r.status_final_expediente ?? 'Ativo',\n      status_final: r.status_final ?? 'Distribuir',\n      tipo_atendimento: r.tipo_atendimento ?? r.tipo ?? 'Acolhimento',\n      almoco,\n      final_expediente,\n      almoco_ante_min: num(r.almoco_ante_min ?? r.almoco_antecedencia_min, 20),\n      almoco_duracao_min: num(r.almoco_duracao_min, 60),\n      saida_ante_min: num(r.saida_ante_min, 20),\n      timestamp: r.timestamp ?? null,\n      ultima_execucao: r.ultima_execucao ?? null\n    }\n  };\n});\n\nreturn out;\n"
+      },
+      "id": "6f5342bd-85b3-40ec-a8a7-f2c4f2427308",
+      "name": "Agrupa Leads And Responsaveis1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        48
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "id": "17170ce7-2d53-4974-93ca-fab7f6420bd4",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        96,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "fila": "={{ $json.total_leads }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "responsavel",
+              "displayName": "responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ativo_inativo",
+              "displayName": "ativo_inativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco",
+              "displayName": "almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "final_expediente",
+              "displayName": "final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pausa_distribuicao",
+              "displayName": "pausa_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "volume_distribuicao",
+              "displayName": "volume_distribuicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fila",
+              "displayName": "fila",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_atendimento",
+              "displayName": "tipo_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "almoco_real",
+              "displayName": "almoco_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_almoco",
+              "displayName": "status_almoco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final_expediente",
+              "displayName": "status_final_expediente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_do_lead",
+              "displayName": "id_do_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status_final",
+              "displayName": "status_final",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_execucao",
+              "displayName": "ultima_execucao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qtd_dia",
+              "displayName": "qtd_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_at",
+              "displayName": "locked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "locked_by",
+              "displayName": "locked_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "270065d7-5b54-4046-93b5-de561998c6c7",
+      "name": "Atualiza Fila Postgres3",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        528,
+        48
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $('Extrair Telefones').first().json.telefone }}",
+        "textBody": "=Oi! Tudo bem? Aqui é {{ $('Distribuicao').item.json.proxima_ordem[0].nome }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.  \n\n● Se já explicou o que aconteceu, vou analisar e responder em breve. \n● Se ainda não contou, pode me dizer agora?  \n\nEstou à disposição para ajudar. ✅",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        3680,
+        -432
+      ],
+      "id": "2cab4c07-d19f-42e7-83ce-47d019892697",
+      "name": "Send message",
+      "webhookId": "a668f817-0a90-4368-81e4-fac7b8a25ca6",
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "vKISwKdgbADytA7E",
+          "name": "WhatsApp Licenciado Anhaguera COM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "acad_anhanguera",
+        "remoteJid": "={{ $('Extrair Telefones').item.json.telefone }}",
+        "messageText": "=Oi! Tudo bem? Aqui é {{ $('Distribuicao').item.json.proxima_ordem[0].nome }} e vou dar continuidade ao seu atendimento. Vi que pediu ajuda sobre seu curso.    ● Se já explicou o que aconteceu, vou analisar e responder em breve.  ● Se ainda não contou, pode me dizer agora?    Estou à disposição para ajudar. ✅",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3392,
+        16
+      ],
+      "id": "78f5eb55-4ca6-4b29-a1bc-fde8a8de5df1",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "rE8whYPV1ODAkCxM",
+          "name": "Evolution Acad anhanguera"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "802403f1-b4f2-41d9-b9ae-681d01bcf861",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        608
+      ],
+      "id": "6b3d198a-0887-4569-8549-ea5dc73f1bab",
+      "name": "Webhook",
+      "webhookId": "802403f1-b4f2-41d9-b9ae-681d01bcf861"
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}",
+              "responsible_user_id": "={{ +$('Distribuicao1').item.json.id_sorteado }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        592
+      ],
+      "id": "7f37f919-93be-4c63-a6fc-75455a0899f3",
+      "name": "Update Contact",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+              "pipeline_id": 7362323,
+              "status_id": 0,
+              "responsible_user_id": "={{ +$('Distribuicao1').item.json.id_sorteado }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        592
+      ],
+      "id": "f451a3f1-a762-4058-b635-b5499c7ebba4",
+      "name": "Update Lead",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+              "text": "Envio de boleto"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        592
+      ],
+      "id": "c55785df-048c-47ce-8fde-d77ac307de52",
+      "name": "Create new notes1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: lista de atendentes (exatamente como você enviou)\nconst atendentes = [\n  {\n    id: \"13864672\",\n    responsavel: \"Edilson\",\n    ativo_inativo: \"Ativo\",\n    almoco: \"14:00:00\",\n    final_expediente: \"17:00:00\",\n    pausa_distribuicao: 20,\n    volume_distribuicao: 5,\n    fila: 3,\n    tipo_atendimento: \"Atendimento\",\n    almoco_real: \"13:30:00\",\n    status_almoco: \"Ativo\",\n    status_final_expediente: \"Ativo\",\n    id_do_lead: null,\n    status_final: \"Distribuir\",\n    timestamp: \"2025-10-13T15:13:04.000Z\",\n    observacao: null,\n    ultima_execucao: \"13/10/25 - 15:13\",\n    qtd_dia: null,\n    locked_at: null,\n    locked_by: null\n  },\n  {\n    id: \"10093783\",\n    responsavel: \"Vitoria\",\n    ativo_inativo: \"Inativo\",\n    almoco: \"14:00:00\",\n    final_expediente: \"20:00:00\",\n    pausa_distribuicao: 20,\n    volume_distribuicao: 10,\n    fila: 5,\n    tipo_atendimento: \"Atendimento\",\n    almoco_real: \"14:00:00\",\n    status_almoco: \"Ativo\",\n    status_final_expediente: \"Ativo\",\n    id_do_lead: null,\n    status_final: \"Distribuir\",\n    timestamp: \"2025-10-13T15:12:33.000Z\",\n    observacao: null,\n    ultima_execucao: \"13/10/25 - 15:12\",\n    qtd_dia: null,\n    locked_at: null,\n    locked_by: null\n  },\n  {\n    id: \"10408327\",\n    responsavel: \"Breno\",\n    ativo_inativo: \"Ativo\",\n    almoco: \"14:30:00\",\n    final_expediente: \"18:00:00\",\n    pausa_distribuicao: 20,\n    volume_distribuicao: 10,\n    fila: 0,\n    tipo_atendimento: \"Atendimento\",\n    almoco_real: \"14:30:00\",\n    status_almoco: \"Ativo\",\n    status_final_expediente: \"Ativo\",\n    id_do_lead: null,\n    status_final: \"Distribuir\",\n    timestamp: \"2025-10-13T13:41:03.000Z\",\n    observacao: null,\n    ultima_execucao: \"13/10/25 - 13:41\",\n    qtd_dia: null,\n    locked_at: null,\n    locked_by: null\n  }\n];\n\n// 🔎 Filtra apenas os ativos e disponíveis\nconst disponiveis = atendentes.filter(a => \n  a.ativo_inativo === \"Ativo\" && \n  a.status_final === \"Distribuir\" &&\n  a.status_final_expediente === \"Ativo\"\n);\n\nif (disponiveis.length === 0) {\n  return [{ mensagem: \"Nenhum atendente disponível para distribuição.\" }];\n}\n\n// ⚖️ Cria pesos inversamente proporcionais à fila\nconst pesos = disponiveis.map(a => {\n  const carga = a.fila ?? 0;\n  return {\n    id: a.id,\n    responsavel: a.responsavel,\n    peso: 1 / (1 + carga) // Fila 0 → peso 1, fila 3 → peso 0.25\n  };\n});\n\n// 🔢 Calcula a soma total dos pesos\nconst somaPesos = pesos.reduce((acc, p) => acc + p.peso, 0);\n\n// 🎲 Escolhe aleatoriamente com base nos pesos\nconst r = Math.random() * somaPesos;\nlet acumulado = 0;\nlet escolhido = null;\nfor (const p of pesos) {\n  acumulado += p.peso;\n  if (r <= acumulado) {\n    escolhido = p;\n    break;\n  }\n}\n\n// ✅ Retorna o resultado com ID e detalhes\nreturn [{\n  id_sorteado: escolhido.id,\n  responsavel_sorteado: escolhido.responsavel,\n  detalhes_pesos: pesos,\n  timestamp: new Date().toISOString()\n}];\n"
+      },
+      "id": "38eae232-203f-4e5d-b60e-85c1dd108e49",
+      "name": "Distribuicao1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        608
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "distribuicao_academico_anh",
+          "mode": "list",
+          "cachedResultName": "distribuicao_academico_anh"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "tipo_atendimento",
+              "value": "Atendimento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "18e82aa3-c7a9-4e72-bc59-bcc73c27fd10",
+      "name": "Select distribuicao_academico1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        720,
+        608
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $('Webhook').first().json.body['leads[add][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        608
+      ],
+      "id": "d69b97cf-4014-4e53-be76-9d35091ca751",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "0RLQwTFNZKVcXRY1",
+          "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "11e68a48-20f9-4f68-b00b-c2f37507dda7",
+              "leftValue": "={{ $json._embedded.leads[0].id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        608
+      ],
+      "id": "d62673ad-1681-4aa0-aee4-500228ed8fc3",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        800
+      ],
+      "id": "a8c643fc-ef0b-4444-95b4-9b759af93c14",
+      "name": "No Operation, do nothing2"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Verfica Horario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verfica Horario": {
+      "main": [
+        [
+          {
+            "node": "If Dentro Horario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Dentro Horario": {
+      "main": [
+        [
+          {
+            "node": "Select distribuicao_academico",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Leads": {
+      "main": [
+        [
+          {
+            "node": "Extrair IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair IDs": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contatos": {
+      "main": [
+        [
+          {
+            "node": "Extrair Telefones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Telefones": {
+      "main": [
+        [
+          {
+            "node": "Update Contact1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Contatos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nada a Distribuir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Fila Postgres": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Contact1": {
+      "main": [
+        [
+          {
+            "node": "Update Lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Fila Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres1": {
+      "main": [
+        [
+          {
+            "node": "Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres3": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Status OK - Distribuir": {
+      "main": [
+        [
+          {
+            "node": "Get Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nenhum agente disponível",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Distribuicao": {
+      "main": [
+        [
+          {
+            "node": "IF Status OK - Distribuir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select distribuicao_academico": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get Atendimento": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupa Leads And Responsaveis1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Fila Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Agrupa Leads And Responsaveis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Fila Postgres3": {
+      "main": [
+        [
+          {
+            "node": "Distribuicao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Contact": {
+      "main": [
+        [
+          {
+            "node": "Update Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead": {
+      "main": [
+        [
+          {
+            "node": "Create new notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Distribuicao1": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select distribuicao_academico1": {
+      "main": [
+        [
+          {
+            "node": "Distribuicao1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Select distribuicao_academico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Update Contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-09-19T13:09:00.001-04:00",
+          "Readable date": "September 19th 2025, 1:09:00 pm",
+          "Readable time": "1:09:00 pm",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "19",
+          "Hour": "13",
+          "Minute": "09",
+          "Second": "00",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "193",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "42e58395-bbb3-4acd-ab60-2f671fa18376",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "6507352",
+            "leads[add][0][status_id]": "63709423",
+            "leads[add][0][pipeline_id]": "7362323",
+            "account[id]": "31697347",
+            "account[subdomain]": "academicosoead"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/802403f1-b4f2-41d9-b9ae-681d01bcf861",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "34be2912-865c-463e-bc4d-8ba17754fba5",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-09-17T19:21:58.282Z",
+      "updatedAt": "2025-09-17T19:21:58.282Z",
+      "role": "workflow:owner",
+      "workflowId": "DyzitYYFzUp0lNvg",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
