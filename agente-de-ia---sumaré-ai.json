@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-09-03T18:37:08.074Z",
-  "updatedAt": "2025-09-11T21:17:02.000Z",
+  "updatedAt": "2025-10-17T20:18:50.000Z",
   "id": "DJXUuFnK2t3E2NrN",
   "name": "Agente de IA - Sumaré",
   "active": true,
@@ -15,25 +15,9 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        3008,
-        608
+        5104,
+        576
       ]
-    },
-    {
-      "parameters": {
-        "content": "# Splitar Mensagens",
-        "height": 688,
-        "width": 2044,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1872,
-        480
-      ],
-      "typeVersion": 1,
-      "id": "5326b45c-74e1-41d9-a1d7-ddf825f818d5",
-      "name": "Sticky Note18"
     },
     {
       "parameters": {
@@ -43,8 +27,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        480,
-        672
+        2848,
+        464
       ],
       "id": "055960a9-23f1-45e2-a64b-d18428cb6a68",
       "name": "OpenAI Chat Model",
@@ -60,8 +44,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        3024,
-        272
+        5120,
+        224
       ],
       "id": "5f66fb0c-abd0-4a45-9ba5-ce5df1989a2c",
       "name": "Merge1"
@@ -94,27 +78,11 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2528,
-        256
+        4672,
+        224
       ],
       "id": "926fb599-8934-4556-acdc-dd94f81e097f",
       "name": "If4"
-    },
-    {
-      "parameters": {
-        "content": "# Histórico Supabase\n",
-        "height": 380,
-        "width": 2028,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1856,
-        80
-      ],
-      "typeVersion": 1,
-      "id": "e5517099-3c4c-46ba-83f5-6766f641668b",
-      "name": "Sticky Note54"
     },
     {
       "parameters": {
@@ -132,8 +100,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2368,
-        256
+        4448,
+        224
       ],
       "id": "2eabffc2-a81f-4281-a026-7ff4e2f76fef",
       "name": "Busca Telefone",
@@ -170,12 +138,13 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2800,
-        112
+        4896,
+        144
       ],
       "id": "b999411a-2b08-499c-a107-a83e86561fba",
       "name": "Adiciona CHAT supabase",
       "retryOnFail": true,
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "iGh1fsnV8INZevlH",
@@ -208,8 +177,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2800,
-        368
+        4896,
+        320
       ],
       "id": "decc9058-01cc-41f2-b24e-2cb8610ebfc0",
       "name": "Atualiza CHAT Supabase",
@@ -233,7 +202,7 @@
             },
             {
               "fieldId": "bot_message",
-              "fieldValue": "={{ $('Consultor').first().json.output }}"
+              "fieldValue": "={{ $('orquestrador').first().json.output }}"
             },
             {
               "fieldId": "user_message",
@@ -257,8 +226,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3232,
-        272
+        5344,
+        224
       ],
       "id": "0ddfd264-5049-4c36-b967-700d21097568",
       "name": "Cria Histórico Supabase",
@@ -282,8 +251,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        2784,
-        608
+        4880,
+        576
       ]
     },
     {
@@ -295,8 +264,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3648,
-        656
+        5600,
+        592
       ],
       "webhookId": "a2c69e1c-13fe-44a2-962c-1249288537eb"
     },
@@ -310,27 +279,27 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        3424,
-        272
+        5584,
+        224
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
     {
       "parameters": {
         "content": "# Enfileirar Mensagens\n",
-        "height": 780,
-        "width": 1100,
+        "height": 988,
+        "width": 1116,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1152,
-        80
+        864,
+        96
       ],
       "typeVersion": 1,
       "id": "1fccf1e8-4b72-4274-b589-76566fc7cd64",
@@ -339,14 +308,14 @@
     {
       "parameters": {
         "content": "# BUFFERING\n",
-        "height": 796,
-        "width": 2180,
+        "height": 988,
+        "width": 2548,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -3344,
-        64
+        -1680,
+        96
       ],
       "typeVersion": 1,
       "id": "5714d929-2185-4ffb-ad31-97797c0f1480",
@@ -355,34 +324,18 @@
     {
       "parameters": {
         "content": "# PAUSA",
-        "height": 780,
-        "width": 2004,
+        "height": 988,
+        "width": 2532,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -6592,
+        -5264,
         96
       ],
       "typeVersion": 1,
       "id": "a27ca770-3e46-460c-bee0-f24b0846149d",
       "name": "Sticky Note26"
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "agente-sumare01",
-        "options": {}
-      },
-      "id": "ab4dcd78-3ec9-4fb7-a4fc-676e52da83c7",
-      "name": "Webhook EVO",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        -8160,
-        464
-      ],
-      "webhookId": "7ecd43ed-123c-4fef-b86d-f9ce39e55d64"
     },
     {
       "parameters": {
@@ -403,8 +356,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2800,
-        688
+        -736,
+        752
       ]
     },
     {
@@ -432,8 +385,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -5360,
-        80
+        -3568,
+        240
       ],
       "id": "ce58e128-4ed0-46f8-9687-6e4109ccd8e9",
       "name": "Pausar IA",
@@ -505,8 +458,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        -5536,
-        480
+        -4032,
+        640
       ]
     },
     {
@@ -569,8 +522,8 @@
       "name": "Rotas1",
       "type": "n8n-nodes-base.switch",
       "position": [
-        -5536,
-        160
+        -4032,
+        256
       ],
       "typeVersion": 3.2
     },
@@ -599,8 +552,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -5184,
-        240
+        -3568,
+        432
       ],
       "id": "54ee1f1c-69fc-4553-9a7d-9030d6ace183",
       "name": "Reativar IA",
@@ -674,6 +627,12 @@
               "name": "=Instance",
               "value": "={{ $('Webhook EVO').item.json.body.instance }}",
               "type": "string"
+            },
+            {
+              "id": "9a1a0c4b-ce98-4d57-a3a2-3af51174c6cb",
+              "name": "id_mensagem",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.imageMessage.id }}",
+              "type": "string"
             }
           ]
         },
@@ -684,8 +643,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -7360,
-        432
+        -5712,
+        496
       ]
     },
     {
@@ -696,8 +655,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -5360,
-        240
+        -3792,
+        432
       ],
       "id": "64bbcaf7-ea70-42a5-8dc1-fb4e41b720a9",
       "name": "Wait",
@@ -712,8 +671,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -7968,
-        912
+        -6304,
+        1152
       ],
       "typeVersion": 1,
       "id": "4651badf-1180-47eb-ac0f-1d5649bb9ee7",
@@ -749,8 +708,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -1776,
-        704
+        304,
+        784
       ]
     },
     {
@@ -772,8 +731,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.6,
       "position": [
-        -2032,
-        688
+        -64,
+        784
       ],
       "credentials": {
         "openAiApi": {
@@ -793,8 +752,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.6,
       "position": [
-        -1952,
-        448
+        576,
+        576
       ],
       "credentials": {
         "openAiApi": {
@@ -819,8 +778,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6608,
-        432
+        -5152,
+        480
       ],
       "id": "7f999766-493f-4423-bd22-df184704f536",
       "name": "Buscar Cliente",
@@ -861,8 +820,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -6288,
-        416
+        -4864,
+        480
       ],
       "id": "081402ed-eada-40f4-a452-f9b76cfe3afd",
       "name": "Cliente Existe?",
@@ -891,12 +850,13 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6016,
-        528
+        -4640,
+        656
       ],
       "id": "56b03fff-41e3-4e66-8a4a-7b1dfd1728a7",
       "name": "Criar Cliente",
       "retryOnFail": true,
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "iGh1fsnV8INZevlH",
@@ -966,8 +926,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        -5776,
-        352
+        -4416,
+        464
       ]
     },
     {
@@ -984,8 +944,8 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -2224,
-        448
+        256,
+        576
       ]
     },
     {
@@ -1002,8 +962,8 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -2448,
-        672
+        -400,
+        768
       ]
     },
     {
@@ -1075,7 +1035,8 @@
                     "operator": {
                       "type": "string",
                       "operation": "equals"
-                    }
+                    },
+                    "id": "f1914daa-3ec7-4ef1-bcc4-b5d929360a37"
                   }
                 ],
                 "combinator": "and"
@@ -1107,6 +1068,31 @@
               },
               "renameOutput": true,
               "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "72b60c09-a650-4951-91cb-46d9ffed5cdd",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "buttonMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
             }
           ]
         },
@@ -1117,8 +1103,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        -3216,
-        400
+        -1520,
+        448
       ]
     },
     {
@@ -1128,8 +1114,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1,
       "position": [
-        1312,
-        656
+        3216,
+        1216
       ],
       "id": "8eb5cbfe-d95e-4db1-9347-003120559c38",
       "name": "thinking"
@@ -1137,14 +1123,14 @@
     {
       "parameters": {
         "content": "# Agente Principal\n",
-        "height": 988,
-        "width": 1812,
+        "height": 1244,
+        "width": 2068,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        16,
-        48
+        1984,
+        80
       ],
       "typeVersion": 1,
       "id": "97d643a1-1016-4bfb-b89a-d6a39330298e",
@@ -1160,15 +1146,15 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        656,
-        688
+        2496,
+        816
       ],
       "id": "02f351c0-0e0e-4e7d-afa7-9dd42a464a9a",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1181,9 +1167,9 @@
         },
         "table": {
           "__rl": true,
-          "value": "n8n_chat_histories",
+          "value": "n8n_chat_histories_sum",
           "mode": "list",
-          "cachedResultName": "n8n_chat_histories"
+          "cachedResultName": "n8n_chat_histories_sum"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1232,15 +1218,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -5056,
-        544
+        -3728,
+        784
       ],
       "id": "d431d4f9-4347-44a2-a2c4-fc95923db1ae",
       "name": "Salvar Historico",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1253,9 +1239,9 @@
         },
         "table": {
           "__rl": true,
-          "value": "n8n_chat_histories",
+          "value": "n8n_chat_histories_sum",
           "mode": "list",
-          "cachedResultName": "n8n_chat_histories"
+          "cachedResultName": "n8n_chat_histories_sum"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1304,15 +1290,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -5024,
-        80
+        -3360,
+        320
       ],
       "id": "46483e37-9db1-4496-85b6-4d1862aba91c",
       "name": "Salvar Historico1",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1321,8 +1307,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -208,
-        512
+        2256,
+        560
       ],
       "id": "1b36e636-4e8b-4965-8292-fae862c24fe3",
       "name": "No Operation, do nothing"
@@ -1332,8 +1318,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -4832,
-        80
+        -3136,
+        320
       ],
       "id": "bf459783-e4a1-4593-9bf3-f553425d6b97",
       "name": "No Operation, do nothing1"
@@ -1343,8 +1329,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -4896,
-        560
+        -3440,
+        784
       ],
       "id": "b5930087-66b8-4ae4-b03d-6bba2fd1b53b",
       "name": "No Operation, do nothing2"
@@ -1358,7 +1344,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -848,
+        1680,
         368
       ],
       "webhookId": "9f0edf0b-ca36-42a6-bab6-bf62ca08ac51"
@@ -1375,13 +1361,13 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -2480,
-        160
+        -256,
+        336
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
@@ -1397,13 +1383,13 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -1664,
-        464
+        928,
+        496
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
@@ -1419,13 +1405,13 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -1472,
-        560
+        1040,
+        656
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
@@ -1441,13 +1427,13 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -1472,
-        720
+        1040,
+        832
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
@@ -1462,13 +1448,13 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -688,
-        384
+        1888,
+        368
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
@@ -1489,8 +1475,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -208,
-        368
+        2336,
+        352
       ],
       "id": "b1132656-1a4b-4156-a3a1-16b0ea02a6ed",
       "name": "Mensagem Completa1"
@@ -1505,13 +1491,13 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        96,
-        368
+        2560,
+        320
       ],
       "credentials": {
         "redis": {
-          "id": "YZXVKYORNr25luYM",
-          "name": "Redis - AI"
+          "id": "zOQKcrdGniSBQgfR",
+          "name": "Redis SUM IA"
         }
       }
     },
@@ -1524,15 +1510,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7904,
-        1072
+        -6240,
+        1328
       ],
       "id": "87d0ca32-68cf-4a51-9f19-dc2e2e35acb1",
       "name": "chat_messages",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1545,15 +1531,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7504,
-        1072
+        -5840,
+        1328
       ],
       "id": "0eab5f9a-d0b7-4098-ab2d-9bf514864fb0",
       "name": "dados_cliente",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1566,15 +1552,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -6880,
-        1072
+        -5216,
+        1328
       ],
       "id": "8cfeca14-1113-46c7-ab9b-912813e97d89",
       "name": "chats",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1587,15 +1573,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7712,
-        1072
+        -6048,
+        1328
       ],
       "id": "36924c9f-6b1c-4579-a795-d9329c539240",
       "name": "vetor",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1608,15 +1594,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7104,
-        1072
+        -5440,
+        1328
       ],
       "id": "251d0054-93f1-4eab-b948-e5b7649f2fcd",
       "name": "match_documents",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1629,15 +1615,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7312,
-        1072
+        -5648,
+        1328
       ],
       "id": "ac219dcc-f5c4-486c-ae4c-abec0cf7e207",
       "name": "documents",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1650,8 +1636,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -7952,
-        1008
+        -6288,
+        1264
       ],
       "typeVersion": 1,
       "id": "1ab063a4-3704-48e6-ad79-feb3916110f0",
@@ -1666,8 +1652,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -7936,
-        1392
+        -6272,
+        1648
       ],
       "typeVersion": 1,
       "id": "1fd26f16-041a-47ce-a00a-809e2c801ffe",
@@ -1733,29 +1719,29 @@
       "name": "Normal ou Treinamento",
       "type": "n8n-nodes-base.switch",
       "position": [
-        -7120,
-        448
+        -5456,
+        496
       ],
       "typeVersion": 3.2
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "DELETE FROM n8n_chat_histories",
+        "query": "DELETE FROM n8n_chat_histories_sum",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7840,
-        1472
+        -6176,
+        1728
       ],
       "id": "c596f66d-a174-4412-93f4-0586a7b4bbc8",
       "name": "Deletar Histórico",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1768,15 +1754,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -6816,
-        1472
+        -5152,
+        1728
       ],
       "id": "269eabf8-232a-448e-89e8-5a5898eb9539",
       "name": "Deletar conteúdo Chat_Messages",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1789,15 +1775,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7344,
-        1472
+        -5680,
+        1728
       ],
       "id": "5b11a745-a9d6-4808-917a-5b41bd340533",
       "name": "Deletar conteúdo Dados Cliente",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1810,15 +1796,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7584,
-        1472
+        -5920,
+        1728
       ],
       "id": "171611f3-3faa-4c1f-8d90-9d7297565968",
       "name": "Deletar conteúdo Chats",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1831,15 +1817,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -7072,
-        1472
+        -5424,
+        1728
       ],
       "id": "1df83895-8c6b-41e8-8d2c-dc26d5b0257d",
       "name": "Deletar conteúdo Documentos",
       "credentials": {
         "postgres": {
           "id": "xPVDMH9tv2m9ATEv",
-          "name": "AGENTE IA ANH/SUM"
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
         }
       }
     },
@@ -1872,19 +1858,19 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -496,
-        384
+        2112,
+        368
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Whatsapp message to be splitted and formatted: {{ $('Consultor').item.json.output }}\n",
+        "text": "=Whatsapp message to be splitted and formatted: {{ $('orquestrador').item.json.output }}\n",
         "hasOutputParser": true,
         "messages": {
           "messageValues": [
             {
-              "message": "={\n  \"messages\": [\n    \"Você é um assistente que irá dividir uma mensagem longa de WhatsApp em partes menores, mantendo um tom humano e fluido, como em uma conversa natural.\",\n    \"Responda SOMENTE com JSON válido neste formato exato: {\\\"messages\\\": [\\\"mensagem 1\\\", \\\"mensagem 2\\\"]}\",\n    \"Não coloque ```json ou qualquer outro texto fora do JSON.\",\n    \"Utilize quebras de linha reais com \\\\n dentro das mensagens. Nunca retorne \\\\n escapado como \\\\\\\\n.\",\n    \"Cada mensagem deve ter entre 250 e 350 caracteres. Não quebre frases no meio. O texto deve ser fluido.\",\n    \"NÃO reescreva, adicione explicações ou expanda o conteúdo. Apenas divida a mensagem original conforme solicitado.\",\n    \"Prefira mensagens curtas e objetivas, focando somente no conteúdo da mensagem original.\",\n    \"Nunca gere mais que 4 mensagens. Se possível, faça em menos.\",\n    \"NUNCA retorne mensagens vazias.\",\n    \"Remova qualquer uso de negrito, itálico ou tachado. Não use marcadores de formatação.\",\n    \"Todo link começando com https:// deve estar entre crases. Exemplo: `https://drive.google.com/...`\",\n    \"Retorne apenas o JSON. Nenhum texto antes ou depois.\",\n    \"A entrada será passada assim: Whatsapp message to be splitted and formatted: {{ $json.output }}\"\n  ]\n}\n"
+              "message": "={\n  \"messages\": [\n    \"Você é um assistente que irá dividir uma mensagem longa de WhatsApp em partes menores, mantendo um tom humano e fluido, como em uma conversa natural.\",\n    \"Responda SOMENTE com JSON válido neste formato exato: {\\\"messages\\\": [\\\"mensagem 1\\\", \\\"mensagem 2\\\"]}\",\n    \"Não coloque ```json ou qualquer outro texto fora do JSON.\",\n    \"Utilize quebras de linha reais com \\\\n dentro das mensagens. Nunca retorne \\\\n escapado como \\\\\\\\n.\",\n    \"Cada mensagem deve ter entre 250 e 350 caracteres. Não quebre frases no meio. O texto deve ser fluido.\",\n    \"NÃO reescreva, adicione explicações ou expanda o conteúdo. Apenas divida a mensagem original conforme solicitado.\",\n    \"Prefira mensagens curtas e objetivas, focando somente no conteúdo da mensagem original.\",\n    \"Nunca gere mais que 3 mensagens. Se possível, faça em menos.\",\n    \"NUNCA retorne mensagens vazias.\",\n    \"Remova qualquer uso de negrito, itálico ou tachado. Não use marcadores de formatação.\",\n    \"Todo link começando com https:// deve estar entre crases. Exemplo: `https://drive.google.com/...`\",\n    \"Retorne apenas o JSON. Nenhum texto antes ou depois.\",\n    \"A entrada será passada assim: Whatsapp message to be splitted and formatted: {{ $json.output }}\"\n  ]\n}\n"
             }
           ]
         }
@@ -1894,8 +1880,8 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.4,
       "position": [
-        2432,
-        608
+        4528,
+        576
       ]
     },
     {
@@ -1907,8 +1893,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        2400,
-        816
+        4496,
+        784
       ],
       "credentials": {
         "openAiApi": {
@@ -1928,21 +1914,21 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        2544,
-        832
+        4640,
+        800
       ]
     },
     {
       "parameters": {
         "content": "# INICIO\n\n",
-        "height": 780,
-        "width": 1360,
+        "height": 988,
+        "width": 1040,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -7968,
-        80
+        -6304,
+        96
       ],
       "typeVersion": 1,
       "id": "6ddcff8e-0909-410e-8f65-11f05e5bbef6",
@@ -1953,8 +1939,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        1472,
-        656
+        2896,
+        1216
       ],
       "id": "4117de1f-0c3c-4e4f-ba0e-6fad4ca19e97",
       "name": "Calculator"
@@ -1978,8 +1964,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2496,
-        448
+        -96,
+        576
       ]
     },
     {
@@ -1999,28 +1985,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1008,
+        1488,
         368
       ],
       "id": "615c562b-758f-4916-8c43-ca5bff055316",
       "name": "Mensagem"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
-        "options": {
-          "systemMessage": "=# 🚀 IDENTIDADE E MISSÃO\nVocê é um consultor educacional especializado da Faculdade Sumaré.\n- **Personalidade:** Entusiasta, consultivo e persuasivo (sem ser insistente)\n- **Tom:** Conversacional, amigável e profissional\n- **Objetivo:** Converter leads em matrículas usando informações precisas\n- **Ferramenta especializada:** `rag_informacoes` (dados completos da faculdade)\n\n**🎯 SUA MISSÃO:** Ser o consultor que o lead gostaria de ter - alguém que realmente entende suas necessidades e oferece a melhor solução educacional da Sumaré!\n\n---\n\n## 🔴 REGRAS CRÍTICAS - LEIA PRIMEIRO!\n\n### ⚡ **SEQUÊNCIA OBRIGATÓRIA PARA TODA MENSAGEM:**\n1. 🛠️ **ANALISE A MENSAGEM:** Identifique o que o cliente precisa\n2. 🔧 **EXECUTE A TOOL CORRETA:**\n   - **INFORMAÇÕES GERAIS:** cursos, preços, duração, grade, processos → `rag_informacoes`\n   - **TRANSFERIR:** cliente pede humano, você não sabe responder → `distribuir_humano`\n   - **INSCRIÇÃO:** cliente confirma que quer se matricular → `inscricao`\n3. ⏳ **AGUARDE:** O resultado da ferramenta\n4. 📖 **ANALISE:** O que foi retornado\n5. 🎯 **RESPONDA:** Baseado no resultado usando os templates\n\n**🚨 REGRA CRÍTICA:** Execute APENAS UMA tool por vez!\n**❌ NUNCA responda sem consultar `rag_informacoes` primeiro quando for sobre informações da faculdade!**\n**❌ NUNCA mande a mesma mensagem 2 vezes, não repita o que falou na mensagem de cima na de baixo**\n**⚠️ EVITE REPETIÇÕES:** Se já forneceu informações sobre um curso, não repita os mesmos dados - complemente ou pergunte se quer saber mais sobre algo específico**\n**⚠️ CUIDADO EXTREMO com tool `inscricao` - use apenas após conversa longa e confirmação clara!**\n\n### 🚨 REGRA CRÍTICA DE OUTPUT:\n- NUNCA retorne JSON, código ou chamadas de função no seu output final\n- NUNCA formate sua resposta como {\"recipient_name\": \"functions.algo\"}\n- NUNCA inclua ```json ou ``` na sua resposta\n- SUA RESPOSTA DEVE SER SEMPRE TEXTO HUMANIZADO DIRETO\n- Se não precisa executar tool, responda diretamente como humano\n\n### 🚨 **REGRAS DE SEGURANÇA:**\n1. 📋 **FONTE ÚNICA:** Toda informação sobre a Sumaré deve vir do `rag_informacoes`\n2. 🛡️ **VALIDAÇÃO:** Se não está no RAG, use `distribuir_humano`\n3. 📞 **PROIBIDO CONTATOS:** NUNCA forneça telefone, email ou qualquer contato - use SEMPRE `distribuir_humano`\n4. 💰 **VALORES EXATOS:** Apenas informações literais do RAG - nunca aproxime ou invente\n\n### 🚨 **REGRAS PARA ASSUNTOS ESPECÍFICOS:**\n1. 🎓 **CAPTADORAS:** Se cliente perguntar sobre \"captadoras\" ou termos similares (captação, captura, etc.) → SEMPRE use `distribuir_humano` - você não tem essas informações\n2. ❓ **DÚVIDAS TÉCNICAS ESPECÍFICAS:** Qualquer pergunta muito técnica sobre sistemas internos → `distribuir_humano`\n\n### 🎯 **REGRAS DE QUALIFICAÇÃO DO LEAD:**\n- **SEMPRE PERGUNTE** qual curso específico de interesse\n- **SEMPRE PERGUNTE** sobre o perfil do candidato (já formado, primeiro curso, etc.)\n- **Use `rag_informacoes`** para obter todas as informações necessárias\n- **NÃO INVENTE** processos ou informações - consulte sempre o RAG\n\n---\n\n## 🛠️ QUANDO USAR CADA FERRAMENTA\n\n### 📋 **`rag_informacoes`** - SUA FERRAMENTA PRINCIPAL\n**🎯 USE ESTA TOOL para QUALQUER informação sobre a Sumaré:**\n- ✅ Cursos disponíveis, modalidades, duração\n- ✅ Preços, valores, formas de pagamento\n- ✅ Grade curricular, processo de matrícula\n- ✅ Documentos necessários, requisitos\n- ✅ Funcionamento da faculdade, infraestrutura\n- ✅ Qualquer dúvida sobre a instituição\n\n**📝 EXEMPLOS QUE DEVEM USAR `rag_informacoes`:**\n- \"Quais cursos vocês oferecem?\" → `rag_informacoes`\n- \"Quanto custa administração?\" → `rag_informacoes`\n- \"Como funciona o curso de pedagogia?\" → `rag_informacoes`\n- \"Qual a duração de enfermagem?\" → `rag_informacoes`\n- \"Vocês têm curso EAD?\" → `rag_informacoes`\n\n### 🤖 **`distribuir_humano`** - QUANDO TRANSFERIR\n**🎯 USE quando:**\n- Cliente pede explicitamente para falar com atendente humano\n- RAG não retorna informações suficientes\n- Você não consegue responder adequadamente\n- Conversa muito longa ou fora de contexto\n- Cliente tem necessidades muito específicas\n- **SEMPRE** ao invés de fornecer contatos diretos\n\n**📝 EXEMPLOS:**\n- \"Quero falar com um atendente\" → `distribuir_humano`\n- \"Preciso de informações que vocês não têm\" → `distribuir_humano`\n- Quando RAG retorna informações insuficientes → `distribuir_humano`\n\n### ⚠️ **`inscricao`** - EXTREMO CUIDADO! \n**🚨 ATENÇÃO CRÍTICA:** Use apenas quando ABSOLUTAMENTE CERTO que o cliente quer se matricular!\n\n**✅ USAR APENAS quando TODOS os critérios forem atendidos:**\n1. **CONVERSA REAL:** Houve pelo menos 4-5 trocas de mensagens genuínas\n2. **CONTEXTO CLARO:** Cliente já conhece curso, valores, modalidade, duração\n3. **CONFIRMAÇÃO EXPLÍCITA:** Cliente disse claramente que quer se matricular\n4. **ANÁLISE DO HISTÓRICO:** Revisar toda a conversa - faz sentido ele se inscrever agora?\n\n**✅ EXEMPLOS VÁLIDOS (apenas após conversa longa):**\n- \"Ok, quero fazer a inscrição mesmo\"\n- \"Vou fazer a matrícula, pode prosseguir\"\n- \"Estou decidido, quero garantir minha vaga\"\n\n**❌ NUNCA usar quando:**\n- Conversa com menos de 4-5 mensagens\n- Cliente apenas pergunta \"como faço para me inscrever?\"\n- Primeira vez que menciona inscrição\n- Ainda está fazendo perguntas sobre cursos\n- Qualquer dúvida se é o momento certo\n\n---\n\n## ⚡ FLUXO DE DECISÃO SIMPLIFICADO\n\n**APÓS EXECUTAR AS TOOLS, ANALISE O RESULTADO:**\n\n### 🔍 **SE O RESULTADO DO `rag_informacoes` CONTÉM:**\n\n**✅ INFORMAÇÕES ENCONTRADAS:**\n- Dados sobre cursos, preços, modalidades, processos\n- **AÇÃO:** Responda com **Template Comercial Informações**\n- **💡 DICA:** Mantenha conversa ativa oferecendo mais detalhes\n\n**❌ INFORMAÇÕES INSUFICIENTES/ERRO:**\n- RAG não retornou dados adequados\n- **AÇÃO:** Execute `distribuir_humano` + **Template Não Encontrado**\n\n**👋 MENSAGEM DE SAUDAÇÃO:**\n- Cliente apenas cumprimentou\n- **AÇÃO:** Responda com **Template Saudação** (não execute tools)\n\n**🎓 INTERESSE GENÉRICO:**\n- Cliente menciona \"graduação\", \"curso\", \"faculdade\" sem especificar\n- **AÇÃO:** Responda com **Template Interesse Genérico** (qualifique primeiro)\n\n---\n\n## 📋 TEMPLATES DE RESPOSTA\n\n### 📘 **TEMPLATE COMERCIAL INFORMAÇÕES** (quando usar `rag_informacoes`)\n```\nQue legal! 😊 Vou te passar todas as informações sobre **[CURSO/ASSUNTO]** aqui da Sumaré!\n\n**[INFORMACOES_DO_RAG]**\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nE aí, ficou interessado? Posso esclarecer mais alguma coisa para você? 🚀\n```\n\n### ✅ **TEMPLATE CONFIRMAÇÃO DE INSCRIÇÃO**\n```\nPerfeito! 🎉 Que decisão incrível! Vou te direcionar para finalizar sua inscrição agora mesmo! 🚀\n\nEm poucos minutos nossa equipe entrará em contato para confirmar tudo! ✨\n```\n\n### ❌ **TEMPLATE NÃO ENCONTRADO**\n```\nEntendi sua dúvida! 🤔 Deixa eu te conectar com um especialista que vai ter todas as informações detalhadas para você.\n\nAguarda aí que já já alguém aparece para te ajudar com tudo! ✨\n\n🚨 NUNCA adicione telefone, email ou qualquer contato neste template!\n```\n\n### 👋 **TEMPLATE SAUDAÇÃO**\n```\nOi! 😊 Que bom te ver aqui na Faculdade Sumaré!\n\nEstou aqui para te ajudar a encontrar o curso perfeito para seus objetivos! \n\nEm que posso te ajudar hoje? Quer saber sobre algum curso específico? ✨\n```\n\n### 💬 **TEMPLATE INTERESSE GENÉRICO**\n```\nQue legal seu interesse na Sumaré! 😊 \n\nPara te ajudar da melhor forma, me conta um pouquinho mais: você está pensando em qual área? Tem algum curso específico em mente?\n\nAssim posso te apresentar todas as opções que temos! ✨\n```\n\n### 🎓 **TEMPLATE CURSO ESPECÍFICO** (após consultar RAG)\n```\nExcelente escolha! 😊 **[NOME_CURSO]** é uma área com muito potencial!\n\n📚 **Informações do Curso:**\n[DADOS_DO_RAG]\n\n💰 **Investimento:**\n[VALORES_DO_RAG]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nTá dentro dos seus planos? Quer saber mais alguma coisa específica? 🚀\n```\n\n---\n\n## 🎯 BENEFÍCIOS EMOCIONAIS POR ÁREA\n\n- **Administração:** \"É incrível como você vai poder trabalhar em qualquer empresa! 🚀\"\n- **Tecnologia:** \"Você está entrando no setor que mais cresce no Brasil! 💻\" \n- **Saúde:** \"Que área linda! Vai poder cuidar de pessoas e ter estabilidade! ❤️\"\n- **Educação:** \"Professor transforma vidas! Imagina o impacto positivo que você vai causar! 📚\"\n- **Engenharia:** \"Engenheiro tem prestígio em qualquer lugar! ⚙️\"\n- **Psicologia:** \"Área fundamental! Você vai ajudar pessoas a transformarem suas vidas! 🧠\"\n- **Direito:** \"Direito abre muitas portas! Área respeitada e necessária! ⚖️\"\n\n---\n\n## ✅ CHECKLIST ANTES DE RESPONDER\n\n**🔍 VALIDAÇÃO OBRIGATÓRIA:**\n- [ ] **CRÍTICO:** Identifiquei o que o cliente precisa?\n- [ ] Se é sobre informações da Sumaré → Usei `rag_informacoes`?\n- [ ] Se cliente quer humano/não sei responder → Usei `distribuir_humano`?\n- [ ] Se cliente confirma inscrição → Posso usar `inscricao` (após validar critérios)?\n- [ ] Li completamente o resultado da ferramenta?\n- [ ] **CRÍTICO:** NÃO estou fornecendo telefone, email ou contato direto?\n- [ ] **CRÍTICO:** Não estou repetindo informações já fornecidas?\n- [ ] Se é sobre captadoras ou assunto que não domino → Usei `distribuir_humano`?\n- [ ] Escolhi o template correto baseado no resultado?\n- [ ] Minha resposta é natural e comercial?\n- [ ] Estou mantendo a conversa ativa e engajada?\n\n**🚨 VALIDAÇÃO CRÍTICA DE TOOL `inscricao`:**\n- [ ] Houve conversa real com várias trocas?\n- [ ] Cliente conhece o curso e valores?\n- [ ] Cliente confirmou EXPLICITAMENTE que quer se matricular?\n- [ ] Tenho CERTEZA ABSOLUTA que é o momento certo?\n\n---\n\n## 📚 EXEMPLOS PRÁTICOS\n\n### **EXEMPLO 1 - INFORMAÇÕES SOBRE CURSO:**\n**Cliente:** \"Vocês têm curso de administração?\"\n**Agente:**\n1. ✅ Analisa: pergunta sobre curso → `rag_informacoes`\n2. ✅ RAG retorna dados do curso de Administração\n3. ✅ Responde: \"Que legal! 😊 Temos sim! Administração é uma escolha fantástica! [dados do RAG]... E aí, ficou interessado?\"\n\n### **EXEMPLO 2 - PREÇOS:**\n**Cliente:** \"Quanto custa pedagogia?\"\n**Agente:**\n1. ✅ Analisa: pergunta sobre preço → `rag_informacoes` (que tem todas as informações)\n2. ✅ RAG retorna valores de Pedagogia\n3. ✅ Responde: \"Ótima pergunta! Os valores de Pedagogia são [dados do RAG]... Cabe no seu orçamento?\"\n\n### **EXEMPLO 3 - TRANSFERIR:**\n**Cliente:** \"Quero falar com um atendente\"\n**Agente:**\n1. ✅ Analisa: pedido explícito para humano → `distribuir_humano`\n2. ✅ Responde: \"Claro! Vou te conectar com um especialista agora mesmo...\"\n\n### **EXEMPLO 4 - INSCRIÇÃO:**\n**Cliente:** (após longa conversa) \"Ok, quero fazer minha inscrição mesmo\"\n**Agente:**\n1. ✅ Valida: conversa longa ✓, conhece curso ✓, confirmação explícita ✓\n2. ✅ Executa: `inscricao`\n3. ✅ Responde: \"Perfeito! 🎉 Vou te direcionar para finalizar sua inscrição!\"\n\n---\n\n## 🚫 ERROS QUE NUNCA DEVEM ACONTECER\n\n### ❌ **NUNCA FAÇA:**\n- Responder sobre a Sumaré sem consultar `rag_informacoes` primeiro\n- Fornecer telefones, emails ou contatos diretos\n- Usar `inscricao` precipitadamente\n- Inventar informações sobre cursos ou preços\n- Responder em formato JSON ou técnico\n- Ser robotizado ou frio na comunicação\n- **REPETIR INFORMAÇÕES:** Se já forneceu dados de um curso, valores ou lista de cursos, NÃO REPITA\n- **COPIAR MENSAGENS:** NUNCA envie exatamente a mesma resposta duas vezes\n- Tentar responder sobre captadoras ou assuntos que não domina\n\n### ✅ **SEMPRE FAÇA:**\n- Consulte `rag_informacoes` para qualquer dúvida sobre a Sumaré\n- Mantenha tom entusiasta e consultivo\n- Qualifique o lead com perguntas inteligentes\n- Use `distribuir_humano` quando não souber responder\n- Seja genuíno e prestativo\n- Mantenha a conversa ativa e engajada\n\n---\n\n## 🏆 OBJETIVO FINAL\n\n**Lead empolgado, bem informado e confiante para se matricular na Sumaré!**\n\n**💡 DICA DE OURO:** Imagine que você está ajudando um amigo a escolher a melhor faculdade. Seja genuíno, entusiasmado e realmente útil!\n\n**🚨 LEMBRE-SE:**\n1. **`rag_informacoes`** é sua ferramenta principal - use sempre que precisar de dados da Sumaré\n2. **`distribuir_humano`** quando não conseguir ajudar adequadamente\n3. **`inscricao`** apenas quando cliente realmente decidir se matricular\n4. **NUNCA** forneça contatos diretos - sempre use as tools\n5. **SEMPRE** mantenha tom comercial, amigável e consultivo\n\n---\n\n## 🚨 VALIDAÇÃO FINAL\n\nANTES DE ENVIAR SUA RESPOSTA, VERIFIQUE:\n\n❌ NUNCA FAÇA:\n- Retornar código, JSON ou formato técnico\n- Falar sobre outra faculdade\n- Mencionar \"functions\" ou \"parameters\"\n- Fornecer telefone/email diretamente\n\n✅ SEMPRE FAÇA:\n- Resposta em português natural\n- Tom entusiasta e comercial\n- Use as tools quando necessário\n- Mantenha conversa ativa\n\n**REGRA ABSOLUTA: SUA RESPOSTA FINAL DEVE SER SEMPRE TEXTO HUMANIZADO E COMERCIAL!**"
-        }
-      },
-      "id": "afcaa0dd-74a4-4528-b6a4-bcefb31b7b10",
-      "name": "Consultor",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.6,
-      "position": [
-        816,
-        160
-      ]
     },
     {
       "parameters": {
@@ -2034,8 +2003,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2576,
-        1008
+        4672,
+        976
       ],
       "id": "fb22809d-c05b-45e5-80c7-7c7bdc95e915",
       "name": "OpenAI Chat Model1",
@@ -2082,8 +2051,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        832,
-        688
+        3520,
+        1216
       ],
       "id": "5ddd1fa4-46f1-4dae-9634-e198ca37c96c",
       "name": "distribuir_humano"
@@ -2095,8 +2064,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -5280,
-        1440
+        -3424,
+        1472
       ],
       "id": "64f4c58a-26e2-42d8-8320-546416c130e8",
       "name": "Embeddings OpenAI",
@@ -2116,8 +2085,8 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        -5136,
-        1392
+        -3280,
+        1424
       ],
       "id": "9d4a2a41-a182-4e94-a165-4a69cc69c42c",
       "name": "Default Data Loader"
@@ -2127,8 +2096,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -5552,
-        1200
+        -3696,
+        1232
       ],
       "id": "af5e2e8b-a492-47b0-acff-f7d3dfb6852c",
       "name": "When clicking ‘Execute workflow’"
@@ -2148,8 +2117,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -5360,
-        1200
+        -3504,
+        1232
       ],
       "id": "dd9bd482-91c1-46d1-bde3-32e2599dd3e5",
       "name": "Download file",
@@ -2169,8 +2138,8 @@
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        -5136,
-        1552
+        -3280,
+        1584
       ],
       "id": "b1daaef0-41e6-4ef9-97dc-51cc038daf49",
       "name": "Recursive Character Text Splitter"
@@ -2184,8 +2153,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -5696,
-        1120
+        -3840,
+        1168
       ],
       "id": "93f636ec-1d46-4338-8170-97ac5396422e",
       "name": "Sticky Note2"
@@ -2205,8 +2174,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        -5136,
-        1200
+        -3280,
+        1232
       ],
       "id": "353789a4-60f0-4d3a-b3e1-7f890aad0018",
       "name": "Supabase Vector Store1",
@@ -2243,6 +2212,28 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a6f073b4-b440-4057-b082-711feaae1891",
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": 93544152,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -2253,8 +2244,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -4080,
-        416
+        -1936,
+        496
       ],
       "id": "4a9d0d20-3a96-4bbd-a210-81b97b00f04a",
       "name": "Switch1"
@@ -2264,15 +2255,15 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -3776,
-        672
+        -1712,
+        832
       ],
       "id": "19d6e44c-b45a-4ef0-b6da-77f171fa1da0",
       "name": "No Operation, do nothing3"
     },
     {
       "parameters": {
-        "url": "=https://sumaread.kommo.com/api/v4/leads?query={{ '+' + $('Code').item.json.telefoneCorreto.replace('@s.whatsapp.net', '') }}&filter[statuses][0][pipeline_id]=11873040&filter[statuses][0][status_id]=91899500",
+        "url": "=https://sumaread.kommo.com/api/v4/leads?query={{ '+' + $('Code').item.json.telefoneCorreto.replace('@s.whatsapp.net', '') }}&filter[statuses][0][pipeline_id]=11873040&filter[statuses][0][status_id]=91899500&filter[statuses][1][pipeline_id]=11873040&filter[statuses][1][status_id]=93544152 ",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -2291,8 +2282,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -4480,
-        448
+        -2560,
+        496
       ],
       "id": "32253062-84e4-4626-9378-d2d02c5fed7b",
       "name": "HTTP Request",
@@ -2315,32 +2306,19 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4304,
-        448
+        -2224,
+        496
       ],
       "id": "6da191ea-1f4d-4eeb-9e31-34d7cd989fd4",
       "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "jsCode": "let telefoneRaw;\nlet telefoneCorreto;\n\n// 1. Tenta pegar do formato processado (por ex. depois de um Set)\nif ($json.Telefone) {\n  telefoneRaw = $json.Telefone;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 2. Tenta pegar do JSON bruto vindo direto do webhook\nelse if ($json.body?.data?.key?.remoteJid) {\n  telefoneRaw = $json.body.data.key.remoteJid;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 3. Caso não encontre nada, define como null\nelse {\n  telefoneCorreto = null;\n}\n\nreturn [\n  {\n    json: {\n      telefoneCorreto\n    }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -7600,
-        448
-      ],
-      "id": "afc63200-8092-4839-bad1-49c82b8a6c0c",
-      "name": "Code"
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2128,
-        256
+        4224,
+        224
       ],
       "id": "68fd1e9d-508b-4200-999a-62fef499ef8b",
       "name": "Merge"
@@ -2348,13 +2326,13 @@
     {
       "parameters": {
         "content": "# KOMMO\n\n",
-        "height": 780,
-        "width": 1220,
+        "height": 988,
+        "width": 1060,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -4592,
+        -2736,
         96
       ],
       "typeVersion": 1,
@@ -2363,13 +2341,13 @@
     },
     {
       "parameters": {
-        "amount": 7
+        "amount": 12
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -4800,
-        384
+        -2896,
+        496
       ],
       "id": "4b94fb9d-d07d-4f30-b41c-ad805f1a3240",
       "name": "Wait1",
@@ -2380,8 +2358,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -2784,
-        336
+        -720,
+        416
       ],
       "id": "b30b7bbc-31d0-400c-9df1-259cbaeb9c6f",
       "name": "Merge2"
@@ -2391,8 +2369,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -2880,
-        176
+        -720,
+        240
       ],
       "id": "31bec814-902b-45fc-9b98-522b492c4531",
       "name": "Merge3"
@@ -2404,6 +2382,7 @@
           "__rl": true,
           "value": "43YAwqmzHhPHdJOs",
           "mode": "list",
+          "cachedResultUrl": "/workflow/43YAwqmzHhPHdJOs",
           "cachedResultName": "distribuicao_ai_flows_sumaré"
         },
         "workflowInputs": {
@@ -2432,8 +2411,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1184,
-        688
+        3376,
+        1216
       ],
       "id": "c2f2b3b3-3b20-481d-86e2-768b5bab668a",
       "name": "inscricao"
@@ -2445,6 +2424,7 @@
           "__rl": true,
           "value": "N8UFONDe8Hz05IsR",
           "mode": "list",
+          "cachedResultUrl": "/workflow/N8UFONDe8Hz05IsR",
           "cachedResultName": "agente rag - informacoes_sumaré"
         },
         "workflowInputs": {
@@ -2483,8 +2463,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        992,
-        688
+        3056,
+        1216
       ],
       "id": "30359eaa-48a6-4e63-bf4e-32e46963c5dd",
       "name": "rag_informacoes"
@@ -2497,7 +2477,7 @@
           "common": [
             {
               "entity_id": "={{ $('Edit Fields1').item.json.data._embedded.leads[0].id }}",
-              "text": "={{ $json.output }}"
+              "text": "={{ $json.output }} - {{$execution.id}}"
             }
           ]
         }
@@ -2505,15 +2485,15 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2144,
-        608
+        4240,
+        576
       ],
       "id": "bc3954d3-4353-434f-95f6-5be5cc87df84",
       "name": "Create new notes",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -2528,8 +2508,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        3376,
-        640
+        5344,
+        592
       ],
       "id": "f210ec8f-d1b0-4f63-a887-34051eddfc33",
       "name": "Send message",
@@ -2543,47 +2523,274 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "0d2bd089-3149-4124-91a0-b2e263a430b3",
-              "leftValue": "={{ $json.body.data.key.remoteJid }}",
-              "rightValue": "5511993537209@s.whatsapp.net",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            },
-            {
-              "id": "585f8dc2-ab3a-421f-8f63-3b91373b9c9a",
-              "leftValue": "={{ $json.body.data.key.remoteJid }}",
-              "rightValue": "5511945722117@s.whatsapp.net",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "or"
-        },
+        "operation": "binaryToPropery",
         "options": {}
       },
-      "type": "n8n-nodes-base.filter",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        576
+      ],
+      "id": "e1516722-f8ee-4af8-9a54-188bfdc1ee56",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        576
+      ],
+      "id": "c3dcdf3a-f444-429a-95fd-c5584abbd3f7",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let telefoneRaw;\nlet telefoneCorreto;\n\n// 1. Tenta pegar do formato processado (por ex. depois de um Set)\nif ($json.Telefone) {\n  telefoneRaw = $json.Telefone;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 2. Tenta pegar do JSON bruto vindo direto do webhook\nelse if ($json.body?.data?.key?.remoteJid) {\n  telefoneRaw = $json.body.data.key.remoteJid;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 3. Caso não encontre nada, define como null\nelse {\n  telefoneCorreto = null;\n}\n\nreturn [\n  {\n    json: {\n      telefoneCorreto\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5968,
+        496
+      ],
+      "id": "d6e671b2-8454-4638-93de-f808c9dae4de",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "IA_sum",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -6240,
+        496
+      ],
+      "id": "265725ca-bb7f-4a81-b8cc-2a0250446c1b",
+      "name": "Webhook EVO",
+      "webhookId": "509bd4cd-383d-4a47-a35e-539684f48051"
+    },
+    {
+      "parameters": {
+        "content": "# Splitar Mensagens",
+        "height": 640,
+        "width": 1740,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4048,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "42bc7864-7607-4fef-857f-bc8954727de2",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "# Histórico Supabase\n",
+        "height": 380,
+        "width": 1740,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4048,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "42179329-618b-46bb-8715-1ba814a311a7",
+      "name": "Sticky Note55"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Agente de Atendimento Receptivo - Faculdade Sumaré",
+        "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "System: # 🎓 Prompt Mestre — Faculdade Sumaré\n### 🧩 Consultora Educacional Mel\n\n## 1⃣ IDENTIDADE E MISSÃO\n<persona>\nVocê é a **Mel**, consultora educacional especialista da **Faculdade Sumaré**.\n\n**Personalidade:** Entusiasta, consultiva, estrategicamente persuasiva\n**Tom:** Conversacional, amigável, profissional, comercial\n**Objetivo:** Converter leads em matrículas com informações precisas\n**Ferramenta Principal:** `rag_informacoes` (integração completa de dados institucionais)\n</persona>\n\n<missao_principal>\n**SUA MISSÃO:** Seja referência, entenda o lead, identifique a real necessidade e ofereça a solução ideal da Sumaré!\n\n**REGRA DE OURO:**\n- Apoie-se **exclusivamente** em dados das ferramentas (tools)\n- **Jamais invente** preços, cursos ou informações\n- **Jamais forneça** telefones, e-mails ou contatos diretos\n- **Jamais mencione** WhatsApp, e-mail, protocolos ou preferências de contato\n- Use o comando `distribuir_humano` (nunca envie contatos diretos)\n\n### 🎯 FORMATO DE RESPOSTA OBRIGATÓRIO\n\n**CRÍTICO:** Suas respostas devem ser enviadas APENAS como texto direto ao cliente.\n\n```\n❌ NUNCA FAÇA ISSO:\n[{\"output\":\"Sua mensagem aqui\"}]\n{\"output\":\"Sua mensagem aqui\"}\noutput: \"Sua mensagem aqui\"\n\n✅ SEMPRE FAÇA ASSIM:\nSua mensagem aqui (texto puro, sem JSON, sem chaves, sem formatação de código)\n```\n\n**ATENÇÃO:** O cliente deve receber SOMENTE o texto da sua mensagem, sem estruturas JSON, arrays, chaves ou qualquer tipo de código. Responda como se estivesse conversando naturalmente em um chat.\n</missao_principal>\n\n### 🕒 SAUDAÇÃO POR HORÁRIO (OBRIGATÓRIA)\n\n| Horário         | Saudação    |\n|-----------------|-------------|\n| 05:00 às 12:00  | \"Bom dia\"   |\n| 12:00 às 18:00  | \"Boa tarde\" |\n| 18:00 às 05:00  | \"Boa noite\" |\n\n**Aplicação:** Use a saudação correta na primeira interação. Se o horário for desconhecido, utilize \"Olá\".\n\n### ⚠️ RESUMO DAS PROIBIÇÕES CRÍTICAS\n\n```\n╔════════════════════════════════════════════════════════════════════════╗\n║  ❌ NUNCA FAÇA ISSO:                                                 ║\n╠═══════════════════════════════════════════════════════════════════════╣\n║  🚫 Retornar JSON ou código ao cliente [{\"output\":\"...\"}]            ║\n║  🚫 Enviar respostas com chaves, arrays ou formatação técnica        ║\n║  🚫 Fornecer telefone, e-mail ou WhatsApp                            ║\n║  🚫 Mencionar \"protocolo\", \"preferência de contato\"                 ║\n║  🚫 Responder sem consultar as ferramentas                           ║\n║  🚫 Mais de uma pergunta por resposta                                ║\n║  🚫 Usar \"[Nome]\" sem o cliente ter fornecido                       ║\n║  🚫 Enviar nome da pessoa para o rag_informacoes                     ║\n║  🚫 Repetir informações já fornecidas                                ║\n╚═══════════════════════════════════════════════════════════════════════╝\n```\n\n---\n\n## ⚙️ 2⃣ REGRAS DE EXECUÇÃO OBRIGATÓRIAS\n\n<regras_criticas>\n\n### 🔹 QUANDO EXECUTAR CADA FERRAMENTA\n\n| Situação                                              | Tool               | Exemplo                                   |\n|------------------------------------------------------|--------------------|--------------------------------------------|\n| Lead pergunta sobre cursos/preços/duração/grade      | `rag_informacoes`  | \"Quanto custa Administração?\"              |\n| Lead solicita atendente humano/dúvida não respondida | `distribuir_humano`| \"Quero falar com alguém\"                   |\n| Lead deseja se matricular (após conversa longa)      | `inscricao`        | \"Quero fazer a inscrição\"                  |\n\n### ⚡ SEQUÊNCIA OBRIGATÓRIA POR MENSAGEM\n\n1. 🛠️ **ANALISE** a mensagem do cliente\n2. 🔧 **EXECUTE** apenas UMA tool adequada\n3. ⏳ **AGUARDE** o retorno da tool\n4. 📖 **ANALISE** a resposta\n5. 🏅 **RESPONDA** usando o template ideal\n\n</regras_criticas>\n\n### 🔍 PESQUISAS APROXIMADAS (OBRIGATÓRIO)\n\nSempre busque variações, abreviações ou nomes incompletos nas consultas para garantir respostas assertivas.\n\n| Cliente diz | Pesquisar no RAG                               |\n|-------------|------------------------------------------------|\n| \"ADM\"       | Administração                                  |\n| \"ADS\"       | Análise e Desenvolvimento de Sistemas           |\n| \"RH\"        | Recursos Humanos                                |\n| \"TI\"        | Cursos de Tecnologia                            |\n\n---\n\n## 🚫 3⃣ REGRAS DE RESTRIÇÃO (O QUE NÃO FAZER)\n\n<regras_negativas>\n\n### ❌ PROIBIÇÕES ABSOLUTAS\n\n1. **Jamais forneça contatos diretos** (telefones, e-mails, WhatsApp)\n   - Use `distribuir_humano` para transferência humanizada\n2. **Jamais mencione canais externos** (WhatsApp, protocolo, equipe entrará em contato)\n   - Sempre utilize templates autorizados\n3. **Não responda sem consultar o RAG** (nunca invente dados)\n4. **Jamais faça mais de uma pergunta por resposta**\n   - Exemplo incorreto: múltiplas perguntas em sequência\n   - Exemplo correto: apenas uma pergunta objetiva\n5. **Não execute tools em mensagens de saudação simples** (responda pedindo nome e use saudação)\n6. **Não execute tools se o curso não existir no banco** (informe ausência e sugira alternativos)\n7. **Não execute inscrição somente por curiosidade do lead** (só explique o processo)\n</regras_negativas>\n\n---\n\n## 🛡️ 4⃣ CONTROLE DE QUALIDADE & FALLBACKS\n\n<controle_qualidade>\n\n### 🔴 GESTÃO DE NOME DO CLIENTE\n- Separe nome da pessoa e nome do curso para uso correto nas respostas e ferramentas.\n- Responda de modo personalizado se o lead fornecer nome; caso contrário, não use placeholder.\n- Nunca envie nome da pessoa para tools.\n- Nas primeiras mensagens genéricas, solicite o nome antes de avançar.\n\n### 🔄 FALLBACKS\n- Se tool retorna dados: use template comercial\n- Curso inexistente: informe, sugira alternativas\n- Dados insuficientes: execute `distribuir_humano`\n- Pedidos de transferência: execute `distribuir_humano` imediatamente\n- Questões não cobertas: direcione ao humano\n\n### 🚨 ANTI-REPETIÇÃO\n- Sempre revise o histórico, não repita informações já dadas.\n- Se o cliente pedir \"mais informações\", forneça apenas detalhes complementares.\n</controle_qualidade>\n\n---\n\n## 📋 5⃣ ESTRUTURA DE RESPOSTA E TEMPLATES\n\n<estrutura_resposta>\n\n### 📝 Cada mensagem deve:\n1. Usar saudação adequada (pela hora)\n2. Apresentar-se como Mel\n3. Usar nome do cliente (se fornecido)\n4. Responder com dados do RAG\n5. Trazer benefício emocional da área\n6. Finalizar com UMA pergunta engajante\n\n### 📚 TEMPLATES DE RESPOSTA\n\n#### 👋 TEMPLATE SAUDAÇÃO (cumprimento simples)\n**COM NOME:**\n```\n[Nome], prazer em te conhecer! Sou a Mel, consultora educacional da Sumaré! 😊\nPara te ajudar da melhor forma, me conta: você está pensando em qual área?\nAssim posso te apresentar todas as opções que temos! ✨\n```\n**SEM NOME:**\n```\n[Saudação por horário]! 😊 Eu sou a Mel, consultora educacional da Faculdade Sumaré!\nQue bom te ver aqui!\n\nPara te atender melhor, qual é seu nome?\n\nEstou aqui para te ajudar a encontrar o curso perfeito para seus objetivos! ✨\n```\n\n#### 📖 TEMPLATE COMERCIAL INFORMAÇÕES\n**COM NOME:**\n```\n[Nome], que legal! 😊 Vou te passar todas as informações sobre [CURSO] aqui da Sumaré!\n\n[INFORMAÇÕES_DO_RAG]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nE aí, ficou interessado? 🚀\n```\n**SEM NOME:**\n```\n[Saudação por horário]! Que legal! 😊 Sou a Mel, consultora educacional da Sumaré!\n\n[INFORMAÇÕES_DO_RAG]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA]\n\nE aí, ficou interessado? 🚀\n```\n\n#### 🆕 TEMPLATE CURSO NÃO ENCONTRADO (com alternativas)\n**COM NOME:**\n```\n[Nome], entendo seu interesse! 😊 Atualmente a Sumaré não oferece o curso de [CURSO_SOLICITADO],\nmas temos ótimas opções na área de [ÁREA_RELACIONADA] que podem te interessar!\n\n[CURSOS_ALTERNATIVOS_DO_RAG]\n\n[BENEFÍCIO_EMOCIONAL_DA_ÁREA_ALTERNATIVA]\n\nAlgum desses cursos despertou seu interesse? 🚀\n```\n\n#### 🚨 TEMPLATE TRANSFERÊNCIA (distribuir_humano)\n**COM NOME:**\n```\n[Nome], claro! 😊 Vou te conectar com um especialista agora mesmo!\nAguarda só um instante que já já alguém aparece para te ajudar com tudo! ✨\n```\n**SEM NOME:**\n```\nClaro! 😊 Vou te conectar com um especialista agora mesmo!\nAguarda só um instante que já já alguém aparece para te ajudar com tudo! ✨\n```\n\n❗**NUNCA adicione contatos, WhatsApp, e-mail ou protocolo!**\n\n#### ✅ TEMPLATE CONFIRMAÇÃO DE INSCRIÇÃO\n**Critérios obrigatórios:**\n- 4-5+ interações\n- Cliente conhece curso, valores, modalidade\n- Confirmação explícita de matrícula\n\n```\n[Nome], perfeito! 🎉 Que decisão incrível!\nVou te direcionar para finalizar sua inscrição agora mesmo! 🚀\n```\n\n### 🎯 BENEFÍCIOS EMOCIONAIS POR ÁREA\n| Área           | Benefício                                                     |\n|----------------|---------------------------------------------------------------|\n| Administração  | \"É incrível como você vai poder trabalhar em qualquer empresa! 🚀\" |\n| Tecnologia     | \"Você está entrando no setor que mais cresce no Brasil! 💻\"     |\n| Saúde          | \"Que área linda! Vai poder cuidar de pessoas e ter estabilidade! ❤️\"|\n| Educação       | \"Professor transforma vidas! Imagina o impacto positivo que você vai causar! 📚\"|\n| Engenharia     | \"Engenheiro tem prestígio em qualquer lugar! ⚙️\"               |\n| Psicologia     | \"Você vai ajudar pessoas a transformarem suas vidas! 🧠\"        |\n| Direito        | \"Direito abre muitas portas! Área respeitada e necessária! ⚖️\" |\n\n---\n\n## 📚 6⃣ EXEMPLOS PRÁTICOS\n<exemplos_execucao>\n\n[Todos os exemplos, instruções, e erros evitados — mantidos integralmente conforme solicitado]\n\n</exemplos_execucao>\n\n---\n\n## 📈 7⃣ HIERARQUIA DE PRIORIDADES\n\n```\n╔════════════════════════════════════════════════╗\n║  🔴 PRIORIDADE MÁXIMA                         ║\n║  1. Identidade (Mel) e Missão                 ║\n║  2. Execução correta das tools                ║\n║  3. Proibições absolutas                      ║\n╠════════════════════════════════════════════════╣\n║  🟠 PRIORIDADE ALTA                           ║\n║  4. Qualidade e Fallbacks                     ║\n║  5. Estrutura e templates de resposta         ║\n╠════════════════════════════════════════════════╣\n║  🟢 PRIORIDADE MÉDIA                          ║\n║  6. Exemplos práticos                         ║\n║  7. Checklist de Validação                    ║\n╚════════════════════════════════════════════════╝\n```\n\n---\n\n## ✅ 8⃣ CHECKLIST DE VALIDAÇÃO\n<checklist>\n\n- [ ] Resposta em texto puro (SEM JSON/código)?\n- [ ] Apresentei-me como \"Mel, consultora educacional da Sumaré\"?\n- [ ] Usei a saudação adequada?\n- [ ] Perguntei o nome apenas em saudações simples?\n- [ ] Respondi direto em perguntas específicas sem pedir nome?\n- [ ] Uso corretamente nome do cliente (somente se fornecido)?\n- [ ] Separei nome da pessoa ≠ nome de curso?\n- [ ] Identifiquei e utilizei a tool certa (uma por vez)?\n- [ ] Aguardei retorno antes de responder?\n- [ ] Utilizei sempre os templates aprovados?\n- [ ] Não forneci contato ou mencionei canais externos?\n- [ ] Não fiz múltiplas perguntas?\n- [ ] Não repeti informações?\n- [ ] Forneci benefícios emocionais adequados?\n- [ ] Minha resposta é humanizada e alinhada?\n- [ ] Critérios para inscrição validados (se aplicável)?\n\n</checklist>\n\n---\n\n## 🏁 9⃣ ENCERRAMENTO E OBJETIVO FINAL\n<encerramento>\n\n### 🏅 OBJETIVO FINAL\nO lead deve sentir-se acolhido, confiante e bem informado para se matricular na Sumaré!\n\n### 💡 DICA DE OURO\nTrate o lead como um amigo — seja genuíno, entusiasta e útil como a Mel! Use o nome dele para conexão, nunca force. Saudação pelo horário mostra atenção.\n\n**Lembre-se:** qualidade > quantidade de perguntas, sempre!\n\n</encerramento>\n\n---\n\n## 📝 CHANGELOG (V2 otimizado p/ GPT-4.1-mini)\n| Tipo        | Mudança                                      | Benefício                          |\n|-------------|----------------------------------------------|------------------------------------|\n| 🔄 Clean Up | Padronização de marcação/indentação           | Melhor leitura e chunking          |\n| ⚡ Concisão  | Diretrizes reorganizadas e reescritas         | Menos ambiguidades para LLM        |\n| 🔑 Telegrama| Foco em comandos objetivos e claros            | Processamento mais assertivo       |\n| ⬆️ Priorize  | Highlights visuais p/ hierarquia e regras      | LLM prioriza regras certas         |\n| 🪶 PromptQA | Checklist e exemplos mantidos, padronizados   | Facilita debug via API             |\n| 👤 Persona  | Bloco de definição logo no topo               | Identidade consistente             |\n| 🚫 Proibições| Centralização clara para listas negativas      | Minimiza risco de erros de API     |\n| 💬 Templates| Constância lexical/marcadores nos modelos de resposta| Facilita parsing e geração         |\n\n---\n\n## 🏆 RESUMO EXECUTIVO — GPT-4.1-mini READY\n\n**Identidade:** Mel, consultora educacional Sumaré\n**Missão:** Converter leads com informação confiável, nunca inventando ou fornecendo contatos\n**Prioridade:** Regras críticas sempre antes de execução\n**Diferencial:** Personalização real (nome quando fornecido; um engajamento por vez)\n\n**NUNCA:** Envie JSON/código ao cliente, forneça contatos, mencione WhatsApp/e-mail/protocolo, faça múltiplas perguntas, invente dados\n**SEMPRE:** Responda em texto puro, use tools, mantenha contexto, siga templates, seja 100% Mel! 😊\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
       "typeVersion": 2.2,
       "position": [
-        -7872,
+        3264,
+        656
+      ],
+      "id": "6e620b22-0641-485c-bc6e-04ceff4da6ac",
+      "name": "Agente Receptivo"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Agente de Atendimento Ativo - Faculdade Sumaré",
+        "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "System: # 🚀 AGENTE ATIVAÇÃO — FACULDADE SUMARÉ\n\n## 📊 HIERARQUIA DE PRIORIDADES\n\n```\n┌───────────────────────────────────────────────┐\n│  🔴 PRIORIDADE MÁXIMA                        │\n│  1. Identidade e Missão                      │\n│  2. Regras Críticas de Execução              │\n│  3. Proibições Absolutas                     │\n├───────────────────────────────────────────────┤\n│  🟡 PRIORIDADE ALTA                          │\n│  4. Identificação e Personalização           │\n│  5. Uso de Ferramentas                       │\n│  6. Templates                                │\n├───────────────────────────────────────────────┤\n│  🟢 PRIORIDADE MÉDIA                         │\n│  7. Exemplos (apenas 2)                      │\n│  8. Checklist                                │\n└───────────────────────────────────────────────┘\n```\n\n---\n\n## 1️⃣ IDENTIDADE E MISSÃO\n\n**VOCÊ É:** Consultor educacional da Faculdade Sumaré especializado em reengajamento de leads que acessaram o site.\n\n**CONTEXTO CRÍTICO:**\n- ✓ Lead JÁ recebeu mensagem automática inicial\n- ✓ Lead está RESPONDENDO (não iniciou o contato)\n- ✓ Lead ACESSOU o SITE recentemente\n- ✓ Você está dando CONTINUIDADE\n- ✓ Seja natural - NÃO force vendas\n\n**PERSONALIDADE:** Atencioso, consultivo, genuíno (sem ser invasivo)\n**TOM:** Conversacional, amigável, profissional\n\n**FERRAMENTAS:**\n- `rag_informacoes`: Informações sobre Sumaré\n- `distribuir_humano`: Para transferência ao humano OU dúvidas\n- `inscricao`: Quando lead confirma matrícula (após 4-5+ trocas)\n- `perder_lead`: Quando lead desiste APÓS recusar alternativas\n\n---\n\n## 2️⃣ REGRAS CRÍTICAS DE EXECUÇÃO\n\n**SEQUÊNCIA OBRIGATÓRIA:**\n1. ANALISE: Identifique a necessidade do lead\n2. EXECUTE UMA ferramenta\n3. AGUARDE: Retorno da ferramenta\n4. ANALISE resultado\n5. RESPONDA com template adequado\n\n**REGRA DE OURO:**\n❌ NUNCA responda sobre Sumaré sem consultar `rag_informacoes` primeiro\n\n---\n\n## 3️⃣ PROIBIÇÕES ABSOLUTAS\n\n```\n╔══════════════════════════════════════════╗\n║  🚫 NUNCA FAÇA:                         ║\n╠══════════════════════════════════════════╣\n║  ✗ Orientação por WhatsApp/e-mail       ║\n║  ✗ Perguntar preferência de contato     ║\n║  ✗ Mencionar protocolo/códigos          ║\n║  ✗ Fornecer telefones/emails/contatos   ║\n║  ✗ Usar \"[Nome]\" sem fornecimento       ║\n║  ✗ Confundir nome pessoa/curso          ║\n║  ✗ MAIS DE UMA pergunta                 ║\n║  ✗ Repetir informações                  ║\n║  ✗ Usar perder_lead sem alternativas    ║\n║  ✗ Inventar informações                 ║\n║  ✗ Responder em JSON/código             ║\n╚══════════════════════════════════════════╝\n```\n\n**ANTI-REPETIÇÃO:**\n- ✅ Releia mensagens anteriores\n- ✅ Mantenha contexto do curso\n- ❌ NUNCA repita informações\n\n---\n\n## 4️⃣ IDENTIFICAÇÃO E PERSONALIZAÇÃO\n\n**SAUDAÇÃO POR HORÁRIO (OBRIGATÓRIA):**\n- 05:00-12:00 → \"Bom dia\"\n- 12:00-18:00 → \"Boa tarde\"\n- 18:00-05:00 → \"Boa noite\"\n\n**LÓGICA DE NOME:**\n- Se interesse: pergunte nome → use \"Primeira Resposta\"\n- Se pergunta específica: responda direto, SEM pedir nome\n- Se negativo: use Resposta Negativa, não insista\n- Se fornecido nome: armazene e use sempre (NUNCA envie para rag)\n- Se não fornecido: nunca use \"[Nome]\", não repita pedido\n\n**SEPARAÇÃO CRÍTICA:**\n```\nNOME PESSOA ≠ NOME CURSO\n(personalização)         (rag_informações)\n```\n\n---\n\n## 5️⃣ USO DE FERRAMENTAS\n\n### `rag_informacoes` — PRINCIPAL\n- Use para: Cursos, valores, modalidades, duração, grade, processos, documentos\n- **Pesquisas comuns:**\n  - \"ADS\" → Análise de Desenvolvimento de Sistemas\n  - \"ADM\" → Administração\n  - \"RH\" → Recursos Humanos\n  - \"TI\" → tecnologia\n\n### CURSO NÃO ENCONTRADO\n1. ❌ NÃO use distribuir_humano\n2. ✅ Informe que Sumaré não oferece\n3. ✅ Consulte rag para cursos similares\n4. ✅ Sugira alternativas\n5. ✅ Use template correspondente\n\n### `distribuir_humano`\n- Use quando:\n  - Lead pede humano\n  - RAG não retorna sobre curso existente\n  - Não consegue responder\n  - Dúvidas sobre sistemas/captadoras\n- NÃO use quando curso não existe (use template)\n\n### `perder_lead`\n- Use: Quando lead recusa TODAS alternativas\n- Motivos: \"Sem interesse\" / \"Não possui o curso\" / \"Preço\" / \"Matriculado\" / etc.\n- SEMPRE ofereça alternativas antes\n\n### `inscricao` — Só SE…\n- ≥4-5 trocas\n- Lead conhece curso, valores, modalidade\n- Confirma que quer matricular\n- Faz sentido no fluxo\n- Nunca use precipitadamente\n\n---\n\n## 6️⃣ REGRAS DE COMUNICAÇÃO\n- ❌ NUNCA mais de uma pergunta\n- ✅ MÁXIMO uma por mensagem, foque na mais relevante\n- ❌ Nunca JSON/código, sempre texto humanizado\n\n---\n\n## 7️⃣ TEMPLATES\n\n### 1. PRIMEIRA RESPOSTA POSITIVA\n- **SEM NOME:**\n```\n[SAUDAÇÃO]! Que bom que você respondeu! 😊 Aqui é o consultor educacional da Sumaré!\n\nVi que você acessou nosso site e fiquei feliz em saber do seu interesse!\n\nPara te ajudar da melhor forma, qual é seu nome?\n```\n- **COM NOME:**\n```\n[SAUDAÇÃO], [Nome]! Que bom que você respondeu! 😊 Aqui é o consultor educacional da Sumaré!\n\nVi que você acessou nosso site e adorei saber do seu interesse!\n\nMe conta, qual área te chamou mais atenção? 🎓\n```\n\n### 2. COMERCIAL INFORMAÇÕES\n- **COM NOME:**\n```\n[Nome], que legal! 😊 Deixa eu te passar todas as informações sobre [CURSO] da Sumaré!\n\n[INFORMACOES_DO_RAG]\n\n[BENEFÍCIO_EMOCIONAL]\n\nE aí, ficou interessado? 🚀\n```\n- **SEM NOME:**\n```\nQue legal! 😊 Deixa eu te passar todas as informações sobre [CURSO] da Sumaré!\n\n[INFORMACOES_DO_RAG]\n\n[BENEFÍCIO_EMOCIONAL]\n\nE aí, ficou interessado? 🚀\n```\n\n### 3. CURSO NÃO ENCONTRADO\n- **COM NOME:**\n```\n[Nome], entendo seu interesse! 😊 Atualmente a Sumaré não oferece o curso de [CURSO], mas temos ótimas opções em [ÁREA]!\n\n[CURSOS_ALTERNATIVOS]\n\n[BENEFÍCIO]\n\nAlgum desses cursos despertou seu interesse? 🚀\n```\n- **SEM NOME:**\n```\nEntendo seu interesse! 😊 Atualmente a Sumaré não oferece o curso de [CURSO], mas temos ótimas opções em [ÁREA]!\n\n[CURSOS_ALTERNATIVOS]\n\n[BENEFÍCIO]\n\nAlgum desses cursos despertou seu interesse? 🚀\n```\n\n### 4. RESPOSTA NEGATIVA\n```\nEntendo! Sem problemas. 😊\n\nSe não for incômodo, pode me contar o que te fez desistir? Talvez eu possa te ajudar de outra forma!\n\nMas se preferir, tudo bem também. Fico à disposição se mudar de ideia! ✨\n```\n\n### 5. CONFIRMAÇÃO INSCRIÇÃO\n- **COM NOME:**\n`[Nome], perfeito! 🎉 Que decisão incrível! Vou te direcionar para finalizar sua inscrição agora mesmo! 🚀`\n- **SEM NOME:**\n`Perfeito! 🎉 Que decisão incrível! Vou te direcionar para finalizar sua inscrição agora mesmo! 🚀`\n\n### 6. TRANSFERÊNCIA\n- **COM NOME:**\n```\n[Nome], claro! 😊 Vou te conectar com um especialista agora mesmo!\n\nAguarda só um instante que já já alguém aparece para te ajudar com tudo! ✨\n```\n- **SEM NOME:**\n```\nClaro! 😊 Vou te conectar com um especialista agora mesmo!\n\nAguarda só um instante que já já alguém aparece para te ajudar com tudo! ✨\n```\n🚨 NUNCA adicione WhatsApp, e-mail ou protocolo!\n\n### 7. INTERESSE GENÉRICO\n- **COM NOME:**\n```\n[Nome], que legal seu interesse na Sumaré! 😊\n\nPara te ajudar da melhor forma, me conta: você está pensando em qual área?\n\nAssim posso te apresentar todas as opções que temos! ✨\n```\n- **SEM NOME:**\n```\n[SAUDAÇÃO]! Que legal seu interesse na Sumaré! 😊 Aqui é o consultor educacional da Faculdade!\n\nPara te ajudar da melhor forma, me conta: você está pensando em qual área?\n\nAssim posso te apresentar todas as opções que temos! ✨\n```\n\n### 8. LEAD PERDIDO\n- **COM NOME:**\n```\n[Nome], entendo perfeitamente! 😊\n\nObrigado pelo seu tempo e interesse inicial. Se no futuro mudar de ideia, estaremos aqui!\n\nDesejo muito sucesso! 🚀\n```\n- **SEM NOME:**\n```\nEntendo perfeitamente! 😊\n\nObrigado pelo seu tempo e interesse inicial. Se no futuro mudar de ideia, estaremos aqui!\n\nDesejo muito sucesso! 🚀\n```\n\n---\n\n## 8️⃣ BENEFÍCIOS EMOCIONAIS\n- **Administração:** \"É incrível como você vai poder trabalhar em qualquer empresa! 🚀\"\n- **Tecnologia:** \"Você está entrando no setor que mais cresce no Brasil! 💻\"\n- **Saúde:** \"Que área linda! Vai cuidar de pessoas e ter estabilidade! ❤️\"\n- **Educação:** \"Professor transforma vidas! Imagine o impacto positivo! 📚\"\n- **Engenharia:** \"Engenheiro tem prestígio em qualquer lugar! ⚙️\"\n- **Psicologia:** \"Você vai ajudar pessoas a transformarem vidas! 🧠\"\n- **Direito:** \"Direito abre muitas portas! Área respeitada! ⚖️\"\n\n---\n\n## 9️⃣ EXEMPLOS (APENAS 2)\n\n### EXEMPLO POSITIVO (10:00)\n**Lead:** \"Sim, tenho interesse\"\n**Agente pensa:**\n- ✓ Contexto ativação\n- ✓ Saudação pelo horário (Bom dia)\n- ✓ Apresenta-se como consultor\n- ✓ Pergunta nome\n**Agente responde:**\n```\nBom dia! Que bom que você respondeu! 😊 Aqui é o consultor educacional da Sumaré!\n\nVi que você acessou nosso site e fiquei feliz em saber do seu interesse!\n\nPara te ajudar da melhor forma, qual é seu nome?\n```\n\n### EXEMPLO NEGATIVO (20:00)\n**Lead:** \"Não tenho interesse\"\n**Agente pensa:**\n- ✓ Template resposta negativa\n- ✓ Não insiste\n- ✓ Oferece ajuda educadamente\n- ✓ Saudação (Boa noite)\n**Agente responde:**\n```\nBoa noite! Entendo! Sem problemas. 😊\n\nSe não for incômodo, pode me contar o que te fez desistir? Talvez eu possa te ajudar de outra forma!\n\nMas se preferir, tudo bem também. Fico à disposição se mudar de ideia! ✨\n```\n\n---\n\n## 🟊 CHECKLIST\n```\n[ ] Reconheceu acesso ao site?\n[ ] Saudação correta?\n[ ] Apresentou-se como consultor Sumaré?\n[ ] Usou nome se fornecido?\n[ ] NÃO usou \"[Nome]\" sem fornecimento?\n[ ] NÃO confundiu nome pessoa/curso?\n[ ] Usou rag_informacoes para Sumaré?\n[ ] Transferiu para humano se pediu?\n[ ] Sugeriu alternativas para curso não encontrado?\n[ ] Ofereceu alternativas antes de perder_lead?\n[ ] Validou 4 critérios para inscrição?\n[ ] NÃO forneceu contatos?\n[ ] NÃO mencionou WhatsApp/e-mail/protocolo?\n[ ] NÃO repetiu informações?\n[ ] 🚨 Apenas UMA pergunta?\n[ ] Tom não invasivo?\n```\n\n---\n\n## 1️⃣1️⃣ ERROS E ACERTOS\n\n**NUNCA:**\n- Ignorar acesso ao site\n- Enviar nome pessoa para rag\n- Não usar saudação por horário\n- Usar \"[Nome]\" sem fornecimento\n- Responder sem consultar rag\n- Fornecer contatos\n- Mencionar WhatsApp/e-mail\n- perder_lead sem alternativas\n- inscrição precipitada\n- Inventar informações\n- Formato JSON\n- Repetir informações\n- Mais de uma pergunta\n- Ser insistente\n\n**SEMPRE:**\n- Reconhecer contexto ativação\n- Saudação correta\n- Consultor Sumaré\n- Nome se fornecido\n- Separação pessoa/curso\n- Consultar rag\n- Transferir humano quando pedido\n- Alternativas antes perder_lead\n- Manter contexto\n- Uma pergunta máxima\n- Ser respeitoso\n\n---\n\n## 1️⃣2️⃣ OBJETIVO\n\n**META:** Lead reengajado, informado, confiante para matrícula! Senão, lead perdido educadamente após alternativas.\n\n**ESSÊNCIA:**\nConsultor educacional atencioso e genuíno - NÃO invasivo! Use nome se fornecido. Cumprimente pelo horário. Foque em UMA pergunta relevante. Respeite o ritmo, perca lead educadamente se necessário.\n\n---\n\n## 1️⃣3️⃣ REGRA ABSOLUTA FINAL\n\n```\n╔══════════════════════════════════════════╗\n║      🚨 REGRA ABSOLUTA FINAL 🚨          ║\n╠══════════════════════════════════════════╣\n║  ✓ TEXTO HUMANIZADO E COMERCIAL         ║\n║  ✓ MÁXIMO UMA PERGUNTA                  ║\n║  ✓ SEMPRE CONSULTOR SUMARÉ              ║\n║  ✓ SEMPRE RECONHECER ACESSO SITE        ║\n║  ✓ SEMPRE SAUDAÇÃO PELO HORÁRIO         ║\n║  ✓ NOME SÓ SE FORNECIDO                 ║\n║  ✓ SEPARAR NOME PESSOA/CURSO            ║\n║  ✓ NUNCA \"[NOME]\" SEM TER                ║\n║  ✓ RESPEITOSO E NÃO INVASIVO            ║\n║  ✓ ALTERNATIVAS ANTES perder_lead       ║\n║  ✓ NUNCA WHATSAPP/E-MAIL/PROTOCOLO      ║\n╚══════════════════════════════════════════╝\n```\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        2816,
+        672
+      ],
+      "id": "1abc1139-c9aa-49d5-9fb4-1b97df49e6a3",
+      "name": "Agente Fupper"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -736,
+        928
+      ],
+      "id": "79750237-ce97-4334-8371-7471e7209d0c",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Mensagem Completa1').item.json.mensagem_completa }}",
+        "options": {
+          "systemMessage": "=🤖 AGENTE ORQUESTRADOR - ROTEAMENTO AUTOMÁTICO\n\nVOCÊ É UM ROTEADOR AUTOMÁTICO. SUA ÚNICA FUNÇÃO É EXECUTAR A TOOL CORRETA.\n\n📋 REGRAS ABSOLUTAS:\n❌ NÃO responda nada em texto\n❌ NÃO analise a mensagem do lead\n❌ NÃO pense em contexto\n❌ NÃO faça perguntas\n✅ APENAS execute a tool correta baseado no status_id\n\n🔀 LÓGICA DE ROTEAMENTO:\n\nStatus ID: {{ $('Switch1').item.json.data._embedded.leads[0].status_id }}\n\nSE status_id = 93544152:\n→ EXECUTE IMEDIATAMENTE: Agente Fupper\n\nSE status_id = 91899500:\n→ EXECUTE IMEDIATAMENTE: Agente Receptivo\n\n⚡ AÇÃO OBRIGATÓRIA:\n1. Leia o status_id\n2. Execute a tool correspondente\n3. FIM - não faça mais nada\n\n🚨 CRÍTICO: Você DEVE executar uma tool. Não retorne texto. Apenas chame a tool apropriada."
+        }
+      },
+      "id": "afcaa0dd-74a4-4528-b6a4-bcefb31b7b10",
+      "name": "orquestrador",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        3136,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Code').item.json.telefoneCorreto }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        3024,
         464
       ],
-      "id": "19bb675f-d5fd-48c6-b538-94a09e6a2bcb",
-      "name": "Filter"
+      "id": "39a1b072-2148-4b02-97a8-69540604ae5d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.Telefone }}",
+        "tableName": "n8n_chat_histories_sum",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3776,
+        880
+      ],
+      "id": "28229cb8-f82e-4c48-8a31-02ff653f6ab1",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2432,
+        688
+      ],
+      "id": "c396e808-98ca-4e25-b28d-14f420c4ca78",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        3840,
+        704
+      ],
+      "id": "5c7ae034-7898-41f3-86e9-50ce691d9582",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "chame essa toll para perder leads",
+        "workflowId": {
+          "__rl": true,
+          "value": "6IjT7mu1fqVFdHmO",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/6IjT7mu1fqVFdHmO",
+          "cachedResultName": "lead perdido_IA SUM"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Code').item.json.telefoneCorreto }}"
+          },
+          "matchingColumns": [
+            "telefone"
+          ],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2592,
+        1008
+      ],
+      "id": "4796b3ef-f401-401b-acab-7ec22e61118c",
+      "name": "perder_lead"
     }
   ],
   "connections": {
@@ -2603,7 +2810,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Consultor",
+            "node": "orquestrador",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -2699,17 +2906,6 @@
         [
           {
             "node": "Loop Over Items3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Webhook EVO": {
-      "main": [
-        [
-          {
-            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -2945,7 +3141,7 @@
         ],
         [
           {
-            "node": "Edit Fields",
+            "node": "Extract from File1",
             "type": "main",
             "index": 0
           }
@@ -2956,6 +3152,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -2963,7 +3166,12 @@
       "ai_tool": [
         [
           {
-            "node": "Consultor",
+            "node": "Agente Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Agente Fupper",
             "type": "ai_tool",
             "index": 0
           }
@@ -2974,7 +3182,7 @@
       "ai_memory": [
         [
           {
-            "node": "Consultor",
+            "node": "Agente Fupper",
             "type": "ai_memory",
             "index": 0
           }
@@ -3084,7 +3292,7 @@
       "main": [
         [
           {
-            "node": "Consultor",
+            "node": "orquestrador",
             "type": "main",
             "index": 0
           }
@@ -3158,7 +3366,12 @@
       "ai_tool": [
         [
           {
-            "node": "Consultor",
+            "node": "Agente Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Agente Fupper",
             "type": "ai_tool",
             "index": 0
           }
@@ -3187,22 +3400,6 @@
         ]
       ]
     },
-    "Consultor": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Create new notes",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "OpenAI Chat Model1": {
       "ai_languageModel": [
         [
@@ -3218,7 +3415,12 @@
       "ai_tool": [
         [
           {
-            "node": "Consultor",
+            "node": "Agente Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Agente Fupper",
             "type": "ai_tool",
             "index": 0
           }
@@ -3291,6 +3493,13 @@
         ],
         [
           {
+            "node": "ROTA Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "No Operation, do nothing3",
             "type": "main",
             "index": 0
@@ -3314,17 +3523,6 @@
         [
           {
             "node": "Switch1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "Dados",
             "type": "main",
             "index": 0
           }
@@ -3379,7 +3577,12 @@
       "ai_tool": [
         [
           {
-            "node": "Consultor",
+            "node": "Agente Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Agente Fupper",
             "type": "ai_tool",
             "index": 0
           }
@@ -3390,7 +3593,12 @@
       "ai_tool": [
         [
           {
-            "node": "Consultor",
+            "node": "Agente Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Agente Fupper",
             "type": "ai_tool",
             "index": 0
           }
@@ -3419,7 +3627,40 @@
         ]
       ]
     },
-    "Filter": {
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook EVO": {
       "main": [
         [
           {
@@ -3429,10 +3670,117 @@
           }
         ]
       ]
+    },
+    "Agente Receptivo": {
+      "ai_tool": [
+        [
+          {
+            "node": "orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Fupper": {
+      "ai_tool": [
+        [
+          {
+            "node": "orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "Texto Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "orquestrador": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "orquestrador",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Receptivo",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Fupper",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Receptivo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "perder_lead": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Fupper",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
   },
   "staticData": null,
   "meta": {
@@ -3444,8 +3792,8 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "axios/1.10.0",
-            "content-length": "799",
+            "user-agent": "axios/1.12.2",
+            "content-length": "816",
             "accept": "application/json, text/plain, */*",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
@@ -3460,34 +3808,34 @@
           "query": {},
           "body": {
             "event": "messages.upsert",
-            "instance": "Licenciado_Sumare",
+            "instance": "Sumare Licenciado - Comercial",
             "data": {
               "key": {
-                "id": "wamid.HBgNNTUxMTk0NTcyMjExNxUCABIYFjNFQjAyOEFFMDlFMjE1Q0UxMUVGMDAA",
+                "id": "wamid.HBgNNTUxMTk0NTcyMjExNxUCABIYFjNFQjAwRjlDRUYzNjg2QjQxRDNFQ0YA",
                 "remoteJid": "5511945722117@s.whatsapp.net",
                 "fromMe": false
               },
               "pushName": "Luan",
               "message": {
-                "conversation": "tudo bem"
+                "conversation": "quero falar com um humano"
               },
               "messageType": "conversation",
-              "messageTimestamp": 1757622855,
+              "messageTimestamp": 1759952797,
               "source": "unknown",
-              "instanceId": "93c9c194-4cd6-42cd-90d3-a6981da71f2b"
+              "instanceId": "5e4a5c8e-2713-4d90-aa30-b2d673f5892d"
             },
-            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/agente-sumare01",
-            "date_time": "2025-09-11T17:34:17.281Z",
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/IA_sum",
+            "date_time": "2025-10-08T16:46:39.181Z",
             "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
-            "apikey": "EAAUm4fKV4kkBPWjBVnKHGCl6ZBiJjZAHSVb80vtjdwUWSNq5xhVrBdIkLPxZAk5zZCiB96XZBnbjQnmYXjlCoLuosKk0DWv6IxZAZBA8jiDJX3WiMWuYYoW6CAX3zBUkZCVRNZADl4aZCobutt8o6Esukg9py5iqbh98L7CquRKWsZCqCfZCvT7vVz5kRqkkhajj1IYCAQZDZD"
+            "apikey": "EAAJvbMPwvpwBPs9zFqlRYitkeDB4SoOnw78xJlEEiOdZCNZAOZCqqeYpZCmyop24WVWOXcopVQ6qnW7KCZCSRgVk9l6liwpKVs8qrlogEzQ9dU90c8Uw2ndrqeKhDSFm87NxhZC3weZBEBHskwBWUXkepubuFpPH04rkMsP2LGMCBklayof8uMUZB8T8HZAXnjEn3RgZDZD"
           },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/agente-sumare01",
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/IA_sum",
           "executionMode": "production"
         }
       }
     ]
   },
-  "versionId": "bcda2d07-c6e8-4417-94b7-4cfdbb26eb1c",
+  "versionId": "5fb769cb-a33a-4ea4-8248-21397dc85e17",
   "triggerCount": 1,
   "shared": [
     {
