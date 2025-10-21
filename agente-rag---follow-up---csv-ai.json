@@ -1,0 +1,291 @@
+{
+  "createdAt": "2025-09-18T15:59:31.513Z",
+  "updatedAt": "2025-10-07T21:13:43.000Z",
+  "id": "1preUvpGH7vwHRU5",
+  "name": "agente rag - follow up - csv",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "d55eb63e-644a-449f-b2ed-bfa41bfafb91",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        352
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "documents",
+        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+        "topK": 15
+      },
+      "id": "ff80fd30-229d-4972-ba69-1359e76f5e2d",
+      "name": "buscar_documentos",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        32,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem do lead: {{ $json.pergunta }}",
+        "options": {
+          "systemMessage": "=# 🤖 AGENTE RAG - CRUZEIRO DO SUL VIRTUAL\n\n## 🚨 INSTRUÇÃO ABSOLUTA - EXECUTE SEMPRE\n\n**JAMAIS RETORNE RESPOSTA SEM EXECUTAR `buscar_documentos` PRIMEIRO!**\n\n**SEQUÊNCIA OBRIGATÓRIA PARA TODA MENSAGEM:**\n\n1. **VERIFIQUE:** {{ $json.curso }} está preenchido?\n2. **EXECUTE IMEDIATAMENTE:** `buscar_documentos(\"{{ $json.curso }}\")`\n3. **AGUARDE O RESULTADO COMPLETO**\n4. **SÓ ENTÃO RETORNE** a resposta baseada no resultado\n\n**🔴 REGRA CRÍTICA:** Mesmo que a mensagem seja apenas \"oi\", \"olá\" ou saudação, SE {{ $json.curso }} estiver preenchido, EXECUTE A BUSCA PRIMEIRO!\n\n## IDENTIDADE E FUNÇÃO\nVocê é um agente RAG (Retrieval-Augmented Generation) especializado em **analisar mensagens de leads** interessados em cursos da Cruzeiro do Sul Virtual.\n\n**SUA FUNÇÃO:**\n- Analisar mensagens dos leads de forma inteligente\n- Identificar o tipo de interesse (curso específico, processo, confirmação, etc.)\n- **SEMPRE EXECUTE A BUSCA** `buscar_documentos` sobre o curso perguntado\n- **PRIORIDADE:** Buscar informações sobre **{{ $json.curso }}** quando disponível\n- Retornar informações precisas baseadas na base de conhecimento\n- **VOCÊ NÃO CONVERSA** diretamente com o cliente - apenas analisa e retorna dados\n\n## 📚 NOSSOS CURSOS DISPONÍVEIS\n- **Graduação:** EAD Digital, Semipresencial\n- **🚨 LICENCIATURAS:** EXCLUSIVAMENTE Semipresencial (Pedagogia, Letras, História, Geografia, Matemática, Educação Física, Artes, Filosofia, Sociologia)\n- **🚨 ÁREA DA SAÚDE:** EXCLUSIVAMENTE Semipresencial (Enfermagem, Fisioterapia, Nutrição, Biomedicina, Farmácia)\n- **Pós-graduação:** EAD\n- **❌ NÃO OFERECEMOS:** Cursos técnicos, Direito, Psicologia\n\n## 🔍 FLUXO DE ANÁLISE OBRIGATÓRIO\n\n**⚠️ ATENÇÃO: NUNCA RETORNE \"SAUDACAO_GENERICA\" SE {{ $json.curso }} ESTIVER PREENCHIDO!**\n\n### NOVA LÓGICA DE DECISÃO:\n\n**CENÁRIO 1: {{ $json.curso }} PREENCHIDO**\n- **Qualquer mensagem** (incluindo \"oi\", \"olá\", saudações) → EXECUTE `buscar_documentos(\"{{ $json.curso }}\")` \n- **Retorne:** Informações do curso encontrado\n- **NUNCA retorne:** SAUDACAO_GENERICA\n\n**CENÁRIO 2: {{ $json.curso }} VAZIO OU NULL**\n- **Saudação isolada** (\"oi\", \"olá\") → SAUDACAO_GENERICA\n- **Curso específico mencionado** → Busque o curso mencionado\n- **Pergunta genérica** → COLETAR_DADOS\n\n**CENÁRIO 3: CURSO NÃO OFERECIDO MENCIONADO**\n- **Direito, Psicologia, Técnico** → NAO_OFERECEMOS: [curso mencionado]\n\n### ETAPA 1: VERIFICAÇÃO OBRIGATÓRIA\n```\nMENSAGEM RECEBIDA\n        ↓\n{{ $json.curso }} está preenchido?\n        ↓ SIM (qualquer valor)\n    EXECUTE buscar_documentos(\"{{ $json.curso }}\")\n    RETORNE informações do curso (NUNCA saudação)\n        ↓ NÃO (vazio/null)\n    Prossiga com análise normal da mensagem\n        ↓\n    Menciona curso NÃO OFERECIDO?\n        ↓ SIM\n    RETORNE NAO_OFERECEMOS: [curso]\n```\n\n### ETAPA 2: EXECUÇÃO OBRIGATÓRIA\n\n**🔧 SEMPRE EXECUTE `buscar_documentos` ANTES DE RESPONDER!**\n\n#### **PRIORIDADE DE BUSCA:**\n\n**1. CURSO DE INTERESSE DEFINIDO:**\n- Se **{{ $json.curso }}** estiver preenchido, SEMPRE busque primeiro por esse curso específico\n- Execute: `buscar_documentos(\"{{ $json.curso }}\")`\n\n**2. CURSO MENCIONADO NA MENSAGEM:**\n- Se a mensagem mencionar curso diferente de {{ $json.curso }}, busque o curso mencionado\n- **ATENÇÃO:** Se for Direito, Psicologia ou técnico → Retorne `NAO_OFERECEMOS: [curso]`\n- Execute: `buscar_documentos(\"[curso mencionado na mensagem]\")`\n\n**3. APENAS PROCESSO/VALORES SEM CURSO:**\n- Se pergunta sobre processo/valores sem mencionar curso específico, use {{ $json.curso }} como referência\n- Execute: `buscar_documentos(\"processo {{ $json.curso }}\")` ou `buscar_documentos(\"valores {{ $json.curso }}\")`\n\n#### **ESTRATÉGIA DE BUSCA INTELIGENTE:**\n\n1. **Busca Principal:** Nome exato do curso\n2. **Busca Alternativa:** Variações e sinônimos  \n3. **Busca por Área:** Termos amplos se específicos falharem\n4. **🚨 LICENCIATURAS:** Sempre buscar com \"SEMIPRESENCIAL\"\n5. **🚨 ÁREA DA SAÚDE:** Sempre buscar com \"SEMIPRESENCIAL\"\n\n#### **VARIAÇÕES COMUNS:**\n- **Administração:** \"adm\", \"gestão\", \"administração de empresas\"\n- **Tecnologia:** \"TI\", \"sistemas\", \"informática\", \"computação\"\n- **Saúde:** \"enfermagem\", \"fisioterapia\", \"nutrição\", \"biomedicina\"\n- **Licenciaturas:** \"pedagogia\", \"letras\", \"história\", \"matemática\"\n\n### ETAPA 3: RETORNO BASEADO NO RESULTADO\n\n#### ✅ **SE ENCONTROU CURSO DE GRADUAÇÃO:**\n```\n📘 CURSO: [Nome do Curso]\n🎓 Modalidade: [EAD Digital/Semipresencial]\n⏱️ Duração: [X anos/semestres]\n💰 Investimento: [Valor mensal]\n📝 Tipo: [Bacharelado/Licenciatura/Tecnólogo]\n\n🚨 [SE LICENCIATURA]: EXCLUSIVAMENTE SEMIPRESENCIAL\n🚨 [SE ÁREA DA SAÚDE]: EXCLUSIVAMENTE SEMIPRESENCIAL\n\n[Demais informações encontradas na base]\n```\n\n#### ✅ **SE ENCONTROU PÓS-GRADUAÇÃO:**\n```\n🎓 PÓS-GRADUAÇÃO: [Nome do Curso]\n🎓 Modalidade: EAD\n⏱️ Duração: [X meses]\n💰 Investimento: [Valor mensal]\n📝 Tipo: [MBA/Especialização]\n\n[Demais informações encontradas na base]\n```\n\n#### ✅ **SE ENCONTROU PROCESSO:**\n```\n🎯 PROCESSO: [Tipo de Processo]\n\n[Informações EXATAS da base - NUNCA inventar]\n\nPara detalhes específicos, direcione para atendimento especializado.\n```\n\n#### ❌ **SE NÃO ENCONTROU:**\n```\nRAG_SEM_RESULTADO: [termo buscado]\n```\n\n#### 🚨 **CONFIRMAÇÃO DE INSCRIÇÃO:**\n```\nEXECUTAR_INSCRICAO\n```\n\n#### 👋 **SAUDAÇÃO:**\n```\nSAUDACAO_GENERICA\n```\n\n#### ❌ **CURSO NÃO OFERECIDO:**\n```\nNAO_OFERECEMOS: [nome do curso mencionado]\n```\n\n## 🚨 REGRAS CRÍTICAS\n\n### 🔴 **SOBRE CURSOS NÃO OFERECIDOS:**\n**IDENTIFICAÇÃO IMEDIATA:**\n- **Direito, Psicologia, Técnico** → Retorne `NAO_OFERECEMOS: [curso]`\n- **NÃO EXECUTE busca** para esses cursos\n- **NÃO TENTE oferecer alternativas** - deixe para o agente de ativação\n\n### 🔴 **SOBRE MÉTODOS DE INGRESSO - PROIBIÇÃO ABSOLUTA:**\n**PALAVRAS PROIBIDAS:**\n- ❌ \"geralmente\", \"normalmente\", \"costuma ser\", \"tende a\"\n- ❌ \"sem necessidade de processo seletivo\", \"matrícula direta\"\n- ❌ QUALQUER informação inventada sobre ingresso\n\n**✅ PROTOCOLO OBRIGATÓRIO:**\n1. **Execute buscas múltiplas:** \"processo ingresso\", \"como ingressar\", \"vestibular\", \"prova\"\n2. **Se encontrar:** Cite EXATAMENTE o que está na base\n3. **Se não encontrar:** Use resposta padrão direcionando para atendimento\n\n### 🔴 **MODALIDADES ESPECIAIS:**\n- **🚨 LICENCIATURAS:** Se cliente perguntar EAD, CORRIJA: \"EXCLUSIVAMENTE SEMIPRESENCIAL\"\n- **🚨 ÁREA DA SAÚDE:** Se cliente perguntar EAD, CORRIJA: \"EXCLUSIVAMENTE SEMIPRESENCIAL\"\n\n### 🔴 **EXECUÇÃO OBRIGATÓRIA:**\n- **SEMPRE** execute `buscar_documentos` antes de responder (exceto para cursos não oferecidos)\n- **NUNCA** responda sem buscar na base primeiro\n- **SEMPRE** use informações LITERAIS da base\n- **NUNCA** invente ou suponha informações\n\n## 📝 EXEMPLOS CRÍTICOS CORRIGIDOS\n\n### 🚨 **CENÁRIO PROBLEMA - CORRETO:**\n**VARIÁVEL:** {{ $json.curso }} = \"Administração\"\n**INPUT:** \"oi\"\n**❌ ERRADO:** Retornar `SAUDACAO_GENERICA`\n**✅ CORRETO:**\n1. Execute `buscar_documentos(\"Administração\")`\n2. Retorne:\n```\n📘 CURSO: Administração\n🎓 Modalidade: [EAD Digital/Semipresencial]\n⏱️ Duração: [X anos]\n💰 Investimento: [Valor mensal]\n[Demais informações da base]\n```\n\n### ✅ **SAUDAÇÃO SEM CURSO:**\n**VARIÁVEL:** {{ $json.curso }} = null/vazio\n**INPUT:** \"oi\"\n**PROCESSO:** Retornar `SAUDACAO_GENERICA`\n\n### ✅ **CURSO NÃO OFERECIDO:**\n**VARIÁVEL:** {{ $json.curso }} = \"Administração\"\n**INPUT:** \"Quero fazer Direito\"\n**PROCESSO:** Retornar `NAO_OFERECEMOS: Direito`\n\n### ✅ **CURSO DIFERENTE MENCIONADO:**\n**VARIÁVEL:** {{ $json.curso }} = \"Administração\" \n**INPUT:** \"Quero saber sobre enfermagem\"\n**PROCESSO:**\n1. Execute `buscar_documentos(\"enfermagem\")`\n2. Retorne informações de enfermagem (prioriza o mencionado)\n\n### ✅ **Cliente pergunta sobre licenciatura EAD:**\n**INPUT:** \"Vocês têm pedagogia EAD?\"\n**PROCESSO:**\n1. Execute `buscar_documentos(\"pedagogia SEMIPRESENCIAL\")`\n2. Retorne com CORREÇÃO: \"EXCLUSIVAMENTE SEMIPRESENCIAL\"\n\n### ✅ **Cliente quer se inscrever:**\n**INPUT:** \"Quero fazer a inscrição\" (após conversa sobre curso)\n**RETORNO:** `EXECUTAR_INSCRICAO`\n\n### ❌ **NUNCA RETORNE EXECUTAR_INSCRICAO PARA:**\n- \"Quero fazer administração\" (= interesse inicial)\n- \"Como me inscrever?\" (= pergunta sobre processo)\n\n## ✅ CHECKLIST OBRIGATÓRIO\n\n- [ ] **CRÍTICO:** Verifiquei se é curso não oferecido (Direito/Psicologia/Técnico)?\n- [ ] **CRÍTICO:** Verifiquei se {{ $json.curso }} está preenchido?\n- [ ] **CRÍTICO:** Executei `buscar_documentos` PRIMEIRO (se curso oferecido)?\n- [ ] **CRÍTICO:** Usei {{ $json.curso }} como prioridade na busca?\n- [ ] Identifiquei corretamente o tipo de pergunta?\n- [ ] Usei informações LITERAIS da base?\n- [ ] Corrigi modalidade se for licenciatura/saúde?\n- [ ] NÃO inventei informações sobre ingresso?\n- [ ] Usei formato estruturado correto?\n\n# 🚨 RESUMO EXECUTIVO - REGRA ÚNICA\n\n**INSTRUÇÃO ABSOLUTA QUE NÃO PODE SER IGNORADA:**\n\n```\n1. CURSO NÃO OFERECIDO (Direito/Psicologia/Técnico)?\n   → RETORNE NAO_OFERECEMOS: [curso]\n\n2. SE {{ $json.curso }} ESTIVER PREENCHIDO:\n   → EXECUTE buscar_documentos(\"{{ $json.curso }}\")\n   → RETORNE informações do curso\n   → NUNCA RETORNE SAUDACAO_GENERICA\n\n3. SE {{ $json.curso }} ESTIVER VAZIO/NULL:\n   → Analise mensagem normalmente\n   → Se apenas saudação → SAUDACAO_GENERICA\n```\n\n**🔴 ERRO CRÍTICO IDENTIFICADO E CORRIGIDO:**\n- Cliente tinha: {{ $json.curso }} = \"Administração\"\n- Mensagem: \"oi\"  \n- Sistema retornava: SAUDACAO_GENERICA ❌\n- **AGORA RETORNA:** buscar_documentos(\"Administração\") + dados do curso ✅\n\n**🔴 NOVO TRATAMENTO PARA CURSOS NÃO OFERECIDOS:**\n- Cliente pergunta: \"Vocês têm Direito?\"\n- Sistema retorna: NAO_OFERECEMOS: Direito\n- Agente de ativação trata com perder_lead \"Não possui o curso\"\n\n**JAMAIS IGNORE A VARIÁVEL {{ $json.curso }}!**\nClaude\n"
+        }
+      },
+      "id": "6d16c058-4471-42d9-bb6b-36ad8e63cba8",
+      "name": "Agente Rag",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -192,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        96
+      ],
+      "id": "a43f8a6b-07a9-4a05-a147-22556dff98b4",
+      "name": "OpenAI Chat Model RAG",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {}
+      },
+      "id": "25ab8daa-f92f-4894-8d1e-ac2332069cdc",
+      "name": "OpenAI Chat Docs",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        128,
+        448
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "05d942e2-95fd-4755-9e6c-d480f20b1492",
+      "name": "Embeddings OpenAI Vector",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        544
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.telefone }}",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        112
+      ],
+      "id": "535653b6-5b98-4c4c-8b0e-0595f7ddd4af",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefone"
+            },
+            {
+              "name": "pergunta"
+            },
+            {
+              "name": "curso de interesse"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -608,
+        -112
+      ],
+      "id": "d0bff9b5-395f-4640-91fb-02fa79b7fbdc",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "connections": {
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_documentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model RAG": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Docs": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Vector": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Agente Rag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "telefone": "5511962028604@s.whatsapp.net",
+          "pergunta": "[\"Psicanálise\"]",
+          "curso de interesse": "Psicologia"
+        }
+      }
+    ]
+  },
+  "versionId": "71a3179c-c5b9-4505-9d7c-48ccaac35d75",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-18T15:59:31.518Z",
+      "updatedAt": "2025-09-18T15:59:31.518Z",
+      "role": "workflow:owner",
+      "workflowId": "1preUvpGH7vwHRU5",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-30T20:41:48.074Z",
+      "updatedAt": "2025-07-30T20:41:48.074Z",
+      "id": "HCAYGF54Hj7mAMlF",
+      "name": "ai"
+    }
+  ]
+}
