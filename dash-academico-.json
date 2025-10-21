@@ -1,0 +1,1647 @@
+{
+  "createdAt": "2025-08-13T21:14:23.506Z",
+  "updatedAt": "2025-10-17T15:48:57.000Z",
+  "id": "II43T9a4h9ftQjga",
+  "name": "Dash Academico",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98e4058d-5525-4135-9d03-04a14b8afc93",
+              "name": "rgm",
+              "value": "={{ $json.rgm }}",
+              "type": "string"
+            },
+            {
+              "id": "2de7efcf-afbd-4531-abc2-fd19c4142617",
+              "name": "=ciclo",
+              "value": "={{ $json.ciclo }}",
+              "type": "string"
+            },
+            {
+              "id": "6e2507bb-143c-41b5-bc60-d434f4dd32d8",
+              "name": "polo",
+              "value": "={{ $json.polo }}",
+              "type": "string"
+            },
+            {
+              "id": "02c01bd1-ce6f-401f-ae8e-1f2a26a2b7fc",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "5ed525e8-d331-41f3-8f7d-bc84c4689427",
+              "name": "cpf",
+              "value": "={{ $json.cpf }}",
+              "type": "string"
+            },
+            {
+              "id": "faba3a19-fb7f-4095-bd2b-4b7da60bbcf6",
+              "name": "curso",
+              "value": "={{ $json.curso }}",
+              "type": "string"
+            },
+            {
+              "id": "c0c1be6e-3cb5-4156-85c2-84ec6467e62e",
+              "name": "serie",
+              "value": "={{ $json.serie }}",
+              "type": "number"
+            },
+            {
+              "id": "b13a779c-0f32-4848-b34c-9276a10b41af",
+              "name": "data_matricula",
+              "value": "={{ $json.data_matricula }}",
+              "type": "string"
+            },
+            {
+              "id": "f6a72d2f-4359-41c2-abe1-19e9e61f7748",
+              "name": "tipo_matricula",
+              "value": "={{ $json.tipo_matricula }}",
+              "type": "string"
+            },
+            {
+              "id": "7d79b465-59d0-41e7-85c5-60e400140657",
+              "name": "situacao",
+              "value": "={{ $json.situacao }}",
+              "type": "string"
+            },
+            {
+              "id": "4d759bf3-8f1e-427e-83dc-e9cbff721817",
+              "name": "fone_cel",
+              "value": "={{ $json.fone_cel }}",
+              "type": "string"
+            },
+            {
+              "id": "f0d07713-2d41-4b27-9500-99763b4f3fc1",
+              "name": "email_ad",
+              "value": "={{ $json.email_ad }}",
+              "type": "string"
+            },
+            {
+              "id": "e4ed075d-1fb2-41b6-b9be-0fe62288b439",
+              "name": "grau",
+              "value": "={{ $json.grau }}",
+              "type": "string"
+            },
+            {
+              "id": "a66a4f20-b509-40cb-a47b-b836f274f006",
+              "name": "modalidade",
+              "value": "={{ $json.modalidade }}",
+              "type": "string"
+            },
+            {
+              "id": "53fcce7f-405b-4f9e-8b0c-7c4b3ed4223b",
+              "name": "formacao",
+              "value": "={{ $json.formacao }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1168,
+        112
+      ],
+      "id": "6ac604d5-7600-4eb4-ac56-3f0880f6b392",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        240,
+        96
+      ],
+      "id": "9e8e8680-be3f-489b-936d-f90dd041f87e",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  if (item.json.data_matricula) {\n    const [dia, mes, ano] = item.json.data_matricula.split('/');\n    item.json.data_matricula = `${ano}-${mes}-${dia}`;\n  }\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        112
+      ],
+      "id": "2449745a-69a7-43b6-b631-5c9a2b42894d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "batchSize": 1250,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        608,
+        96
+      ],
+      "id": "a90c2797-2cf6-4e60-9b46-16c1d9ce1421",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        96
+      ],
+      "id": "44e0ff45-4a03-4b8f-87fb-7d9d10a314ee",
+      "name": "Wait2",
+      "webhookId": "a91f3595-df9f-4269-92f2-4ba555f6cea9"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT public.run_eventos();\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1744,
+        -160
+      ],
+      "id": "41b3718f-1528-4019-a991-28f00ae13575",
+      "name": "run eventos",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "alunos_atuais",
+          "mode": "list",
+          "cachedResultName": "alunos_atuais"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ciclo",
+              "displayName": "ciclo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cpf",
+              "displayName": "cpf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "serie",
+              "displayName": "serie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo_matricula",
+              "displayName": "tipo_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "situacao",
+              "displayName": "situacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fone_cel",
+              "displayName": "fone_cel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_ad",
+              "displayName": "email_ad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grau",
+              "displayName": "grau",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "modalidade",
+              "displayName": "modalidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "formacao",
+              "displayName": "formacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "polo",
+              "displayName": "polo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1504,
+        112
+      ],
+      "id": "6721c10b-ff38-4e00-9d6f-72e24213596b",
+      "name": "atualiza atuais",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -912,
+        96
+      ],
+      "id": "a45ae4f5-26a0-45e1-9cee-254844dfe3bd",
+      "name": "Wait4",
+      "webhookId": "e17e12e5-516b-4633-b58e-2d0e67d74c96"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "TRUNCATE TABLE public.alunos_anterior;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2544,
+        -80
+      ],
+      "id": "5d59a53e-3a73-4af1-bcc1-5ccc5f5ee9ba",
+      "name": "delete anterior",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "TRUNCATE TABLE public.alunos_eventos;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2720,
+        -80
+      ],
+      "id": "bf8bcc3e-74ce-448e-b33e-5f9159613176",
+      "name": "delete eventos",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "TRUNCATE TABLE public.alunos_atuais;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2368,
+        -80
+      ],
+      "id": "5bb159dc-369e-4905-bfd4-6e7a9f30dff9",
+      "name": "delete atuais",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1zrIbFVSQZvwLsZLqggcQOQbL0yJ8o_oC/edit?usp=drive_web&ouid=117609515354191177103&rtpof=true",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        96
+      ],
+      "id": "ea47a315-73b5-4ebb-9c06-79b931a3aecb",
+      "name": "matriculados",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1mGUOcMHl5sFwP7i8l1HqQp6If8UgZXKA/edit?usp=drive_web&ouid=117609515354191177103&rtpof=true",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -880,
+        720
+      ],
+      "id": "0de90042-48cc-4743-b94e-ce1205e49bee",
+      "name": "repasse",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        720
+      ],
+      "id": "fba62a67-a4ca-4497-8370-488f30742fe4",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "batchSize": 1250,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -480,
+        720
+      ],
+      "id": "50564503-7eec-4673-8c85-a096b2b61494",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Converte número serial do Excel (dias desde 1899-12-30) para 'YYYY-MM-DD'\nfunction excelSerialToISODate(val) {\n  const n = Number(val);\n  if (Number.isFinite(n)) {\n    // evita arredondar para o dia seguinte quando há parte decimal (.875 = horas)\n    const ms = Math.floor((n - 25569) * 86400) * 1000; // 86400 seg/dia\n    return new Date(ms).toISOString().slice(0, 10);    // UTC -> 'YYYY-MM-DD'\n  }\n  if (typeof val === 'string') {\n    // já está em ISO?\n    if (/^\\d{4}-\\d{2}-\\d{2}$/.test(val)) return val;\n    // padrão DD/MM/AAAA -> YYYY-MM-DD\n    const m = val.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/);\n    if (m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;\n  }\n  return val; // devolve como veio se não conseguir converter\n}\n\nreturn items.map(item => {\n  const src = item.json;\n\n  const dateISO = excelSerialToISODate(src['data.pagamento']);\n\n  // Fallbacks para diferentes nomes de coluna que podem vir do Excel/consolidação\n  const codInstituicao =\n    src['cod_instituicao'] ??\n    src['Código Instituição'] ??\n    src['codigo_instituicao'] ??\n    null;\n\n  // Se o consolidado veio com 'grau' (pois renomeamos 'Nome Instituição' p/ grau no Python),\n  // ainda tentamos preservar o nome original quando existir.\n  const instituicao =\n    src['instituicao'] ??           // já pronto (se existir)\n    src['Nome Instituição'] ??      // nome bruto vindo de planilhas antigas\n    src['nome_instituicao'] ??      // variação comum\n    src['grau'] ??                  // último recurso: usar o campo já mapeado como “grau”\n    null;\n\n  return {\n    json: {\n      \"rgm\":             src['rgm'],\n      \"num.titulo\":      src['num.titulo'],\n      \"data.pagamento\":  dateISO,\n      \"mes.referencia\":  src['mes.referencia'],\n      \"tipo.titulo\":     src['tipo.titulo'],\n      \"tipo.pagamento\":  src['tipo.pagamento'],\n      \"valor.pago\":      src['valor.pago'],\n      \"valor.repasse\":   src['valor.repasse'],\n      \"polo\":            src['polo'],\n\n      // novas colunas p/ o banco\n      \"instituicao\":     instituicao,\n      \"cod_instituicao\": codInstituicao,\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        736
+      ],
+      "id": "62493f5c-ae77-47d3-a326-540cb93db900",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "59a04be8-b9b2-4fd2-b050-31b0a1dfb111",
+              "name": "rgm",
+              "value": "={{ $json.rgm }}",
+              "type": "string"
+            },
+            {
+              "id": "7ad5d5f9-d321-40d3-9636-6dbad4f2073f",
+              "name": "num_titulo",
+              "value": "={{ $json['num.titulo'] }}",
+              "type": "string"
+            },
+            {
+              "id": "67f67e5f-8974-430e-8fc0-cd956e89d648",
+              "name": "data_pagamento",
+              "value": "={{ $json['data.pagamento'] }}",
+              "type": "string"
+            },
+            {
+              "id": "024f1988-b14e-42fc-81eb-b3768c2bfefc",
+              "name": "mes_referencia",
+              "value": "={{ $json['mes.referencia'] }}",
+              "type": "string"
+            },
+            {
+              "id": "3d8bac30-5b55-4bfa-b1a7-8b7b9a22fb3a",
+              "name": "tipo_titulo",
+              "value": "={{ $json['tipo.titulo'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ae83dab1-f6c8-46a5-bb64-83844bddf55c",
+              "name": "tipo_pagamento",
+              "value": "={{ $json['tipo.pagamento'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a9cfad4f-1ffe-4809-b330-ca73b1b83f9b",
+              "name": "valor_pago",
+              "value": "={{ $json['valor.pago'] }}",
+              "type": "number"
+            },
+            {
+              "id": "3af3a8c9-7439-417f-9343-e4d11068f75c",
+              "name": "valor_repasse",
+              "value": "={{ $json['valor.repasse'] }}",
+              "type": "number"
+            },
+            {
+              "id": "01d07b60-895e-445f-af06-da7161248d1c",
+              "name": "polo",
+              "value": "={{ $json.polo }}",
+              "type": "string"
+            },
+            {
+              "id": "0aa39653-810c-4bbd-9a17-d41e54616e53",
+              "name": "instituicao",
+              "value": "={{ $json.instituicao }}",
+              "type": "string"
+            },
+            {
+              "id": "b5f2584d-b33b-4365-8365-69708c08af7d",
+              "name": "cod_instituicao",
+              "value": "={{ $json.cod_instituicao }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        736
+      ],
+      "id": "37b964da-e10c-45c9-8ebc-dc92570547e0",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        736
+      ],
+      "id": "2fb6a90f-acc6-4282-861b-3119e1a8537b",
+      "name": "Wait5",
+      "webhookId": "b31d5657-2035-4db7-b295-7dc946c4c688"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        96,
+        560
+      ],
+      "id": "6b58ae47-90a6-4bfd-a834-1bd8211f0a94",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "repasse",
+          "mode": "list",
+          "cachedResultName": "repasse"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "rgm": "={{ $json.rgm }}",
+            "polo": "={{ $json.polo }}",
+            "valor_repasse": "={{ $json.valor_repasse }}",
+            "valor_pago": "={{ $json.valor_pago }}",
+            "instituicao": "={{ $json.instituicao }}",
+            "cod_instituicao": "={{ $json.cod_instituicao }}",
+            "num_titulo": "={{ $json.num_titulo }}",
+            "data_pagamento": "={{ $json.data_pagamento }}",
+            "mes_referencia": "={{ $json.mes_referencia }}",
+            "tipo_titulo": "={{ $json.tipo_titulo }}",
+            "tipo_pagamento": "={{ $json.tipo_pagamento }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "num_titulo",
+              "displayName": "num_titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_pagamento",
+              "displayName": "data_pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mes_referencia",
+              "displayName": "mes_referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_titulo",
+              "displayName": "tipo_titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_pagamento",
+              "displayName": "tipo_pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_pago",
+              "displayName": "valor_pago",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_repasse",
+              "displayName": "valor_repasse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "polo",
+              "displayName": "polo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ano",
+              "displayName": "ano",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mes",
+              "displayName": "mes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "competencia_titulo",
+              "displayName": "competencia_titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pago_em_competencia",
+              "displayName": "pago_em_competencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "repassa_em_competencia",
+              "displayName": "repassa_em_competencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instituicao",
+              "displayName": "instituicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cod_instituicao",
+              "displayName": "cod_instituicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        304,
+        736
+      ],
+      "id": "aa5d8fad-2f7e-41f4-a05f-c8cef0722db2",
+      "name": "inserir repasse",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Atualizar Grad\n",
+        "height": 784,
+        "width": 3264,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        -288
+      ],
+      "id": "07316a14-26c0-4736-b0bf-363912b8b483",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Repasse\n",
+        "height": 464,
+        "width": 1696,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        512
+      ],
+      "id": "8e78c6ae-d22e-451e-90cf-f447ace24320",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "TRUNCATE TABLE inadimplentes_atuais RESTART IDENTITY;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2368,
+        -208
+      ],
+      "id": "7c3c8de5-9ca3-447f-95a0-34b0dab2e775",
+      "name": "delete atuais inad",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## TRUNCATE TABLES\n",
+        "height": 416,
+        "width": 720,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        -288
+      ],
+      "id": "a1745c77-430d-4f1a-93e2-9d7d83af6cbb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        96
+      ],
+      "id": "9e3a5dc0-5c31-4b0f-9dee-144dfd185466",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98e4058d-5525-4135-9d03-04a14b8afc93",
+              "name": "rgm",
+              "value": "={{ $json.rgm }}",
+              "type": "string"
+            },
+            {
+              "id": "2de7efcf-afbd-4531-abc2-fd19c4142617",
+              "name": "=ciclo",
+              "value": "={{ $json.ciclo }}",
+              "type": "string"
+            },
+            {
+              "id": "6e2507bb-143c-41b5-bc60-d434f4dd32d8",
+              "name": "polo",
+              "value": "={{ $json.polo }}",
+              "type": "string"
+            },
+            {
+              "id": "02c01bd1-ce6f-401f-ae8e-1f2a26a2b7fc",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "5ed525e8-d331-41f3-8f7d-bc84c4689427",
+              "name": "cpf",
+              "value": "={{ $json.cpf }}",
+              "type": "string"
+            },
+            {
+              "id": "faba3a19-fb7f-4095-bd2b-4b7da60bbcf6",
+              "name": "curso",
+              "value": "={{ $json.curso }}",
+              "type": "string"
+            },
+            {
+              "id": "c0c1be6e-3cb5-4156-85c2-84ec6467e62e",
+              "name": "serie",
+              "value": "={{ $json.serie }}",
+              "type": "number"
+            },
+            {
+              "id": "b13a779c-0f32-4848-b34c-9276a10b41af",
+              "name": "data_matricula",
+              "value": "={{ $json.data_matricula }}",
+              "type": "string"
+            },
+            {
+              "id": "f6a72d2f-4359-41c2-abe1-19e9e61f7748",
+              "name": "tipo_matricula",
+              "value": "={{ $json.tipo_matricula }}",
+              "type": "string"
+            },
+            {
+              "id": "7d79b465-59d0-41e7-85c5-60e400140657",
+              "name": "situacao",
+              "value": "={{ $json.situacao }}",
+              "type": "string"
+            },
+            {
+              "id": "4d759bf3-8f1e-427e-83dc-e9cbff721817",
+              "name": "fone_cel",
+              "value": "={{ $json.fone_cel }}",
+              "type": "string"
+            },
+            {
+              "id": "f0d07713-2d41-4b27-9500-99763b4f3fc1",
+              "name": "email_ad",
+              "value": "={{ $json.email_ad }}",
+              "type": "string"
+            },
+            {
+              "id": "e4ed075d-1fb2-41b6-b9be-0fe62288b439",
+              "name": "grau",
+              "value": "={{ $json.grau }}",
+              "type": "string"
+            },
+            {
+              "id": "a66a4f20-b509-40cb-a47b-b836f274f006",
+              "name": "modalidade",
+              "value": "={{ $json.modalidade }}",
+              "type": "string"
+            },
+            {
+              "id": "53fcce7f-405b-4f9e-8b0c-7c4b3ed4223b",
+              "name": "formacao",
+              "value": "={{ $json.formacao }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1216,
+        -160
+      ],
+      "id": "5909ebd0-47cc-4543-92cf-186b508b8bea",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        624,
+        -160
+      ],
+      "id": "bf5fa721-c60d-4cdd-b956-12ef935e4646",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  if (item.json.data_matricula) {\n    const [dia, mes, ano] = item.json.data_matricula.split('/');\n    item.json.data_matricula = `${ano}-${mes}-${dia}`;\n  }\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -160
+      ],
+      "id": "fd6febf8-4ce2-47f0-941b-c9f9afd94a12",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "alunos_atuais",
+          "mode": "list",
+          "cachedResultName": "alunos_atuais"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ciclo",
+              "displayName": "ciclo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cpf",
+              "displayName": "cpf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "serie",
+              "displayName": "serie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo_matricula",
+              "displayName": "tipo_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "situacao",
+              "displayName": "situacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fone_cel",
+              "displayName": "fone_cel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_ad",
+              "displayName": "email_ad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grau",
+              "displayName": "grau",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "modalidade",
+              "displayName": "modalidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "formacao",
+              "displayName": "formacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "polo",
+              "displayName": "polo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "turma",
+              "displayName": "turma",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1488,
+        -160
+      ],
+      "id": "20de9343-6574-4228-aaf5-41cd9f638856",
+      "name": "atualiza atuais1",
+      "executeOnce": false,
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1UGMV4AAG87DDRZVcOct6aRLntXrxXEOL/edit?gid=610669873#gid=610669873",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        400,
+        -160
+      ],
+      "id": "d10090cb-bcf0-4c45-8286-bcdc1a76cbff",
+      "name": "matriculados pos",
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "6631e3XH0YrNrV8w",
+          "name": "powerbieduit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT public.fill_alunos_atuais();\nselect public.f_backfill_turma();\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2016,
+        -160
+      ],
+      "id": "9e596258-a269-43a7-9a24-860f1f17c910",
+      "name": "historico",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "TRUNCATE public.alunos_anterior;\n\nINSERT INTO public.alunos_anterior (\n  chave, rgm, ciclo, nome, cpf, curso, serie, data_matricula,\n  tipo_matricula, situacao, fone_cel, email_ad, grau, modalidade, formacao, polo\n)\nSELECT\n  chave, rgm, ciclo, nome, cpf, curso, serie,\n  data_matricula::date,\n  tipo_matricula, situacao, fone_cel, email_ad, grau, modalidade, formacao, polo\nFROM public.alunos_atuais\nWHERE ciclo = '2025/2';\n\nTRUNCATE public.alunos_atuais;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -688,
+        96
+      ],
+      "id": "81f7d01e-e801-4b4b-bd43-5117da55f8c3",
+      "name": "insert atual em anterior",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "atualiza atuais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "matriculados pos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "matriculados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza atuais": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "insert atual em anterior",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "run eventos": {
+      "main": [
+        [
+          {
+            "node": "historico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "matriculados": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "repasse": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "inserir repasse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "inserir repasse": {
+      "main": [
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "atualiza atuais1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "matriculados pos": {
+      "main": [
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza atuais1": {
+      "main": [
+        [
+          {
+            "node": "run eventos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "historico": {
+      "main": [
+        []
+      ]
+    },
+    "insert atual em anterior": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "59d236dd-3c12-465a-9262-c1f04efd17ca",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-08-13T21:14:23.510Z",
+      "updatedAt": "2025-08-13T21:14:23.510Z",
+      "role": "workflow:owner",
+      "workflowId": "II43T9a4h9ftQjga",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
