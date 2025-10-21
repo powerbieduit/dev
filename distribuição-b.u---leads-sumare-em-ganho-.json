@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-05T14:13:45.878Z",
-  "updatedAt": "2025-08-06T14:47:59.000Z",
+  "updatedAt": "2025-10-14T18:58:39.000Z",
   "id": "kWAI89fhv8Bu50a2",
   "name": "Distribuição B.U - LEADS SUMARE EM GANHO",
   "active": true,
@@ -44,8 +44,8 @@
       "name": "Get list of leads",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -321,8 +321,8 @@
       "name": "Update leads",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -349,8 +349,8 @@
       "name": "Update contacts1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -373,14 +373,14 @@
       "typeVersion": 1,
       "position": [
         1104,
-        -176
+        -160
       ],
       "id": "a69d9e4c-e244-4703-947a-9396f510ac90",
       "name": "Update leads1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -407,8 +407,8 @@
       "name": "Update contacts",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     }
@@ -542,7 +542,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "b2c30106-a8a4-4460-9e3c-ae9d837b6a26",
+  "versionId": "2eb376e0-d3c9-4c32-8d72-5984cfd15916",
   "triggerCount": 1,
   "shared": [
     {
