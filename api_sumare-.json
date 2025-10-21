@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-01T18:08:25.175Z",
-  "updatedAt": "2025-09-10T14:22:49.000Z",
+  "updatedAt": "2025-10-14T19:04:15.000Z",
   "id": "Bytg5Eu5Z9nlt1Q7",
   "name": "api_sumare",
   "active": true,
@@ -310,6 +310,10 @@
                   {
                     "data": "{\"id\":662150,\"type\":\"date\"}",
                     "value": "={{\n  $('filtro ids maiores').item.json.dtMatricula\n    ? DateTime\n        .fromFormat($('filtro ids maiores').item.json.dtMatricula, 'MM-dd-yyyy', { zone: 'utc' })\n        .startOf('day')\n        .toFormat('X')\n    : null\n}}\n"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Inscrição - Sumaré"
                   }
                 ]
               }
@@ -327,8 +331,8 @@
       "name": "Update leads",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -552,6 +556,10 @@
                   {
                     "data": "{\"id\":693635,\"type\":\"select\"}",
                     "value": "Recebida"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Inscrição - Sumaré"
                   }
                 ]
               }
@@ -569,8 +577,8 @@
       "name": "Update leads1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -597,8 +605,8 @@
       "name": "Create new notes",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -653,6 +661,10 @@
                   {
                     "data": "{\"id\":693635,\"type\":\"select\"}",
                     "value": "Recebida"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Inscrição - Sumaré"
                   }
                 ]
               }
@@ -670,8 +682,8 @@
       "name": "Update leads2",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -698,8 +710,8 @@
       "name": "Create new notes1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -814,8 +826,8 @@
       "name": "Create new contacts",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -874,6 +886,10 @@
                   {
                     "data": "{\"id\":662150,\"type\":\"date\"}",
                     "value": "={{\n  $('filtro ids maiores').item.json.dtMatricula\n    ? DateTime\n        .fromFormat($('filtro ids maiores').item.json.dtMatricula, 'MM-dd-yyyy', { zone: 'utc' })\n        .startOf('day')\n        .toFormat('X')\n    : null\n}}\n"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Inscrição - Sumaré"
                   }
                 ]
               },
@@ -904,8 +920,8 @@
       "name": "Create new leads",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -939,8 +955,8 @@
       "name": "Create new contacts1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -995,6 +1011,10 @@
                   {
                     "data": "{\"id\":662138,\"type\":\"text\"}",
                     "value": "={{ $('filtro ids maiores').item.json.nome }}"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Inscrição - Sumaré"
                   }
                 ]
               },
@@ -1025,8 +1045,8 @@
       "name": "Create new leads1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -1060,8 +1080,8 @@
       "name": "Create new contacts2",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -1112,6 +1132,10 @@
                   {
                     "data": "{\"id\":662138,\"type\":\"text\"}",
                     "value": "={{ $('filtro ids maiores').item.json.nome }}"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Inscrição - Sumaré"
                   }
                 ]
               },
@@ -1142,8 +1166,8 @@
       "name": "Create new leads2",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -1158,7 +1182,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "id do lead": "={{ $json._embedded.leads[0].id }}\n"
+            "id do lead": "={{ $json._embedded.leads[0].id }}"
           },
           "matchingColumns": [
             ""
@@ -1184,8 +1208,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        3456,
-        560
+        3744,
+        496
       ],
       "id": "1b78c37d-9c1b-492b-ab4c-1a89b1e14feb",
       "name": "Execute Workflow",
@@ -1273,7 +1297,7 @@
       "typeVersion": 1,
       "position": [
         544,
-        464
+        480
       ],
       "id": "0113d3a5-1526-46c7-900f-9ca1812b3ae6",
       "name": "No Operation, do nothing1"
@@ -1322,6 +1346,50 @@
       ],
       "id": "93f1142e-b9f8-4289-82fa-566843e08ec7",
       "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "fXWWyKDxkTJ9v7GM",
+          "mode": "list",
+          "cachedResultName": "distribuicao_sumare_api"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id do lead": "={{ $('Create new leads2').item.json._embedded.leads[0].id }}"
+          },
+          "matchingColumns": [
+            ""
+          ],
+          "schema": [
+            {
+              "id": "id do lead",
+              "displayName": "id do lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3504,
+        656
+      ],
+      "id": "db45ff60-e8fe-498d-8468-908bb3f5dbcd",
+      "name": "Execute Workflow1",
+      "alwaysOutputData": true
     }
   ],
   "connections": {
@@ -1646,7 +1714,7 @@
       "main": [
         [
           {
-            "node": "Execute Workflow",
+            "node": "Execute Workflow1",
             "type": "main",
             "index": 0
           }
@@ -1699,6 +1767,17 @@
           }
         ]
       ]
+    },
+    "Execute Workflow1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1719,22 +1798,22 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-09-10T11:00:29.004-03:00",
-          "Readable date": "September 10th 2025, 11:00:29 am",
-          "Readable time": "11:00:29 am",
-          "Day of week": "Wednesday",
+          "timestamp": "2025-10-09T13:00:56.004-03:00",
+          "Readable date": "October 9th 2025, 1:00:56 pm",
+          "Readable time": "1:00:56 pm",
+          "Day of week": "Thursday",
           "Year": "2025",
-          "Month": "September",
-          "Day of month": "10",
-          "Hour": "11",
+          "Month": "October",
+          "Day of month": "09",
+          "Hour": "13",
           "Minute": "00",
-          "Second": "29",
+          "Second": "56",
           "Timezone": "America/Sao_Paulo (UTC-03:00)"
         }
       }
     ]
   },
-  "versionId": "3d4a1021-6941-4f86-b4e7-7e7729e03066",
+  "versionId": "d626655c-b9b5-44d4-8bbe-81a6401e86bf",
   "triggerCount": 1,
   "shared": [
     {
