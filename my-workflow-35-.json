@@ -1,0 +1,70 @@
+{
+  "createdAt": "2025-09-12T18:40:26.694Z",
+  "updatedAt": "2025-10-21T21:12:25.000Z",
+  "id": "9YLAkqHAB0iIzN0l",
+  "name": "My workflow 35",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "suma_ai",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cafffe6a-c918-402c-bdb4-818986bb1f4e",
+      "name": "Webhook",
+      "webhookId": "5d573fba-3824-48e2-8fa8-4cf517b133b1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const hdrs = $json.headers || {};\nconst hasMetaSig = !!(hdrs['x-hub-signature-256'] || hdrs['X-Hub-Signature-256']);\nconst body = $json.body || $json;\n\nlet source = 'unknown';\nif (hasMetaSig && body?.entry?.[0]?.changes?.[0]?.value) source = 'meta';\nelse source = 'evolution'; // fallback prático\n\nreturn [{ json: { source, body } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "48fff8e0-39bd-470d-85f0-7dbcb6c3511f",
+      "name": "Code"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "6c1206d6-2f90-47d1-9a98-50da501b94f5",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-09-12T18:40:26.697Z",
+      "updatedAt": "2025-09-12T18:40:26.697Z",
+      "role": "workflow:owner",
+      "workflowId": "9YLAkqHAB0iIzN0l",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
