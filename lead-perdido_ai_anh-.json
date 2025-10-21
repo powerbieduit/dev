@@ -1,0 +1,371 @@
+{
+  "createdAt": "2025-10-06T19:10:38.066Z",
+  "updatedAt": "2025-10-21T20:47:17.000Z",
+  "id": "IZIj9EB6Jb9tRbZd",
+  "name": "lead perdido_ai_anh",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefone",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1232,
+        64
+      ],
+      "id": "466cbcd4-b86f-43dd-b5a1-d63fdc6ab7d2",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "=https://sumaread.kommo.com/api/v4/leads?query={{ '+' + $json.telefone.replace('@s.whatsapp.net', '') }}&filter[statuses][0][pipeline_id]=11873040&filter[statuses][0][status_id]=93544156",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjgzNGY4MWNlZDJjM2Y4ZDgwMjdiY2Q2MDVhY2FkODMxMjU2ZTc0MTNkMjljNDY3MjU5OWYyM2I4MDlmMTc3MjRmMmU0YmQ0NjMyZmE1MTBjIn0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI4MzRmODFjZWQyYzNmOGQ4MDI3YmNkNjA1YWNhZDgzMTI1NmU3NDEzZDI5YzQ2NzI1OTlmMjNiODA5ZjE3NzI0ZjJlNGJkNDYzMmZhNTEwYyIsImlhdCI6MTc1NzM1MzA2MywibmJmIjoxNzU3MzUzMDYzLCJleHAiOjE4MDEzNTM2MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiY2QxYzVlNTEtMGZhYi00YjI0LTlmN2YtZDc5MTc5MTNkY2JkIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.HAOrmHblRCJo5tS1QXMpYfCqK2iejbO88CBoBTzvSjPh7D5eeqzYmjEy7OmRcksOTpZpwBjlRSvZseCM8jbVBeCBc_HuGV_coAeBMKZ4hwdIQevoHNkgaEOVf4d7OiuVub9K0DnjGsQ1MxAJDbkwMWsX_ItNXv1_fgwIjvm07Y5lYNb7alUsBNABdUtdS8fSQ0edbYmxrx2m39uQG_WOUJiO855A_VxpRJVLcu2sQauc_sUthJ5eewyV4lc34sV-35v3NR7FZ1bvGzXMYbnAnM_Pzng1cWiJnSxD36KcOi8X0GAMvLKK_Sm3hyv4213rFd0fj8uO3h7zoFramTYQSA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1008,
+        64
+      ],
+      "id": "89b7f974-6b19-400b-828b-55ba58493ebf",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields').first().json.data._embedded.leads[0].id }}",
+              "pipeline_id": 11873040,
+              "status_id": 143,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":662144,\"type\":\"text\"}",
+                    "value": "={{ $json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":673258,\"type\":\"text\"}",
+                    "value": "={{ $json.nivel }}"
+                  },
+                  {
+                    "data": "{\"id\":677719,\"type\":\"select\"}",
+                    "value": "={{ $json.motivo_perda }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        464,
+        64
+      ],
+      "id": "dfb581f7-9af0-46f5-9ceb-0077fa80e917",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nVF4jy6NK0rf5oed",
+          "name": "Kommo BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chat_messages_anh",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $('When Executed by Another Workflow').item.json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        64
+      ],
+      "id": "dc5ad562-3255-4eb2-a1fc-8ee6a45d99f3",
+      "name": "Get many rows2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ordena por created_at ASC e formata o histórico\nconst sorted = items.sort((a, b) => \n  new Date(a.json.created_at) - new Date(b.json.created_at)\n);\n\nconst conversation = sorted.map(row => {\n  const userMsg = row.json.user_message ? `Usuário: ${row.json.user_message}` : '';\n  const botMsg = row.json.bot_message ? `Bot: ${row.json.bot_message}` : '';\n  return [userMsg, botMsg].filter(Boolean).join('\\n');\n}).join('\\n\\n');\n\nreturn [{ json: { conversation } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        64
+      ],
+      "id": "98fceb23-9882-4d70-9386-ccab812fcf42",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=📋 Prompt para Agente de Resumo de Conversas\n\nVocê é um assistente especializado em analisar e resumir conversas trocadas via WhatsApp entre um assistente virtual comercial da Anhanguera e candidatos.\n\n🎯 OBJETIVO PRINCIPAL\n\nAnalisar conversas de vendas e extrair informações estruturadas para alimentar o CRM, identificando:\n\nInteresse do candidato (curso e nível)\n\nQualidade do atendimento prestado\n\nStatus da conversa (ativa/abandonada)\n\nMotivo da perda (quando aplicável)\n\n📋 INSTRUÇÕES OBRIGATÓRIAS\n\nSEMPRE leia a conversa completa:\n\n{{$json.conversation}}\n\n\nAnalise e identifique:\n\nO que o candidato pediu e qual curso mencionou\n\nAs respostas do assistente virtual (qualidade, informações fornecidas)\n\nMotivo da perda (se houve desistência explícita)\n\n🏷️ CAMPOS OBRIGATÓRIOS NO OUTPUT\n1. Nível Acadêmico\n\n\"Graduação\" - bacharelado, licenciatura, tecnólogo\n\n\"Pós-graduação\" - especialização, MBA, mestrado, doutorado\n\n\"Não informado\" - não foi possível identificar\n\n2. Curso Específico\n\nNome exato do curso mencionado pelo candidato\n\n\"Não informado\" - se o curso não foi especificado\n\n3. Motivo da Perda ⚠️ CAMPO OBRIGATÓRIO\n\nIDENTIFIQUE SE HOUVE PERDA E CLASSIFIQUE EXATAMENTE:\n\n\"Matriculado/Concorrente\"\n\n\"Análise Curricular\"\n\n\"Contato Inválido\"\n\n\"Interesse Futuro\"\n\n\"Localização\"\n\n\"Não possui o Curso\"\n\n\"Pesquisa\"\n\n\"Preço\"\n\n\"Presencial/Técnico\"\n\n\"Sem resposta\"\n\n\"Possui débito\"\n\n\"Sem Interesse\"\n\n\"Blacklist\"\n\n\"Não houve perda\" - conversa sem sinais de desistência\n\n**Resumo:** [Resumo da conversa em 2-3 frases destacando pontos principais]\n\n**Nível:** [Graduação/Pós-graduação/Não informado]\n\n**Curso:** [Nome específico do curso ou \"Não informado\"]\n\n**Motivo da perda:** [Matriculado/Concorrente/Análise Curricular/Contato Inválido/Interesse Futuro/Localização/Não possui o Curso/Pesquisa/Preço/Presencial/Técnico/Sem resposta/Possui débito/Sem Interesse/Blacklist/Não houve perda]\n\n\n🔍 EXEMPLOS DE IDENTIFICAÇÃO\nNíveis Acadêmicos:\n\nGraduação: Administração, Engenharia, Pedagogia, Enfermagem, Fisioterapia, etc.\n\nPós-graduação: MBA Gestão, Especialização em Marketing, Mestrado, Doutorado, etc.\n\nMotivos de Perda - Exemplos:\n❌ \"Sem Interesse\"\n\n\"Não tenho interesse mesmo\"\n\n\"Mudei de ideia, não quero mais\"\n\n\"Desisto\"\n\n\"Não é para mim\"\n\n❌ \"Não possui o Curso\"\n\n\"Vocês têm Direito?\" (não oferecemos)\n\n\"Quero Psicologia\" (não oferecemos graduação)\n\n\"Só me interessa curso técnico\"\n\n\"Procuro curso que vocês não têm\"\n\n❌ \"Preço\"\n\n\"Muito caro para mim\"\n\n\"Não tenho condições financeiras\"\n\n\"O valor está fora do meu orçamento\"\n\n\"Não posso pagar\"\n\n❌ \"Matriculado/Concorrente\"\n\n\"Já estou fazendo faculdade\"\n\n\"Estou matriculado em outra instituição\"\n\n\"Já encontrei outra opção\"\n\n\"Vou fazer na concorrência\"\n\n❌ \"Presencial/Técnico\"\n\n\"Só aceito aulas presenciais\"\n\n\"Não gosto de EAD\"\n\n\"Quero apenas cursos técnicos\"\n\n\"Precisa ser presencial\"\n\n❌ \"Contato Inválido\"\n\nMensagens automáticas indicando número inexistente\n\nContato sem retorno após várias tentativas\n\nO número não pertence ao candidato\n\n❌ \"Interesse Futuro\"\n\n\"Talvez no próximo semestre\"\n\n\"Vou pensar e ver mais pra frente\"\n\n\"Agora não posso, mas depois quero\"\n\n❌ \"Análise Curricular\"\n\nQuando o candidato envia currículo e o atendimento depende de avaliação prévia\n\nSolicitação de reanálise ou pendência de aprovação do histórico escolar\n\n❌ \"Localização\"\n\n\"Muito longe da minha cidade\"\n\n\"Não tem polo perto de mim\"\n\n\"Quero em outra região\"\n\n❌ \"Pesquisa\"\n\n\"Estou só pesquisando por enquanto\"\n\n\"Ainda estou comparando opções\"\n\n\"Quero saber só como funciona\"\n\n❌ \"Sem resposta\"\n\nO candidato para de responder sem motivo explícito\n\nNão há objeção nem recusa, apenas ausência de retorno\n\n❌ \"Possui débito\"\n\n\"Tenho pendências financeiras\"\n\n\"Estou com nome sujo e não posso fazer agora\"\n\n\"Preciso quitar um débito antes\"\n\n❌ \"Blacklist\"\n\nContato bloqueado ou reincidente\n\nMensagens inadequadas\n\nSolicitação para não ser mais contatado\n\n⚠️ REGRAS CRÍTICAS DE ANÁLISE\n🔴 IDENTIFICAÇÃO DE PERDAS:\n\nPerda explícita: Candidato verbaliza desistência\n\nPerda implícita: Para de responder após objeção específica\n\nNão é perda: Apenas parar de responder sem motivo claro\n\n🔴 CLASSIFICAÇÃO PRECISA:\n\nUse APENAS os 14 motivos listados + \"Não houve perda\"\n\nSeja específico: analise o contexto completo da conversa\n\nPriorize motivos explícitos sobre interpretações\n\n✅ CHECKLIST FINAL\n\n Li a conversa completa {{$json.conversation}}\n\n Identifiquei corretamente o nível (Graduação/Pós/Não informado)\n\n Extraí o curso específico mencionado\n\n CRÍTICO: Identifiquei motivo da perda usando APENAS os 15 valores permitidos\n\n Usei o formato de resposta obrigatório\n\n Resumo é conciso (2-3 frases) mas informativo\n\n🎯 OBJETIVO FINAL\n\nFornecer dados estruturados e precisos para alimentar o CRM, permitindo:\n\nAnálise de performance do atendimento\n\nIdentificação de pontos de melhoria no processo\n\nClassificação adequada dos motivos de perda para estratégias futuras\n\nRelatórios gerenciais com dados confiáveis",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -112,
+        64
+      ],
+      "id": "bed4c1e2-0826-4760-bb24-d53e8645c50a",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        288
+      ],
+      "id": "58317326-194c-4557-9ecf-ec86b08d5df7",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node Code para N8N - Extrator de campos do resumo\n// Processa TODOS os itens do input e separa Nível, Curso e Motivo da perda a partir de `json.text`\n\nconst items = $input.all();\n\n// Lista dos motivos válidos exatamente como no CRM (respeitando maiúsculas/minúsculas)\nconst motivosValidos = [\n  \"Matriculado/Concorrente\",\n  \"Análise Curricular\",\n  \"Contato Inválido\",\n  \"Interesse Futuro\",\n  \"Localização\",\n  \"Não possui o Curso\",\n  \"Pesquisa\",\n  \"Preço\",\n  \"Presencial/Técnico\",\n  \"Sem resposta\",\n  \"Possui débito\",\n  \"Sem Interesse\",\n  \"Blacklist\",\n  \"Não houve perda\"\n];\n\n// Extrai o valor após \"**<Field>:**\"\nfunction extractField(text, fieldName) {\n  if (!text) return '';\n  const pattern = `\\\\*\\\\*${fieldName}\\\\s*:\\\\*\\\\*\\\\s*([\\\\s\\\\S]*?)(?=(?:\\\\r?\\\\n\\\\r?\\\\n\\\\*\\\\*|\\\\r?\\\\n\\\\*\\\\*|$))`;\n  const regex = new RegExp(pattern, 'i');\n  const match = text.match(regex);\n  return match ? match[1].trim() : '';\n}\n\n// Extrai apenas a primeira linha do motivo e corrige para o formato exato\nfunction normalizeMotivo(motivo) {\n  if (!motivo) return '';\n  const firstLine = motivo.split(/\\r?\\n/)[0].trim();\n\n  // Tenta casar ignorando maiúsculas/minúsculas\n  const match = motivosValidos.find(m => m.toLowerCase() === firstLine.toLowerCase());\n  return match || firstLine; // Retorna o nome correto se encontrar, ou o original se não bater\n}\n\nreturn items.map(item => {\n  const inputText = item.json?.text ?? '';\n\n  const nivel = extractField(inputText, 'Nível');\n  const curso = extractField(inputText, 'Curso');\n  const motivoPerdaBruto = extractField(inputText, 'Motivo da perda');\n  const motivoPerda = normalizeMotivo(motivoPerdaBruto);\n\n  return {\n    json: {\n      nivel: nivel,\n      curso: curso,\n      motivo_perda: motivoPerda,\n      texto_original: inputText,\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        64
+      ],
+      "id": "bc9ebce1-9739-4b5a-8521-baf8ef1b44a0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4143342d-f1f4-45c2-90ef-556cb7bffb69",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -784,
+        64
+      ],
+      "id": "d0ef5007-e435-430d-bb04-b93036d307e3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e283fa3a-89d7-4de3-8691-37d41d0bf85a",
+              "name": "retorno",
+              "value": "lead movido para perdido",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        64
+      ],
+      "id": "7c465485-5faf-4328-bad3-0f62a08708f1",
+      "name": "Edit Fields2"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get many rows2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "telefone": "5511993537209@s.whatsapp.net"
+        }
+      }
+    ]
+  },
+  "versionId": "f4989ce5-22e8-4753-91ee-f5fe988af175",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-06T19:10:38.192Z",
+      "updatedAt": "2025-10-06T19:10:38.192Z",
+      "role": "workflow:owner",
+      "workflowId": "IZIj9EB6Jb9tRbZd",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
