@@ -1,15 +1,16 @@
 {
   "createdAt": "2025-09-11T20:27:37.749Z",
-  "updatedAt": "2025-09-11T20:54:56.000Z",
+  "updatedAt": "2025-10-21T20:47:12.000Z",
   "id": "wwr606l1ju9RqW0S",
   "name": "Buda",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
         "path": "buda",
+        "responseMode": "responseNode",
         "options": {
           "binaryPropertyName": "file"
         }
@@ -17,8 +18,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -576,
-        112
+        -496,
+        160
       ],
       "id": "8f55709f-2fae-4545-be74-6d74c88041ec",
       "name": "Webhook",
@@ -26,36 +27,119 @@
     },
     {
       "parameters": {
-        "inputDataFieldName": "file",
-        "name": "data",
-        "driveId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "My Drive"
-        },
-        "folderId": {
-          "__rl": true,
-          "value": "root",
-          "mode": "list",
-          "cachedResultName": "/ (Root folder)",
-          "cachedResultUrl": "https://drive.google.com/drive"
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "transcription",
+              "value": "={{$json[\"text\"]}}"
+            }
+          ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
+      "id": "6c5986a9-7662-4bd4-a7b8-bfd3b87dd7b7",
+      "name": "Extrair Texto",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
       "position": [
-        16,
-        112
+        352,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "file0",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        48,
+        144
       ],
-      "id": "ec92620e-5cc4-4ed7-a7c5-0b8804573340",
-      "name": "Upload file",
+      "id": "c1bab6a2-1d50-4d84-8396-2345e66cb44d",
+      "name": "Transcribe a recording",
+      "retryOnFail": true,
       "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "6631e3XH0YrNrV8w",
-          "name": "powerbieduit"
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "functionCode": "if (item.binary?.file0) {\n  item.binary.file = item.binary.file0;\n  delete item.binary.file0;\n}\n\n// Força o formato aceito pelo OpenAI\nif (item.binary?.file) {\n  item.binary.file.fileName = \"audio.ogg\";   // renomeia\n  item.binary.file.mimeType = \"audio/ogg\";   // força MIME válido\n}\n\nreturn item;"
+      },
+      "id": "067e8da6-189f-4551-8d8e-c0e94da8fbce",
+      "name": "Padronizar binário (file0→file)",
+      "type": "n8n-nodes-base.functionItem",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "aafac2b9-90a5-427e-8d0a-92baaa037caa",
+      "name": "Responder ao Webhook (JSON)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        592,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agente_audio",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -512,
+        368
+      ],
+      "id": "5416196b-51c9-4dec-83e8-9e244eac2e5c",
+      "name": "Webhook1",
+      "webhookId": "14764769-99a5-494f-a930-ee0935051723"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        528,
+        368
+      ],
+      "id": "7802a79e-1c77-4543-9010-341409ceb6b0",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"error\": \"audio_processing_failed\",\n  \"message\": \"Falha no processamento do áudio\"\n}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "6bac69f7-58e3-4494-abe7-29ea079f3f48",
+      "name": "Webhook response on error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        224,
+        256
+      ]
     }
   ],
   "connections": {
@@ -63,9 +147,65 @@
       "main": [
         [
           {
-            "node": "Upload file",
+            "node": "Padronizar binário (file0→file)",
             "type": "main",
             "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Extrair Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Webhook response on error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Padronizar binário (file0→file)": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Texto": {
+      "main": [
+        [
+          {
+            "node": "Responder ao Webhook (JSON)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
           }
         ]
       ]
@@ -78,48 +218,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
-            "content-length": "69793",
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
-            "content-type": "multipart/form-data; boundary=----WebKitFormBoundarytzE1HeCueDfWFTUL",
-            "origin": "https://csvatendimento.kommo.com",
-            "priority": "u=1, i",
-            "referer": "https://csvatendimento.kommo.com/",
-            "sec-ch-ua": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "191.204.186.115",
-            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-pb-secret": "troque-isto",
-            "x-real-ip": "191.204.186.115"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "meta": "{\"source\":\"media-recorder\",\"leadId\":\"18693494\",\"mime\":\"audio/mp4;codecs=opus\",\"size\":69398,\"ts\":1757623425447}"
-          },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/buda",
-          "executionMode": "production"
-        }
-      }
-    ]
-  },
-  "versionId": "6c0deb96-51e4-4d9c-836a-31d19d3473e5",
-  "triggerCount": 1,
+  "pinData": {},
+  "versionId": "52c17734-d7c9-4dd9-bc4b-48619177874d",
+  "triggerCount": 2,
   "shared": [
     {
       "createdAt": "2025-09-11T20:27:37.756Z",
