@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-09-08T15:14:31.379Z",
-  "updatedAt": "2025-09-11T00:55:32.000Z",
+  "updatedAt": "2025-09-15T14:17:21.000Z",
   "id": "IgOWFfW4ekpHKPrA",
   "name": "feedback_conversas acad - csv",
   "active": true,
@@ -9,14 +9,14 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT *\nFROM crm_messages\nWHERE whatsapp_to = '{{$json.data.custom_fields_values[0].values[0].value}}'\n  AND message_ts::date = CURRENT_DATE;\n",
+        "query": "WITH param AS (\n  SELECT regexp_replace(trim('{{$json.data.custom_fields_values[0].values[0].value}}'), '\\D', '', 'g') AS phone_digits\n)\nSELECT *\nFROM crm_messages m\nCROSS JOIN param p\nWHERE regexp_replace(m.whatsapp_to, '\\D', '', 'g') = p.phone_digits\n  AND (m.message_ts AT TIME ZONE 'America/Sao_Paulo')::date = (now() AT TIME ZONE 'America/Sao_Paulo')::date;\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -400,
-        208
+        -832,
+        176
       ],
       "id": "5818cc5d-4440-49b1-851f-4e30d9bf44a5",
       "name": "Execute a SQL query",
@@ -34,8 +34,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -160,
-        208
+        -608,
+        176
       ],
       "id": "9be224b9-ae54-4933-a4da-93c96d763821",
       "name": "Code"
@@ -49,8 +49,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1504,
-        208
+        -1952,
+        176
       ],
       "id": "ccbb14bc-d219-44d0-9e20-9980538c51ee",
       "name": "Webhook",
@@ -98,8 +98,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1280,
-        208
+        -1728,
+        176
       ],
       "id": "02a27597-a4e4-4630-be6b-ed40dd7bdda6",
       "name": "HTTP Request"
@@ -121,8 +121,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1056,
-        208
+        -1504,
+        176
       ],
       "id": "f3ffba76-56d4-4cfa-beb5-d1cb0c9397b4",
       "name": "Edit Fields"
@@ -148,8 +148,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -832,
-        208
+        -1280,
+        176
       ],
       "id": "2efc3ec8-ef2d-4c5f-9134-3cee37732b69",
       "name": "HTTP Request1"
@@ -171,8 +171,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -608,
-        208
+        -1056,
+        176
       ],
       "id": "5a753613-33cd-4a42-8eb2-d816396ebe85",
       "name": "Edit Fields1"
@@ -182,14 +182,14 @@
         "promptType": "define",
         "text": "=Aqui está a conversa de hoje com o cliente:\n:\n{{ $json.transcript }}",
         "options": {
-          "systemMessage": "=Prompt Principal: Você é um analista de qualidade de atendimento. \n\nAnalise os FATOS da conversa e produza um feedback objetivo em até 5 linhas: \n\nFEEDBACK: Demanda: [O que EXATAMENTE o cliente pediu - seja específico] \n\nResolução: [O consultor resolveu? Parcialmente? Não resolveu? Cite ações concretas tomadas] Problemas Identificados: [Fatos objetivos: tempo de resposta excessivo, informação incorreta, não seguiu procedimento, cliente insatisfeito com resposta específica, etc.] Resultado: [Cliente ficou satisfeito/insatisfeito? Cancelou? Continuou? Pediu mais informações? Use evidências da conversa] \n\nUse apenas informações que estão EXPLÍCITAS na conversa Não faça suposições sobre sentimentos ou intenções Foque em ações concretas e resultados mensuráveis Se o cliente elogiou/reclamou, cite textualmente Indique tempo de duração se foi excessivo (>2h para questões simples)\n\n**SEMPRE INFORME O CONSULTOR QUE ESTÁ ATENDENDO:  {{ $json.messages[4].sender }} EM SEU FEEDBACK** \n\n**SEMPRE FORMATE SEU OUTPUT** com campos ESPECIFICADOS: \n\nPONTO POSITIVO:\nPONTO NEGATIVO:\nFEEDBACK\n\n**EXATAMENTE NESSA ORDEM!**\n\nResultado PRECISA SER EM JSON"
+          "systemMessage": "=# Prompt Otimizado - Análise de Qualidade de Atendimento\n\n## IDENTIDADE E CONTEXTO\nVocê é um **Analista Sênior de Qualidade de Atendimento** da Universidade Cruzeiro do Sul Virtual, especializado em avaliação objetiva de interações de pós-venda.\n\n## PROCESSO OBRIGATÓRIO\n### PASSO 1: CLASSIFICAÇÃO TÉCNICA\n- **EXECUTE OBRIGATORIAMENTE** a ferramenta `rerank` para recuperar os níveis de classificação\n- **AGUARDE** o retorno completo dos campos: `nivel_1`, `nivel_2`, `nivel_3`\n- **NÃO PROSSIGA** sem estes dados estruturados\n\n### PASSO 2: ANÁLISE FACTUAL\nAnalise **EXCLUSIVAMENTE OS FATOS EXPLÍCITOS** da conversa:\n- Identifique o consultor responsável: `{{ $json.messages[4].sender }}`\n- Cronometre a duração do atendimento (marque se >2h para questões simples)\n- Documente ações concretas realizadas pelo consultor\n- Registre manifestações textuais do cliente (elogios/reclamações)\n\n### PASSO 3: AVALIAÇÃO CRITERIOSA\n**CRITÉRIOS DE ANÁLISE:**\n- ✅ **Resolução Efetiva**: Demanda foi completamente atendida?\n- ⏱️ **Tempo de Resposta**: Dentro do padrão institucional?\n- 📋 **Aderência a Procedimentos**: Seguiu protocolos estabelecidos?\n- 😊 **Satisfação do Cliente**: Evidências explícitas de contentamento/descontentamento\n\n## ESTRUTURA DE OUTPUT OBRIGATÓRIA\n\n**RETORNE EXCLUSIVAMENTE EM FORMATO JSON:**\n\n```json\n{\n  \"consultor_responsavel\": \"{{ $json.messages[4].sender }}\",\n  \"duracao_atendimento\": \"[tempo em minutos/horas]\",\n  \"ponto_positivo\": \"[Ação específica bem executada pelo consultor - máximo 80 caracteres]\",\n  \"ponto_negativo\": \"[Problema concreto identificado ou 'Nenhum identificado' - máximo 80 caracteres]\",\n  \"feedback\": {\n    \"demanda\": \"[Descrição exata do que o cliente solicitou - máximo 120 caracteres]\",\n    \"resolucao\": \"[Status: Resolvido/Parcialmente Resolvido/Não Resolvido + ações tomadas - máximo 120 caracteres]\",\n    \"problemas_identificados\": \"[Fatos objetivos ou 'Nenhum problema identificado' - máximo 120 caracteres]\",\n    \"resultado\": \"[Desfecho baseado em evidências da conversa - máximo 120 caracteres]\"\n  },\n  \"tabela_niveis\": {\n    \"nivel_1\": \"[valor_exato_retornado_pelo_rerank]\",\n    \"nivel_2\": \"[valor_exato_retornado_pelo_rerank]\",\n    \"nivel_3\": \"[valor_exato_retornado_pelo_rerank]\"\n  },\n  \"metricas_qualidade\": {\n    \"tempo_resposta_adequado\": true/false,\n    \"procedimento_seguido\": true/false,\n    \"cliente_satisfeito\": true/false/null\n  }\n}\n```\n\n## DIRETRIZES CRÍTICAS\n🚫 **PROIBIDO:**\n- Fazer inferências sobre sentimentos não expressos\n- Supor intenções do cliente ou consultor\n- Criar informações não presentes na conversa\n- Retornar formato diferente do JSON especificado\n\n✅ **OBRIGATÓRIO:**\n- Usar apenas informações explícitas\n- Citar textualmente elogios/reclamações quando existirem\n- Identificar o consultor responsável\n- Aguardar dados completos do `rerank` antes de prosseguir\n- Manter objetividade e precisão factual\n\n## VALIDAÇÃO FINAL\nAntes de retornar, verifique:\n- [ ] JSON válido e bem formatado\n- [ ] Todos os campos preenchidos\n- [ ] Consultor identificado corretamente\n- [ ] Dados do `rerank` incluídos\n- [ ] Análise baseada apenas em fatos explícitos"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        48,
-        208
+        -352,
+        176
       ],
       "id": "b2307f02-d02e-4ac4-b76e-d24445a7eac7",
       "name": "AI Agent"
@@ -207,8 +207,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        512
+        -384,
+        400
       ],
       "id": "49c9c167-7bc9-44cd-b5e4-0a2152224d14",
       "name": "OpenAI Chat Model",
@@ -251,6 +251,18 @@
             {
               "fieldId": "timestamp",
               "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "nv1",
+              "fieldValue": "={{ $json.nivel_1 }}"
+            },
+            {
+              "fieldId": "nv2",
+              "fieldValue": "={{ $json.nivel_2 }}"
+            },
+            {
+              "fieldId": "nv3",
+              "fieldValue": "={{ $json.nivel_3 }}"
             }
           ]
         }
@@ -258,8 +270,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        656,
-        224
+        368,
+        176
       ],
       "id": "d0115b4a-d3cb-4b7d-842f-293d4ed4f4f0",
       "name": "Create a row",
@@ -272,16 +284,101 @@
     },
     {
       "parameters": {
-        "jsCode": "// n8n Code node (JavaScript)\n// Modo: Run Once for All Items\n\nfunction safeParse(jsonStr) {\n  if (typeof jsonStr !== 'string') return null;\n  try {\n    return JSON.parse(jsonStr);\n  } catch (e) {\n    // tenta extrair apenas o objeto {...} se vier com prefixo/sufixo\n    const s = jsonStr.indexOf('{');\n    const e2 = jsonStr.lastIndexOf('}');\n    if (s >= 0 && e2 >= 0) {\n      try { return JSON.parse(jsonStr.slice(s, e2 + 1)); } catch (_) {}\n    }\n    return null;\n  }\n}\n\nfunction splitFeedback(feedbackRaw) {\n  if (!feedbackRaw || typeof feedbackRaw !== 'string') {\n    return { Demanda: null, Resolução: null, \"Problemas Identificados\": null, Resultado: null };\n  }\n\n  // Labels que esperamos no texto do FEEDBACK:\n  const labels = [\"Demanda\", \"Resolução\", \"Problemas Identificados\", \"Resultado\"];\n\n  // Normaliza alguns acentos/variações (ex.: Resolucao sem acento)\n  const fb = feedbackRaw.replace(/Resolucao/gi, \"Resolução\");\n\n  const out = {};\n  for (let i = 0; i < labels.length; i++) {\n    const label = labels[i];\n    const next = labels[i + 1];\n    const pattern = new RegExp(\n      `${label}\\\\s*:\\\\s*([\\\\s\\\\S]*?)` + (next ? `${next}\\\\s*:` : `$`),\n      \"i\"\n    );\n    const m = fb.match(pattern);\n    out[label] = m ? m[1].trim().replace(/\\s+$/,'') : null;\n  }\n  return out;\n}\n\nconst results = items.map(item => {\n  const raw = item.json?.output ?? \"\";\n  const parsed = safeParse(raw) || {};\n\n  const pontoPositivo = parsed[\"PONTO POSITIVO\"] ?? null;\n  const pontoNegativo = parsed[\"PONTO NEGATIVO\"] ?? null;\n  const feedbackTexto = parsed[\"FEEDBACK\"] ?? null;\n\n  const partes = splitFeedback(feedbackTexto);\n\n  return {\n    json: {\n      ponto_positivo: pontoPositivo,\n      ponto_negativo: pontoNegativo,\n      feedback_texto: feedbackTexto,\n      demanda: partes[\"Demanda\"],\n      resolucao: partes[\"Resolução\"],\n      problemas_identificados: partes[\"Problemas Identificados\"],\n      resultado: partes[\"Resultado\"]\n    }\n  };\n});\n\n// *** IMPORTANTE ***\n// O Code node do n8n DEVE retornar um array de objetos\nreturn results;\n"
+        "jsCode": "// n8n Code node (JavaScript)\n// Modo: Run Once for All Items\n\nfunction safeParse(jsonStr) {\n  if (typeof jsonStr !== 'string') return null;\n  try {\n    return JSON.parse(jsonStr);\n  } catch (e) {\n    // tenta extrair apenas o objeto {...} se vier com prefixo/sufixo\n    const s = jsonStr.indexOf('{');\n    const e2 = jsonStr.lastIndexOf('}');\n    if (s >= 0 && e2 >= 0) {\n      try { \n        return JSON.parse(jsonStr.slice(s, e2 + 1)); \n      } catch (_) {\n        console.log('Erro no parsing do JSON:', _);\n      }\n    }\n    return null;\n  }\n}\n\n// Processamento principal\nconst results = items.map(item => {\n  const raw = item.json?.output ?? \"\";\n  console.log(\"Raw output recebido:\", raw);\n  \n  const parsed = safeParse(raw);\n  console.log(\"Parsed JSON:\", parsed);\n  \n  if (!parsed) {\n    console.log(\"Erro: não foi possível fazer parse do JSON\");\n    return {\n      json: {\n        consultor_responsavel: null,\n        duracao_atendimento: null,\n        ponto_positivo: null,\n        ponto_negativo: null,\n        feedback_texto: null,\n        demanda: null,\n        resolucao: null,\n        problemas_identificados: null,\n        resultado: null,\n        nivel_1: null,\n        nivel_2: null,\n        nivel_3: null,\n        tempo_resposta_adequado: null,\n        procedimento_seguido: null,\n        cliente_satisfeito: null\n      }\n    };\n  }\n\n  // Extração direta dos dados\n  const consultor = parsed.consultor_responsavel || null;\n  const duracao = parsed.duracao_atendimento || null;\n  const pontoPositivo = parsed.ponto_positivo || null;\n  const pontoNegativo = parsed.ponto_negativo || null;\n  \n  // Extrai feedback (objeto aninhado)\n  const feedback = parsed.feedback || {};\n  const demanda = feedback.demanda || null;\n  const resolucao = feedback.resolucao || null;\n  const problemas = feedback.problemas_identificados || null;\n  const resultado = feedback.resultado || null;\n  \n  // Extrai níveis (objeto aninhado)\n  const niveis = parsed.tabela_niveis || {};\n  const nivel1 = niveis.nivel_1 || null;\n  const nivel2 = niveis.nivel_2 || null;\n  const nivel3 = niveis.nivel_3 || null;\n  \n  // Extrai métricas (objeto aninhado)\n  const metricas = parsed.metricas_qualidade || {};\n  const tempoAdequado = metricas.tempo_resposta_adequado;\n  const procedimentoSeguido = metricas.procedimento_seguido;\n  const clienteSatisfeito = metricas.cliente_satisfeito;\n  \n  // RECONSTRÓI O FEEDBACK_TEXTO (CAMPO ESSENCIAL PARA TABULAÇÃO)\n  let feedbackTexto = null;\n  if (demanda || resolucao || problemas || resultado) {\n    const partes = [];\n    if (demanda) partes.push(`Demanda: ${demanda}`);\n    if (resolucao) partes.push(`Resolução: ${resolucao}`);\n    if (problemas) partes.push(`Problemas Identificados: ${problemas}`);\n    if (resultado) partes.push(`Resultado: ${resultado}`);\n    feedbackTexto = partes.join('\\n');\n  }\n  \n  console.log(\"Feedback texto reconstruído:\", feedbackTexto);\n  \n  const resultado_final = {\n    consultor_responsavel: consultor,\n    duracao_atendimento: duracao,\n    ponto_positivo: pontoPositivo,\n    ponto_negativo: pontoNegativo,\n    feedback_texto: feedbackTexto, // CAMPO CRÍTICO PARA TABULAÇÃO\n    demanda: demanda,\n    resolucao: resolucao,\n    problemas_identificados: problemas,\n    resultado: resultado,\n    nivel_1: nivel1,\n    nivel_2: nivel2,\n    nivel_3: nivel3,\n    tempo_resposta_adequado: tempoAdequado,\n    procedimento_seguido: procedimentoSeguido,\n    cliente_satisfeito: clienteSatisfeito\n  };\n  \n  console.log(\"Resultado final para este item:\", resultado_final);\n  \n  return {\n    json: resultado_final\n  };\n});\n\nconsole.log(\"Array de resultados completo:\", results);\nreturn results;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        400,
-        208
+        144,
+        176
       ],
       "id": "96167c90-3abc-4517-a811-06146c365a52",
       "name": "Code1"
+    },
+    {
+      "parameters": {
+        "name": "rerank",
+        "topK": 1
+      },
+      "id": "8474e5a1-febb-4bfb-9ed1-26eb3f9a2976",
+      "name": "rerank",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        608
+      ],
+      "id": "50041389-619c-4d6b-ab39-6cb38d23839f",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "rerank",
+          "mode": "list",
+          "cachedResultName": "rerank"
+        },
+        "options": {
+          "queryName": "rerank_fn"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -368,
+        608
+      ],
+      "id": "bde526fb-518f-48f2-a164-3328a50bd55c",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        816
+      ],
+      "id": "2fd1c990-6aa5-48ff-86e4-e1a10a70ce1c",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "connections": {
@@ -394,6 +491,50 @@
           }
         ]
       ]
+    },
+    "rerank": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "rerank",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "rerank",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -409,22 +550,22 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "amoCRM-Hook-Sender/1.0",
+            "user-agent": "amoCRM-Webhooks/3.0",
             "content-length": "194",
-            "accept": "*/*",
+            "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-forwarded-for": "169.150.216.132",
+            "x-amocrm-requestid": "bf9f334d-3957-4597-a7f8-7951250adc66",
+            "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "169.150.216.132",
-            "accept-encoding": "gzip"
+            "x-real-ip": "169.150.216.79"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "15909333",
+            "leads[add][0][id]": "17686653",
             "leads[add][0][status_id]": "61685383",
             "leads[add][0][pipeline_id]": "6961711",
             "account[id]": "31370511",
@@ -434,322 +575,9 @@
           "executionMode": "production"
         }
       }
-    ],
-    "HTTP Request": [
-      {
-        "json": {
-          "data": "{\"_page\":1,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/leads?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250\"}},\"_embedded\":{\"leads\":[{\"id\":15909333,\"name\":\"Damiao José Dos Santos\",\"price\":0,\"responsible_user_id\":8261837,\"group_id\":619452,\"status_id\":61685383,\"pipeline_id\":6961711,\"loss_reason_id\":null,\"created_by\":0,\"updated_by\":0,\"created_at\":1733188817,\"updated_at\":1757355286,\"closed_at\":null,\"closest_task_at\":null,\"is_deleted\":false,\"custom_fields_values\":[{\"field_id\":330876,\"field_name\":\"RGM\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"42180635\"}]},{\"field_id\":330926,\"field_name\":\"CPF\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"06611798340\"}]},{\"field_id\":330930,\"field_name\":\"Data de Matricula\",\"field_code\":null,\"field_type\":\"date\",\"values\":[{\"value\":1733108400}]},{\"field_id\":330938,\"field_name\":\"Curso\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Gestão De Recursos Humanos\"}]},{\"field_id\":330988,\"field_name\":\"Nivel\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Graduação\"}]},{\"field_id\":330992,\"field_name\":\"Polo\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Freguesia do Ó\"}]},{\"field_id\":334080,\"field_name\":\"Nome do Aluno\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Damiao\"}]},{\"field_id\":414754,\"field_name\":\"Ultima Fase\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"graduacao adimplente\"}]},{\"field_id\":294046,\"field_name\":\"Consultor\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Leticia\"}]},{\"field_id\":1003994,\"field_name\":\"Tipo do Atendimento\",\"field_code\":null,\"field_type\":\"select\",\"values\":[{\"value\":\"OUTROS\",\"enum_id\":1273066,\"enum_code\":null}]},{\"field_id\":419530,\"field_name\":\"Controle Fase\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Aguardando\"}]},{\"field_id\":1006798,\"field_name\":\"Controle Licenciado\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Sim\"}]},{\"field_id\":1005184,\"field_name\":\"Controle - Pagamento\",\"field_code\":null,\"field_type\":\"select\",\"values\":[{\"value\":\"Abril\",\"enum_id\":1271382,\"enum_code\":null}]},{\"field_id\":1014523,\"field_name\":\"Email Acadêmico\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"damiao.santos@cs.unicid.edu.br\"}]},{\"field_id\":1029779,\"field_name\":\"Data de Captura\",\"field_code\":null,\"field_type\":\"date\",\"values\":[{\"value\":1757300400}]},{\"field_id\":1029785,\"field_name\":\"Ultimo Consultor\",\"field_code\":null,\"field_type\":\"text\",\"values\":[{\"value\":\"Leticia\"}]},{\"field_id\":1030716,\"field_name\":\"Controle - Captura\",\"field_code\":null,\"field_type\":\"select\",\"values\":[{\"value\":\"Aguardando\",\"enum_id\":1304910,\"enum_code\":null}]}],\"score\":null,\"account_id\":31370511,\"labor_cost\":null,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/leads/15909333?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250\"}},\"_embedded\":{\"tags\":[],\"companies\":[],\"contacts\":[{\"id\":18478307,\"is_main\":true,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/contacts/18478307?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250\"}}}]}}]}}"
-        }
-      }
-    ],
-    "Edit Fields": [
-      {
-        "json": {
-          "data": {
-            "_page": 1,
-            "_links": {
-              "self": {
-                "href": "https://csvatendimento.kommo.com/api/v4/leads?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250"
-              }
-            },
-            "_embedded": {
-              "leads": [
-                {
-                  "id": 15909333,
-                  "name": "Damiao José Dos Santos",
-                  "price": 0,
-                  "responsible_user_id": 8261837,
-                  "group_id": 619452,
-                  "status_id": 61685383,
-                  "pipeline_id": 6961711,
-                  "loss_reason_id": null,
-                  "created_by": 0,
-                  "updated_by": 0,
-                  "created_at": 1733188817,
-                  "updated_at": 1757355286,
-                  "closed_at": null,
-                  "closest_task_at": null,
-                  "is_deleted": false,
-                  "custom_fields_values": [
-                    {
-                      "field_id": 330876,
-                      "field_name": "RGM",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "42180635"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 330926,
-                      "field_name": "CPF",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "06611798340"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 330930,
-                      "field_name": "Data de Matricula",
-                      "field_code": null,
-                      "field_type": "date",
-                      "values": [
-                        {
-                          "value": 1733108400
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 330938,
-                      "field_name": "Curso",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Gestão De Recursos Humanos"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 330988,
-                      "field_name": "Nivel",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Graduação"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 330992,
-                      "field_name": "Polo",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Freguesia do Ó"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 334080,
-                      "field_name": "Nome do Aluno",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Damiao"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 414754,
-                      "field_name": "Ultima Fase",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "graduacao adimplente"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 294046,
-                      "field_name": "Consultor",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Leticia"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1003994,
-                      "field_name": "Tipo do Atendimento",
-                      "field_code": null,
-                      "field_type": "select",
-                      "values": [
-                        {
-                          "value": "OUTROS",
-                          "enum_id": 1273066,
-                          "enum_code": null
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 419530,
-                      "field_name": "Controle Fase",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Aguardando"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1006798,
-                      "field_name": "Controle Licenciado",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Sim"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1005184,
-                      "field_name": "Controle - Pagamento",
-                      "field_code": null,
-                      "field_type": "select",
-                      "values": [
-                        {
-                          "value": "Abril",
-                          "enum_id": 1271382,
-                          "enum_code": null
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1014523,
-                      "field_name": "Email Acadêmico",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "damiao.santos@cs.unicid.edu.br"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1029779,
-                      "field_name": "Data de Captura",
-                      "field_code": null,
-                      "field_type": "date",
-                      "values": [
-                        {
-                          "value": 1757300400
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1029785,
-                      "field_name": "Ultimo Consultor",
-                      "field_code": null,
-                      "field_type": "text",
-                      "values": [
-                        {
-                          "value": "Leticia"
-                        }
-                      ]
-                    },
-                    {
-                      "field_id": 1030716,
-                      "field_name": "Controle - Captura",
-                      "field_code": null,
-                      "field_type": "select",
-                      "values": [
-                        {
-                          "value": "Aguardando",
-                          "enum_id": 1304910,
-                          "enum_code": null
-                        }
-                      ]
-                    }
-                  ],
-                  "score": null,
-                  "account_id": 31370511,
-                  "labor_cost": null,
-                  "_links": {
-                    "self": {
-                      "href": "https://csvatendimento.kommo.com/api/v4/leads/15909333?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250"
-                    }
-                  },
-                  "_embedded": {
-                    "tags": [],
-                    "companies": [],
-                    "contacts": [
-                      {
-                        "id": 18478307,
-                        "is_main": true,
-                        "_links": {
-                          "self": {
-                            "href": "https://csvatendimento.kommo.com/api/v4/contacts/18478307?with=contacts&query=15909333&filter%5Bstatuses%5D%5B0%5D%5Bpipeline_id%5D=6961711&filter%5Bstatuses%5D%5B0%5D%5Bstatus_id%5D=61685383&page=1&limit=250"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    ],
-    "HTTP Request1": [
-      {
-        "json": {
-          "data": "{\"id\":18478307,\"name\":\"Damiao José Dos Santos\",\"first_name\":\"\",\"last_name\":\"\",\"responsible_user_id\":8261837,\"group_id\":619452,\"created_by\":0,\"updated_by\":0,\"created_at\":1733188817,\"updated_at\":1757355286,\"closest_task_at\":null,\"is_deleted\":false,\"is_unsorted\":false,\"custom_fields_values\":[{\"field_id\":288546,\"field_name\":\"Phone\",\"field_code\":\"PHONE\",\"field_type\":\"multitext\",\"values\":[{\"value\":\"+5511974222919\",\"enum_id\":206734,\"enum_code\":\"WORK\"}]}],\"account_id\":31370511,\"_links\":{\"self\":{\"href\":\"https://csvatendimento.kommo.com/api/v4/contacts/18478307?page=1&limit=250\"}},\"_embedded\":{\"tags\":[],\"companies\":[]}}"
-        }
-      }
-    ],
-    "Edit Fields1": [
-      {
-        "json": {
-          "data": {
-            "id": 18478307,
-            "name": "Damiao José Dos Santos",
-            "first_name": "",
-            "last_name": "",
-            "responsible_user_id": 8261837,
-            "group_id": 619452,
-            "created_by": 0,
-            "updated_by": 0,
-            "created_at": 1733188817,
-            "updated_at": 1757355286,
-            "closest_task_at": null,
-            "is_deleted": false,
-            "is_unsorted": false,
-            "custom_fields_values": [
-              {
-                "field_id": 288546,
-                "field_name": "Phone",
-                "field_code": "PHONE",
-                "field_type": "multitext",
-                "values": [
-                  {
-                    "value": "+5511974222919",
-                    "enum_id": 206734,
-                    "enum_code": "WORK"
-                  }
-                ]
-              }
-            ],
-            "account_id": 31370511,
-            "_links": {
-              "self": {
-                "href": "https://csvatendimento.kommo.com/api/v4/contacts/18478307?page=1&limit=250"
-              }
-            },
-            "_embedded": {
-              "tags": [],
-              "companies": []
-            }
-          }
-        }
-      }
     ]
   },
-  "versionId": "b7a30e24-d275-4c06-9022-a560a38a46d8",
+  "versionId": "606dfcb8-b24a-47d0-8e1c-981f2fee4927",
   "triggerCount": 1,
   "shared": [
     {
