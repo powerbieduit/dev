@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T20:59:27.892Z",
-  "updatedAt": "2025-09-09T16:22:56.000Z",
+  "updatedAt": "2025-10-17T14:26:35.000Z",
   "id": "JZJSZfePPl6NQxTx",
   "name": "distribuicao_leads_anhanguera V2",
   "active": true,
@@ -45,8 +45,8 @@
       "name": "Get list of leads",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -100,8 +100,8 @@
       "name": "Update leads",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -128,8 +128,8 @@
       "name": "Update contacts1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -356,7 +356,7 @@
             "content-length": "188",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "18648154-2b0f-441b-81bf-d4a78fb5c288",
+            "x-amocrm-requestid": "8c3c4a58-aec8-4115-bb8e-244e4cb8a8a8",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
@@ -367,7 +367,7 @@
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "19122843",
+            "leads[add][0][id]": "19606370",
             "leads[add][0][status_id]": "70788396",
             "leads[add][0][pipeline_id]": "9095532",
             "account[id]": "30298412",
@@ -379,7 +379,7 @@
       }
     ]
   },
-  "versionId": "87beaa86-f191-442e-b548-cd9d87449acb",
+  "versionId": "4b20ea26-423f-4ae7-a2c6-5a05556692c5",
   "triggerCount": 1,
   "shared": [
     {
