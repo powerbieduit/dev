@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T21:00:44.158Z",
-  "updatedAt": "2025-09-09T16:22:02.000Z",
+  "updatedAt": "2025-10-16T16:26:19.000Z",
   "id": "Lec74yhTDupOfWxT",
   "name": "criacao_leads_sumaread V2",
   "active": true,
@@ -14,7 +14,7 @@
       "typeVersion": 1.1,
       "position": [
         -1040,
-        352
+        448
       ],
       "id": "eac88f95-ef0a-420b-b51d-cfabff38ba06",
       "name": "Wait",
@@ -51,43 +51,10 @@
       "name": "cria contato",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
-              "leftValue": "={{ $json.quantidade_encontrada }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -368,
-        352
-      ],
-      "id": "ad2a9cad-da32-4541-b2ce-8f9f44b506e4",
-      "name": "If1"
     },
     {
       "parameters": {
@@ -97,7 +64,7 @@
       "typeVersion": 2,
       "position": [
         -592,
-        352
+        448
       ],
       "id": "356a33fe-763c-44e0-873c-392a14db622a",
       "name": "Code"
@@ -106,7 +73,10 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "=+55{{ $json.Telefone }}"
+          "query": "=+55{{ $json.Telefone }}",
+          "pipelines": [
+            5617751
+          ]
         },
         "options": {}
       },
@@ -114,14 +84,14 @@
       "typeVersion": 1,
       "position": [
         -816,
-        352
+        448
       ],
       "id": "20cd387b-dfcf-4ddd-8568-7deb44c46950",
       "name": "procura lead1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -131,7 +101,7 @@
       "typeVersion": 3.2,
       "position": [
         -144,
-        448
+        560
       ],
       "id": "11edfaa1-dd3d-4860-9b49-8f08efb6ed5b",
       "name": "Merge"
@@ -191,7 +161,7 @@
       "typeVersion": 3.4,
       "position": [
         -1264,
-        256
+        448
       ],
       "id": "f80ef7ea-91e9-4c38-af4b-1d4207ad88c5",
       "name": "Edit Fields"
@@ -234,10 +204,10 @@
                   {
                     "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
                     "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 143,
+                    "rightValue": 49518854,
                     "operator": {
                       "type": "number",
-                      "operation": "notEquals"
+                      "operation": "equals"
                     }
                   }
                 ],
@@ -246,77 +216,18 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "fallbackOutput": "extra"
+        }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
         80,
-        448
+        544
       ],
       "id": "72213d2d-e5d1-4a2c-ac09-90f36a1457dd",
       "name": "Switch"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        304,
-        544
-      ],
-      "id": "acde8cde-37fd-40e2-9ac3-32cd98ae18d4",
-      "name": "No Operation, do nothing"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json.id }}",
-              "pipeline_id": 11003376,
-              "status_id": 84631604,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $json.name }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $json.telefone }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        304,
-        352
-      ],
-      "id": "167e8e8e-e868-405e-b64f-2cc46fac97a9",
-      "name": "recadastro",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
-        }
-      }
     },
     {
       "parameters": {
@@ -380,8 +291,8 @@
       "name": "cria lead (eduit new)",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -395,7 +306,7 @@
       "typeVersion": 2,
       "position": [
         -1488,
-        256
+        448
       ],
       "id": "31e7c720-46dc-416f-9828-c959329df7d6",
       "name": "Webhook",
@@ -513,7 +424,7 @@
       "typeVersion": 2.1,
       "position": [
         -1488,
-        1120
+        1168
       ],
       "id": "e57cb40b-30bd-448b-a363-37062370e417",
       "name": "Webhook1",
@@ -555,7 +466,7 @@
       "typeVersion": 3.4,
       "position": [
         -1264,
-        1120
+        1168
       ],
       "id": "509a3646-334f-4f9b-9bca-1a22ff32446b",
       "name": "Edit Fields2"
@@ -567,8 +478,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -1072,
-        1120
+        -1040,
+        1168
       ],
       "id": "2b0d495f-7800-4d3e-91cf-e5b4bef6371f",
       "name": "Wait1",
@@ -599,15 +510,15 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        944,
-        928
+        976,
+        880
       ],
       "id": "0f122e30-4d06-4421-895b-d9817061c6a1",
       "name": "cria contato1",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -638,8 +549,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -400,
-        1120
+        -368,
+        1168
       ],
       "id": "888e40b0-8b35-4f5c-93ca-c367c0299f07",
       "name": "If"
@@ -651,8 +562,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -624,
-        1120
+        -592,
+        1168
       ],
       "id": "9193e23d-a57f-4656-a274-6c3fbdc56447",
       "name": "Code3"
@@ -661,22 +572,25 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "={{ $json.telefone }}"
+          "query": "={{ $json.telefone }}",
+          "pipelines": [
+            5617751
+          ]
         },
         "options": {}
       },
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -848,
-        1120
+        -816,
+        1168
       ],
       "id": "01b1986e-8939-4326-8a7e-92552ee2e86e",
       "name": "procura lead",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -685,8 +599,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -176,
-        1216
+        -144,
+        1264
       ],
       "id": "46407698-91b9-4772-b4df-0ff70be9362d",
       "name": "Merge1"
@@ -698,133 +612,11 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        48,
-        928
+        80,
+        880
       ],
       "id": "258a1f5e-3ca0-4d68-a030-39e9dd5dc571",
       "name": "Code4"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('procura lead').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 143,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    },
-                    "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
-                    "leftValue": "={{ $('procura lead').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 143,
-                    "operator": {
-                      "type": "number",
-                      "operation": "notEquals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        48,
-        1216
-      ],
-      "id": "b2498992-dbac-45a9-8d82-847762d0775a",
-      "name": "Switch1"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        272,
-        1312
-      ],
-      "id": "2c73a7cc-ab67-483f-8bae-caee6554e055",
-      "name": "No Operation, do nothing1"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json.id }}",
-              "pipeline_id": 11003376,
-              "status_id": 84631604,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $json.name }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $json.telefone }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        272,
-        1120
-      ],
-      "id": "5553c37a-1107-413e-b77f-be6141561df6",
-      "name": "recadastro1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
-        }
-      }
     },
     {
       "parameters": {
@@ -844,7 +636,7 @@
       "typeVersion": 1,
       "position": [
         -144,
-        912
+        880
       ],
       "id": "2bbb3d13-2b93-46ce-8b64-fed8f99fa16a",
       "name": "Get many rows1",
@@ -880,8 +672,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        272,
-        928
+        304,
+        880
       ],
       "id": "774b7cb4-8049-490c-b9c0-6437e02c2a0b",
       "name": "Update a row1",
@@ -909,8 +701,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        688,
-        976
+        752,
+        880
       ],
       "id": "7194bddf-ec4d-4885-8461-544e61ae5f57",
       "name": "Edit Fields3"
@@ -922,8 +714,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        496,
-        928
+        528,
+        880
       ],
       "id": "2ddae426-ee21-4128-b2ca-0c16eb228bb2",
       "name": "Code5"
@@ -956,6 +748,10 @@
                   {
                     "data": "{\"id\":673258,\"type\":\"text\"}",
                     "value": "={{ $('Edit Fields2').item.json.tipo }}"
+                  },
+                  {
+                    "data": "{\"id\":688279,\"type\":\"select\"}",
+                    "value": "Google-Ads"
                   }
                 ]
               },
@@ -986,15 +782,15 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1168,
-        928
+        1200,
+        880
       ],
       "id": "d54c73b0-6dbd-487f-816f-3ae23bc7981b",
       "name": "cria lead",
       "credentials": {
         "kommoOAuth2Api": {
-          "id": "nVF4jy6NK0rf5oed",
-          "name": "Kommo BU"
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
         }
       }
     },
@@ -1002,14 +798,14 @@
       "parameters": {
         "content": "## google ads\n",
         "height": 656,
-        "width": 2960,
+        "width": 3664,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         -1568,
-        816
+        832
       ],
       "id": "73a91833-ae55-4cda-99ba-aa243aedc259",
       "name": "Sticky Note"
@@ -1018,17 +814,1129 @@
       "parameters": {
         "content": "## site sumaread\n",
         "height": 656,
-        "width": 2960,
+        "width": 3664,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1568,
-        80
+        -1584,
+        160
       ],
       "id": "b65578be-c561-4615-9da3-2460af49a7c8",
       "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "sem_curso",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "27ae7d4f-f4b0-4337-883c-3dc3db4e9743"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "curso não preenchido"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3f3ab88a-82a0-4a4a-8d0d-5e3db93fb39d",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "=com_curso",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "curso preenchido"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        528,
+        464
+      ],
+      "id": "5f8b121e-c60e-4e39-9fff-37e44a140edf",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "794200977108142",
+        "recipientPhoneNumber": "={{ $('Code in JavaScript').item.json.telefone }}",
+        "template": "recadastro_ia_anh_semcurso_o90bbf|pt_BR"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        752,
+        368
+      ],
+      "id": "9f76d404-b88d-4e3a-8381-62f7ab3dd626",
+      "name": "Send template2",
+      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "ZYIePjycu0XbxiBl",
+          "name": "WhatsApp Anhanguera licenciado"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "794200977108142",
+        "recipientPhoneNumber": "={{ $('Code in JavaScript').item.json.telefone }}",
+        "template": "recadastro_ia_anh_curso_sa18fl|pt_BR",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.curso }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        752,
+        560
+      ],
+      "id": "8ff37df4-be4d-48ec-bf10-44d8a4527604",
+      "name": "Send template3",
+      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "ZYIePjycu0XbxiBl",
+          "name": "WhatsApp Anhanguera licenciado"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Send template2').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        368
+      ],
+      "id": "a3e0a575-0aed-47d3-8b43-3c4f56232d9c",
+      "name": "Get a row2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b710a8dd-f668-441a-b2bb-914ac4d854db",
+              "leftValue": "={{ $json.atendimento_ia }}",
+              "rightValue": "pause",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1648,
+        464
+      ],
+      "id": "ab934da6-6f58-4816-949e-492c63c1c5c6",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        368
+      ],
+      "id": "ade2d0b1-7632-4696-b77d-1032fcaa88bd",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "=Olá! Vi que você voltou a pesquisar sobre os próximos passos para sua carreira.   Como da última vez conversamos *sobre o curso de *{{ $('Code in JavaScript').item.json.curso }}*, queria saber: este parece ser um *bom momento para você investir no seu desenvolvimento*? ✨"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        560
+      ],
+      "id": "efa821db-5d6b-4e3d-9f27-bebafa8cc9ba",
+      "name": "Create new notes3",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "=Oi! Tudo bem? Vi que você deu uma olhada em nossos preços hoje. \n\nQue tal a gente conversar *5 minutinhos* sobre como *podemos te ajudar a alcançar seus objetivos*? 😉"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        368
+      ],
+      "id": "3274543e-29e7-4f89-a83a-ab74d9ab623b",
+      "name": "Create new notes4",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Send template3').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        560
+      ],
+      "id": "d90546ce-a05f-418c-803d-9a838cd002c0",
+      "name": "Get a row3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente_sum",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        560
+      ],
+      "id": "ee45c361-a740-4202-9da0-a7454fe0d174",
+      "name": "Criar Cliente1",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code').item.json.id }}",
+              "pipeline_id": 11873040,
+              "status_id": 93544152,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "=+{{ $json.contacts[0].input }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      62864
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        976,
+        368
+      ],
+      "id": "759c9595-69b9-4081-b20c-64292b3d7569",
+      "name": "recadastro3",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code').item.json.id }}",
+              "pipeline_id": 11873040,
+              "status_id": 93544152,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "=+{{ $json.contacts[0].input }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      62864
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        976,
+        560
+      ],
+      "id": "a20d8ac1-f565-4858-b7f0-b4adcb5e5b20",
+      "name": "recadastro2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega todos os itens de entrada\nconst items = $input.all();\n\n// Mapeia cada item\nreturn items.map(item => {\n  const curso = (item.json.curso || \"\").trim().toLowerCase();\n\n  // Se for vazio ou \"não informado\", marca como sem curso\n  const status = (curso === \"\" || curso === \"não informado\")\n    ? \"sem_curso\"\n    : \"com_curso\";\n\n  return {\n    json: {\n      ...item.json,\n      status\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        464
+      ],
+      "id": "ad81739d-21e4-4a8e-a93f-280afdeeb9fd",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 143,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
+                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 49518854,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        80,
+        1248
+      ],
+      "id": "8f4274a2-4911-483b-a984-e4202d3eebf0",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "sem_curso",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "27ae7d4f-f4b0-4337-883c-3dc3db4e9743"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "curso não preenchido"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3f3ab88a-82a0-4a4a-8d0d-5e3db93fb39d",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "=com_curso",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "curso preenchido"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        528,
+        1168
+      ],
+      "id": "1fc7628b-c24b-4d65-a2fa-b39b915aa4d7",
+      "name": "Switch4"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "794200977108142",
+        "recipientPhoneNumber": "={{ $('Code in JavaScript1').item.json.telefone }}",
+        "template": "recadastro_ia_anh_semcurso_o90bbf|pt_BR"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        752,
+        1072
+      ],
+      "id": "cd824bcc-b16a-4249-a46d-3b7f95dc9455",
+      "name": "Send template",
+      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "ZYIePjycu0XbxiBl",
+          "name": "WhatsApp Anhanguera licenciado"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "794200977108142",
+        "recipientPhoneNumber": "={{ $('Code in JavaScript1').item.json.telefone }}",
+        "template": "recadastro_ia_anh_curso_sa18fl|pt_BR",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.curso }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        752,
+        1264
+      ],
+      "id": "e7053af3-aa49-44b5-9e86-0e317807fdc6",
+      "name": "Send template4",
+      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "ZYIePjycu0XbxiBl",
+          "name": "WhatsApp Anhanguera licenciado"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Send template').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        1072
+      ],
+      "id": "cadfc99d-2ceb-48f5-95fa-518b03ee8187",
+      "name": "Get a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b710a8dd-f668-441a-b2bb-914ac4d854db",
+              "leftValue": "={{ $json.atendimento_ia }}",
+              "rightValue": "pause",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1648,
+        1168
+      ],
+      "id": "df52d74e-45d4-49f8-82cd-fad0b8f3ee90",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        1072
+      ],
+      "id": "a5b22e84-5d5b-415d-b45e-9acfd1dbf9e0",
+      "name": "Update a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "=Olá! Vi que você voltou a pesquisar sobre os próximos passos para sua carreira.   Como da última vez conversamos *sobre o curso de *{{ $('Code in JavaScript1').item.json.curso }}*, queria saber: este parece ser um *bom momento para você investir no seu desenvolvimento*? ✨"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1264
+      ],
+      "id": "572d22ad-c985-418c-91f7-7e980fe301cd",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "=Oi! Tudo bem? Vi que você deu uma olhada em nossos preços hoje. \n\nQue tal a gente conversar *5 minutinhos* sobre como *podemos te ajudar a alcançar seus objetivos*? 😉"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1072
+      ],
+      "id": "080f0c09-1330-44c5-ab6f-d81eca0bff57",
+      "name": "Create new notes5",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Send template4').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        1264
+      ],
+      "id": "17d111cf-5d26-4892-80ea-6494e18027df",
+      "name": "Get a row4",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente_sum",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        1248
+      ],
+      "id": "13cb04a6-054b-4495-80e7-1ce7501349eb",
+      "name": "Criar Cliente",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code').item.json.id }}",
+              "pipeline_id": 11873040,
+              "status_id": 93544152,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "=+{{ $json.contacts[0].input }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      62864
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1072
+      ],
+      "id": "113b3cf6-d892-49c1-9e6b-d60b1c65d938",
+      "name": "recadastro4",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code').item.json.id }}",
+              "pipeline_id": 11873040,
+              "status_id": 93544152,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":689125,\"type\":\"text\"}",
+                    "value": "=+{{ $json.contacts[0].input }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "tags": [
+                  {
+                    "id": [
+                      62864
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1264
+      ],
+      "id": "23ffcf31-3dc9-432d-9d8b-80b6fd25a52f",
+      "name": "recadastro5",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega todos os itens de entrada\nconst items = $input.all();\n\n// Mapeia cada item\nreturn items.map(item => {\n  const curso = (item.json.curso || \"\").trim().toLowerCase();\n\n  // Se for vazio ou \"não informado\", marca como sem curso\n  const status = (curso === \"\" || curso === \"não informado\")\n    ? \"sem_curso\"\n    : \"com_curso\";\n\n  return {\n    json: {\n      ...item.json,\n      status\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        1168
+      ],
+      "id": "fa2b658c-4f85-41d0-ad65-93f8d67c2030",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.id }}",
+              "pipeline_id": 5617751,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":693635,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        304,
+        656
+      ],
+      "id": "024f39a2-2e9c-4f6a-a5af-a43913fdf0be",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json.id }}",
+              "text": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        528,
+        656
+      ],
+      "id": "06254c01-c284-415e-a59c-caedfab7dbad",
+      "name": "Create new notes2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
+              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -368,
+        448
+      ],
+      "id": "884e3a9d-926d-412e-9ae2-800192d3da92",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json.id }}",
+              "pipeline_id": 5617751,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":693635,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        304,
+        1360
+      ],
+      "id": "f171d33e-9112-4f59-babc-b2ed72337455",
+      "name": "Update leads2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json.id }}",
+              "text": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        528,
+        1360
+      ],
+      "id": "5688e86b-fa39-4a1d-a66d-8cc0eb48c8a7",
+      "name": "Create new notes6",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
     }
   ],
   "connections": {
@@ -1054,29 +1962,11 @@
         ]
       ]
     },
-    "If1": {
-      "main": [
-        [
-          {
-            "node": "Get many rows",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code": {
       "main": [
         [
           {
-            "node": "If1",
+            "node": "If4",
             "type": "main",
             "index": 0
           }
@@ -1131,14 +2021,21 @@
       "main": [
         [
           {
-            "node": "recadastro",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "No Operation, do nothing",
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update leads1",
             "type": "main",
             "index": 0
           }
@@ -1288,7 +2185,7 @@
       "main": [
         [
           {
-            "node": "Switch1",
+            "node": "Switch2",
             "type": "main",
             "index": 0
           }
@@ -1300,24 +2197,6 @@
         [
           {
             "node": "Update a row1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch1": {
-      "main": [
-        [
-          {
-            "node": "recadastro1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "No Operation, do nothing1",
             "type": "main",
             "index": 0
           }
@@ -1367,6 +2246,341 @@
           }
         ]
       ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Send template2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send template3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template2": {
+      "main": [
+        [
+          {
+            "node": "recadastro3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template3": {
+      "main": [
+        [
+          {
+            "node": "recadastro2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row2": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Cliente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes3": {
+      "main": [
+        [
+          {
+            "node": "Get a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes4": {
+      "main": [
+        [
+          {
+            "node": "Get a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row3": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "recadastro3": {
+      "main": [
+        [
+          {
+            "node": "Create new notes4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "recadastro2": {
+      "main": [
+        [
+          {
+            "node": "Create new notes3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send template4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template": {
+      "main": [
+        [
+          {
+            "node": "recadastro4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template4": {
+      "main": [
+        [
+          {
+            "node": "recadastro5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Update a row3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        [
+          {
+            "node": "Get a row4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes5": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row4": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "recadastro4": {
+      "main": [
+        [
+          {
+            "node": "Create new notes5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "recadastro5": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads2": {
+      "main": [
+        [
+          {
+            "node": "Create new notes6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1377,63 +2591,27 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36",
-            "content-length": "76",
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-            "content-type": "application/json",
-            "origin": "https://www.sumaread.com.br",
-            "priority": "u=1, i",
-            "referer": "https://www.sumaread.com.br/",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "191.39.133.37",
-            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "191.39.133.37"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "nome": "Aline f de oliveira ",
-            "celular": "11959311938",
-            "tipo": "Graduação"
-          },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/criacao_leads_sumare",
-          "executionMode": "production"
-        }
-      }
-    ],
     "Webhook1": [
       {
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
             "user-agent": "Google-Ads-Notifications",
-            "content-length": "859",
+            "content-length": "864",
             "accept-encoding": "gzip, deflate, br",
             "content-type": "application/json",
             "from": "Google-Ads-Notifications(at)GoogleAdsNotifications.com",
-            "x-forwarded-for": "66.249.83.105",
+            "x-forwarded-for": "66.249.83.106",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "66.249.83.105"
+            "x-real-ip": "66.249.83.106"
           },
           "params": {},
           "query": {},
           "body": {
-            "lead_id": "01ed595ecffb187fc3c96e70d897f7d9a76873631a9588f68e0a45e45b0720bacd236bb5f57053a2fb28b180b7356c",
+            "lead_id": "018344323848716fd67190d84f2cf372361ce53abbabd6b026931c3ccc4ce706c67fd231af1d363a993b0ce2f1b7d7",
             "user_column_data": [
               {
                 "column_name": "Em que programa tem interesse?",
@@ -1442,22 +2620,22 @@
               },
               {
                 "column_name": "Full Name",
-                "string_value": "Carlos Eduardo",
+                "string_value": "Marcelo Silva",
                 "column_id": "FULL_NAME"
               },
               {
                 "column_name": "User Phone",
-                "string_value": "+5531997889919",
+                "string_value": "+5521994237787",
                 "column_id": "PHONE_NUMBER"
               },
               {
                 "column_name": "User Email",
-                "string_value": "qdedededed@gmail.com",
+                "string_value": "marcelopet91@gmail.com",
                 "column_id": "EMAIL"
               },
               {
                 "column_name": "City",
-                "string_value": "Contagem",
+                "string_value": "RiodeJaneiro",
                 "column_id": "CITY"
               }
             ],
@@ -1471,15 +2649,51 @@
             "creative_id": 0,
             "asset_group_id": 6463687008,
             "lead_stage": "Raw lead",
-            "lead_submit_time": "2025-08-28T19:42:35.697677Z"
+            "lead_submit_time": "2025-09-18T15:30:25.235311Z"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/880e7b71-fbb8-4f91-91c3-14359444f0e4",
           "executionMode": "production"
         }
       }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+            "content-length": "67",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "https://www.sumaread.com.br",
+            "priority": "u=1, i",
+            "referer": "https://www.sumaread.com.br/",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.188.30",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.188.30"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nome": "rapha teste",
+            "celular": "11993537209",
+            "tipo": "Graduação"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/criacao_leads_sumare",
+          "executionMode": "production"
+        }
+      }
     ]
   },
-  "versionId": "2ee80995-bc4b-4e0f-ab40-1cab6401230f",
+  "versionId": "1f0fffc4-b375-43fa-8544-f4dde9b6c0ef",
   "triggerCount": 2,
   "shared": [
     {
