@@ -1,0 +1,354 @@
+{
+  "createdAt": "2025-10-07T19:59:25.491Z",
+  "updatedAt": "2025-10-16T16:54:22.000Z",
+  "id": "G3591Zu2y0pdwqok",
+  "name": "orchs",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1264,
+        -128
+      ],
+      "id": "761dbf3f-bc80-4562-863a-29e77a82798e",
+      "name": "When chat message received",
+      "webhookId": "f3f664bb-d59a-47df-adb2-160774f97ce2"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é um especialista em controlar demandas para agente de ia. \n\nAnalise o lead e veja em qual etapa ele está. \n\nSe Status  = 1, envie todas as perguntas para o agente receptivo \n\nse Status = 2, envie todas as perguntas para o agente  fupper. \n\nNão acrescente nem formate as respostas, somente envie o conteúdo gerado da tool."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -976,
+        -144
+      ],
+      "id": "17a25a42-f61e-4b6f-9121-15078ba696ea",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "text": "Você atende leads que estão sendo contatos (ativamente) via whatsapp, seu objetivo é continuar a conversa e fazer a pessoa se matricular ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -832,
+        112
+      ],
+      "id": "1fa71c75-e6a2-4e3e-ab5c-e84187ea15fb",
+      "name": "Fupper"
+    },
+    {
+      "parameters": {
+        "text": "Você atende leads vindos via whatsapp com interesse em fazer algum curso, seu objetivo é continuar a conversa e convence-lô a fazer a matrícula ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -200,
+        96
+      ],
+      "id": "74213061-5d7f-415f-afd7-577e113b9ad6",
+      "name": "Receptivo"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        448
+      ],
+      "id": "17c4d08f-acf7-432e-9165-6edaf7b5f582",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1200,
+        128
+      ],
+      "id": "59355767-c1f7-4ce9-a261-3bbff0743d4c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -704,
+        448
+      ],
+      "id": "cacc0acd-4272-481c-9e96-91a01bf2c8ef",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        448
+      ],
+      "id": "19b0a288-7e5f-4f93-b648-9ed692c779fa",
+      "name": "distribuir_humano"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        448
+      ],
+      "id": "45cf3147-70c7-46e2-8550-f476cea53184",
+      "name": "inscricao"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        448
+      ],
+      "id": "50fa1e95-3e10-4dbc-9c32-0b87c3cc6df9",
+      "name": "rag informacoes"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -192,
+        448
+      ],
+      "id": "c25fd0a5-51c0-417e-a01e-622f7c34c857",
+      "name": "rag precos"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        448
+      ],
+      "id": "e5e729b3-dbeb-4a51-be75-04186e777b61",
+      "name": "perder lead"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fupper": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receptivo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Fupper",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Receptivo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Fupper",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Receptivo",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "distribuir_humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "Fupper",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "inscricao": {
+      "ai_tool": [
+        [
+          {
+            "node": "Fupper",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rag informacoes": {
+      "ai_tool": [
+        [
+          {
+            "node": "Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Fupper",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rag precos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Receptivo",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Fupper",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "perder lead": {
+      "ai_tool": [
+        [
+          {
+            "node": "Fupper",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "fdcd327c-1d39-43ff-89bd-67dd5848a6ce",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-07T19:59:25.496Z",
+      "updatedAt": "2025-10-07T19:59:25.496Z",
+      "role": "workflow:owner",
+      "workflowId": "G3591Zu2y0pdwqok",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
