@@ -1,0 +1,2302 @@
+{
+  "createdAt": "2025-10-14T13:58:23.665Z",
+  "updatedAt": "2025-10-14T19:02:18.000Z",
+  "id": "0VY5HD2WExJiaDpu",
+  "name": "distribuicao_sem resposta_sumaré copy",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        64
+      ],
+      "id": "1ca6a232-b64a-428a-bc33-acc4f33cd68c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "dados_cliente_anh",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{\n  new Date(Date.now() - 60 * 60 * 1000) // 1 hora atrás\n    .toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' })\n    .replace(' ', 'T')\n}}\n"
+            },
+            {
+              "keyName": "atendimento_ia",
+              "condition": "is",
+              "keyValue": "null"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        64
+      ],
+      "id": "0d377867-7043-4516-bcec-c3391bbd4ad6",
+      "name": "Get many rows",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "null",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "02eaedca-5adb-42a1-b1eb-df57f7972c24"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "efe12c9c-9911-4eb4-9143-90ee00955700",
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        640,
+        -16
+      ],
+      "id": "17c9a688-dd50-4692-a5d9-0561deea4f68",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        864,
+        80
+      ],
+      "id": "cde91303-fabf-4ca1-a838-415610525b4c",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "n8n_chat_histories_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "keyValue": "={{ $json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -112
+      ],
+      "id": "fe5e33de-0afc-4ad1-ae77-3337f9935e85",
+      "name": "Get a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f1997386-faaa-4c05-95b4-49c50a7b522d",
+              "leftValue": "={{ $json.message.type }}",
+              "rightValue": "ai",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1088,
+        -112
+      ],
+      "id": "9d2b4d1d-d3a6-43cd-a8ce-4a5097d589c7",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Get a row').item.json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        -208
+      ],
+      "id": "c91e5a7b-44ca-457f-84bc-9d0195483ec5",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_kommo",
+              "fieldValue": "sim"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        -16
+      ],
+      "id": "2c63fb15-1861-46e0-8463-a295edba04dc",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1536,
+        -112
+      ],
+      "id": "de1b26a7-d216-4306-b2a4-209a831fb211",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [items[0]];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        -112
+      ],
+      "id": "c679aea1-6d4a-48ea-a415-cadd66a40928",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "phone",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        192,
+        64
+      ],
+      "id": "1f77c57c-b5e1-4951-8328-fcf251a74ba7",
+      "name": "Split Out",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        416,
+        64
+      ],
+      "id": "6d237611-8420-4897-b644-b2f5ea0a7621",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $item(0).$node[\"Get many rows\"].json.phone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4208,
+        -208
+      ],
+      "id": "46bdf9e3-be04-40ec-a60e-d7a68da9f2ae",
+      "name": "Update a row2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e283fa3a-89d7-4de3-8691-37d41d0bf85a",
+              "name": "retorno",
+              "value": "atendimento distribuido para consultor",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5440,
+        64
+      ],
+      "id": "0504d556-d1d9-4ee4-a226-aecc08d64a7d",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $item(0).$node[\"Edit Fields3\"].json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5617751,
+              "status_id": 49518230,
+              "responsible_user_id": "={{ +$json.id_usuario }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":693635,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3632,
+        -192
+      ],
+      "id": "f7f22a15-8b08-4145-aed0-2c9c594f262e",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $item(0).$node[\"Edit Fields3\"].json.data._embedded.leads[0]._embedded.contacts[0].id }}",
+              "responsible_user_id": "={{ $('Edit Fields').item.json.id_usuario }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3968,
+        -208
+      ],
+      "id": "1b87ba31-7dcd-4c5a-8515-1b922b46a004",
+      "name": "Update contacts",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": 91899500,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "31970465-0401-4362-a00c-ebabea62c282"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": "="
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2432,
+        -112
+      ],
+      "id": "21b0a8fe-4b92-422e-97be-5d9fcb50274d",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "url": "=https://sumaread.kommo.com/api/v4/leads?with=contacts&query={{ $json.telefone.replace(/@.*/,'') }}&filter[statuses][0][pipeline_id]=11873040&filter[statuses][0][status_id]=91899500",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjgzNGY4MWNlZDJjM2Y4ZDgwMjdiY2Q2MDVhY2FkODMxMjU2ZTc0MTNkMjljNDY3MjU5OWYyM2I4MDlmMTc3MjRmMmU0YmQ0NjMyZmE1MTBjIn0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI4MzRmODFjZWQyYzNmOGQ4MDI3YmNkNjA1YWNhZDgzMTI1NmU3NDEzZDI5YzQ2NzI1OTlmMjNiODA5ZjE3NzI0ZjJlNGJkNDYzMmZhNTEwYyIsImlhdCI6MTc1NzM1MzA2MywibmJmIjoxNzU3MzUzMDYzLCJleHAiOjE4MDEzNTM2MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiY2QxYzVlNTEtMGZhYi00YjI0LTlmN2YtZDc5MTc5MTNkY2JkIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.HAOrmHblRCJo5tS1QXMpYfCqK2iejbO88CBoBTzvSjPh7D5eeqzYmjEy7OmRcksOTpZpwBjlRSvZseCM8jbVBeCBc_HuGV_coAeBMKZ4hwdIQevoHNkgaEOVf4d7OiuVub9K0DnjGsQ1MxAJDbkwMWsX_ItNXv1_fgwIjvm07Y5lYNb7alUsBNABdUtdS8fSQ0edbYmxrx2m39uQG_WOUJiO855A_VxpRJVLcu2sQauc_sUthJ5eewyV4lc34sV-35v3NR7FZ1bvGzXMYbnAnM_Pzng1cWiJnSxD36KcOi8X0GAMvLKK_Sm3hyv4213rFd0fj8uO3h7zoFramTYQSA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1984,
+        -112
+      ],
+      "id": "6a0f4855-985e-4624-a61d-f4a89844b1bf",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a34904d7-386d-431c-960b-94fa85be51b0",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2208,
+        -112
+      ],
+      "id": "373c6c9d-929c-4a8b-ae54-78404cd911d2",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2656,
+        -16
+      ],
+      "id": "19ee322c-83dd-41de-9f26-00a7199e0f28",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chat_messages_sum",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $item(0).$node[\"Get many rows\"].json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4416,
+        -208
+      ],
+      "id": "508166ab-0f0b-4bd2-a580-a13646b73347",
+      "name": "Get many rows2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ordena por created_at ASC e formata o histórico\nconst sorted = items.sort((a, b) => \n  new Date(a.json.created_at) - new Date(b.json.created_at)\n);\n\nconst conversation = sorted.map(row => {\n  const userMsg = row.json.user_message ? `Usuário: ${row.json.user_message}` : '';\n  const botMsg = row.json.bot_message ? `Bot: ${row.json.bot_message}` : '';\n  return [userMsg, botMsg].filter(Boolean).join('\\n');\n}).join('\\n\\n');\n\nreturn [{ json: { conversation } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4640,
+        -208
+      ],
+      "id": "35b8d6ab-dbb0-4812-a535-76a3772a1c35",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Prompt para Agente de Resumo de Conversas\n\nVocê é um assistente especializado em resumir conversas do WhatsApp entre o assistente virtual comercial da Sumaré e candidatos.\n\n## Sua Tarefa\nAnalise a conversa completa abaixo e crie um resumo estruturado:\n\n{{$json.conversation}}\n\n## Informações para Identificar\n- **Nome do candidato:** Procure por qualquer menção ao nome (completo ou primeiro nome)\n- **Nível de interesse:** Graduação, Pós-graduação ou Não informado\n- **Curso específico:** Nome exato do curso mencionado\n- **Informações fornecidas:** Valores, prazos, links, documentos, detalhes de inscrição\n- **Status:** Se o candidato ainda está respondendo ou parou de responder\n\n## Classificação de Níveis\n- **Graduação:** Bacharelado, licenciatura, tecnólogo (ex: Administração, Engenharia, Direito, Psicologia)\n- **Pós-graduação:** MBA, especialização, mestrado, doutorado\n- **Não informado:** Quando não fica claro o nível de interesse\n\n## Formato de Resposta Obrigatório\n\n**Resumo:** [2-3 frases descrevendo o que aconteceu na conversa, incluindo nome do candidato se mencionado e principais informações fornecidas pelo assistente]\n\n**Nome do candidato:** [Nome identificado ou \"Não informado\"]\n\n**Nível:** [Graduação/Pós-graduação/Não informado]\n\n**Curso:** [Nome do curso ou \"Não informado\"]\n\n**Status da conversa:** [Candidato respondeu/Candidato parou de responder]\n\n---\n\n**IMPORTANTE:** Responda APENAS no formato acima, sem repetir estas instruções.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        4864,
+        -208
+      ],
+      "id": "34bacec4-9ee8-4fab-9de0-07a543e200bd",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4944,
+        16
+      ],
+      "id": "c0535adc-0077-4bff-a152-eb5bf4047151",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Update leads').first().json._embedded.leads[0].id }}",
+              "text": "={{ $json.text }} - {{ $execution.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        5216,
+        -208
+      ],
+      "id": "4f7452ad-58de-4248-823e-df263a5860be",
+      "name": "Create new notes1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Wzp8hZo0JKf2JKw7",
+          "name": "Kommo comercial BU novo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items do nó anterior (Supabase)\nconst rows = items;\n\n// ===== Config =====\nconst DEFAULT_TOP_N = 5;\nconst TOP_N = Number(items?.[0]?.json?.TOP_N) > 0 ? Number(items[0].json.TOP_N) : DEFAULT_TOP_N;\n\n// ===== Helpers =====\nconst normNome = (v) => (v ?? \"\").trim().toLowerCase();\nconst getKey = (j) => j.id_lead ?? normNome(j.nome ?? j.Nome); // chave do consultor\nconst getTs = (j) => {\n  const s = j.ultimo_lead ?? j[\"Ultimo Lead\"] ?? j.ultimoLead;\n  const t = Date.parse(s);\n  return isNaN(t) ? Number.NEGATIVE_INFINITY : t; // sem/ruim => mais antigo\n};\n\n// ===== Dedup por consultor, mantendo o MAIS ANTIGO ultimo_lead =====\nconst byConsultor = new Map();\n/*\n Estrutura: key -> { idx, item, ts }\n Mantém aquele com ts MENOR (mais antigo) para representar o consultor.\n*/\nfor (let i = 0; i < rows.length; i++) {\n  const r = rows[i];\n  const j = r.json;\n\n  const keyRaw = getKey(j);\n  const key = (keyRaw == null || keyRaw === \"\") ? `__sem_chave_${i}` : String(keyRaw);\n\n  const ts = getTs(j);\n\n  const cur = byConsultor.get(key);\n  if (!cur || ts < cur.ts) {\n    byConsultor.set(key, { idx: i, item: r, ts });\n  }\n}\n\nconst unicos = Array.from(byConsultor.values());\n\nif (unicos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// ===== Ordenar do mais antigo -> mais recente =====\nunicos.sort((a, b) => a.ts - b.ts);\n\n// ===== Selecionar pool e sortear =====\nconst take = Math.min(TOP_N, unicos.length);\nconst candidatos = unicos.slice(0, take);\n\n// Sorteio uniforme\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// ===== Retorno preservando o índice original para pairedItem =====\nreturn [\n  {\n    json: escolhido.item.json,\n    pairedItem: { item: escolhido.idx },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        -208
+      ],
+      "id": "cf49d416-b5d3-4667-8288-1daa7de3f698",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distrib_sumare",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "ATIVO"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2656,
+        -208
+      ],
+      "id": "03254cc3-7903-4014-ab99-9ade84cbfb0b",
+      "name": "Get many rows3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "distrib_sumare",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id_usuario",
+              "condition": "eq",
+              "keyValue": "={{ $json.id_usuario }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_lead",
+              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3072,
+        -176
+      ],
+      "id": "954f595c-a9f5-474c-b94f-56c0ccb9ea99",
+      "name": "Update a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node (JavaScript) - v2\n// Ative \"Run Once for All Items\" (Executar uma vez para todos os items)\n\nfunction pickOne(records) {\n  if (!Array.isArray(records) || records.length === 0) return [];\n  const chosen = records.find(r => r.status === 'ATIVO') || records[0];\n  return [{ json: chosen }]; // n8n exige array de items\n}\n\nlet records = [];\n\n// Cenário 1: vários items separados (cada um tem json com o registro)\nif (items.length > 1 || (items.length === 1 && items[0].json && !Array.isArray(items[0].json) && items[0].json.status !== undefined)) {\n  records = items.map(i => i.json);\n}\n// Cenário 2: um item contendo array diretamente em json\nelse if (items.length && Array.isArray(items[0].json)) {\n  records = items[0].json;\n}\n// Cenário 3: um item contendo array em json.data\nelse if (items.length && Array.isArray(items[0].json?.data)) {\n  records = items[0].json.data;\n}\n\n// Retorna 1 item apenas (o ATIVO, se existir; senão o primeiro)\nreturn pickOne(records);\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3248,
+        -192
+      ],
+      "id": "527baa46-c159-474c-81a1-a0b9c7279df3",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1ddf78cc-b00a-4bc6-bdbc-1d01d5b26f95",
+              "name": "id_usuario",
+              "value": "={{ $json.id_usuario }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3440,
+        -192
+      ],
+      "id": "9557e55c-0a7f-430f-a2f3-fd041da2d2d1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields4').all()[0].json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539246,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":31782,\"type\":\"text\"}",
+                    "value": "={{ $('Code5').item.json.curso }}"
+                  },
+                  {
+                    "data": "{\"id\":31786,\"type\":\"text\"}",
+                    "value": "={{ $('Code5').item.json.nivel }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        2448
+      ],
+      "id": "828230cf-a97e-4ad0-8712-7170410a5b85",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Prompt para Agente de Resumo de Conversas\nVocê é um assistente especializado em resumir conversas do WhatsApp entre o assistente virtual comercial da Cruzeiro do Sul e candidatos.\nSua Tarefa\nAnalise a conversa completa abaixo e crie um resumo estruturado:\n{{$json.conversation}}\nInformações para Identificar\n\nNome do candidato: Procure por qualquer menção ao nome (completo ou primeiro nome)\nNível de interesse: Graduação, Pós-graduação ou Não informado\nCurso específico: Nome exato do curso mencionado\nInformações fornecidas: Valores, prazos, links, documentos, detalhes de inscrição\nStatus: Se o candidato ainda está respondendo ou parou de responder\n\nClassificação de Níveis\n\nGraduação: Bacharelado, licenciatura, tecnólogo (ex: Administração, Engenharia, Direito, Psicologia)\nPós-graduação: MBA, especialização, mestrado, doutorado\nNão informado: Quando não fica claro o nível de interesse\n\nFormato de Resposta Obrigatório\nResumo: [2-6 frases descrevendo o que aconteceu na conversa, incluindo nome do candidato se mencionado e principais informações fornecidas pelo assistente]\nNome do candidato: [Nome identificado ou \"Não informado\"]\nNível: [Graduação/Pós-graduação/Não informado]\nCurso: [Nome do curso ou \"Não informado\"]\nInformações fornecidas pela IA: [Liste as principais informações, orientações, valores, links ou documentos que a IA compartilhou com o candidato]\nStatus da conversa: [Candidato respondeu/Candidato parou de responder]\nIMPORTANTE: Responda APENAS no formato acima, sem repetir estas instruções.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        3344,
+        2464
+      ],
+      "id": "49d9931a-caa4-484b-81b8-0ded3982f79c",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3168,
+        2672
+      ],
+      "id": "5089a0ef-9c20-40cc-9488-c06f31aea636",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('Update leads2').first().json._embedded.leads[0].id }}",
+              "text": "={{ $json.resumo }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        3904,
+        2448
+      ],
+      "id": "2c0b1223-7318-47ed-b0ab-b75e751a8c3b",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chats_anh",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "updated_at",
+              "condition": "lt",
+              "keyValue": "={{\n  new Date(Date.now() - 60*60*1000)  // subtrai 1h\n    .toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\", hour12: false })\n    .replace(\" \", \"T\") + \".000Z\"\n}}"
+            },
+            {
+              "keyName": "atendimento_kommo_anh",
+              "condition": "is",
+              "keyValue": "null"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        2704
+      ],
+      "id": "473cdc32-dbe6-490b-ad6e-23d5a801d872",
+      "name": "Get many rows1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "null",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "02eaedca-5adb-42a1-b1eb-df57f7972c24"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "efe12c9c-9911-4eb4-9143-90ee00955700",
+                    "leftValue": "={{ $json.atendimento_kommo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -688,
+        2640
+      ],
+      "id": "6148a973-a866-4b6f-a7b4-b1aca38eb35b",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        2736
+      ],
+      "id": "eb7e3f49-2cac-4f81-b3b2-731ab8f37624",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "n8n_chat_histories",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "keyValue": "={{ $json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        2544
+      ],
+      "id": "722808cb-1038-4d4f-a9fb-ab266f02c1da",
+      "name": "Get a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f1997386-faaa-4c05-95b4-49c50a7b522d",
+              "leftValue": "={{ $json.message.type }}",
+              "rightValue": "ai",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        2544
+      ],
+      "id": "09c4050c-18b2-4612-b49c-db50e72e73e6",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Get a row1').item.json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        2448
+      ],
+      "id": "390df82c-de52-4921-9bec-8af62851ff95",
+      "name": "Update a row4",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_kommo",
+              "fieldValue": "sim"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        2640
+      ],
+      "id": "0f439e9c-873f-4367-9a20-007c8b933010",
+      "name": "Update a row5",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        2544
+      ],
+      "id": "908f1bb4-78c5-42d6-925d-6e2419d6668d",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [items[0]];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        2544
+      ],
+      "id": "b2e3aa8b-1b6b-4828-8aa5-0970ad0284e1",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "phone",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        2704
+      ],
+      "id": "dde23ab8-7b4a-4fa9-b77e-c4c81d1847fb",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -912,
+        2704
+      ],
+      "id": "d44904c2-4e48-4faa-8060-c4c932c4cd8b",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Switch2').item.json.phone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        2448
+      ],
+      "id": "20467b3b-0f04-4efb-a742-81e3d1bd3ccd",
+      "name": "Update a row6",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Edit Fields4').item.json.data._embedded.leads[0].id }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539246,
+              "responsible_user_id": "={{ $('Code7').item.json.id_lead }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":686789,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        2448
+      ],
+      "id": "cd353bef-75a3-4ab1-9e36-319f6816d39e",
+      "name": "Update leads2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "id": "={{ $('Edit Fields4').item.json.data._embedded.leads[0]._embedded.contacts[0].id }}",
+              "responsible_user_id": "={{ $('Code7').item.json.id_lead }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        2448
+      ],
+      "id": "6356f616-951a-4f61-81e4-3d417f88672f",
+      "name": "Update contacts1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0f00873f-9023-4875-8a23-a593d6e77bf4",
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": "89820304",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1104,
+        2544
+      ],
+      "id": "5ae434fc-d8de-4ea9-b482-5075630a883b",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "url": "=https://admamoeduitcombr.kommo.com/api/v4/leads?\nquery={{ $json.telefone.replace(/@.*/,'') }}&\nfilter[statuses][0][pipeline_id]=11685120&\nfilter[statuses][0][status_id]=89820304&\nwith=contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        656,
+        2544
+      ],
+      "id": "226b6d53-df4e-4e69-b329-f1248dd16862",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a34904d7-386d-431c-960b-94fa85be51b0",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        2544
+      ],
+      "id": "38fac12e-5c46-4e4e-92ad-70f1ecc2d37e",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        2672
+      ],
+      "id": "c6ae4ec6-6d88-4f2b-8797-13dc92783422",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chat_messages",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2672,
+        2448
+      ],
+      "id": "2ec700d4-9812-48d8-98de-88461e5c6207",
+      "name": "Get many rows4",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ordena por created_at ASC e formata o histórico\nconst sorted = items.sort((a, b) => \n  new Date(a.json.created_at) - new Date(b.json.created_at)\n);\n\nconst conversation = sorted.map(row => {\n  const userMsg = row.json.user_message ? `Usuário: ${row.json.user_message}` : '';\n  const botMsg = row.json.bot_message ? `Bot: ${row.json.bot_message}` : '';\n  return [userMsg, botMsg].filter(Boolean).join('\\n');\n}).join('\\n\\n');\n\nreturn [{ json: { conversation } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2896,
+        2448
+      ],
+      "id": "5139530b-15a5-409a-8450-04e2da4fd78c",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items do nó anterior (Supabase)\nconst rows = items;\n\n// ===== Config =====\nconst DEFAULT_TOP_N = 5;\nconst TOP_N = Number(items?.[0]?.json?.TOP_N) > 0 ? Number(items[0].json.TOP_N) : DEFAULT_TOP_N;\n\n// ===== Helpers =====\nconst normNome = (v) => (v ?? \"\").trim().toLowerCase();\nconst getKey = (j) => j.id_lead ?? normNome(j.nome ?? j.Nome); // chave do consultor\nconst getTs = (j) => {\n  const s = j.ultimo_lead ?? j[\"Ultimo Lead\"] ?? j.ultimoLead;\n  const t = Date.parse(s);\n  return isNaN(t) ? Number.NEGATIVE_INFINITY : t; // sem/ruim => mais antigo\n};\n\n// ===== Dedup por consultor, mantendo o MAIS ANTIGO ultimo_lead =====\nconst byConsultor = new Map();\n/*\n Estrutura: key -> { idx, item, ts }\n Mantém aquele com ts MENOR (mais antigo) para representar o consultor.\n*/\nfor (let i = 0; i < rows.length; i++) {\n  const r = rows[i];\n  const j = r.json;\n\n  const keyRaw = getKey(j);\n  const key = (keyRaw == null || keyRaw === \"\") ? `__sem_chave_${i}` : String(keyRaw);\n\n  const ts = getTs(j);\n\n  const cur = byConsultor.get(key);\n  if (!cur || ts < cur.ts) {\n    byConsultor.set(key, { idx: i, item: r, ts });\n  }\n}\n\nconst unicos = Array.from(byConsultor.values());\n\nif (unicos.length === 0) {\n  throw new Error(\"Nenhum consultor disponível para distribuição.\");\n}\n\n// ===== Ordenar do mais antigo -> mais recente =====\nunicos.sort((a, b) => a.ts - b.ts);\n\n// ===== Selecionar pool e sortear =====\nconst take = Math.min(TOP_N, unicos.length);\nconst candidatos = unicos.slice(0, take);\n\n// Sorteio uniforme\nconst escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];\n\n// ===== Retorno preservando o índice original para pairedItem =====\nreturn [\n  {\n    json: escolhido.item.json,\n    pairedItem: { item: escolhido.idx },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1552,
+        2448
+      ],
+      "id": "d18adcea-313c-4696-829a-ce34b9735d3c",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distrib_comercial",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "ATIVO"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        2448
+      ],
+      "id": "581a603c-3aea-4be5-a005-6e41151576ae",
+      "name": "Get many rows5",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "distrib_comercial",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_lead",
+              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1776,
+        2448
+      ],
+      "id": "beff8a4a-0602-46be-bd9f-f276974f7642",
+      "name": "Update a row7",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node Code para N8N - Extrator de campos do resumo\n// Este código processa o output do agente de resumo e separa os campos\n\nconst inputText = $input.all()[0].json.text;\n\n// Função para extrair valor após \"Campo:\"\nfunction extractField(text, fieldName) {\n  const regex = new RegExp(`${fieldName}:\\\\s*(.*)`, 'i');\n  const match = text.match(regex);\n  return match ? match[1].trim() : 'Não informado';\n}\n\n// Extrai os campos do texto\nconst resumo = extractField(inputText, 'Resumo');\nconst nivel = extractField(inputText, 'Nível') || extractField(inputText, 'Nivel');\nconst curso = extractField(inputText, 'Curso');\n\n// Retorna apenas os campos desejados\nreturn [{\n  json: {\n    resumo: resumo,\n    nivel: nivel,\n    curso: curso\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3680,
+        2448
+      ],
+      "id": "477c80fd-8a4d-4b08-b5b7-794ac172f6c5",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "url": "=https://sumaread.kommo.com/api/v4/leads?query={{ $json.telefone }}&filter[statuses][1][pipeline_id]=11873040&filter[statuses][1][status_id]=93544156",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjgzNGY4MWNlZDJjM2Y4ZDgwMjdiY2Q2MDVhY2FkODMxMjU2ZTc0MTNkMjljNDY3MjU5OWYyM2I4MDlmMTc3MjRmMmU0YmQ0NjMyZmE1MTBjIn0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI4MzRmODFjZWQyYzNmOGQ4MDI3YmNkNjA1YWNhZDgzMTI1NmU3NDEzZDI5YzQ2NzI1OTlmMjNiODA5ZjE3NzI0ZjJlNGJkNDYzMmZhNTEwYyIsImlhdCI6MTc1NzM1MzA2MywibmJmIjoxNzU3MzUzMDYzLCJleHAiOjE4MDEzNTM2MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiY2QxYzVlNTEtMGZhYi00YjI0LTlmN2YtZDc5MTc5MTNkY2JkIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.HAOrmHblRCJo5tS1QXMpYfCqK2iejbO88CBoBTzvSjPh7D5eeqzYmjEy7OmRcksOTpZpwBjlRSvZseCM8jbVBeCBc_HuGV_coAeBMKZ4hwdIQevoHNkgaEOVf4d7OiuVub9K0DnjGsQ1MxAJDbkwMWsX_ItNXv1_fgwIjvm07Y5lYNb7alUsBNABdUtdS8fSQ0edbYmxrx2m39uQG_WOUJiO855A_VxpRJVLcu2sQauc_sUthJ5eewyV4lc34sV-35v3NR7FZ1bvGzXMYbnAnM_Pzng1cWiJnSxD36KcOi8X0GAMvLKK_Sm3hyv4213rFd0fj8uO3h7zoFramTYQSA"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        864
+      ],
+      "id": "df9f15c6-fa34-48a0-b7d0-bf3433dfc1e3",
+      "name": "HTTP Request",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca4c497f-e144-4187-ac3d-6ff7fe97011b",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        832
+      ],
+      "id": "57e0b2ae-b9ed-4c61-aac2-84f109b2c94c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acesse o JSON do item anterior\nconst json = items[0].json;\n\n// Caminho correto até os leads\nconst leads = json.data._embedded.leads;\n\n// Extrai os IDs\nconst ids = leads.map(lead => lead.id);\n\n// Retorna o resultado\nreturn [{ ids }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        1152
+      ],
+      "id": "65ac1810-cf1a-4e8d-8ed8-137efde10847",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        []
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row2": {
+      "main": [
+        [
+          {
+            "node": "Get many rows2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads": {
+      "main": [
+        [
+          {
+            "node": "Update contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update contacts": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Get many rows3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Update a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows3": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row3": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Get a row1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Update a row4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a row5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row5": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row6": {
+      "main": [
+        [
+          {
+            "node": "Get many rows4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads2": {
+      "main": [
+        [
+          {
+            "node": "Update contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update contacts1": {
+      "main": [
+        [
+          {
+            "node": "Update a row6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Get many rows5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows4": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Update a row7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows5": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row7": {
+      "main": [
+        [
+          {
+            "node": "Update leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-09-18T16:10:35.002-03:00",
+          "Readable date": "September 18th 2025, 4:10:35 pm",
+          "Readable time": "4:10:35 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "18",
+          "Hour": "16",
+          "Minute": "10",
+          "Second": "35",
+          "Timezone": "America/Sao_Paulo (UTC-03:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "7226f630-9e72-42ae-810b-e7ec25f8335d",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-10-14T13:58:23.676Z",
+      "updatedAt": "2025-10-14T13:58:23.676Z",
+      "role": "workflow:owner",
+      "workflowId": "0VY5HD2WExJiaDpu",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-07-30T20:41:48.074Z",
+      "updatedAt": "2025-07-30T20:41:48.074Z",
+      "id": "HCAYGF54Hj7mAMlF",
+      "name": "ai"
+    }
+  ]
+}
