@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-25T20:01:25.396Z",
-  "updatedAt": "2025-08-28T13:44:46.000Z",
+  "updatedAt": "2025-09-23T19:14:50.000Z",
   "id": "D1AqLQAUK63Fo0jZ",
   "name": "ativo_csv",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -289,7 +289,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "c263cf06-afe8-41de-b28e-2747af8e8b0b",
+  "versionId": "17e3d551-7e6f-4dce-9c72-4fb20e2ed040",
   "triggerCount": 1,
   "shared": [
     {
