@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-07-25T19:57:29.444Z",
-  "updatedAt": "2025-08-28T13:44:39.000Z",
+  "updatedAt": "2025-09-23T19:14:48.000Z",
   "id": "RsjU4yDcMPNjhg3l",
   "name": "inativo_csv",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
