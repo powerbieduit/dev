@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-31T16:28:30.464Z",
-  "updatedAt": "2025-08-04T17:28:01.000Z",
+  "updatedAt": "2025-10-08T19:05:40.000Z",
   "id": "5lkTL3MgtPZbQQ1p",
   "name": "Comercial > Acadêmico  Anhanguera",
   "active": true,
@@ -167,7 +167,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        608,
+        624,
         -64
       ],
       "id": "b9b4b7c3-981a-4513-a3fa-11e3a5bf14d7",
@@ -620,7 +620,7 @@
       }
     ]
   },
-  "versionId": "01afb9e6-7067-421a-8236-02dd7a432b3d",
+  "versionId": "1c1ef990-fb32-43d5-84a2-5606ca02be0f",
   "triggerCount": 1,
   "shared": [
     {
