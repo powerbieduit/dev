@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-25T20:00:47.243Z",
-  "updatedAt": "2025-08-12T15:16:00.000Z",
+  "updatedAt": "2025-10-08T13:33:38.000Z",
   "id": "bmLFlalPBtflCrjZ",
   "name": "comercial_p_academico_criação de lead",
   "active": true,
@@ -15,8 +15,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -1168,
-        128
+        -1008,
+        96
       ],
       "id": "7fd35c64-a96e-4ae2-91f7-28dc37911681",
       "name": "Webhook",
@@ -27,7 +27,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        544,
+        560,
         0
       ],
       "id": "69521ea0-198b-4141-a557-1bd272c157df",
@@ -40,8 +40,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -688,
-        128
+        -560,
+        96
       ],
       "id": "fb5c2039-1e66-4b46-bf12-0f3ba739903c",
       "name": "Code"
@@ -57,8 +57,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -880,
-        128
+        -784,
+        96
       ],
       "id": "6eaecb01-0c9f-47b6-8cff-4940dd6a243e",
       "name": "Get list of leads",
@@ -71,7 +71,7 @@
     },
     {
       "parameters": {
-        "url": "=https://csvatendimento.kommo.com/api/v4/contacts?with=leads&query={{ $json.campos['190582'] }}",
+        "url": "=https://csvatendimento.kommo.com/api/v4/contacts?with=leads&query={{ $('Code').item.json.campos['190582'] }}",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
@@ -81,7 +81,7 @@
             },
             {
               "name": "query",
-              "value": "={{ $json.campos['190582'] }}"
+              "value": "={{ $('Code').item.json.campos['190582'] }}"
             }
           ]
         },
@@ -103,8 +103,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -480,
-        128
+        -112,
+        96
       ],
       "id": "0eeb1966-7df8-4e33-845a-28ab4ea1d741",
       "name": "HTTP Request"
@@ -126,8 +126,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -288,
-        128
+        112,
+        96
       ],
       "id": "4e454109-6ebe-4baa-aa4c-7ae1ecbfe785",
       "name": "Edit Fields"
@@ -155,8 +155,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        352,
-        368
+        784,
+        192
       ],
       "id": "1982c437-19b7-4dd8-a8e6-c9dfbb273266",
       "name": "cria contato",
@@ -243,8 +243,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        720,
-        368
+        1008,
+        192
       ],
       "id": "e02d8808-f38f-4939-8ad3-cd6ebcd311b9",
       "name": "cria lead",
@@ -312,8 +312,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -80,
-        128
+        336,
+        96
       ],
       "id": "54070b29-d7f5-4555-b34d-2d31c9aff1de",
       "name": "Switch"
@@ -323,11 +323,114 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        128,
-        224
+        560,
+        192
       ],
       "id": "a7dfc8ee-cddd-4e19-9d6d-7dd0990c0a95",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_ganhos",
+          "mode": "list",
+          "cachedResultName": "leads_ganhos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RGM": "={{ $json.campos['31776'] || \" \"}}",
+            "id_lead": "={{ $json.id }}",
+            "id_responsavel": "={{ $('Get list of leads').item.json._embedded.leads[0].responsible_user_id }}",
+            "curso": "={{ $json.campos['31782'] }}",
+            "data_matricula": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") + \"Z\" }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RGM",
+              "displayName": "RGM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -336,
+        96
+      ],
+      "id": "210dbe05-3e02-4ed2-bd03-646421290112",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
     }
   ],
   "connections": {
@@ -346,7 +449,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Insert rows in a table",
             "type": "main",
             "index": 0
           }
@@ -425,6 +528,17 @@
           }
         ]
       ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -436,8 +550,40 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "ae4e9fe0-17cd-48e9-b84c-a2a34664fa0d",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "196",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "4401fca4-9edf-46f0-8a4c-e730b98359ad",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19449901",
+            "leads[add][0][status_id]": "48566207",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/2561cb25-2f0e-48d8-ba3d-9194688efd32",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "77574b4e-6966-412b-903b-fe65629bd7fa",
   "triggerCount": 1,
   "shared": [
     {
