@@ -1,0 +1,187 @@
+{
+  "createdAt": "2025-09-16T19:00:26.989Z",
+  "updatedAt": "2025-09-30T19:32:22.000Z",
+  "id": "026E9uWluXmGGaFc",
+  "name": "teste elevenlabs api",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bf2bac07-e67c-4ab2-9ce9-fc7ab0b54ee9",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "440327379171310",
+        "recipientPhoneNumber": "5511984393285",
+        "messageType": "audio",
+        "mediaPath": "useMedian8n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        848,
+        0
+      ],
+      "id": "99672cb1-7359-4ffc-88de-25b12b0deb62",
+      "name": "Send message",
+      "webhookId": "85d4358b-8e28-484b-a35b-cfeb4cf8e9ee",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "uKAVEc80et1CTr0c",
+          "name": "WACA CSV Comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/JDVSGRgs5wIqmG88w24N",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "output_format",
+              "value": "opus_48000_128"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "sk_eb0cdbc23380f65ca22f9ae870865d6dfe70bd73fad0440c"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "Marcelinho volta pra trabalhar com a galera..."
+            },
+            {
+              "name": "model_id",
+              "value": "eleven_flash_v2_5"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0e9a7ced-4369-4243-b603-4f9233ececde",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        640,
+        0
+      ],
+      "id": "8b2c571d-8a8b-43bc-a414-ce0859eca207",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        432,
+        0
+      ],
+      "id": "32857950-059e-49ff-a1be-0116ccdde6de",
+      "name": "Extract from File"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e96375c5-99d5-4f67-90da-339172355c98",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-16T19:00:26.991Z",
+      "updatedAt": "2025-09-16T19:00:26.991Z",
+      "role": "workflow:owner",
+      "workflowId": "026E9uWluXmGGaFc",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
