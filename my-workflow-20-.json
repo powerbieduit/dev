@@ -1,0 +1,81 @@
+{
+  "createdAt": "2025-08-11T18:45:59.106Z",
+  "updatedAt": "2025-08-12T15:15:07.000Z",
+  "id": "GCn5MHaCqV8BTeiW",
+  "name": "My workflow 20",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "19c6b43e-f983-4aba-ac07-7f906f4fc357",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "=5511915184535",
+        "recipientPhoneNumber": "5511945010493",
+        "template": "=flow_5df2cy",
+        "components": {
+          "component": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "38b2573d-4bbf-4e3b-966e-bf8c6b0d13c4",
+      "name": "Send template",
+      "webhookId": "899e38e6-626e-47bb-92f1-d47b97b17a98",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "J6UXZDHIgr3S5XXH",
+          "name": "WhatsApp account App CSV Academico"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "16c0fcba-d573-4ce2-a661-477142c8ab0a",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-08-11T18:45:59.115Z",
+      "updatedAt": "2025-08-11T18:45:59.115Z",
+      "role": "workflow:owner",
+      "workflowId": "GCn5MHaCqV8BTeiW",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
