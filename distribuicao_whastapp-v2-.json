@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-08-19T17:19:43.195Z",
-  "updatedAt": "2025-09-09T14:42:55.000Z",
+  "updatedAt": "2025-10-21T21:11:35.000Z",
   "id": "wMujUjfLRvtBK4bg",
   "name": "distribuicao_whastapp V2",
   "active": true,
@@ -26,7 +26,7 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "={{ $json.body['leads[add][0][id]'] }}"
+          "id": "={{ $json.body['leads[add][0][id]'] }}"
         },
         "options": {
           "with": [
@@ -58,7 +58,7 @@
             {
               "id": "={{ $('Code4').item.json.id }}",
               "pipeline_id": 5481944,
-              "responsible_user_id": "={{ $('Get list of leads1').item.json._embedded.leads[0].responsible_user_id }}"
+              "responsible_user_id": "={{ $json.id_lead }}"
             }
           ]
         }
@@ -86,7 +86,7 @@
           "contact": [
             {
               "id": "={{ $('Code4').item.json.contact_id }}",
-              "responsible_user_id": "={{ $('Get list of leads1').item.json._embedded.leads[0].responsible_user_id }}"
+              "responsible_user_id": "={{ $('Code5').item.json.id_lead }}"
             }
           ]
         }
@@ -94,7 +94,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2112,
+        2448,
         -448
       ],
       "id": "e4f82989-a180-40e3-83cd-81d6affb2ef1",
@@ -197,6 +197,18 @@
           "name": "Supabase Academico"
         }
       }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2096,
+        -448
+      ],
+      "id": "8aeedb43-eb7f-4b59-867e-80d157095130",
+      "name": "Wait",
+      "webhookId": "e79bd523-5868-471d-b589-3f786700e782"
     }
   ],
   "connections": {
@@ -226,7 +238,7 @@
       "main": [
         [
           {
-            "node": "Update contacts3",
+            "node": "Wait",
             "type": "main",
             "index": 0
           }
@@ -276,6 +288,17 @@
           }
         ]
       ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Update contacts3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -287,8 +310,40 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "57ec6d0c-77f9-4b2f-8577-8a4eb947f26a",
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "196",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "dd46815c-57bc-4d42-bee1-f58aec92847a",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19729375",
+            "leads[add][0][status_id]": "53917599",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/424ef8c4-8ce6-4f0a-949c-ef0c64b84502",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "f2c9eaf5-798f-4dba-ab88-be1caab9c42f",
   "triggerCount": 1,
   "shared": [
     {
