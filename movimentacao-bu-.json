@@ -1,0 +1,1225 @@
+{
+  "createdAt": "2025-09-30T18:43:31.303Z",
+  "updatedAt": "2025-10-01T16:35:09.000Z",
+  "id": "F5i1Sxtle44Qx3QP",
+  "name": "movimentacao bu",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "movimentacao_sumare",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        32
+      ],
+      "id": "dc79edfb-b28c-480b-bc7f-8fdc6545f65c",
+      "name": "sumare-movimentacao",
+      "webhookId": "3056a584-866d-4761-b87e-71210598190b"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "movimentacao_anhanguera",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        1184
+      ],
+      "id": "1b183a55-e0cb-4849-8cbf-7f23172bb71b",
+      "name": "anhanguera-movimentacao",
+      "webhookId": "3056a584-866d-4761-b87e-71210598190b"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "81e2a605-5ce0-41ae-b0a0-516c9eeb03b8",
+              "leftValue": "={{ $json.body[\"leads[status][0][pipeline_id]\"] }}",
+              "rightValue": "5617751",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        32
+      ],
+      "id": "12982e09-30da-4adc-87b3-5d64df98b2f1",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        48,
+        128
+      ],
+      "id": "7c168388-1e5f-4d62-905f-c8d4bf02a2f4",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega os dados brutos do corpo do webhook\nconst body = $json.body;\n\n// Extrai os campos necessários\nconst id_lead = body[\"leads[status][0][id]\"];\nconst status_id = body[\"leads[status][0][status_id]\"];\n\n// Mapeia o status_id para nome (IDs Sumaré)\nconst statusMap = {\n  \"49518221\": \"Contato inicial\",\n  \"49518854\": \"Sem resposta\",\n  \"49518230\": \"Em atendimento\",\n  \"84331744\": \"Aguardando resposta\",\n  \"49710203\": \"Inscrição\",\n  \"49518851\": \"Aguardando Pagamento\",\n  \"55177276\": \"Aguardando Subir\",\n  \"142\": \"Ganho\",\n  \"143\": \"Perdido\"\n};\n\nconst status_nome = statusMap[status_id] || \"Desconhecido\";\n\n// Retorna o objeto para o próximo node\nreturn [\n  {\n    json: {\n      id_lead,\n      status_id,\n      status_nome\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        -64
+      ],
+      "id": "193a13bb-4a46-4394-8774-5541ef367dea",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status_id }}",
+                    "rightValue": "142",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "cfe6837a-e6d3-4f89-84bf-772ca4193e04"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outros status"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f9215886-cf47-47f5-adfd-c8f362218bf5",
+                    "leftValue": "={{ $json.status_id }}",
+                    "rightValue": "142",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        272,
+        -64
+      ],
+      "id": "8b575e2c-775a-43ee-92b7-cfc773464eaa",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "movimentacao_leads_sumare",
+          "mode": "list",
+          "cachedResultName": "movimentacao_leads_sumare"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.id_lead }}",
+            "timestamp": "={{ $now.minus({ hours: 3 }).toISO() }}",
+            "status": "={{ $json.status_nome }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        -176
+      ],
+      "id": "8db4548c-83a5-4a64-998f-42beed575079",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.randomDelayMinutes }}",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        32
+      ],
+      "id": "bf2a42ce-3867-4b6c-bf64-dadaf5581c5a",
+      "name": "Wait",
+      "webhookId": "cfb24900-d254-4133-ba3a-4e6b9251c4e8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const minMinutes = 1;\nconst maxMinutes = 10;\n\n// Gera um número inteiro aleatório entre 1 e 10\nconst randomDelayMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;\n\nreturn [{\n  json: {\n    ...$json,\n    randomDelayMinutes\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        32
+      ],
+      "id": "d1a2173f-9efe-43bd-80bd-e09fe0929ec6",
+      "name": "Timer"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "movimentacao_leads_sumare",
+          "mode": "list",
+          "cachedResultName": "movimentacao_leads_sumare"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.id_lead }}",
+            "timestamp": "={{ $now.minus({ hours: 3 }).toISO() }}",
+            "status": "={{ $json.status_nome }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        944,
+        32
+      ],
+      "id": "993eb37c-a630-4035-8ab7-beedce533c94",
+      "name": "Insert rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "81e2a605-5ce0-41ae-b0a0-516c9eeb03b8",
+              "leftValue": "={{ $json.body[\"leads[status][0][pipeline_id]\"] }}",
+              "rightValue": "9095532",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        1184
+      ],
+      "id": "c353b73a-a191-4d94-a566-1fb34826933d",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        1280
+      ],
+      "id": "604a3278-1fb2-41a6-87ea-259b17aa1409",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega os dados brutos do corpo do webhook\nconst body = $json.body;\n\n// Extrai os campos necessários\nconst id_lead = body[\"leads[status][0][id]\"];\nconst status_id = body[\"leads[status][0][status_id]\"];\n\n// Mapeia o status_id para nome (IDs atualizados)\nconst statusMap = {\n  \"70788396\": \"Contato inicial\",\n  \"70793928\": \"Sem resposta\",\n  \"70788400\": \"Em atendimento\",\n  \"84331780\": \"Aguardando resposta\",\n  \"70788404\": \"Inscrição\",\n  \"70793916\": \"Processo seletivo\",\n  \"72449424\": \"Análise\",\n  \"70832512\": \"Aprovado\",\n  \"70793920\": \"Pagamento\",\n  \"70793924\": \"Aceite\",\n  \"142\": \"Ganho\",\n  \"143\": \"Perdido\"\n};\n\nconst status_nome = statusMap[status_id] || \"Desconhecido\";\n\n// Retorna o objeto para o próximo node\nreturn [\n  {\n    json: {\n      id_lead,\n      status_id,\n      status_nome\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        1088
+      ],
+      "id": "88ac6e53-4d79-4caa-8879-85a02c56a44e",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status_id }}",
+                    "rightValue": "142",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "cfe6837a-e6d3-4f89-84bf-772ca4193e04"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outros status"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f9215886-cf47-47f5-adfd-c8f362218bf5",
+                    "leftValue": "={{ $json.status_id }}",
+                    "rightValue": "142",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        208,
+        1088
+      ],
+      "id": "6d08166b-9196-444b-b4ca-f99d5d4d1fa9",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "movimentacao_leads_anhanguera",
+          "mode": "list",
+          "cachedResultName": "movimentacao_leads_anhanguera"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.id_lead }}",
+            "timestamp": "={{ $now.minus({ hours: 3 }).toISO() }}",
+            "status": "={{ $json.status_nome }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        432,
+        992
+      ],
+      "id": "e59012da-8ade-4d82-baa3-1cdd76774ff2",
+      "name": "Insert rows in a table2",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.randomDelayMinutes }}",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        656,
+        1184
+      ],
+      "id": "cf56fad8-b5b4-4931-a56a-62c568e37ce0",
+      "name": "Wait1",
+      "webhookId": "cfb24900-d254-4133-ba3a-4e6b9251c4e8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const minMinutes = 1;\nconst maxMinutes = 10;\n\n// Gera um número inteiro aleatório entre 1 e 10\nconst randomDelayMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;\n\nreturn [{\n  json: {\n    ...$json,\n    randomDelayMinutes\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        1184
+      ],
+      "id": "f29268ea-8b73-4965-ab1b-2db2cbba4522",
+      "name": "Timer1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "movimentacao_leads_anhanguera",
+          "mode": "list",
+          "cachedResultName": "movimentacao_leads_anhanguera"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.id_lead }}",
+            "timestamp": "={{ $now.minus({ hours: 3 }).toISO() }}",
+            "status": "={{ $json.status_nome }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        880,
+        1184
+      ],
+      "id": "6e590435-eb2e-42d5-945a-9853bb89afbe",
+      "name": "Insert rows in a table3",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "leads_ia_sumare",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1408,
+        32
+      ],
+      "id": "1b693414-b002-421e-87bd-2865d36fceed",
+      "name": "sumare-leads-ia",
+      "webhookId": "3056a584-866d-4761-b87e-71210598190b"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_ia_recadastro",
+          "mode": "list",
+          "cachedResultName": "leads_ia_recadastro"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json.body[\"leads[add][0][id]\"] }}",
+            "timestamp": "={{ $now.minus({ hours: 3 }).toISO() }}",
+            "tipo": "ia",
+            "bandeira": "anhanguera"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "bandeira",
+              "displayName": "bandeira",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1424,
+        1184
+      ],
+      "id": "b2afee22-55cf-40cd-b533-d39a99233d0e",
+      "name": "Insert rows in a table6",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_ia_recadastro",
+          "mode": "list",
+          "cachedResultName": "leads_ia_recadastro"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('sumare-leads-ia').item.json.body[\"leads[add][0][id]\"] }}",
+            "timestamp": "={{ $now.minus({ hours: 3 }).toISO() }}",
+            "tipo": "ia",
+            "bandeira": "sumare"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "bandeira",
+              "displayName": "bandeira",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1680,
+        32
+      ],
+      "id": "1cab0d1a-3ee6-4fc2-9fca-25d60f54853a",
+      "name": "Insert rows in a table4",
+      "credentials": {
+        "postgres": {
+          "id": "xPVDMH9tv2m9ATEv",
+          "name": "POSTGRES - SUPABASE SUMARÉ E ANHANGUERA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "leads_ia_anhanguera",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1184,
+        1184
+      ],
+      "id": "7c495462-3284-44a7-9d0b-f23320fb0aa6",
+      "name": "anhanguera-leads-ia",
+      "webhookId": "3056a584-866d-4761-b87e-71210598190b"
+    }
+  ],
+  "connections": {
+    "sumare-movimentacao": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Timer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Timer": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Timer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Timer1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "anhanguera-movimentacao": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sumare-leads-ia": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "anhanguera-leads-ia": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "sumare-movimentacao": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "299",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "5a734bca-78f3-4ca7-b5c3-b84e0a5aa3f5",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[status][0][id]": "19410280",
+            "leads[status][0][status_id]": "49518230",
+            "leads[status][0][pipeline_id]": "5617751",
+            "leads[status][0][old_status_id]": "143",
+            "leads[status][0][old_pipeline_id]": "5617751",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/movimentacao_sumare",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "anhanguera-movimentacao": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "304",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "4b5a1e9b-c3b1-4398-9cef-de43c2e03558",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[status][0][id]": "19410280",
+            "leads[status][0][status_id]": "84331780",
+            "leads[status][0][pipeline_id]": "9095532",
+            "leads[status][0][old_status_id]": "49518230",
+            "leads[status][0][old_pipeline_id]": "5617751",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/movimentacao_anhanguera",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "sumare-leads-ia": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "189",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "cc3d1c38-acfd-4674-a9a6-656a9ccc069b",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19418116",
+            "leads[add][0][status_id]": "91899500",
+            "leads[add][0][pipeline_id]": "11873040",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/leads_ia_sumare",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "anhanguera-leads-ia": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "189",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "cc3d1c38-acfd-4674-a9a6-656a9ccc069b",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19418116",
+            "leads[add][0][status_id]": "91899500",
+            "leads[add][0][pipeline_id]": "11873040",
+            "account[id]": "30298412",
+            "account[subdomain]": "sumaread"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/leads_ia_sumare",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "b29c3687-98f3-4d97-9edf-4ec3b8059568",
+  "triggerCount": 4,
+  "shared": [
+    {
+      "createdAt": "2025-09-30T18:43:31.307Z",
+      "updatedAt": "2025-09-30T18:43:31.307Z",
+      "role": "workflow:owner",
+      "workflowId": "F5i1Sxtle44Qx3QP",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
