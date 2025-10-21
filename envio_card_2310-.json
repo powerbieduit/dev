@@ -1,11 +1,72 @@
 {
   "createdAt": "2025-08-13T20:36:47.473Z",
-  "updatedAt": "2025-08-13T21:09:03.000Z",
+  "updatedAt": "2025-10-16T16:51:46.000Z",
   "id": "tQ75E09Q3OlUulWr",
   "name": "Envio_Card_2310",
   "active": true,
   "isArchived": false,
   "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2310",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1040,
+        80
+      ],
+      "id": "44917e53-a811-4e95-9e65-b48b48b343ea",
+      "name": "Webhook",
+      "webhookId": "accfc6d8-8d5b-45f7-951a-2390a0f4bf6f"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $json.body.instance }}",
+        "remoteJid": "={{ $json.body.data.key.remoteJid }}",
+        "messageText": "=📢 _Atenção!_ Este Whatsapp não está mais ativo. \n\nIremos te chamar pelo *número oficial* 😊\n\nAproveite e salve nosso contato na sua agenda. ",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        80
+      ],
+      "id": "69b33b63-4b19-44ee-a95e-8bf578ce88cb",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nB4splEd6P979FNr",
+          "name": "Evolution - outros-evolution-api.ca31ey.easypanel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "591812090691346",
+        "recipientPhoneNumber": "={{ $json.data.key.remoteJid.replace('@s.whatsapp.net', '') }}",
+        "template": "2130_resposta_automatica_b98hgp|pt_BR"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        80
+      ],
+      "id": "bda879d1-501b-4a12-a1ce-9436f038a550",
+      "name": "Send template",
+      "webhookId": "b4b7f757-307c-4ae4-85be-ee2fac9b556f",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yz8MmxofXX6p6m1f",
+          "name": "WACA - CSV ACADEMICO"
+        }
+      }
+    },
     {
       "parameters": {
         "resource": "messages-api",
@@ -27,54 +88,15 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -176,
-        0
+        -640,
+        80
       ],
-      "id": "7c52141f-c576-4132-88b2-ef2124913df5",
+      "id": "e3ca7b7a-6cdb-430b-be9b-c86517b08340",
       "name": "Enviar contato",
       "credentials": {
         "evolutionApi": {
           "id": "nB4splEd6P979FNr",
-          "name": "Evolution - Comercial"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "2310",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -624,
-        0
-      ],
-      "id": "44917e53-a811-4e95-9e65-b48b48b343ea",
-      "name": "Webhook",
-      "webhookId": "accfc6d8-8d5b-45f7-951a-2390a0f4bf6f"
-    },
-    {
-      "parameters": {
-        "resource": "messages-api",
-        "instanceName": "={{ $json.body.instance }}",
-        "remoteJid": "={{ $json.body.data.key.remoteJid }}",
-        "messageText": "=📢 _Atenção!_ Este número não está mais ativo. \n📱 *Salve agora nosso novo número oficial* para atendimento e suporte ao aluno.  \n🙏 Se puder, nos informe onde encontrou nosso contato antigo. Isso ajuda outros alunos a falar com o número certo.",
-        "options_message": {}
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        -400,
-        0
-      ],
-      "id": "69b33b63-4b19-44ee-a95e-8bf578ce88cb",
-      "name": "Enviar texto",
-      "credentials": {
-        "evolutionApi": {
-          "id": "nB4splEd6P979FNr",
-          "name": "Evolution - Comercial"
+          "name": "Evolution - outros-evolution-api.ca31ey.easypanel"
         }
       }
     }
@@ -104,7 +126,13 @@
     },
     "Enviar contato": {
       "main": [
-        []
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -115,8 +143,128 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "fe20d45e-7f16-444c-94d0-cf5fd3103acf",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.12.2",
+            "content-length": "1356",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "2310",
+            "data": {
+              "key": {
+                "remoteJid": "5511945010493@s.whatsapp.net",
+                "remoteJidAlt": "64622128279666:80@lid",
+                "fromMe": false,
+                "id": "3EB03B36E8EB9F087A8643"
+              },
+              "pushName": "Caio",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "oi",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyIndexes": [],
+                    "recipientKeyIndexes": [],
+                    "senderKeyHash": {
+                      "0": 95,
+                      "1": 127,
+                      "2": 16,
+                      "3": 131,
+                      "4": 138,
+                      "5": 212,
+                      "6": 240,
+                      "7": 153,
+                      "8": 250,
+                      "9": 207
+                    },
+                    "senderTimestamp": 1760025419,
+                    "senderAccountType": 0,
+                    "receiverAccountType": 0,
+                    "recipientKeyHash": {
+                      "0": 169,
+                      "1": 238,
+                      "2": 189,
+                      "3": 180,
+                      "4": 69,
+                      "5": 147,
+                      "6": 9,
+                      "7": 108,
+                      "8": 253,
+                      "9": 28
+                    },
+                    "recipientTimestamp": 1759277030
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": {
+                    "0": 29,
+                    "1": 205,
+                    "2": 132,
+                    "3": 247,
+                    "4": 170,
+                    "5": 213,
+                    "6": 184,
+                    "7": 170,
+                    "8": 66,
+                    "9": 225,
+                    "10": 240,
+                    "11": 186,
+                    "12": 105,
+                    "13": 56,
+                    "14": 0,
+                    "15": 57,
+                    "16": 132,
+                    "17": 32,
+                    "18": 83,
+                    "19": 191,
+                    "20": 45,
+                    "21": 251,
+                    "22": 179,
+                    "23": 4,
+                    "24": 120,
+                    "25": 52,
+                    "26": 221,
+                    "27": 10,
+                    "28": 68,
+                    "29": 116,
+                    "30": 46,
+                    "31": 138
+                  }
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1760036033,
+              "instanceId": "f3cfb38d-73fc-4760-be52-9ed3792b62ad",
+              "source": "web"
+            },
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/2310",
+            "date_time": "2025-10-09T15:53:53.725Z",
+            "sender": "5511942622310@s.whatsapp.net",
+            "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
+            "apikey": "201A8173F7A8-4485-B938-8637C40938ED"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/2310",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "e088164b-5503-401a-b5a8-cfb8dd502412",
   "triggerCount": 1,
   "shared": [
     {
