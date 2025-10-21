@@ -1,0 +1,203 @@
+{
+  "createdAt": "2025-09-12T20:27:39.798Z",
+  "updatedAt": "2025-09-30T19:32:27.000Z",
+  "id": "6mv3VH9qDaqk4Fel",
+  "name": "rerank",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "embeddingBatchSize": "=",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        16
+      ],
+      "id": "90e355cf-f739-4e29-bedd-e58686f4c148",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        240
+      ],
+      "id": "8200032f-100c-49dc-9777-6a3d4a628583",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        112,
+        400
+      ],
+      "id": "44cd5f8f-8ede-4167-b14b-bd464aaed3d1",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -608,
+        16
+      ],
+      "id": "cf160553-1e8f-4400-8942-5d005dd1f865",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chat_messages",
+        "limit": 100,
+        "matchType": "allFilters"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -992,
+        -64
+      ],
+      "id": "9ac03c2a-09b4-4c1e-9819-0e544c54029a",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1696,
+        112
+      ],
+      "id": "3e2685c2-4b50-4c91-a372-6995582d694e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM dados_cliente\nWHERE created_at >= NOW() - INTERVAL '1 hour';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1488,
+        112
+      ],
+      "id": "ea0d05de-fbe4-4947-b197-2e8999a2540b",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "d3aea99a-b553-462b-bc98-ce407067c50e",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-12T20:27:39.801Z",
+      "updatedAt": "2025-09-12T20:27:39.801Z",
+      "role": "workflow:owner",
+      "workflowId": "6mv3VH9qDaqk4Fel",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
