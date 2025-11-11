@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-10-29T19:00:17.000Z",
   "createdAt": "2025-08-05T14:13:45.878Z",
-  "updatedAt": "2025-10-14T18:58:39.000Z",
   "id": "kWAI89fhv8Bu50a2",
   "name": "Distribuição B.U - LEADS SUMARE EM GANHO",
   "active": true,
@@ -373,7 +373,7 @@
       "typeVersion": 1,
       "position": [
         1104,
-        -160
+        -176
       ],
       "id": "a69d9e4c-e244-4703-947a-9396f510ac90",
       "name": "Update leads1",
@@ -400,7 +400,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1312,
+        1360,
         -176
       ],
       "id": "f84973af-4ced-4408-8859-5f55853e4961",
@@ -542,12 +542,12 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2eb376e0-d3c9-4c32-8d72-5984cfd15916",
+  "versionId": "946eb6c7-c7be-4937-81e5-26dada42dc49",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-05T14:13:45.887Z",
       "updatedAt": "2025-08-05T14:13:45.887Z",
+      "createdAt": "2025-08-05T14:13:45.887Z",
       "role": "workflow:owner",
       "workflowId": "kWAI89fhv8Bu50a2",
       "projectId": "TjZRFTZS7ptjaNGj"
