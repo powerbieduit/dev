@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-03T16:50:18.000Z",
   "createdAt": "2025-08-19T17:52:50.272Z",
-  "updatedAt": "2025-10-20T16:23:04.000Z",
   "id": "AdorfGfiq50Ph1tg",
   "name": "criacao_leads_soead V2",
   "active": true,
@@ -505,8 +505,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -976,
-        496
+        976,
+        1920
       ],
       "id": "19dc8ccc-794b-44dc-a66c-d7776998f690",
       "name": "Switch3"
@@ -515,13 +515,13 @@
       "parameters": {
         "phoneNumberId": "789007424302460",
         "recipientPhoneNumber": "={{ '55' + $('dados').item.json.Telefone }}",
-        "template": "recadastro_ia_anh_semcurso_o90bbf|pt_BR"
+        "template": "recadastro_semcurso_kfe6xi|pt_BR"
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        -752,
-        400
+        1200,
+        1824
       ],
       "id": "5d7663eb-a3db-44d3-b72d-e4cda2fe8a1f",
       "name": "Send template2",
@@ -529,7 +529,7 @@
       "credentials": {
         "whatsAppApi": {
           "id": "ZYIePjycu0XbxiBl",
-          "name": "WhatsApp Anhanguera licenciado"
+          "name": "WHATSAPP - CONTAS BU"
         }
       }
     },
@@ -537,7 +537,7 @@
       "parameters": {
         "phoneNumberId": "789007424302460",
         "recipientPhoneNumber": "={{ '55' + $('dados').item.json.Telefone }}",
-        "template": "recadastro_ia_anh_curso_sa18fl|pt_BR",
+        "template": "recadastro_com_curso_3p4v97|pt_BR",
         "components": {
           "component": [
             {
@@ -555,8 +555,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        -752,
-        592
+        1200,
+        2016
       ],
       "id": "907f39db-4ab2-4c1a-8254-d57026cecdc9",
       "name": "Send template3",
@@ -564,7 +564,7 @@
       "credentials": {
         "whatsAppApi": {
           "id": "ZYIePjycu0XbxiBl",
-          "name": "WhatsApp Anhanguera licenciado"
+          "name": "WHATSAPP - CONTAS BU"
         }
       }
     },
@@ -584,8 +584,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -80,
-        400
+        1936,
+        1856
       ],
       "id": "755095cb-5cc8-499b-ab7b-e7261443d2f0",
       "name": "Get a row2",
@@ -635,8 +635,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        368,
-        496
+        2384,
+        1952
       ],
       "id": "17ff87e9-b13c-4e09-aa73-d4a76714bb02",
       "name": "If2"
@@ -665,8 +665,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        592,
-        400
+        2608,
+        1856
       ],
       "id": "3d0e0875-9434-4e23-b4bc-e54d4f601e69",
       "name": "Update a row2",
@@ -693,8 +693,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -304,
-        592
+        1712,
+        2048
       ],
       "id": "099f28a9-472b-413e-9e32-a9ee66c4f2d9",
       "name": "Create new notes3",
@@ -739,8 +739,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -528,
-        592
+        1488,
+        2048
       ],
       "id": "6cf4a9ec-5dd1-4c38-9948-16224a330eed",
       "name": "recadastro",
@@ -767,8 +767,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -304,
-        400
+        1712,
+        1856
       ],
       "id": "d18e9b2b-1624-4015-b79d-0ac32947e18b",
       "name": "Create new notes4",
@@ -795,8 +795,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -80,
-        592
+        1936,
+        2048
       ],
       "id": "dd7d7b38-4cda-4aab-8036-393238eef2d2",
       "name": "Get a row3",
@@ -827,8 +827,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        592,
-        592
+        2608,
+        2048
       ],
       "id": "15c58a79-6cf9-427e-910a-af77e4895820",
       "name": "Criar Cliente1",
@@ -874,8 +874,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -528,
-        400
+        1488,
+        1856
       ],
       "id": "6f2819be-0e46-4830-8a3d-b3ccb86db4f7",
       "name": "recadastro3",
@@ -987,8 +987,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        512,
-        -352
+        -1200,
+        512
       ],
       "id": "468865fd-bd23-4da1-905e-f14c1349454f",
       "name": "recadastro1",
@@ -1006,8 +1006,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1200,
-        496
+        752,
+        1920
       ],
       "id": "48bd0b04-e840-4e30-8919-c09d6e91c812",
       "name": "Code in JavaScript"
@@ -1035,8 +1035,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        592
+        2832,
+        2048
       ],
       "id": "e74fa565-e007-4bc8-9937-6b9989c6e5a5",
       "name": "Criar Cliente",
@@ -1071,8 +1071,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        400
+        2832,
+        1856
       ],
       "id": "77c99fd6-558d-4ff0-9a3d-f05a563d0c34",
       "name": "Criar Cliente2",
@@ -1103,8 +1103,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        144,
-        400
+        2160,
+        1856
       ],
       "id": "a3dd2d35-eea4-4300-b2ce-ff573121ba00",
       "name": "Criar Cliente3",
@@ -1135,8 +1135,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        144,
-        592
+        2160,
+        2048
       ],
       "id": "95dcc88d-b289-466d-a8d9-c8840610d265",
       "name": "Criar Cliente4",
@@ -1450,14 +1450,14 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript",
+            "node": "recadastro1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Code in JavaScript",
+            "node": "recadastro1",
             "type": "main",
             "index": 0
           }
@@ -1588,12 +1588,12 @@
       }
     ]
   },
-  "versionId": "1680b4c4-a03e-40a4-b52f-d91915e71509",
+  "versionId": "5a656ed9-5b8f-432f-950f-f29e712c9360",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-19T17:52:50.276Z",
       "updatedAt": "2025-08-19T17:52:50.276Z",
+      "createdAt": "2025-08-19T17:52:50.276Z",
       "role": "workflow:owner",
       "workflowId": "AdorfGfiq50Ph1tg",
       "projectId": "TjZRFTZS7ptjaNGj"
