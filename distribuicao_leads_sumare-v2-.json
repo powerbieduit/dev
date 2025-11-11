@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-05T16:55:02.000Z",
   "createdAt": "2025-08-19T21:05:01.493Z",
-  "updatedAt": "2025-10-15T14:17:20.000Z",
   "id": "ta10t8dmOyScLzLf",
   "name": "distribuicao_leads_sumare V2",
   "active": true,
@@ -26,13 +26,14 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "={{ $json.body['leads[add][0][id]'] }}"
+          "id": "={{ $json.body['leads[add][0][id]'] }}"
         },
         "options": {
           "with": [
             "contacts"
           ]
-        }
+        },
+        "limit": 1
       },
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
@@ -379,12 +380,12 @@
       }
     ]
   },
-  "versionId": "ffb0b7db-5363-45ac-b800-c515a585c6c5",
+  "versionId": "0f95df41-a541-455f-9d05-2b0b386764c9",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-19T21:05:01.499Z",
       "updatedAt": "2025-08-19T21:05:01.499Z",
+      "createdAt": "2025-08-19T21:05:01.499Z",
       "role": "workflow:owner",
       "workflowId": "ta10t8dmOyScLzLf",
       "projectId": "TjZRFTZS7ptjaNGj"
