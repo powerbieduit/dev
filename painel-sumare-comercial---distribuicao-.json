@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-20T20:36:59.899Z",
   "updatedAt": "2025-08-21T19:10:41.000Z",
+  "createdAt": "2025-08-20T20:36:59.899Z",
   "id": "2uLESgL5zrVSYGFd",
   "name": "painel sumare comercial - distribuicao",
   "active": true,
@@ -274,8 +274,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-08-20T20:36:59.904Z",
       "updatedAt": "2025-08-20T20:36:59.904Z",
+      "createdAt": "2025-08-20T20:36:59.904Z",
       "role": "workflow:owner",
       "workflowId": "2uLESgL5zrVSYGFd",
       "projectId": "TjZRFTZS7ptjaNGj"
