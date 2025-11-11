@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2025-07-28T16:53:03.000Z",
-  "createdAt": "2025-07-25T20:01:33.539Z",
-  "id": "2SKJkpwjkFB4NYB0",
+  "updatedAt": "2025-11-11T20:15:26.000Z",
+  "createdAt": "2025-07-25T20:01:35.739Z",
+  "id": "Fhs0qgztnPE6nIHb",
   "name": "AGENTE AI - COMERCIAL.json",
   "active": false,
   "isArchived": true,
@@ -1174,14 +1174,14 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "6f473f38-2950-44f2-813f-1bb677d680f6",
+  "versionId": "0477003b-e27d-4200-8aa3-c8000fd2f0ee",
   "triggerCount": 0,
   "shared": [
     {
-      "updatedAt": "2025-07-25T20:01:33.543Z",
-      "createdAt": "2025-07-25T20:01:33.543Z",
+      "updatedAt": "2025-07-25T20:01:35.742Z",
+      "createdAt": "2025-07-25T20:01:35.742Z",
       "role": "workflow:owner",
-      "workflowId": "2SKJkpwjkFB4NYB0",
+      "workflowId": "Fhs0qgztnPE6nIHb",
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
