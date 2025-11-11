@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-18T19:40:29.880Z",
   "updatedAt": "2025-08-21T18:31:03.000Z",
+  "createdAt": "2025-08-18T19:40:29.880Z",
   "id": "tuaQuCIXuiUkzKOL",
   "name": "painel csv comercial - distribuicao",
   "active": true,
@@ -245,8 +245,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-08-18T19:40:29.886Z",
       "updatedAt": "2025-08-18T19:40:29.886Z",
+      "createdAt": "2025-08-18T19:40:29.886Z",
       "role": "workflow:owner",
       "workflowId": "tuaQuCIXuiUkzKOL",
       "projectId": "TjZRFTZS7ptjaNGj"
