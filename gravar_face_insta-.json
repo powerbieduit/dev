@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-21T06:09:27.104Z",
   "updatedAt": "2025-08-21T06:49:15.000Z",
+  "createdAt": "2025-08-21T06:09:27.104Z",
   "id": "1Fz7a1CxBowxqN1Q",
   "name": "gravar_face_insta",
   "active": false,
@@ -210,8 +210,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-08-21T06:09:27.113Z",
       "updatedAt": "2025-08-21T06:09:27.113Z",
+      "createdAt": "2025-08-21T06:09:27.113Z",
       "role": "workflow:owner",
       "workflowId": "1Fz7a1CxBowxqN1Q",
       "projectId": "TjZRFTZS7ptjaNGj"
