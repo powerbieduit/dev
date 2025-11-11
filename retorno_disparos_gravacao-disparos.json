@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-10-24T15:35:13.000Z",
   "createdAt": "2025-08-12T15:08:41.007Z",
-  "updatedAt": "2025-10-16T19:52:28.000Z",
   "id": "vBQWXV2MCYF7Mduq",
   "name": "retorno_disparos_gravacao",
   "active": true,
@@ -189,14 +189,14 @@
     {
       "parameters": {
         "content": "* entrou para atendimento\n* sem resposta\n* rematricula feita\n",
-        "height": 2300,
+        "height": 2652,
         "width": 880
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -120,
-        52
+        -96,
+        80
       ],
       "id": "7d37b8c7-528b-4b43-9c5a-0d1c1a73645a",
       "name": "Sticky Note"
@@ -582,7 +582,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO interacao_acolhimento (id_lead, interacao_chatbot, interacao_acolhimento, dia_hora)\nVALUES ('{{ $json.id_lead }}', 'sim', NULL, NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n 'sim', \n NULL, \n NULL, \n NULL,\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
@@ -603,7 +603,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO interacao_acolhimento (id_lead, interacao_chatbot, interacao_acolhimento, dia_hora)\nVALUES ('{{ $json.id_lead }}', NULL, 'sim', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n NULL, \n 'sim', \n NULL, \n NULL,\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
@@ -614,6 +614,126 @@
       ],
       "id": "8858ec71-86bf-4531-a710-08374d5c9e74",
       "name": "Execute a SQL query9",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2mensagem",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        2400
+      ],
+      "id": "f809bd8f-e75f-4c85-b3af-aa4a7f8e9b36",
+      "name": "gravar_acolhimento3",
+      "webhookId": "f29c63ac-fc50-4179-9cea-96489dfd9aaa"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3mensagem",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        2592
+      ],
+      "id": "58d99425-8815-44c2-9bd3-305203bb5fb9",
+      "name": "gravar_acolhimento4",
+      "webhookId": "f29c63ac-fc50-4179-9cea-96489dfd9aaa"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        2400
+      ],
+      "id": "5ca50637-573e-4607-bf44-a9e15808bf41",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+              "name": "id_lead",
+              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        2592
+      ],
+      "id": "b01078ce-9eaf-497b-8940-7720555d21f1",
+      "name": "Edit Fields11"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n NULL, \n NULL, \n 'sim', \n NULL,\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        496,
+        2400
+      ],
+      "id": "8289bcef-a6e4-49c0-b55e-7f7ef870ccf8",
+      "name": "Execute a SQL query10",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n NULL, \n NULL, \n NULL, \n 'sim',\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        496,
+        2592
+      ],
+      "id": "ced88482-2e8a-44b3-baf0-0e1b1cfd1541",
+      "name": "Execute a SQL query11",
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
@@ -842,6 +962,50 @@
           }
         ]
       ]
+    },
+    "gravar_acolhimento3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gravar_acolhimento4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields10": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields11": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -917,12 +1081,12 @@
       }
     ]
   },
-  "versionId": "5e580f93-0c3c-4b67-88e2-ea97d9fa8322",
-  "triggerCount": 10,
+  "versionId": "67a72375-ea2b-4aa5-a200-30b341cc6491",
+  "triggerCount": 12,
   "shared": [
     {
-      "createdAt": "2025-08-12T15:08:41.011Z",
       "updatedAt": "2025-08-12T15:08:41.011Z",
+      "createdAt": "2025-08-12T15:08:41.011Z",
       "role": "workflow:owner",
       "workflowId": "vBQWXV2MCYF7Mduq",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -930,8 +1094,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T20:01:08.349Z",
       "updatedAt": "2025-07-25T20:01:08.349Z",
+      "createdAt": "2025-07-25T20:01:08.349Z",
       "id": "YYK828CRJpOc3NVq",
       "name": "disparos"
     }
