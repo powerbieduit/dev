@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-04T14:38:29.000Z",
   "createdAt": "2025-07-25T19:56:45.653Z",
-  "updatedAt": "2025-08-28T13:45:22.000Z",
   "id": "Omx94aT4or4GKS3w",
   "name": "painel_distribuicao_csv",
   "active": true,
@@ -147,7 +147,7 @@
             },
             {
               "name": "authorization",
-              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjNkZmQwY2YwNTEyMzZlNDRlZDg1ZGMyNDg2ZmY3YWQ0ZGUyYTZkOGM5ZjgwYzQxZmRmZTU4ZjJmMzYwNmNlZThiZDcxY2UyNGQwNzYyNTY3In0.eyJhdWQiOiI0ZDJhZjJiMS00YjEzLTRiOTktODBkYS04MzA0YTMxYjYwZTMiLCJqdGkiOiIzZGZkMGNmMDUxMjM2ZTQ0ZWQ4NWRjMjQ4NmZmN2FkNGRlMmE2ZDhjOWY4MGM0MWZkZmU1OGYyZjM2MDZjZWU4YmQ3MWNlMjRkMDc2MjU2NyIsImlhdCI6MTc2MjI2NzEwMiwibmJmIjoxNzYyMjY3MTAyLCJleHAiOjE3OTU4MjQwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiJlN2QyNWM0My0wZjA5LTQxMzEtYmU5MS1jMDMxMmM5NTUyYTUiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.aUqT7Jko2UATlM45pR2WWnfvFlKktQ1eKLvavhSQ2iwyohjKHlE5whdiWf-09PlbrQ-Zw9d-jFbP8gpVpAnJYfqoW1QL18jpX0McA4vSHuKArh-a32TlWg5JpisgQb_6q5SbcwqB_0dz8RAQIXCZyBiJWPRVgKriJtbdC5aptTRAaP0pEfevMjeK4eIMziUYprRLUi_-lY-hUAiuWVnxmSB0BWbqnv5-XCGse0hex783IIkCyod10lgaOE3Q_1sxzmdgdUIjdRoAjyCNRWhcnYbbOGIvY7sA8qpEHvHoUWOzR1kGPvpj1SzNX8Ecu4AmaVVNUkhIhgXnRrC77dFaXw"
             }
           ]
         },
@@ -413,13 +413,46 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "13d1db01-abe3-4731-bba3-1a63ffdbd373",
+  "pinData": {
+    "Webhook GET Distribuicao": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "origin": "https://estrutura-base-para-4587.bolt.host",
+            "priority": "u=1, i",
+            "referer": "https://estrutura-base-para-4587.bolt.host/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "191.204.188.30",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "191.204.188.30"
+          },
+          "params": {},
+          "query": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/api/distribuicao",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "4c0569fc-7435-4c27-8697-6f70cc1ff09e",
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-07-25T19:56:45.655Z",
       "updatedAt": "2025-07-25T19:56:45.655Z",
+      "createdAt": "2025-07-25T19:56:45.655Z",
       "role": "workflow:owner",
       "workflowId": "Omx94aT4or4GKS3w",
       "projectId": "TjZRFTZS7ptjaNGj"
