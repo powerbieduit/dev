@@ -1,9 +1,9 @@
 {
+  "updatedAt": "2025-11-10T20:10:03.000Z",
   "createdAt": "2025-07-28T16:55:17.984Z",
-  "updatedAt": "2025-10-14T15:52:37.000Z",
   "id": "HBp98F7cHlM5sJ86",
   "name": "distribuicao_sem resposta - csv",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -690,8 +690,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5440,
-        -1376
+        5248,
+        -1360
       ],
       "id": "98d77cc6-9c90-4b37-b189-e5ec781daa22",
       "name": "Update leads1",
@@ -719,8 +719,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5664,
-        -1120
+        5472,
+        -1104
       ],
       "id": "e5e971e5-5ab3-466c-bdad-574acd644cdc",
       "name": "Edit Fields"
@@ -734,8 +734,8 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        4656,
-        -1360
+        4464,
+        -1344
       ],
       "id": "61136062-b6f7-4db3-9870-cfe070e69674",
       "name": "Basic LLM Chain"
@@ -753,8 +753,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        4864,
-        -1136
+        4672,
+        -1120
       ],
       "id": "b7c22290-ab5a-457b-b2dc-bdb18cbe10f1",
       "name": "OpenAI Chat Model",
@@ -781,8 +781,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5216,
-        -1376
+        5024,
+        -1360
       ],
       "id": "45709f9e-6e50-406e-aaef-f2cc5edd3cd7",
       "name": "Create new notes",
@@ -800,8 +800,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4992,
-        -1376
+        4800,
+        -1360
       ],
       "id": "a1e74132-12a6-42ad-83bb-a73c7e0121cb",
       "name": "Code2"
@@ -1174,12 +1174,12 @@
       }
     ]
   },
-  "versionId": "f894861b-ad3d-42d9-a4c0-ac9d62c5fbc1",
+  "versionId": "b531c274-5079-4f40-a3c0-062ea9486c33",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-28T16:55:17.986Z",
       "updatedAt": "2025-07-28T16:55:17.986Z",
+      "createdAt": "2025-07-28T16:55:17.986Z",
       "role": "workflow:owner",
       "workflowId": "HBp98F7cHlM5sJ86",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -1187,8 +1187,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
