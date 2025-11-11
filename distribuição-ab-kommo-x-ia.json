@@ -1,0 +1,885 @@
+{
+  "updatedAt": "2025-11-03T20:38:25.000Z",
+  "createdAt": "2025-11-03T18:23:11.150Z",
+  "id": "62canamaYQIdpVpZ",
+  "name": "Distribuição AB Kommo x IA",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "teste-ab-kommo-ia",
+        "options": {
+          "responseData": "OK"
+        }
+      },
+      "id": "09e7103f-7471-4bc8-ab53-7baf440a21a3",
+      "name": "Webhook Entrada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -4192,
+        -96
+      ],
+      "webhookId": "eb983b0c-c0e7-4749-a0a0-b814966c6ce9"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "teste_AB",
+              "fieldValue": "={{ $json.destino }}"
+            }
+          ]
+        }
+      },
+      "id": "81ffe122-d08a-47a4-948d-0181411ac42b",
+      "name": "Atualizar Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -64
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.destino }}",
+                    "rightValue": "salesbot",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Kommo"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.destino }}",
+                    "rightValue": "ia",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "614514ec-d45a-41e7-9e4d-129ebf25845a",
+      "name": "Rota Destino",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        96,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://admamoeduitcombr.kommo.com/api/v4/leads",
+        "options": {}
+      },
+      "id": "c575eae8-9152-4729-924d-3a8cb962339d",
+      "name": "Enviar para Kommo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        336,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sua-ia.com/webhook",
+        "options": {}
+      },
+      "id": "d58848a7-1c55-41cd-8298-25dfbf8d3bc4",
+      "name": "Enviar para IA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        560,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const destino = Math.random() < 0.5 ? 'salesbot' : 'ia';\nreturn [{ json: { ...$json, destino } }];"
+      },
+      "id": "7deccd1b-ff52-4ae5-9876-dcb9c1b3a670",
+      "name": "Sortear Destino",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        336,
+        48
+      ],
+      "id": "dfd056cc-caf6-44dd-a485-52eb9749b408",
+      "name": "Update contacts",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11800d83-ecca-4f9c-a878-a2419db0c8e9",
+              "name": "=message.chat_id",
+              "value": "={{ $json.telefoneCorreto }}",
+              "type": "string"
+            },
+            {
+              "id": "c33f9527-e661-49e5-8e5e-64f3b430928a",
+              "name": "=message.content_type",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.extendedTextMessage ? 'text' : '' }}{{ $('Webhook EVO').item.json.body.data.message.conversation ? 'text' : '' }}{{ $('Webhook EVO').item.json.body.data.message.audioMessage ? 'audio' : '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage ? 'image' : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "06eba1c9-cff0-4f68-b6da-6bb0092466b7",
+              "name": "=message.content",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.extendedTextMessage?.text || '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage?.caption || '' }}{{ $('Webhook EVO').item.json.body.data.message.conversation || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b97f1af3-5361-46fc-9303-d644921231d8",
+              "name": "=message.timestamp",
+              "value": "={{ $('Webhook EVO').item.json.body.data.messageTimestamp.toDateTime('s').toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "dc3dc59c-90a3-4a45-bea2-de092c91083b",
+              "name": "=message.content_url",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.audioMessage?.url || '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage?.url || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "8b01a818-a456-476e-bace-adefe2f04eb4",
+              "name": "message.event",
+              "value": "={{ $('Webhook EVO').item.json.body.data.key.fromMe ? 'outcoming' : 'incoming' }}",
+              "type": "string"
+            },
+            {
+              "id": "886e3751-e39b-4fc6-98d1-3113eaeebbb4",
+              "name": "=body.event",
+              "value": "={{ $('Webhook EVO').item.json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "d04a0c6e-7842-41d2-bdb0-c0ce51d6dad7",
+              "name": "=Telefone",
+              "value": "={{ $json.telefoneCorreto }}",
+              "type": "string"
+            },
+            {
+              "id": "a57db642-3e13-452e-bb5b-19f7e9f3bd5d",
+              "name": "=NomeWhatsapp",
+              "value": "={{ $('Webhook EVO').item.json.body.data.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "f5fcee3e-a786-404b-8b92-0163e02c6615",
+              "name": "=Instance",
+              "value": "={{ $('Webhook EVO').item.json.body.instance }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3d316ab5-8c6d-47ea-b515-3c25f299d5c3",
+      "name": "Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3552,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3184,
+        -96
+      ],
+      "id": "06325e2d-1c5d-4df6-9105-9a0b40e8f70f",
+      "name": "Buscar Cliente",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4a6d9aac-8565-4c58-abe3-8741393a5535",
+              "leftValue": "={{ $json.telefone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2880,
+        -96
+      ],
+      "id": "0f25799f-d90e-4a11-895f-7e69be506601",
+      "name": "Cliente Existe?",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Dados').item.json.NomeWhatsapp }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Code').item.json.telefoneCorreto }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now.setZone(\"America/Sao_Paulo\").toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -2672,
+        0
+      ],
+      "id": "7e87b0a3-093a-42ab-94f5-90121790be15",
+      "name": "Criar Cliente",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Dados').item.json.message.event }}",
+                    "rightValue": "outcoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7c878f9b-2c93-4061-954a-a832153e7647"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outcoming"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "d7b42536-638f-4128-b51b-6aa913e9d9bc",
+                    "leftValue": "={{ $('Dados').item.json.message.event }}",
+                    "rightValue": "incoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "incoming"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ddfd65d1-e79a-46e7-ace6-50881a2b3227",
+      "name": "ROTA Entrando ou Saindo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -2464,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let telefoneRaw;\nlet telefoneCorreto;\n\n// 1. Tenta pegar do formato processado (por ex. depois de um Set)\nif ($json.Telefone) {\n  telefoneRaw = $json.Telefone;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 2. Tenta pegar do JSON bruto vindo direto do webhook\nelse if ($json.body?.data?.key?.remoteJid) {\n  telefoneRaw = $json.body.data.key.remoteJid;\n  telefoneCorreto = telefoneRaw.endsWith('@lid') && $json.body?.data?.key?.senderPn\n    ? $json.body.data.key.senderPn\n    : telefoneRaw;\n}\n\n// 3. Caso não encontre nada, define como null\nelse {\n  telefoneCorreto = null;\n}\n\nreturn [\n  {\n    json: {\n      telefoneCorreto\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3808,
+        -96
+      ],
+      "id": "ed54645f-3697-4fcf-a4d6-89f84c8786d3",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Dados').item.json.Telefone }}",
+            "message": "={\"type\": \"human\", \"content\": \"{{ $('Normal ou Treinamento').item.json.message.content.replace(/\\n/g, ' ') }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -2192,
+        -400
+      ],
+      "id": "b77ff358-8ea5-43dd-9389-4339707c262d",
+      "name": "Salvar Historico1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2032,
+        -416
+      ],
+      "id": "a1935f78-2dac-4cab-8d5b-b9e8fc878c5a",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "jsCode": "{\n  \"parameters\": {\n    \"jsCode\": \"const min = 5; // segundos mínimos\\nconst max = 10; // segundos máximos\\n\\n// Gera número aleatório inteiro entre min e max\\nconst delaySeconds = Math.floor(Math.random() * (max - min + 1)) + min;\\n\\nreturn [{ json: { delaySeconds } }];\"\n  },\n  \"name\": \"Gerar Tempo Aleatório\",\n  \"type\": \"n8n-nodes-base.code\",\n  \"typeVersion\": 2,\n  \"position\": [600, 400],\n  \"id\": \"random-wait-time\"\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2224,
+        -96
+      ],
+      "id": "0a6d5135-657f-49c9-913e-854741fa228d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1920,
+        -96
+      ],
+      "id": "306c4a42-a6d8-4fd2-aec9-8f1cfb1bf2b3",
+      "name": "Wait",
+      "webhookId": "b5b2057b-5213-4fcd-9e47-6f46fe59e4c4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": 89820300,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "81bf90a7-0a29-4229-9fb3-cc04be0bfca0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "RECEPTIVO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a11dec04-2f57-42bf-a6fc-2add3efe8afd",
+                    "leftValue": "={{ $json.data._embedded.leads[0].status_id }}",
+                    "rightValue": 89820304,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "FOLLOW UP "
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -800,
+        -112
+      ],
+      "id": "3d7969b5-5ddf-450a-b4b0-dab3a6a4924c",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "url": "=https://admamoeduitcombr.kommo.com/api/v4/leads?\nquery={{ '+' + $('Code').item.json.telefoneCorreto.replace('@s.whatsapp.net', '') }}&\nfilter[statuses][0][pipeline_id]=11685120&\nfilter[statuses][0][status_id]=89820300&\nfilter[statuses][1][pipeline_id]=11685120&\nfilter[statuses][1][status_id]=89820304",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1616,
+        -96
+      ],
+      "id": "1bce0e5d-246f-461e-a331-77eb225f6955",
+      "name": "HTTP Request",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5c281d3-f206-42bd-a05a-02d2b2c427a0",
+              "name": "=data",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1056,
+        -96
+      ],
+      "id": "4ab65d45-799f-40a3-916d-2226fe5b2eaa",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "Webhook Entrada": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Rota Destino",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rota Destino": {
+      "main": [
+        [
+          {
+            "node": "Enviar para Kommo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sortear Destino": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update contacts": {
+      "main": [
+        [
+          {
+            "node": "Enviar para IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Buscar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Cliente Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente Existe?": {
+      "main": [
+        [
+          {
+            "node": "ROTA Entrando ou Saindo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "ROTA Entrando ou Saindo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Historico1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROTA Entrando ou Saindo": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "b218c694-82df-4960-821c-881abf4b23f3",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-03T18:23:11.154Z",
+      "createdAt": "2025-11-03T18:23:11.154Z",
+      "role": "workflow:owner",
+      "workflowId": "62canamaYQIdpVpZ",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
