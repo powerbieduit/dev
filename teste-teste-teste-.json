@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-04T15:40:33.613Z",
   "updatedAt": "2025-08-04T18:20:28.000Z",
+  "createdAt": "2025-08-04T15:40:33.613Z",
   "id": "GjOia70Wohw1dUzj",
   "name": "teste teste teste",
   "active": false,
@@ -328,8 +328,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-04T15:40:33.620Z",
       "updatedAt": "2025-08-04T15:40:33.620Z",
+      "createdAt": "2025-08-04T15:40:33.620Z",
       "role": "workflow:owner",
       "workflowId": "GjOia70Wohw1dUzj",
       "projectId": "TjZRFTZS7ptjaNGj"
