@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T21:18:19.721Z",
   "updatedAt": "2025-08-21T20:40:33.000Z",
+  "createdAt": "2025-07-25T21:18:19.721Z",
   "id": "278LsyluypT5pJFv",
   "name": "distribuicao_leads_anhanguera",
   "active": false,
@@ -397,8 +397,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T21:18:19.723Z",
       "updatedAt": "2025-07-25T21:18:19.723Z",
+      "createdAt": "2025-07-25T21:18:19.723Z",
       "role": "workflow:owner",
       "workflowId": "278LsyluypT5pJFv",
       "projectId": "TjZRFTZS7ptjaNGj"
