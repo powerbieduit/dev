@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-29T20:31:47.101Z",
   "updatedAt": "2025-09-03T20:20:25.000Z",
+  "createdAt": "2025-08-29T20:31:47.101Z",
   "id": "942zG0SHYtu2AdDK",
   "name": "Agente IA sumare",
   "active": false,
@@ -3689,8 +3689,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-08-29T20:31:47.105Z",
       "updatedAt": "2025-08-29T20:31:47.105Z",
+      "createdAt": "2025-08-29T20:31:47.105Z",
       "role": "workflow:owner",
       "workflowId": "942zG0SHYtu2AdDK",
       "projectId": "TjZRFTZS7ptjaNGj"
