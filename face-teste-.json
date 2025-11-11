@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-02T16:11:01.031Z",
   "updatedAt": "2025-09-29T16:10:17.000Z",
+  "createdAt": "2025-09-02T16:11:01.031Z",
   "id": "FLmE8Y3tgpijDo1Q",
   "name": "face teste",
   "active": true,
@@ -2739,7 +2739,7 @@
       "recurrenceRules": []
     },
     "node:Google Calendar Trigger": {
-      "lastTimeChecked": "2025-10-21T13:00:36Z"
+      "lastTimeChecked": "2025-11-11T12:59:37Z"
     }
   },
   "meta": {
@@ -2788,8 +2788,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-09-02T16:11:01.037Z",
       "updatedAt": "2025-09-02T16:11:01.037Z",
+      "createdAt": "2025-09-02T16:11:01.037Z",
       "role": "workflow:owner",
       "workflowId": "FLmE8Y3tgpijDo1Q",
       "projectId": "TjZRFTZS7ptjaNGj"
