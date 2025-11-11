@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T20:02:01.729Z",
   "updatedAt": "2025-07-25T22:40:27.000Z",
+  "createdAt": "2025-07-25T20:02:01.729Z",
   "id": "muIK4p1V87Rt6NGX",
   "name": "academico_p_comercial_csv",
   "active": true,
@@ -542,8 +542,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T20:02:01.731Z",
       "updatedAt": "2025-07-25T20:02:01.731Z",
+      "createdAt": "2025-07-25T20:02:01.731Z",
       "role": "workflow:owner",
       "workflowId": "muIK4p1V87Rt6NGX",
       "projectId": "TjZRFTZS7ptjaNGj"
