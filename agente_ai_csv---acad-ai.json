@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-11T17:01:45.596Z",
   "updatedAt": "2025-08-12T15:14:53.000Z",
+  "createdAt": "2025-08-11T17:01:45.596Z",
   "id": "6EXR58LI9m9fW0Z3",
   "name": "agente_ai_csv - acad",
   "active": false,
@@ -4353,8 +4353,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-11T17:01:45.604Z",
       "updatedAt": "2025-08-11T17:01:45.604Z",
+      "createdAt": "2025-08-11T17:01:45.604Z",
       "role": "workflow:owner",
       "workflowId": "6EXR58LI9m9fW0Z3",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -4362,8 +4362,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
