@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T21:53:34.061Z",
   "updatedAt": "2025-08-28T13:41:12.000Z",
+  "createdAt": "2025-07-25T21:53:34.061Z",
   "id": "j7JFCySo5BqbTQEA",
   "name": "distribuicao_academico_csv",
   "active": false,
@@ -3416,8 +3416,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T21:53:34.064Z",
       "updatedAt": "2025-07-25T21:53:34.064Z",
+      "createdAt": "2025-07-25T21:53:34.064Z",
       "role": "workflow:owner",
       "workflowId": "j7JFCySo5BqbTQEA",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -3425,8 +3425,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T19:56:58.514Z",
       "updatedAt": "2025-07-25T19:56:58.514Z",
+      "createdAt": "2025-07-25T19:56:58.514Z",
       "id": "XC7egqniXPXmFKMH",
       "name": "ACADEMICO CSV"
     }
