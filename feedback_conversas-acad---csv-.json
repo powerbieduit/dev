@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-10T18:07:52.000Z",
   "createdAt": "2025-09-08T15:14:31.379Z",
-  "updatedAt": "2025-09-15T14:17:21.000Z",
   "id": "IgOWFfW4ekpHKPrA",
   "name": "feedback_conversas acad - csv",
   "active": true,
@@ -226,7 +226,7 @@
           "fieldValues": [
             {
               "fieldId": "consultor",
-              "fieldValue": "={{ $('Code').item.json.agentes_ids[0] }}"
+              "fieldValue": "={{ $('Code').item.json.agentes_ids[0] || \"\" }}"
             },
             {
               "fieldId": "feedback",
@@ -554,7 +554,7 @@
             "content-length": "194",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "bf9f334d-3957-4597-a7f8-7951250adc66",
+            "x-amocrm-requestid": "ec717fe4-8ed7-4ed2-ae4f-9300c9a6f3bc",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
@@ -565,7 +565,7 @@
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "17686653",
+            "leads[add][0][id]": "15822075",
             "leads[add][0][status_id]": "61685383",
             "leads[add][0][pipeline_id]": "6961711",
             "account[id]": "31370511",
@@ -577,12 +577,12 @@
       }
     ]
   },
-  "versionId": "606dfcb8-b24a-47d0-8e1c-981f2fee4927",
+  "versionId": "ad43b597-d167-42da-ae59-ff08d745284d",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-09-08T15:14:31.382Z",
       "updatedAt": "2025-09-08T15:14:31.382Z",
+      "createdAt": "2025-09-08T15:14:31.382Z",
       "role": "workflow:owner",
       "workflowId": "IgOWFfW4ekpHKPrA",
       "projectId": "TjZRFTZS7ptjaNGj"
