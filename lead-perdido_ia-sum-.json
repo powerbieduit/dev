@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-10-08T20:25:27.623Z",
   "updatedAt": "2025-10-14T19:00:29.000Z",
+  "createdAt": "2025-10-08T20:25:27.623Z",
   "id": "6IjT7mu1fqVFdHmO",
   "name": "lead perdido_IA SUM",
   "active": false,
@@ -361,8 +361,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-10-08T20:25:27.630Z",
       "updatedAt": "2025-10-08T20:25:27.630Z",
+      "createdAt": "2025-10-08T20:25:27.630Z",
       "role": "workflow:owner",
       "workflowId": "6IjT7mu1fqVFdHmO",
       "projectId": "TjZRFTZS7ptjaNGj"
