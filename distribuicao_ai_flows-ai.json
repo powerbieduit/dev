@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-11T16:36:00.000Z",
   "createdAt": "2025-08-13T01:31:19.851Z",
-  "updatedAt": "2025-10-07T19:49:18.000Z",
   "id": "FgPYiDXMl6Ita0We",
   "name": "distribuicao_ai_flows",
   "active": false,
@@ -20,7 +20,7 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -352,
+        -704,
         16
       ],
       "id": "32670d5a-d01b-4f3a-9f22-2a367e72f3f8",
@@ -51,7 +51,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        320,
+        -32,
         16
       ],
       "id": "05f04677-236b-4f5a-a57f-0a538f66cc6e",
@@ -78,7 +78,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -128,
+        -480,
         16
       ],
       "id": "0211f876-c6f9-4265-9c66-acf2ef4ce05a",
@@ -101,7 +101,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        96,
+        -256,
         16
       ],
       "id": "b939a100-6c1c-4f19-b149-48353f37c484",
@@ -124,7 +124,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2464,
+        2672,
         16
       ],
       "id": "f3b078bd-5d48-47ea-a818-a37ff0f15126",
@@ -155,7 +155,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        544,
+        752,
         16
       ],
       "id": "db4756ab-2ec4-4b09-ac5c-5a5285cf8bbb",
@@ -184,7 +184,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        768,
+        976,
         16
       ],
       "id": "f0eb9480-cb88-4283-8311-cd29f37bdc8e",
@@ -204,7 +204,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        992,
+        1200,
         16
       ],
       "id": "c67898df-9aa5-4571-9dba-af9340137364",
@@ -219,7 +219,7 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        1216,
+        1424,
         16
       ],
       "id": "a3e21fb5-907b-49ce-ba9f-966eef01b2b0",
@@ -238,7 +238,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1288,
+        1504,
         240
       ],
       "id": "92a736ab-72d0-4534-aa2d-781943e8c7a7",
@@ -266,7 +266,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1792,
+        2000,
         16
       ],
       "id": "ddd29b74-8c81-4be6-bf55-44fe872c1d30",
@@ -285,7 +285,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1568,
+        1776,
         16
       ],
       "id": "41619ef1-84b9-4598-a020-c732d153224e",
@@ -324,7 +324,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2016,
+        2224,
         16
       ],
       "id": "7c099779-aa6f-4888-b384-f544f1f198c4",
@@ -359,11 +359,42 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2240,
+        2448,
         16
       ],
       "id": "fd69d94c-0700-4cf5-886a-0fd5bbd898bf",
       "name": "Create a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "inscricao_ab",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id_lead",
+              "fieldValue": "={{ $('Edit Fields').item.json.data._embedded.leads[0].id }}"
+            },
+            {
+              "fieldId": "Atendimento",
+              "fieldValue": "IA"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        176,
+        16
+      ],
+      "id": "5378796b-2034-40ef-8386-5ef37fb787af",
+      "name": "Create a row",
       "credentials": {
         "supabaseApi": {
           "id": "PHQl6oEaPqgLjGGZ",
@@ -410,7 +441,7 @@
       "main": [
         [
           {
-            "node": "Update a row",
+            "node": "Create a row",
             "type": "main",
             "index": 0
           }
@@ -515,6 +546,17 @@
           }
         ]
       ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -530,17 +572,17 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "telefone": "5511930055549@s.whatsapp.net"
+          "telefone": "5511945722117@s.whatsapp.net"
         }
       }
     ]
   },
-  "versionId": "394f2530-dc89-47ad-9bfc-78e143c2720a",
+  "versionId": "43701519-632b-4dc2-a7c2-7a6defd505f3",
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-08-13T01:31:19.856Z",
       "updatedAt": "2025-08-13T01:31:19.856Z",
+      "createdAt": "2025-08-13T01:31:19.856Z",
       "role": "workflow:owner",
       "workflowId": "FgPYiDXMl6Ita0We",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -548,8 +590,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
