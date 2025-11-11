@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-15T13:21:04.597Z",
   "updatedAt": "2025-08-16T14:11:51.000Z",
+  "createdAt": "2025-08-15T13:21:04.597Z",
   "id": "0gnLGyOttDmNCFaP",
   "name": "Siaa Kommo update Teste Real",
   "active": false,
@@ -1906,8 +1906,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-15T13:21:04.604Z",
       "updatedAt": "2025-08-15T13:21:04.604Z",
+      "createdAt": "2025-08-15T13:21:04.604Z",
       "role": "workflow:owner",
       "workflowId": "0gnLGyOttDmNCFaP",
       "projectId": "TjZRFTZS7ptjaNGj"
