@@ -1,9 +1,9 @@
 {
+  "updatedAt": "2025-11-03T16:43:46.000Z",
   "createdAt": "2025-09-03T18:37:08.074Z",
-  "updatedAt": "2025-10-17T20:18:50.000Z",
   "id": "DJXUuFnK2t3E2NrN",
   "name": "Agente de IA - Sumaré",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -2676,7 +2676,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Code').item.json.telefoneCorreto }}",
+        "sessionKey": "={{ $('Dados').item.json.Telefone }}",
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
@@ -3835,12 +3835,12 @@
       }
     ]
   },
-  "versionId": "5fb769cb-a33a-4ea4-8248-21397dc85e17",
+  "versionId": "ee79d986-48e3-4867-ad48-bab69ceb093d",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-09-03T18:37:08.076Z",
       "updatedAt": "2025-09-03T18:37:08.076Z",
+      "createdAt": "2025-09-03T18:37:08.076Z",
       "role": "workflow:owner",
       "workflowId": "DJXUuFnK2t3E2NrN",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -3848,8 +3848,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
