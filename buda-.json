@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-11T20:27:37.749Z",
   "updatedAt": "2025-10-21T20:47:12.000Z",
+  "createdAt": "2025-09-11T20:27:37.749Z",
   "id": "wwr606l1ju9RqW0S",
   "name": "Buda",
   "active": false,
@@ -223,8 +223,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-09-11T20:27:37.756Z",
       "updatedAt": "2025-09-11T20:27:37.756Z",
+      "createdAt": "2025-09-11T20:27:37.756Z",
       "role": "workflow:owner",
       "workflowId": "wwr606l1ju9RqW0S",
       "projectId": "TjZRFTZS7ptjaNGj"
