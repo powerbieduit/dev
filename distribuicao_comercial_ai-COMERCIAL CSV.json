@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-28T15:14:25.217Z",
   "updatedAt": "2025-07-30T17:05:55.000Z",
+  "createdAt": "2025-07-28T15:14:25.217Z",
   "id": "EOrI6UQ1EyJ5Yh1i",
   "name": "distribuicao_comercial_ai",
   "active": false,
@@ -439,8 +439,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-07-28T15:14:25.221Z",
       "updatedAt": "2025-07-28T15:14:25.221Z",
+      "createdAt": "2025-07-28T15:14:25.221Z",
       "role": "workflow:owner",
       "workflowId": "EOrI6UQ1EyJ5Yh1i",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -448,8 +448,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T20:00:36.295Z",
       "updatedAt": "2025-07-25T20:00:36.295Z",
+      "createdAt": "2025-07-25T20:00:36.295Z",
       "id": "3759VYd0IlWAtU1B",
       "name": "COMERCIAL CSV"
     }
