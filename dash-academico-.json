@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-05T15:11:11.000Z",
   "createdAt": "2025-08-13T21:14:23.506Z",
-  "updatedAt": "2025-10-17T15:48:57.000Z",
   "id": "II43T9a4h9ftQjga",
   "name": "Dash Academico",
   "active": false,
@@ -161,7 +161,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -400,
+        -384,
         96
       ],
       "id": "44e0ff45-4a03-4b8f-87fb-7d9d10a314ee",
@@ -380,75 +380,12 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -912,
+        -880,
         96
       ],
       "id": "a45ae4f5-26a0-45e1-9cee-254844dfe3bd",
       "name": "Wait4",
       "webhookId": "e17e12e5-516b-4633-b58e-2d0e67d74c96"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "TRUNCATE TABLE public.alunos_anterior;\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2544,
-        -80
-      ],
-      "id": "5d59a53e-3a73-4af1-bcc1-5ccc5f5ee9ba",
-      "name": "delete anterior",
-      "credentials": {
-        "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "TRUNCATE TABLE public.alunos_eventos;\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2720,
-        -80
-      ],
-      "id": "bf8bcc3e-74ce-448e-b33e-5f9159613176",
-      "name": "delete eventos",
-      "credentials": {
-        "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "TRUNCATE TABLE public.alunos_atuais;\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2368,
-        -80
-      ],
-      "id": "5bb159dc-369e-4905-bfd4-6e7a9f30dff9",
-      "name": "delete atuais",
-      "credentials": {
-        "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
-        }
-      }
     },
     {
       "parameters": {
@@ -874,7 +811,7 @@
       "parameters": {
         "content": "## Atualizar Grad\n",
         "height": 784,
-        "width": 3264,
+        "width": 3872,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -903,48 +840,11 @@
       "name": "Sticky Note2"
     },
     {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "TRUNCATE TABLE inadimplentes_atuais RESTART IDENTITY;\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2368,
-        -208
-      ],
-      "id": "7c3c8de5-9ca3-447f-95a0-34b0dab2e775",
-      "name": "delete atuais inad",
-      "credentials": {
-        "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "content": "## TRUNCATE TABLES\n",
-        "height": 416,
-        "width": 720,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2272,
-        -288
-      ],
-      "id": "a1745c77-430d-4f1a-93e2-9d7d83af6cbb",
-      "name": "Sticky Note"
-    },
-    {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -1376,
+        -1200,
         96
       ],
       "id": "9e3a5dc0-5c31-4b0f-9dee-144dfd185466",
@@ -1335,7 +1235,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -688,
+        -624,
         96
       ],
       "id": "81f7d01e-e801-4b4b-bd43-5117da55f8c3",
@@ -1344,6 +1244,328 @@
         "postgres": {
           "id": "uP0rhiaOx9EYe8S0",
           "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM public.ingressantes\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2320,
+        -160
+      ],
+      "id": "e59eaa90-0d48-440f-8716-3a60c6696927",
+      "name": "ingressantes academico",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ingressantes",
+          "mode": "list",
+          "cachedResultName": "ingressantes"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "rgm": "={{ $json.rgm }}",
+            "ciclo": "={{ $json.ciclo }}",
+            "nome": "={{ $json.nome }}",
+            "cpf": "={{ $json.cpf }}",
+            "curso": "={{ $json.curso }}",
+            "serie": "={{ $json.serie }}",
+            "data_matricula": "={{ $json.data_matricula }}",
+            "tipo_matricula": "={{ $json.tipo_matricula }}",
+            "situacao": "={{ $json.situacao }}",
+            "fone_cel": "={{ $json.fone_cel }}",
+            "email_ad": "={{ $json.email_ad }}",
+            "grau": "={{ $json.grau }}",
+            "modalidade": "={{ $json.modalidade }}",
+            "formacao": "={{ $json.formacao }}",
+            "chave": "={{ $json.chave }}",
+            "polo": "={{ $json.polo }}",
+            "turma": "={{ $json.turma }}"
+          },
+          "matchingColumns": [
+            "rgm"
+          ],
+          "schema": [
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ciclo",
+              "displayName": "ciclo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cpf",
+              "displayName": "cpf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "serie",
+              "displayName": "serie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_matricula",
+              "displayName": "tipo_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "situacao",
+              "displayName": "situacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fone_cel",
+              "displayName": "fone_cel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "email_ad",
+              "displayName": "email_ad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "grau",
+              "displayName": "grau",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modalidade",
+              "displayName": "modalidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "formacao",
+              "displayName": "formacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "chave",
+              "displayName": "chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "polo",
+              "displayName": "polo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "turma",
+              "displayName": "turma",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2624,
+        -160
+      ],
+      "id": "8874c773-1009-4bcb-b3b0-a5cedaaab5c7",
+      "name": "ingressantes comercial",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM consultores\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -688,
+        -144
+      ],
+      "id": "3e4012c3-c9bb-4e21-a6cf-2c485144ebfc",
+      "name": "dConsultor",
+      "credentials": {
+        "postgres": {
+          "id": "uP0rhiaOx9EYe8S0",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "consultores",
+          "mode": "list",
+          "cachedResultName": "consultores"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.nome }}",
+            "id_responsavel": "={{ $json.id_lead }}"
+          },
+          "matchingColumns": [
+            "id_responsavel"
+          ],
+          "schema": [
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -384,
+        -144
+      ],
+      "id": "81290b00-fcf6-48c7-a1da-17590d81c6f0",
+      "name": "upsert dConsultor",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
         }
       }
     }
@@ -1607,7 +1829,13 @@
     },
     "historico": {
       "main": [
-        []
+        [
+          {
+            "node": "ingressantes academico",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "insert atual em anterior": {
@@ -1615,6 +1843,28 @@
         [
           {
             "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ingressantes academico": {
+      "main": [
+        [
+          {
+            "node": "ingressantes comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dConsultor": {
+      "main": [
+        [
+          {
+            "node": "upsert dConsultor",
             "type": "main",
             "index": 0
           }
@@ -1632,12 +1882,12 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "59d236dd-3c12-465a-9262-c1f04efd17ca",
+  "versionId": "d53395d1-a1fe-4348-9a1f-e162f409e72c",
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-08-13T21:14:23.510Z",
       "updatedAt": "2025-08-13T21:14:23.510Z",
+      "createdAt": "2025-08-13T21:14:23.510Z",
       "role": "workflow:owner",
       "workflowId": "II43T9a4h9ftQjga",
       "projectId": "TjZRFTZS7ptjaNGj"
