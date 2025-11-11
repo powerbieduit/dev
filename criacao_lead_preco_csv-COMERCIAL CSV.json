@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T20:00:37.121Z",
   "updatedAt": "2025-08-22T21:11:20.000Z",
+  "createdAt": "2025-07-25T20:00:37.121Z",
   "id": "BGwS0VUSWDtIeDgT",
   "name": "criacao_lead_preco_csv",
   "active": false,
@@ -979,8 +979,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T20:00:37.124Z",
       "updatedAt": "2025-07-25T20:00:37.124Z",
+      "createdAt": "2025-07-25T20:00:37.124Z",
       "role": "workflow:owner",
       "workflowId": "BGwS0VUSWDtIeDgT",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -988,8 +988,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T20:00:36.295Z",
       "updatedAt": "2025-07-25T20:00:36.295Z",
+      "createdAt": "2025-07-25T20:00:36.295Z",
       "id": "3759VYd0IlWAtU1B",
       "name": "COMERCIAL CSV"
     }
