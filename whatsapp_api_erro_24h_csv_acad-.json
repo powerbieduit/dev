@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T19:54:42.891Z",
   "updatedAt": "2025-08-25T15:45:21.000Z",
+  "createdAt": "2025-07-25T19:54:42.891Z",
   "id": "0yCY00gWknlDKweJ",
   "name": "whatsapp_api_erro_24h_csv_acad",
   "active": false,
@@ -229,8 +229,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T19:54:42.894Z",
       "updatedAt": "2025-07-25T19:54:42.894Z",
+      "createdAt": "2025-07-25T19:54:42.894Z",
       "role": "workflow:owner",
       "workflowId": "0yCY00gWknlDKweJ",
       "projectId": "TjZRFTZS7ptjaNGj"
