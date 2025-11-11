@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-10-28T15:19:19.000Z",
   "createdAt": "2025-07-25T20:00:54.794Z",
-  "updatedAt": "2025-10-15T16:39:44.000Z",
   "id": "zi5SJlenVGiNj64Z",
   "name": "comercial_p_academico_atualizacao_dados_acesso",
   "active": true,
@@ -604,7 +604,8 @@
           "value": {
             "id_lead": "={{ $('atualiza').item.json._embedded.leads[0].id }}",
             "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
-            "Horario": "={{ $now }}\n"
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim"
           },
           "matchingColumns": [
             "id"
@@ -646,6 +647,16 @@
               "defaultMatch": false,
               "display": true,
               "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1_ativação",
+              "displayName": "1_ativação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
             }
@@ -688,7 +699,8 @@
           "value": {
             "id_lead": "={{ $json._embedded.leads[0].id }}",
             "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
-            "Horario": "={{ $now }}\n"
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim"
           },
           "matchingColumns": [
             "id"
@@ -730,6 +742,16 @@
               "defaultMatch": false,
               "display": true,
               "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1_ativação",
+              "displayName": "1_ativação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
             }
@@ -772,7 +794,8 @@
           "value": {
             "id_lead": "={{ $('atualiza1').item.json._embedded.leads[0].id }}",
             "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
-            "Horario": "={{ $now }}\n"
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim"
           },
           "matchingColumns": [
             "id"
@@ -814,6 +837,16 @@
               "defaultMatch": false,
               "display": true,
               "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1_ativação",
+              "displayName": "1_ativação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
             }
@@ -1287,12 +1320,12 @@
       }
     ]
   },
-  "versionId": "e379bb5c-9a98-47f7-b9c3-60526c6d46c9",
+  "versionId": "2e2e4e2e-bda6-4753-bf79-10e903722ccb",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T20:00:54.797Z",
       "updatedAt": "2025-07-25T20:00:54.797Z",
+      "createdAt": "2025-07-25T20:00:54.797Z",
       "role": "workflow:owner",
       "workflowId": "zi5SJlenVGiNj64Z",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -1300,8 +1333,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T20:00:36.295Z",
       "updatedAt": "2025-07-25T20:00:36.295Z",
+      "createdAt": "2025-07-25T20:00:36.295Z",
       "id": "3759VYd0IlWAtU1B",
       "name": "COMERCIAL CSV"
     }
