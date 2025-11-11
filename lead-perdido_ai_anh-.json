@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-10-06T19:10:38.066Z",
   "updatedAt": "2025-10-21T20:47:17.000Z",
+  "createdAt": "2025-10-06T19:10:38.066Z",
   "id": "IZIj9EB6Jb9tRbZd",
   "name": "lead perdido_ai_anh",
   "active": false,
@@ -360,8 +360,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-10-06T19:10:38.192Z",
       "updatedAt": "2025-10-06T19:10:38.192Z",
+      "createdAt": "2025-10-06T19:10:38.192Z",
       "role": "workflow:owner",
       "workflowId": "IZIj9EB6Jb9tRbZd",
       "projectId": "TjZRFTZS7ptjaNGj"
