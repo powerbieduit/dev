@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-01T18:06:31.806Z",
   "updatedAt": "2025-08-12T15:15:01.000Z",
+  "createdAt": "2025-08-01T18:06:31.806Z",
   "id": "BCqJCvpayVUGyyft",
   "name": "disparos automaticos",
   "active": false,
@@ -450,8 +450,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-08-01T18:06:31.812Z",
       "updatedAt": "2025-08-01T18:06:31.812Z",
+      "createdAt": "2025-08-01T18:06:31.812Z",
       "role": "workflow:owner",
       "workflowId": "BCqJCvpayVUGyyft",
       "projectId": "TjZRFTZS7ptjaNGj"
