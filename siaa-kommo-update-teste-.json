@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-12T19:25:36.937Z",
   "updatedAt": "2025-08-19T12:40:54.000Z",
+  "createdAt": "2025-08-12T19:25:36.937Z",
   "id": "CD7cCWjUGZBFcSec",
   "name": "Siaa Kommo update TESTE",
   "active": true,
@@ -1760,7 +1760,7 @@
   },
   "staticData": {
     "node:Google Drive Trigger": {
-      "lastTimeChecked": "2025-10-13T14:37:23Z"
+      "lastTimeChecked": "2025-11-06T14:55:15Z"
     }
   },
   "meta": {
@@ -1771,8 +1771,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-12T19:25:36.941Z",
       "updatedAt": "2025-08-12T19:25:36.941Z",
+      "createdAt": "2025-08-12T19:25:36.941Z",
       "role": "workflow:owner",
       "workflowId": "CD7cCWjUGZBFcSec",
       "projectId": "TjZRFTZS7ptjaNGj"
