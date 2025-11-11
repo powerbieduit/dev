@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T20:39:57.899Z",
   "updatedAt": "2025-08-11T19:08:59.000Z",
+  "createdAt": "2025-07-25T20:39:57.899Z",
   "id": "6axWxb3HoyhEsmgN",
   "name": "Siaa Kommo update",
   "active": false,
@@ -1613,8 +1613,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-07-25T20:39:57.902Z",
       "updatedAt": "2025-07-25T20:39:57.902Z",
+      "createdAt": "2025-07-25T20:39:57.902Z",
       "role": "workflow:owner",
       "workflowId": "6axWxb3HoyhEsmgN",
       "projectId": "TjZRFTZS7ptjaNGj"
