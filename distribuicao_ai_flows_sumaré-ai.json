@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-05T20:40:06.220Z",
   "updatedAt": "2025-09-30T15:43:45.000Z",
+  "createdAt": "2025-09-05T20:40:06.220Z",
   "id": "43YAwqmzHhPHdJOs",
   "name": "distribuicao_ai_flows_sumaré",
   "active": false,
@@ -259,8 +259,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-09-05T20:40:06.226Z",
       "updatedAt": "2025-09-05T20:40:06.226Z",
+      "createdAt": "2025-09-05T20:40:06.226Z",
       "role": "workflow:owner",
       "workflowId": "43YAwqmzHhPHdJOs",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -268,8 +268,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
