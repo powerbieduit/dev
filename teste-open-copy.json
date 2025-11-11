@@ -1,0 +1,1353 @@
+{
+  "updatedAt": "2025-11-07T20:59:45.000Z",
+  "createdAt": "2025-11-07T16:54:23.257Z",
+  "id": "4frzaV7flSTuXvtX",
+  "name": "teste open copy",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "testecopy",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "GET, POST, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type, Accept"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -448,
+        2960
+      ],
+      "id": "46ee0230-b4ef-417d-a037-17990093a793",
+      "name": "Webhook",
+      "webhookId": "72123d87-3bca-49ff-9192-b85345df34fb"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Credentials",
+                "value": "true"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        3264,
+        2496
+      ],
+      "id": "da5b9e31-ebbd-4e53-8ed3-e22ddf73a8e9",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "comparar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "60071b4b-cd1b-46e8-90c4-b37cf519c55b"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b861143a-a789-4334-b5c1-a525fa105210",
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "info",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3d234603-7433-4336-8fbb-5bdc76fa640d",
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "frases",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0dc8c2fe-a8c2-4f75-870d-1c046b3bdef6",
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "recomendacao",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9e6a723a-24e9-4c0b-8c4e-58f7a74f0e51",
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "justificativa",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b4752f04-6624-4513-81da-a6c8810d4ede",
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "=localizacao",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "660d4be4-3c3f-45dd-8e41-9b66aa921a91",
+                    "leftValue": "={{ $json.body.opcao }}",
+                    "rightValue": "localizacao_cep",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        0,
+        2896
+      ],
+      "id": "413f8e8a-05eb-4915-a6e7-2c49e2140e67",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Garante compatibilidade com body vindo em array ou objeto\nconst input = Array.isArray($input.all()) ? $input.all()[0].json : $json;\n\n// Garante que estamos acessando o objeto certo (caso body esteja aninhado)\nconst data = input.body || input;\n\n// Extrai cursos de qualquer campo que comece com 'curso'\nconst cursos = [];\nfor (const key in data) {\n  if (key.toLowerCase().startsWith('curso') && data[key] && String(data[key]).trim() !== '') {\n    cursos.push(String(data[key]).trim());\n  }\n}\n\nif (cursos.length < 2) {\n  return [{ prompt: 'É necessário ao menos dois cursos para comparação.' }];\n}\n\n// Monta o prompt comercial\nlet prompt = 'Compare os cursos abaixo considerando critérios comerciais relevantes:\\n\\n';\nfor (let i = 0; i < cursos.length; i++) {\n  prompt += `- Curso ${i + 1}: ${cursos[i]}\\n`;\n}\n\nprompt += `\nPara cada curso, analise:\n1. Diferenciais competitivos.\n2. Perspectiva de mercado (empregabilidade, retorno financeiro, valorização profissional).\n3. Principais objeções que o cliente pode ter e como contorná-las.\n4. Sugestão de abordagem comercial para o vendedor.\n\nFinalize com uma conclusão prática, indicando qual curso tende a ser mais atrativo comercialmente e por quê.\n`;\n\nreturn [{ prompt }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        576
+      ],
+      "id": "64e760dd-f89b-4f29-9008-7325fa82b97b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "frequencyPenalty": 0,
+          "maxTokens": 1000,
+          "presencePenalty": 0,
+          "temperature": 0.3,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1136,
+        784
+      ],
+      "id": "ae84de33-fdf1-4202-9039-f76f34d7fcdd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// =======================================================\n// ✅ Code Node - Parsing universal (JSON, string ou Markdown puro)\n// =======================================================\n\nconst input = Array.isArray($input.all()) ? $input.all()[0].json : $json;\n\n// --- Pega o conteúdo principal ---\nlet raw = '';\nif (Array.isArray(input) && input[0]?.output) raw = input[0].output;\nelse if (typeof input.output === 'string') raw = input.output;\nelse if (typeof input.text === 'string') raw = input.text;\nelse raw = JSON.stringify(input);\n\nconsole.log('🧩 Raw recebido (início):', raw.substring(0, 300));\n\nlet parsed = null;\n\n// --- Tenta interpretar como JSON (primeira tentativa) ---\ntry {\n  parsed = JSON.parse(raw);\n  console.log('✅ JSON puro parseado.');\n} catch (err1) {\n  // Se não for JSON puro, tenta limpar e verificar se é JSON stringificado\n  try {\n    const cleaned = raw\n      .replace(/```json/gi, '')\n      .replace(/```/g, '')\n      .trim();\n\n    if (cleaned.startsWith('{') && cleaned.endsWith('}')) {\n      parsed = JSON.parse(cleaned);\n      console.log('✅ JSON limpo parseado.');\n    } else if (\n      cleaned.startsWith('\"') &&\n      cleaned.endsWith('\"') &&\n      cleaned.includes('\\\\\\\"analises_md\\\\\\\"')\n    ) {\n      parsed = JSON.parse(JSON.parse(cleaned));\n      console.log('🌀 JSON duplo parseado.');\n    } else {\n      // Se nada disso, é Markdown simples — envia direto\n      parsed = {\n        analises_md: cleaned,\n        tabela_md: '',\n        conclusao_md: ''\n      };\n      console.log('📄 Conteúdo tratado como Markdown puro.');\n    }\n  } catch (err2) {\n    console.error('❌ Falha total ao parsear, fallback para Markdown:', err2.message);\n    parsed = {\n      analises_md: raw,\n      tabela_md: '',\n      conclusao_md: ''\n    };\n  }\n}\n\n// --- Sanitização ---\nconst clean = (txt) =>\n  String(txt || '')\n    .replace(/^:+\\s*/gm, '')\n    .replace(/\\\\n/g, '\\n')\n    .trim();\n\nconst analises = clean(parsed.analises_md);\nconst tabela = clean(parsed.tabela_md);\nconst conclusao = clean(parsed.conclusao_md);\n\n// --- Saída final ---\nreturn [\n  {\n    analises_md: analises,\n    tabela_md: tabela,\n    conclusao_md: conclusao,\n    output: `${analises}\\n\\n${tabela}\\n\\n### Conclusão\\n${conclusao}`.trim()\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1504,
+        576
+      ],
+      "id": "47da3fd4-42b2-4570-9fcc-b23535117046",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2928,
+        2432
+      ],
+      "id": "627fc709-b975-4603-b634-225fefffec04",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// =======================================================\n// 🔹 Code Node: prepara prompt e JSON seguro para recomendação\n// =======================================================\n\n// Garante compatibilidade com body vindo em array ou objeto\nconst input = Array.isArray($input.all()) ? $input.all()[0].json : $json;\n\n// Extrai body corretamente (caso venha aninhado)\nconst data = input.body || input;\n\n// Extrai os campos principais\nconst curso = data.curso || \"Curso não informado\";\nconst tipo = data.tipo || \"graduacao\"; // padrão seguro\n\n// Monta o prompt para a IA\nconst prompt = `\nRecomende cursos similares a \"${curso}\" no formato solicitado.\n\nInstruções:\n- Se tipo = \"graduacao\": recomende apenas cursos de graduação\n- Se tipo = \"pos-graduacao\": recomende apenas cursos de pós-graduação\n- Liste 3 a 5 cursos similares\n- Para cada curso, forneça uma justificativa curta (1 linha) explicando a similaridade\n\nFormato da resposta:\n1. [Nome do Curso] - [Justificativa em 1 linha]\n2. [Nome do Curso] - [Justificativa em 1 linha]\n3. [Nome do Curso] - [Justificativa em 1 linha]\n`;\n\n// Retorna o prompt para o AI Agent e um objeto de fallback seguro\nreturn [\n  {\n    prompt,\n    curso,\n    tipo,\n    // Garante uma estrutura de resposta mínima, caso algo quebre no fluxo\n    safeResponse: {\n      status: \"ok\",\n      message: \"Solicitação de recomendação recebida.\",\n      curso,\n      tipo,\n      timestamp: new Date().toISOString()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        1184
+      ],
+      "id": "db18c7dc-00f7-4f28-839c-9bfad1f60dde",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// =======================================================\n// 🔹 Code Node unificado: parse da IA + resposta HTTP JSON\n// =======================================================\n\n// 1️⃣ Captura o texto retornado pela IA\nconst raw = $json.output ?? $json.text ?? \"\";\nconsole.log(\"Raw output da IA:\", raw);\n\n// 2️⃣ Tenta fazer o parse do JSON retornado pela IA\nlet parsed;\ntry {\n  parsed = JSON.parse(raw);\n} catch (e) {\n  console.log(\"Parse direto falhou, tentando extrair JSON...\");\n  let cleaned = raw.replace(/```json\\n?/g, \"\").replace(/```\\n?/g, \"\");\n  const jsonMatch = cleaned.match(/\\{[\\s\\S]*\"analises_md\"[\\s\\S]*\"tabela_md\"[\\s\\S]*\"conclusao_md\"[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    try {\n      parsed = JSON.parse(jsonMatch[0]);\n    } catch (e2) {\n      console.error(\"Erro ao parsear JSON extraído:\", e2);\n    }\n  }\n}\n\n// 3️⃣ Se não conseguiu parsear (ex: rota de recomendação simples)\nif (!parsed) {\n  // Se a IA retornou apenas texto simples (como lista de recomendações)\n  if (raw && raw.includes(\"1.\") && raw.includes(\"-\")) {\n    parsed = { recomendacoes: raw.split(\"\\n\").filter(l => l.trim() !== \"\") };\n  } else {\n    parsed = {\n      analises_md: \"\",\n      conclusao_md: \"\",\n      tabela_md: \"\",\n      recomendacoes: [raw || \"Sem retorno da IA.\"]\n    };\n  }\n}\n\n// 4️⃣ Cria a resposta padrão segura\nconst responseBody = {\n  status: \"success\",\n  analises_md: String(parsed.analises_md || \"\").trim(),\n  conclusao_md: String(parsed.conclusao_md || \"\").trim(),\n  tabela_md: String(parsed.tabela_md || \"\").trim(),\n  recomendacoes: Array.isArray(parsed.recomendacoes)\n    ? parsed.recomendacoes\n    : [String(parsed.recomendacoes || \"\").trim()],\n  output: `${parsed.analises_md || \"\"}\\n\\n${parsed.tabela_md || \"\"}\\n\\n### Conclusão\\n${parsed.conclusao_md || \"\"}`.trim(),\n  timestamp: new Date().toISOString()\n};\n\n// 5️⃣ Retorna o JSON correto para o front (sem stringify!)\nreturn [\n  {\n    headers: {\n      \"Content-Type\": \"application/json\",\n      \"Access-Control-Allow-Origin\": \"*\",\n      \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\"\n    },\n    body: responseBody\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        1200
+      ],
+      "id": "65d7de73-6bfb-4142-8d04-edbfcf1133f4",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "Você é um assistente especializado em gerar comparativos comerciais de cursos da Cruzeiro do Sul Virtual.\n\nSua resposta deve SEMPRE ser um JSON válido com as seguintes chaves:\n{\n  \"analises_md\": \"### Curso 1: ... (markdown detalhado dos cursos, incluindo frase comercial para cada)\",\n  \"tabela_md\": \"| Critério | Curso 1 | Curso 2 | ... | (tabela markdown completa com foco principal, perfil ideal, empregabilidade, crescimento, abordagem, mensagem-chave)\",\n  \"conclusao_md\": \"### Conclusão\\n(Resumo equilibrado sobre os cursos e o perfil ideal para cada um)\"\n}\n\n**Instruções obrigatórias:**\n- NÃO use blocos de código Markdown (sem ```json).\n- NÃO omita nenhuma chave — mesmo se vazia.\n- Use sempre `### Curso 1: Nome`, `### Curso 2: Nome`, etc.\n- Cada curso deve ter:\n  - Diferenciais competitivos\n  - Perspectiva de mercado (empregabilidade, retorno financeiro, valorização profissional)\n  - Principais objeções e como contorná-las\n  - Sugestão de abordagem comercial\n  - Frase comercial de impacto (1 linha persuasiva)\n- Gere uma **tabela comparativa** com critérios claros e valores para todos os cursos.\n- Inclua **uma conclusão completa**, SEM definir “vencedores”, apenas apontando o perfil ideal e as vantagens de cada.\n\nO formato final deve ser **um único JSON puro**, sem texto fora dele.\n\n⚠️ IMPORTANTE:\n- Responda SEMPRE com um único JSON puro e completo.\n- Inclua obrigatoriamente as chaves \"analises_md\", \"tabela_md\" e \"conclusao_md\".\n- Se a resposta for longa, continue até terminar — nunca encerre o JSON no meio.\n- Garanta que o JSON termine corretamente com \"}\".\n- Nunca omita ou cortar o conteúdo dos cursos.\n- Nunca escreva texto fora do JSON."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1152,
+        576
+      ],
+      "id": "4665f798-cbb2-4f7b-86ec-252530f4b87c",
+      "name": "COMPARAR"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "=Você é um assistente que identifica cursos equivalentes ou alternativos disponíveis na Cruzeiro do Sul Virtual usando a tool apropriada conforme o tipo de curso.\n\n**Tipo de curso solicitado:** {{ $json.safeResponse.tipo }}\n\n## 🔧 SELEÇÃO DE TOOL\n\n**Se tipo = \"pos-graduacao\":**\n- Use a tool `pos_recomendacao` para todas as buscas\n- **A busca deve ser feita da mesma forma que graduação** - use os mesmos termos e estratégias\n\n**Se tipo = \"graduacao\":**\n- Use a tool `buscar_documentos` para todas as buscas\n\n## 🔍 PROCESSO DE BUSCA\n\n1. **SEMPRE use a tool apropriada** para buscar cursos do tipo {{ $json.safeResponse.tipo }}\n2. **Execute múltiplas buscas até encontrar resultados (MÁXIMO 4 BUSCAS):**\n   - Busca 1: Termo original (ex: \"psicologia\")\n   - Busca 2: Termos relacionados da área (ex: \"psicologia\" → \"psicanálise\", \"psicopedagogia\")\n   - Busca 3: Área ampla ou com prefixo (ex: \"gestão de [área]\", ou apenas a área geral)\n   - Busca 4: Área do conhecimento CNPq/MEC (ex: \"ciências humanas\", \"ciências sociais\")\n3. **Objetivo: coletar entre 3 e 5 cursos válidos. Se após 4 buscas não alcançar, retorne o que foi encontrado**\n\n## 🎯 CRITÉRIOS DE RECOMENDAÇÃO\n\n1. **Mesma área** (campo \"area\" dos resultados)\n2. **Área do conhecimento CNPq/MEC** (ex: Ciências Humanas, Ciências Exatas, Engenharias)\n3. **Proximidade de atuação profissional**\n4. **Relevância semântica**\n\n## ⚠️ VALIDAÇÃO OBRIGATÓRIA\n\n**Para TODOS os cursos antes de incluir na lista:**\n\n### Se tipo = \"graduacao\":\n- ✅ Aceite qualquer curso de graduação retornado pela tool\n- ✅ Nome do curso deve estar completo\n- ❌ NÃO aceite cursos com \"MBA\" ou \"Pós\" no nome\n\n### Se tipo = \"pos-graduacao\":\n- ✅ APENAS aceite cursos que contenham \"MBA\" OU \"Pós\" no início/meio do nome\n- ✅ Exemplos válidos: \"MBA em Gestão\", \"Pós - Direito Penal\", \"Pós-Graduação em Marketing\"\n- ❌ NÃO aceite cursos de graduação\n- ❌ NÃO aceite cursos sem \"MBA\" ou \"Pós\" no nome\n\n### Para AMBOS os tipos:\n- ❌ **NUNCA inclua o curso \"{{ $json.safeResponse.curso }}\"** (o mesmo que foi pesquisado)\n- ❌ Ignore resultados vazios ou com nome incompleto\n- ✅ Use APENAS cursos retornados pela tool\n- ✅ Priorize cursos da mesma área quando disponível\n\n## 📤 FORMATO DE RESPOSTA\n\n**CRÍTICO: Retorne APENAS uma lista numerada simples. ZERO texto adicional.**\n\n✅ **FORMATO CORRETO:**\n```\n1. Psicanálise\n2. Psicopedagogia\n3. Gestão de Recursos Humanos\n```\n\n❌ **FORMATO ERRADO:**\n```\n1. Psicanálise - Curso focado em...\n2. Psicopedagogia - Este curso aborda...\n```\n\n❌ **TAMBÉM ERRADO:**\n- Usar blocos de código com ``` ```\n- Adicionar traços, hífens ou texto após o nome\n- Incluir justificativas ou explicações\n- Adicionar pontos finais após o nome\n\n**Se nenhum curso válido foi encontrado, retorne APENAS:** \n```\nNenhum curso equivalente encontrado.\n```\n\n## ✅ REGRAS FINAIS\n\n- **NÃO invente cursos** - use APENAS o que a tool retornar\n- **MÁXIMO 4 BUSCAS** - não exceda esse limite\n- **Retorne somente: número + nome do curso**\n- **NADA de explicações, justificativas ou textos extras**\n\n## 🔎 CHECKLIST FINAL (antes de retornar)\n\nPara CADA curso na lista, verifique:\n1. ✅ Nome completo e não-vazio?\n2. ✅ Tipo correto? (graduação ≠ pós-graduação)\n3. ✅ Para pós: contém \"MBA\" OU \"Pós\"?\n4. ✅ É diferente do curso pesquisado \"{{ $json.safeResponse.curso }}\"?\n5. ✅ Curso existe na base retornada pela tool?\n\n**Se falhar em qualquer item, NÃO inclua o curso na resposta.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        1280
+      ],
+      "id": "b2ce80a8-95b2-4903-b114-8997ae6a4907",
+      "name": "RECOMENDAR"
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "81c2365a-a4d6-45a3-a4fd-cbb4585eff04",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        832,
+        1776
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "documents",
+        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+        "topK": 8
+      },
+      "id": "f6204eba-d40f-4af1-b190-67f05cdf9915",
+      "name": "buscar_documentos",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        928,
+        1632
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxTokens": 200,
+          "responseFormat": "text",
+          "temperature": 0.2
+        }
+      },
+      "id": "f08e9230-d00b-4bd0-9b3c-3e267f0ae976",
+      "name": "OpenAI Chat Docs",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        1968
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "e823633c-2242-49ed-b00d-4c1c7e42de61",
+      "name": "Embeddings OpenAI Vector",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1904
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "frequencyPenalty": 0.1,
+          "temperature": 0.4,
+          "topP": 0.9
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        1488
+      ],
+      "id": "c18539a2-a25e-4b1d-b7e3-a9093451504e",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 🔹 Prepara o prompt para gerar a justificativa de um curso específico\n\nconst input = Array.isArray($input.all()) ? $input.all()[0].json : $json;\nconst data = input.body || input;\n\nconst curso = String(data.curso || \"\").trim();\nconst curso_original = String(data.curso_original || \"\").trim();\nconst tipo = (data.tipo || \"graduacao\").trim().toLowerCase();\n\nif (!curso) {\n  return [{\n    error: true,\n    message: \"Campo 'curso' é obrigatório para justificativa.\"\n  }];\n}\n\n// Prompt claro e objetivo\nconst prompt = `\nGere uma justificativa curta (2 a 3 linhas) para recomendar o curso \"${curso}\" \n(do tipo \"${tipo}\") considerando que o curso original informado foi \"${curso_original}\".\n\nInstruções:\n- Use somente informações compatíveis com a base (via tool de busca).\n- Não invente cursos ou áreas.\n- Foque em: relação com o interesse do aluno, área CNPq/MEC e oportunidades de carreira.\n\nFormato de saída (obrigatório):\n{\n  \"curso\": \"${curso}\",\n  \"curso_original\": \"${curso_original}\",\n  \"justificativa\": \"…texto curto…\"\n}\n`.trim();\n\nreturn [{ prompt, curso, curso_original, tipo }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        2128
+      ],
+      "id": "e22e9e45-8ba5-4988-ba68-cd25b8f58038",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "=Você é um consultor educacional especializado em cursos superiores da Universidade Cruzeiro do Sul. Sua missão é explicar DE FORMA CLARA E ESPECÍFICA por que um curso é relevante para quem se interessou por outro curso.\n\nESTRUTURA OBRIGATÓRIA DA JUSTIFICATIVA (2-3 linhas):\n\nFrase 1: CONEXÃO DIRETA - explique o que os cursos TÊM EM COMUM (disciplinas, objeto de estudo, área de conhecimento)\nFrase 2: DIFERENCIAL - mostre o QUE MUDA no foco/abordagem do curso recomendado\nFrase 3: OPORTUNIDADE - cite aplicações práticas ou mercado de trabalho específico\n\nREGRAS:\n✅ SEMPRE comece explicando O QUE conecta os dois cursos\n✅ Use exemplos CONCRETOS: nomes de disciplinas, áreas específicas, competências técnicas\n✅ Seja OBJETIVO: evite rodeios ou descrições genéricas do curso\n❌ NÃO apenas descreva o curso recomendado - COMPARE com o curso original\n❌ NÃO use frases vagas como \"oferece uma abordagem prática\" sem explicar COMO\n\nFORMATO DE SAÍDA (JSON válido):\n{\n  \"curso\": \"nome do curso\",\n  \"curso_original\": \"curso original\",\n  \"justificativa\": \"texto seguindo a estrutura obrigatória\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        2592
+      ],
+      "id": "8b641dd0-1795-4c15-b4a4-3179e13ebd15",
+      "name": "justificativa"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "maxTokens": 180,
+          "temperature": 0.3,
+          "topP": 0.9
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1376,
+        2800
+      ],
+      "id": "f68d134b-0205-4f7b-966e-75926104082c",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// =======================================================\n// 🔹 Empacota a resposta da IA (JSON) para o front-end\n// =======================================================\n\n// Pega o texto cru vindo do nó JUSTIFICAR\nconst raw = $json.output ?? $json.text ?? \"\";\nlet parsed;\n\n// Tenta fazer o parse do JSON\ntry {\n  parsed = JSON.parse(raw);\n} catch {\n  parsed = null;\n}\n\n// Caso a IA não devolva JSON válido, retorna um fallback\nif (!parsed || !parsed.curso || !parsed.justificativa) {\n  return [{\n    headers: {\n      \"Content-Type\": \"application/json\",\n      \"Access-Control-Allow-Origin\": \"*\",\n      \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\"\n    },\n    body: {\n      status: \"error\",\n      message: \"Não foi possível gerar a justificativa. Tente novamente.\",\n      timestamp: new Date().toISOString()\n    }\n  }];\n}\n\n// Se tudo deu certo, monta a resposta final\nreturn [{\n  headers: {\n    \"Content-Type\": \"application/json\",\n    \"Access-Control-Allow-Origin\": \"*\",\n    \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\"\n  },\n  body: {\n    status: \"success\",\n    curso: String(parsed.curso),\n    justificativa: String(parsed.justificativa),\n    timestamp: new Date().toISOString()\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        2416
+      ],
+      "id": "4201a03f-2750-4247-bba8-6f43576cb4e0",
+      "name": "Code in JavaScript6"
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/geocode/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "address",
+              "value": "={{ $json.body.cep }}"
+            },
+            {
+              "name": "region",
+              "value": "br"
+            },
+            {
+              "name": "language",
+              "value": "pt-BR"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyAQtXFkcU4A51AAzD_awNi3ycpHR5QYKjE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        3584
+      ],
+      "id": "22f9cb79-5d9c-4c71-91a0-3181bd3e70a9",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/geocode/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "address",
+              "value": "={{ $json.body.rua }}, {{ $json.body.numero }} - {{ $json.body.cidade }}"
+            },
+            {
+              "name": "region",
+              "value": "br"
+            },
+            {
+              "name": "language",
+              "value": "pt-BR"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyAQtXFkcU4A51AAzD_awNi3ycpHR5QYKjE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        3296
+      ],
+      "id": "e406a456-391c-4bdf-853b-f3dbd7d4484a",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "polo_loc"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        3520
+      ],
+      "id": "63d3e7f0-eb22-4f6c-8a70-05ed6eca1298",
+      "name": "Get many rows1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "71OBWtC8t38iEtPO",
+          "name": "Supabase Academico"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Etapa 2 – Extrai latitude/longitude do resultado do Geocoding\n * Entrada esperada: resposta JSON do HTTP Request do Google Maps\n * Saída: objeto com origemString (\"lat,lng\"), origem (objeto), departure e limite_polos\n */\n\nconst res = $json;\n\n// Verifica se veio resposta válida\nif (!res.results || !Array.isArray(res.results) || res.results.length === 0) {\n  return [\n    {\n      json: {\n        status: \"error\",\n        message: res.error_message || \"Endereço ou CEP não encontrado\",\n        raw: res\n      }\n    }\n  ];\n}\n\n// Pega o primeiro resultado do Google (mais relevante)\nconst first = res.results[0];\nconst loc = first.geometry?.location;\n\n// Valida se tem latitude/longitude\nif (!loc || typeof loc.lat !== \"number\" || typeof loc.lng !== \"number\") {\n  return [\n    {\n      json: {\n        status: \"error\",\n        message: \"Resposta do Geocoding não contém coordenadas válidas\",\n        raw: res\n      }\n    }\n  ];\n}\n\n// Monta o objeto de origem\nconst origem = {\n  lat: loc.lat,\n  lng: loc.lng,\n  endereco_formatado: first.formatted_address || null,\n  place_id: first.place_id || null\n};\n\n// Monta string \"lat,lng\" (usada pela Distance Matrix)\nconst origemString = `${loc.lat},${loc.lng}`;\n\n// Define horário de partida (agora)\nconst departure = \"now\";\n\n// Define limite máximo de polos a analisar (para otimizar requisições)\nconst limite_polos = 50;\n\n// Retorna em formato que o próximo nó entende\nreturn [\n  {\n    json: {\n      origem,\n      origemString,\n      departure,\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        3328
+      ],
+      "id": "6c38c949-fecd-4c08-a9fc-4a0b784518ad",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1776,
+        3392
+      ],
+      "id": "6905b2a8-9acd-4691-ad2c-dcaf8af753e0",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Calcula os 2 polos mais próximos da origem (em linha reta)\n * Entrada: origem (objeto com lat/lng) + lista de polos com latitude/longitude\n * Saída: dois polos mais próximos e ordenados por distância\n */\n\n// Função para calcular distância (Haversine)\nfunction calcularDistanciaKm(lat1, lon1, lat2, lon2) {\n  const R = 6371; // Raio da Terra em km\n  const dLat = (lat2 - lat1) * Math.PI / 180;\n  const dLon = (lon2 - lon1) * Math.PI / 180;\n  const a =\n    Math.sin(dLat / 2) ** 2 +\n    Math.cos(lat1 * Math.PI / 180) *\n      Math.cos(lat2 * Math.PI / 180) *\n      Math.sin(dLon / 2) ** 2;\n  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));\n  return R * c;\n}\n\n// Separa origem e polos\nconst all = $input.all().map(i => i.json);\nconst origem = all.find(i => i.origem);\nconst polos = all.filter(i => i.latitude && i.longitude);\n\nif (!origem) {\n  return [{ json: { status: \"erro\", message: \"Origem não encontrada\" } }];\n}\n\n// Calcula distâncias\nconst resultados = polos.map(p => ({\n  id: p.id,\n  nome: p.nome,\n  endereco: p.endereco,\n  latitude: p.latitude,\n  longitude: p.longitude,\n  distancia_km: calcularDistanciaKm(origem.origem.lat, origem.origem.lng, p.latitude, p.longitude)\n}));\n\n// Ordena por menor distância\nresultados.sort((a, b) => a.distancia_km - b.distancia_km);\n\n// Retorna os 2 mais próximos\nconst proximos = resultados.slice(0, 2);\n\nreturn [{ json: { origem: origem.origem, polos_proximos: proximos } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        3424
+      ],
+      "id": "14defd2d-3c0e-49dc-b609-3eafe2e47b09",
+      "name": "Code in JavaScript7"
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/distancematrix/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "origins",
+              "value": "={{ $json.origem.lat }},{{ $json.origem.lng }}"
+            },
+            {
+              "name": "destinations",
+              "value": "-23.586594,-46.717387|-23.595332,-46.524891|-23.49556,-46.697923|-23.585067,-46.583863|-23.50424,-46.623449|-23.522932,-46.663319|-23.639403,-46.8017|-22.967422,-47.128864|-22.995432,-47.505319|-23.606949,-46.756408|-23.608091,-46.664971|-22.438788,-46.82259|-23.59112,-46.63524"
+            },
+            {
+              "name": "mode",
+              "value": "transit"
+            },
+            {
+              "name": "region",
+              "value": "br"
+            },
+            {
+              "name": "language",
+              "value": "pt-BR"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyAQtXFkcU4A51AAzD_awNi3ycpHR5QYKjE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2208,
+        3424
+      ],
+      "id": "82917c75-9a0f-4ff4-b601-e5f63f433d75",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Etapa final — Analisa o resultado do Google Distance Matrix\n * e retorna o polo mais rápido baseado no menor tempo de transporte público.\n *\n * Entrada esperada:\n *  - $json: resposta completa da API Distance Matrix\n *  - Node \"Get many rows1\": lista dos polos com nome/endereço/latitude/longitude\n */\n\n// === 1. Carrega os dados ===\nconst data = Array.isArray($json) ? $json[0] : $json;\nconst polos = $items(\"Get many rows1\").map(i => i.json); // pega todos os polos do Supabase\n\n// Validação básica\nif (!data || !data.rows?.length || !data.rows[0]?.elements) {\n  return [{ json: { status: \"erro\", message: \"Formato inválido da resposta Distance Matrix\", data } }];\n}\n\nconst elements = data.rows[0].elements;\nconst destinations = data.destination_addresses || [];\nconst origin = data.origin_addresses?.[0] || \"Origem não identificada\";\n\n// === 2. Combina dados de distância e tempo com os polos ===\nconst resultados = [];\n\nfor (let i = 0; i < elements.length; i++) {\n  const e = elements[i];\n  if (e.status === \"OK\") {\n    const destino = destinations[i] || \"Endereço não encontrado\";\n\n    // tenta encontrar o polo correspondente pelo índice\n    const polo = polos[i] || {};\n\n    resultados.push({\n      indice: i,\n      nome_polo: polo.nome || `Polo ${i + 1}`,\n      endereco_polo: polo.endereco || destino,\n      destino_google: destino,\n      distancia_metros: e.distance.value,\n      distancia_texto: e.distance.text,\n      duracao_segundos: e.duration.value,\n      duracao_texto: e.duration.text,\n    });\n  }\n}\n\n// === 3. Ordena por tempo de viagem (menor primeiro) ===\nif (resultados.length === 0) {\n  return [{ json: { status: \"erro\", message: \"Nenhum destino com status OK\", data } }];\n}\n\nresultados.sort((a, b) => a.duracao_segundos - b.duracao_segundos);\n\n// === 4. Seleciona o polo mais rápido ===\nconst maisRapido = resultados[0];\n\n// === 5. Cria link direto no Google Maps ===\nconst origemParam = encodeURIComponent(origin);\nconst destinoParam = encodeURIComponent(maisRapido.destino_google);\nconst linkRota = `https://www.google.com/maps/dir/?api=1&origin=${origemParam}&destination=${destinoParam}&travelmode=transit`;\n\n// === 6. Retorna resultado completo ===\nreturn [\n  {\n    json: {\n      status: \"ok\",\n      origem: origin,\n      mais_rapido: {\n        nome_polo: maisRapido.nome_polo,\n        endereco_polo: maisRapido.endereco_polo,\n        tempo: maisRapido.duracao_texto,\n        distancia: maisRapido.distancia_texto,\n        link_rota: linkRota\n      },\n      comparacao: resultados.map(r => ({\n        nome_polo: r.nome_polo,\n        tempo: r.duracao_texto,\n        distancia: r.distancia_texto\n      }))\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2416,
+        3424
+      ],
+      "id": "82820a04-6007-4565-be10-f2e500b93143",
+      "name": "Code in JavaScript8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "118fbe65-b36d-4a91-bb6a-c6536e397480",
+              "name": "polo mais rápido",
+              "value": "={{ $json.mais_rapido.nome_polo }}",
+              "type": "string"
+            },
+            {
+              "id": "69b4464c-f5e3-4298-8eb2-3fd82c0c87ca",
+              "name": "tempo",
+              "value": "={{ $json.mais_rapido.tempo }}",
+              "type": "string"
+            },
+            {
+              "id": "902bd441-493e-4d06-9fce-11d18e058604",
+              "name": "link da rota",
+              "value": "={{ $json.mais_rapido.link_rota }}",
+              "type": "string"
+            },
+            {
+              "id": "cc322d41-b647-4fc4-88a3-421d9cf65e1b",
+              "name": "polo mais próximo",
+              "value": "={{ $('Code in JavaScript7').item.json.polos_proximos[0].nome }}",
+              "type": "string"
+            },
+            {
+              "id": "d7f561ee-4cc6-4f56-836a-96416b4a7c10",
+              "name": "polo mais próximo 2",
+              "value": "={{ $('Code in JavaScript7').item.json.polos_proximos[1].nome }}",
+              "type": "string"
+            },
+            {
+              "id": "52fe96ec-c0d8-4b60-8d12-60aaef0d45fe",
+              "name": "distancia mais proxima",
+              "value": "={{ $('Code in JavaScript7').item.json.polos_proximos[0].distancia_km.toFixed(2) }} km",
+              "type": "string"
+            },
+            {
+              "id": "5fe0c6f8-1358-4dad-b9d4-a59737220ded",
+              "name": "distancia mais proxima2 ",
+              "value": "={{ $('Code in JavaScript7').item.json.polos_proximos[1].distancia_km.toFixed(2) }} km",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2624,
+        3424
+      ],
+      "id": "64d34f87-6bad-48eb-bffe-1c2c6dfd1994",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxTokens": 200,
+          "responseFormat": "text",
+          "temperature": 0.2
+        }
+      },
+      "id": "6385f7a0-1dac-49d4-948d-7b8d9a175353",
+      "name": "OpenAI Chat Docs1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1616,
+        1792
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "ad63cd63-33bc-4a8e-a5ba-0cca9027c310",
+      "name": "Embeddings OpenAI Vector1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        1888
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "documents_pos",
+        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: pós-graduação (durações e areas)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+        "topK": 8
+      },
+      "id": "61c387d0-c1d8-4812-af4e-f49324dd48c5",
+      "name": "pos_recomendacao",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents_pos",
+          "mode": "list",
+          "cachedResultName": "documents_pos"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "40574383-0341-4a61-8e46-73f06f67b77c",
+      "name": "vetorial_pos",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        1664
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get many rows1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get many rows1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "COMPARAR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "COMPARAR",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "RECOMENDAR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "COMPARAR": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RECOMENDAR": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Docs": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Vector": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RECOMENDAR",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_documentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "RECOMENDAR",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "justificativa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "justificativa",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "justificativa": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript6": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript8": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Docs1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "pos_recomendacao",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Vector1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "vetorial_pos",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pos_recomendacao": {
+      "ai_tool": [
+        [
+          {
+            "node": "RECOMENDAR",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vetorial_pos": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "pos_recomendacao",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+            "content-length": "71",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Google Chrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "187.57.232.212",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "187.57.232.212"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "opcao": "recomendacao",
+            "curso": "direito penal",
+            "tipo": "pos-graduacao"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/testecopy",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "fd42e135-1176-48e2-ba7f-0327312e4103",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-11-07T16:54:23.262Z",
+      "createdAt": "2025-11-07T16:54:23.262Z",
+      "role": "workflow:owner",
+      "workflowId": "4frzaV7flSTuXvtX",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": []
+}
