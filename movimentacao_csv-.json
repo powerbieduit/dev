@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-19T16:15:53.377Z",
   "updatedAt": "2025-10-02T15:55:26.000Z",
+  "createdAt": "2025-09-19T16:15:53.377Z",
   "id": "Dy35DImrzuctXV6R",
   "name": "movimentacao_csv",
   "active": true,
@@ -451,8 +451,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-09-19T16:15:53.381Z",
       "updatedAt": "2025-09-19T16:15:53.381Z",
+      "createdAt": "2025-09-19T16:15:53.381Z",
       "role": "workflow:owner",
       "workflowId": "Dy35DImrzuctXV6R",
       "projectId": "TjZRFTZS7ptjaNGj"
