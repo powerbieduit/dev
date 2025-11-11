@@ -1,0 +1,615 @@
+{
+  "updatedAt": "2025-11-11T18:24:53.000Z",
+  "createdAt": "2025-11-03T20:56:34.413Z",
+  "id": "36vKiDidEwyN0t8y",
+  "name": "comercial_p_academico_criação de lead datacrazy",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "criar_aluno",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        96
+      ],
+      "id": "8d343e2b-45bd-4ca4-a0d1-091fecee83cb",
+      "name": "Webhook",
+      "webhookId": "301c5dae-c040-49ed-9d62-491fcfc4828e"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        336,
+        0
+      ],
+      "id": "edd77a3b-0d4a-4619-929d-d25f525d13fd",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $json._embedded?.leads?.[0];\n\nconst campos = lead?.custom_fields_values || [];\n\nconst mapaCampos = {};\nfor (const campo of campos) {\n  mapaCampos[campo.field_id] = campo.values?.[0]?.value || '';\n}\n\nreturn {\n  json: {\n    id: lead.id,\n    nome: lead.name,\n    pipeline_id: lead.pipeline_id,\n    status_id: lead.status_id,\n    campos: mapaCampos\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        96
+      ],
+      "id": "869a431a-cf21-476f-8d88-01d2d81ee8fe",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Code').item.json.campos['304628'] }}",
+              "price": 0,
+              "pipeline_id": 6961711,
+              "status_id": 58205935,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":334080,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['304628'] }}"
+                  },
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['666386'] }}"
+                  },
+                  {
+                    "data": "{\"id\":330938,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['31782'] }}"
+                  },
+                  {
+                    "data": "{\"id\":330926,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['31774'] }}"
+                  },
+                  {
+                    "data": "{\"id\":331044,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['688615'] || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":330992,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['31780'] }}"
+                  },
+                  {
+                    "data": "{\"id\":330876,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['31776'] }}"
+                  },
+                  {
+                    "data": "{\"id\":330988,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['689009'] }}"
+                  },
+                  {
+                    "data": "{\"id\":330990,\"type\":\"text\"}",
+                    "value": "={{ $('Code').item.json.campos['685933'] }}"
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{   ($('Code').item.json.campos['304628'] ?? '').slice(0, 3) +   '@' +   ($('Code').item.json.campos['31776'] ?? '').slice(0, 3) +   ($('Code').item.json.campos['31774'] ?? '').slice(0, 4)   }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}",
+                          "is_main": false
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        608
+      ],
+      "id": "237b40db-d27e-495f-a08d-d226d6f41176",
+      "name": "cria lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d911b53c-6e75-4a8a-b500-42397fbe01aa",
+                    "leftValue": "={{ $json.count }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "84528fc5-8058-446e-bd69-9b68bc0fb110",
+                    "leftValue": "={{ $json.count }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        112,
+        96
+      ],
+      "id": "ed290663-9c25-439a-9f9c-bfaa2e9aa9a5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        336,
+        192
+      ],
+      "id": "ae9ef74a-7d58-4653-b482-4fbc30c18e34",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_ganhos",
+          "mode": "list",
+          "cachedResultName": "leads_ganhos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RGM": "={{ $json.campos['31776'] || \" \"}}",
+            "id_lead": "={{ $json.id }}",
+            "id_responsavel": "={{ $('Get list of leads').item.json._embedded.leads[0].responsible_user_id }}",
+            "curso": "={{ $json.campos['31782'] }}",
+            "data_matricula": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") + \"Z\" }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RGM",
+              "displayName": "RGM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -336,
+        96
+      ],
+      "id": "47bb3b3c-9976-440f-9e2b-1d396941a025",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "search": "={{ $('Code').item.json.campos['190582'] }}"
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        96
+      ],
+      "id": "9c6837ff-7edd-4e0b-9502-4e15f92a75f2",
+      "name": "Buscar todos os leads",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "=19299183"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        96
+      ],
+      "id": "eba25cee-e2c7-482f-bbf9-b5a8e7f06a28",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('Code').item.json.campos['304628'] }}",
+        "email": "={{ $('Code').item.json.campos['666386'] }}",
+        "phone": "={{ $('Code').item.json.campos['190582'] }}",
+        "source": "={{ $('Code').item.json.campos['31764'] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        560,
+        192
+      ],
+      "id": "dd8ad45a-cfa2-4160-a0f3-f77e9a1b61fc",
+      "name": "Criar um novo lead",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Code').item.json.campos['304628'] }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":288546,\"type\":\"multitext\"}",
+                    "value": "={{ $('Code').item.json.campos['190582'] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        608
+      ],
+      "id": "9ff7fe78-c952-48b6-83b2-c3fb86566f23",
+      "name": "cria contato",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "7d1b30e3-b554-4225-8523-d2d21ffc7c35",
+        "stageId": "b34d2b09-9853-42a1-902f-5b572622b9e1",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        784,
+        192
+      ],
+      "id": "16c02abe-cb70-47ea-8c74-9dbb6e12bce9",
+      "name": "Criar um novo negócio",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Buscar todos os leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os leads": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cria contato": {
+      "main": [
+        [
+          {
+            "node": "cria lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo lead": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "dCpCqA316QocWWea"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "196",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "4401fca4-9edf-46f0-8a4c-e730b98359ad",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "19449901",
+            "leads[add][0][status_id]": "48566207",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/2561cb25-2f0e-48d8-ba3d-9194688efd32",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "7236a251-abf5-4d87-a007-7910a1012104",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-11-03T20:56:34.435Z",
+      "createdAt": "2025-11-03T20:56:34.435Z",
+      "role": "workflow:owner",
+      "workflowId": "36vKiDidEwyN0t8y",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-25T19:56:58.514Z",
+      "createdAt": "2025-07-25T19:56:58.514Z",
+      "id": "XC7egqniXPXmFKMH",
+      "name": "ACADEMICO CSV"
+    }
+  ]
+}
