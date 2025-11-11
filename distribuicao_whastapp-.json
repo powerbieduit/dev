@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T19:59:22.925Z",
   "updatedAt": "2025-08-19T20:40:34.000Z",
+  "createdAt": "2025-07-25T19:59:22.925Z",
   "id": "l0ogp2vNaEnvONQ3",
   "name": "distribuicao_whastapp",
   "active": false,
@@ -399,8 +399,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T19:59:22.927Z",
       "updatedAt": "2025-07-25T19:59:22.927Z",
+      "createdAt": "2025-07-25T19:59:22.927Z",
       "role": "workflow:owner",
       "workflowId": "l0ogp2vNaEnvONQ3",
       "projectId": "TjZRFTZS7ptjaNGj"
