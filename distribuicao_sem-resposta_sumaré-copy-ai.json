@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-10-14T13:58:23.665Z",
   "updatedAt": "2025-10-14T19:02:18.000Z",
+  "createdAt": "2025-10-14T13:58:23.665Z",
   "id": "0VY5HD2WExJiaDpu",
   "name": "distribuicao_sem resposta_sumaré copy",
   "active": false,
@@ -2284,8 +2284,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-10-14T13:58:23.676Z",
       "updatedAt": "2025-10-14T13:58:23.676Z",
+      "createdAt": "2025-10-14T13:58:23.676Z",
       "role": "workflow:owner",
       "workflowId": "0VY5HD2WExJiaDpu",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -2293,8 +2293,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
