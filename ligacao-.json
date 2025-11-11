@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-10-15T16:18:23.251Z",
   "updatedAt": "2025-10-21T20:47:22.000Z",
+  "createdAt": "2025-10-15T16:18:23.251Z",
   "id": "4IWWNcbUP8Xsibif",
   "name": "ligacao",
   "active": true,
@@ -1635,8 +1635,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-10-15T16:18:23.256Z",
       "updatedAt": "2025-10-15T16:18:23.256Z",
+      "createdAt": "2025-10-15T16:18:23.256Z",
       "role": "workflow:owner",
       "workflowId": "4IWWNcbUP8Xsibif",
       "projectId": "TjZRFTZS7ptjaNGj"
