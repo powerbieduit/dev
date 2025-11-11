@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-05T18:13:51.895Z",
   "updatedAt": "2025-09-05T20:43:48.000Z",
+  "createdAt": "2025-09-05T18:13:51.895Z",
   "id": "U7xveIKKB5CnOYs4",
   "name": "comercial msgfs",
   "active": true,
@@ -34,8 +34,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-09-05T18:13:51.897Z",
       "updatedAt": "2025-09-05T18:13:51.897Z",
+      "createdAt": "2025-09-05T18:13:51.897Z",
       "role": "workflow:owner",
       "workflowId": "U7xveIKKB5CnOYs4",
       "projectId": "TjZRFTZS7ptjaNGj"
