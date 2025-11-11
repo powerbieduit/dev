@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-06T16:54:40.000Z",
   "createdAt": "2025-08-19T17:09:41.936Z",
-  "updatedAt": "2025-10-21T21:10:49.000Z",
   "id": "J8kEHhciQvV44PRs",
   "name": "criacao_lead_preco_csv V2",
   "active": true,
@@ -251,6 +251,28 @@
                     "id": "ee91cff1-7e58-47a2-b64f-2736c5ec16fe",
                     "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
                     "rightValue": 48539243,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7952bb83-28f5-4441-ab53-84a46faa7352",
+                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
+                    "rightValue": 74941508,
                     "operator": {
                       "type": "number",
                       "operation": "equals"
@@ -634,6 +656,19 @@
                   {
                     "data": "{\"id\":689009,\"type\":\"select\"}",
                     "value": "={{ $json.lead.custom_fields_values[2].values[0].value }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $('cria contato').item.json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
                   }
                 ]
               }
@@ -1126,6 +1161,71 @@
       "id": "caba1549-031e-4a92-8bc4-d6593165a0ed",
       "name": "Wait2",
       "webhookId": "1c5c54a1-e0a7-457b-91b9-8e67c5c93b49"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('Code').item.json.id }}",
+              "pipeline_id": 5481944,
+              "status_id": 48539246,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":686789,\"type\":\"select\"}",
+                    "value": "Recebida"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        784
+      ],
+      "id": "84325e01-360d-4baf-92ae-b7d3bff1f8b7",
+      "name": "recadastro1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "Candidato acessou o site e preencheu o formulário. "
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -992,
+        848
+      ],
+      "id": "6f25c5c5-db73-4520-88ca-de20cfcf58bc",
+      "name": "Create new notes1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
     }
   ],
   "connections": {
@@ -1247,6 +1347,13 @@
         [
           {
             "node": "recadastro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "recadastro1",
             "type": "main",
             "index": 0
           }
@@ -1476,6 +1583,17 @@
           }
         ]
       ]
+    },
+    "recadastro1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1493,8 +1611,8 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 OPR/122.0.0.0",
-            "content-length": "147",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36",
+            "content-length": "144",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -1505,19 +1623,19 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "189.62.150.24",
+            "x-forwarded-for": "177.173.50.162",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "189.62.150.24"
+            "x-real-ip": "177.173.50.162"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "Maria Eduarda de Oliveira Jacobini",
-            "email": "jacobini.me@gmail.com",
-            "celular": "11964581395",
+            "nome": "AMANDA APARECIDA QUESSADA",
+            "email": "amandaquessada7@hotmail.com",
+            "celular": "11965728476",
             "origem": "form-cruzeiro",
             "tipo": "Graduação"
           },
@@ -1527,12 +1645,12 @@
       }
     ]
   },
-  "versionId": "56b1ec62-9d2a-4746-ac90-d008c607c9eb",
+  "versionId": "220d1f9f-2df3-4b56-a9ad-bac92762bb2c",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-19T17:09:41.942Z",
       "updatedAt": "2025-08-19T17:09:41.942Z",
+      "createdAt": "2025-08-19T17:09:41.942Z",
       "role": "workflow:owner",
       "workflowId": "J8kEHhciQvV44PRs",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -1540,8 +1658,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T20:00:36.295Z",
       "updatedAt": "2025-07-25T20:00:36.295Z",
+      "createdAt": "2025-07-25T20:00:36.295Z",
       "id": "3759VYd0IlWAtU1B",
       "name": "COMERCIAL CSV"
     }
