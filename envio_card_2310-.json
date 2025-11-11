@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-13T20:36:47.473Z",
   "updatedAt": "2025-10-16T16:51:46.000Z",
+  "createdAt": "2025-08-13T20:36:47.473Z",
   "id": "tQ75E09Q3OlUulWr",
   "name": "Envio_Card_2310",
   "active": true,
@@ -268,8 +268,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-13T20:36:47.480Z",
       "updatedAt": "2025-08-13T20:36:47.480Z",
+      "createdAt": "2025-08-13T20:36:47.480Z",
       "role": "workflow:owner",
       "workflowId": "tQ75E09Q3OlUulWr",
       "projectId": "TjZRFTZS7ptjaNGj"
