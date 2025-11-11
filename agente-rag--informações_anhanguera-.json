@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-09T20:19:41.194Z",
   "updatedAt": "2025-10-16T21:20:05.000Z",
+  "createdAt": "2025-09-09T20:19:41.194Z",
   "id": "ARv1f8auCcdmhQFN",
   "name": "Agente rag- informações_anhanguera",
   "active": false,
@@ -269,8 +269,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-09-09T20:19:41.198Z",
       "updatedAt": "2025-09-09T20:19:41.198Z",
+      "createdAt": "2025-09-09T20:19:41.198Z",
       "role": "workflow:owner",
       "workflowId": "ARv1f8auCcdmhQFN",
       "projectId": "TjZRFTZS7ptjaNGj"
