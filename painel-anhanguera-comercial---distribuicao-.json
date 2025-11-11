@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-20T19:20:30.489Z",
   "updatedAt": "2025-08-21T19:28:18.000Z",
+  "createdAt": "2025-08-20T19:20:30.489Z",
   "id": "ciZalP1K1FtFrqVs",
   "name": "painel anhanguera comercial - distribuicao",
   "active": true,
@@ -303,8 +303,8 @@
   "triggerCount": 2,
   "shared": [
     {
-      "createdAt": "2025-08-20T19:20:30.500Z",
       "updatedAt": "2025-08-20T19:20:30.500Z",
+      "createdAt": "2025-08-20T19:20:30.500Z",
       "role": "workflow:owner",
       "workflowId": "ciZalP1K1FtFrqVs",
       "projectId": "TjZRFTZS7ptjaNGj"
