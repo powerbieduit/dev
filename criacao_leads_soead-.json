@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T19:56:25.963Z",
   "updatedAt": "2025-08-21T20:39:41.000Z",
+  "createdAt": "2025-07-25T19:56:25.963Z",
   "id": "YLRdJAd0DgnKuK4q",
   "name": "criacao_leads_soead",
   "active": false,
@@ -730,8 +730,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T19:56:25.965Z",
       "updatedAt": "2025-07-25T19:56:25.965Z",
+      "createdAt": "2025-07-25T19:56:25.965Z",
       "role": "workflow:owner",
       "workflowId": "YLRdJAd0DgnKuK4q",
       "projectId": "TjZRFTZS7ptjaNGj"
