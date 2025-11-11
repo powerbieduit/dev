@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-07T14:33:55.313Z",
   "updatedAt": "2025-08-07T14:48:45.000Z",
+  "createdAt": "2025-08-07T14:33:55.313Z",
   "id": "V0Z8CF9kWtS8BvNx",
   "name": "tarefas_csv_comercial",
   "active": true,
@@ -144,8 +144,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-07T14:33:55.320Z",
       "updatedAt": "2025-08-07T14:33:55.320Z",
+      "createdAt": "2025-08-07T14:33:55.320Z",
       "role": "workflow:owner",
       "workflowId": "V0Z8CF9kWtS8BvNx",
       "projectId": "TjZRFTZS7ptjaNGj"
