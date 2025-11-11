@@ -1,48 +1,11 @@
 {
+  "updatedAt": "2025-11-06T16:13:39.000Z",
   "createdAt": "2025-10-14T15:09:40.562Z",
-  "updatedAt": "2025-10-15T13:54:41.000Z",
   "id": "1QcSlCdBYvlIljdh",
   "name": "robo_csv_receptivo",
   "active": true,
   "isArchived": false,
   "nodes": [
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.grau }} {{ $json.curso }}",
-        "options": {
-          "systemMessage": "=Execute as tools 'buscar_precos' e 'buscar_informacoes' e busque informações sobre o curso: {{ $json.grau }} {{ $json.curso }}\n\nIMPORTANTE: Se o termo for uma abreviação (ex: \"mkt\", \"adm\", \"eng\"), expanda para o nome completo mais comum:\n- mkt → marketing\n- adm → administração  \n- eng → engenharia\n\nBusque nas duas ferramentas e combine os resultados.\n\nRETORNE EXATAMENTE NESTE FORMATO (copie e preencha):\nnome do curso: [preencha aqui]\nvalor: [preencha aqui]\nmodalidade disponível: [preencha aqui com UMA opção: EAD, EAD com Aulas ao Vivo ou Semipresencial]\nduração do curso: [preencha aqui]\ngrau do curso: [preencha aqui com UMA opção: bacharelado ou licenciatura ou tecnólogo]\n\nSe não encontrar NENHUM resultado em NENHUMA das ferramentas, retorne apenas:\nStatus: Não Encontrado\n\nREGRAS OBRIGATÓRIAS:\n- Use EXATAMENTE os nomes dos campos acima\n- Não mude a ordem\n- Não adicione texto extra antes ou depois\n- Para grau do curso, use SOMENTE: bacharelado, licenciatura ou tecnólogo\n- Não use variações como \"bacharel\", use apenas as três opções acima"
-        }
-      },
-      "id": "1f7b8eea-1651-4391-9913-f59742a15598",
-      "name": "Agente Rag",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.6,
-      "position": [
-        336,
-        -288
-      ]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4.1-mini",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        48,
-        -32
-      ],
-      "id": "054ff853-5473-4a11-8c93-99aacedc597f",
-      "name": "OpenAI Chat Model RAG",
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
     {
       "parameters": {
         "httpMethod": "POST",
@@ -97,170 +60,6 @@
     },
     {
       "parameters": {
-        "tableName": {
-          "__rl": true,
-          "value": "documents",
-          "mode": "list",
-          "cachedResultName": "documents"
-        },
-        "options": {
-          "queryName": "match_documents"
-        }
-      },
-      "id": "5475cfa8-1957-426f-b99c-7ba4ce0ed2f0",
-      "name": "Supabase Vector Store",
-      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
-      "typeVersion": 1,
-      "position": [
-        64,
-        176
-      ],
-      "credentials": {
-        "supabaseApi": {
-          "id": "PHQl6oEaPqgLjGGZ",
-          "name": "BANCO - AGENTE COMERCIAL"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "gpt-4.1-mini",
-        "options": {}
-      },
-      "id": "88563d36-e137-4908-841b-84149a57f77d",
-      "name": "OpenAI Chat Docs",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        352,
-        176
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "text-embedding-3-small",
-        "options": {}
-      },
-      "id": "a24c037a-cb36-43ba-9ec6-aa3245d4eb8b",
-      "name": "Embeddings OpenAI Vector",
-      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-      "typeVersion": 1,
-      "position": [
-        144,
-        384
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "name": "documents",
-        "description": "Busque somente as informações: \nDuração do curso\nModalidade\ngrau do curso\nárea do curso",
-        "topK": 2
-      },
-      "id": "a7ad993d-ac3b-4172-a7e0-c08bf433fa84",
-      "name": "buscar_informacoes",
-      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
-      "typeVersion": 1,
-      "position": [
-        176,
-        -32
-      ]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4.1-mini",
-        "options": {}
-      },
-      "id": "5d1a4252-ec96-4c58-a4c7-1292b922675f",
-      "name": "OpenAI Chat Docs1",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        976,
-        176
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "text-embedding-3-small",
-        "options": {}
-      },
-      "id": "5d7d4aef-0ee4-4b6a-9522-12c887afd559",
-      "name": "Embeddings OpenAI Vector1",
-      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-      "typeVersion": 1,
-      "position": [
-        768,
-        384
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "4fXizCuCrLR4SEIp",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "name": "documents_precos",
-        "description": "Base de dados vetorial contendo valores dos cursos. ",
-        "topK": 10
-      },
-      "id": "32b99c50-fb0d-48e4-a350-9e79b9c2b7ac",
-      "name": "buscar_precos",
-      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
-      "typeVersion": 1,
-      "position": [
-        784,
-        -32
-      ]
-    },
-    {
-      "parameters": {
-        "tableName": {
-          "__rl": true,
-          "value": "documents_precos",
-          "mode": "list",
-          "cachedResultName": "documents_precos"
-        },
-        "options": {
-          "queryName": "match_documents_precos"
-        }
-      },
-      "id": "126a33f1-7fec-4e6d-ac56-f5dc64227f87",
-      "name": "Supabase Vector Store1",
-      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
-      "typeVersion": 1,
-      "position": [
-        688,
-        176
-      ],
-      "credentials": {
-        "supabaseApi": {
-          "id": "PHQl6oEaPqgLjGGZ",
-          "name": "BANCO - AGENTE COMERCIAL"
-        }
-      }
-    },
-    {
-      "parameters": {
         "rules": {
           "values": [
             {
@@ -273,11 +72,12 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.output }}",
+                    "leftValue": "={{ $json.curso_sinonimo }}",
                     "rightValue": "=Status: Não Encontrado",
                     "operator": {
                       "type": "string",
-                      "operation": "equals"
+                      "operation": "exists",
+                      "singleValue": true
                     },
                     "id": "87b2f354-6826-4050-b3b9-745e4ab35411"
                   }
@@ -285,7 +85,7 @@
                 "combinator": "and"
               },
               "renameOutput": true,
-              "outputKey": "Curso não encontrado"
+              "outputKey": "Curso encontrado"
             },
             {
               "conditions": {
@@ -298,11 +98,12 @@
                 "conditions": [
                   {
                     "id": "4b5e2a65-4292-4b56-967a-a8a2fb0372f5",
-                    "leftValue": "={{ $json.output }}",
+                    "leftValue": "={{ $json.curso_sinonimo }}",
                     "rightValue": "=Não Encontrado",
                     "operator": {
                       "type": "string",
-                      "operation": "notEquals"
+                      "operation": "notExists",
+                      "singleValue": true
                     }
                   }
                 ],
@@ -318,8 +119,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        1136,
-        -288
+        1184,
+        -272
       ],
       "id": "0f23853a-5fd9-46b3-8e5c-7bbe9c0ba13a",
       "name": "Switch"
@@ -338,7 +139,59 @@
                 "custom_field": [
                   {
                     "data": "{\"id\":31782,\"type\":\"text\"}",
-                    "value": "={{ $json.output }}"
+                    "value": "={{ $json.Curso || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690911,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Grau site 1\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690913,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Grau site 2\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690915,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Grau site 3\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690923,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Tipo 1\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690925,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Tipo 2\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690927,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Tipo 3\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690917,\"type\":\"text\"}",
+                    "value": "={{ $json.Semestres }}"
+                  },
+                  {
+                    "data": "{\"id\":690919,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Semestres 2\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690921,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Semestres 3\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690929,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Preço eduit 1\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690931,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Preço eduit 2\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690933,\"type\":\"text\"}",
+                    "value": "={{ $json[\"Preço eduit 3\"] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":690937,\"type\":\"text\"}",
+                    "value": "={{ $json.Contagem || \" \"}}"
                   }
                 ]
               }
@@ -349,7 +202,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1360,
+        2192,
         -384
       ],
       "id": "d416081c-a965-4b99-be86-16014943c8d2",
@@ -375,23 +228,7 @@
                 "custom_field": [
                   {
                     "data": "{\"id\":31782,\"type\":\"text\"}",
-                    "value": "={{ $json.nome }}"
-                  },
-                  {
-                    "data": "{\"id\":690929,\"type\":\"text\"}",
-                    "value": "={{ $json.valor }}"
-                  },
-                  {
-                    "data": "{\"id\":690917,\"type\":\"text\"}",
-                    "value": "={{ $json.duracao }}"
-                  },
-                  {
-                    "data": "{\"id\":690923,\"type\":\"text\"}",
-                    "value": "={{ $json.modalidade }}"
-                  },
-                  {
-                    "data": "{\"id\":690911,\"type\":\"text\"}",
-                    "value": "={{ $json.grau }}"
+                    "value": "=Não Encontrado"
                   }
                 ]
               }
@@ -402,8 +239,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1584,
-        -192
+        1744,
+        -160
       ],
       "id": "1dc924f3-86b8-49d0-9833-3e9f99aa2172",
       "name": "Update leads1",
@@ -416,30 +253,70 @@
     },
     {
       "parameters": {
-        "jsCode": "const resposta = $input.first().json.output;\nif (resposta.includes('Não Encontrado')) {\n  return [{\n    json: {\n      nome: null,\n      valor: null,\n      modalidade: null,\n      duracao: null,\n      grau: null\n    }\n  }];\n}\n// Extrai considerando quebras de linha extras e espaços\nconst linhas = resposta.split('\\n').filter(l => l.trim());\nconst dados = {};\nlinhas.forEach(linha => {\n  const [chave, ...valorArr] = linha.split(':');\n  const valor = valorArr.join(':').trim();\n  \n  if (chave.toLowerCase().includes('nome')) dados.nome = valor;\n  if (chave.toLowerCase().includes('valor')) dados.valor = valor;\n  if (chave.toLowerCase().includes('modalidade')) {\n    // Substitui Híbrido por Semipresencial\n    dados.modalidade = valor.replace(/Híbrido/gi, 'Semipresencial');\n  }\n  if (chave.toLowerCase().includes('duração') || chave.toLowerCase().includes('duracao')) dados.duracao = valor;\n  if (chave.toLowerCase().includes('grau')) {\n    // Normaliza o grau para os valores esperados\n    const grauNormalizado = valor.toLowerCase();\n    if (grauNormalizado.includes('bacharel')) dados.grau = 'Bacharelado';\n    else if (grauNormalizado.includes('licenciatura')) dados.grau = 'Licenciatura';\n    else if (grauNormalizado.includes('tecnólogo') || grauNormalizado.includes('tecnologo')) dados.grau = 'Tecnólogo';\n    else dados.grau = valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase(); // Primeira letra maiúscula\n  }\n});\nreturn [{\n  json: {\n    ...dados,\n  }\n}];"
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Corrija o nome deste curso se necessário: {{ $json.curso }}\n\nSe estiver abreviado (ex: RH, TI, ADM), expanda para o nome completo.\nSe tiver erro gramatical, corrija.\nSe estiver correto, mantenha como está.\n\nRetorne APENAS o nome do curso corrigido, sem explicações."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
       },
-      "type": "n8n-nodes-base.code",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        1360,
-        -192
+        176,
+        -272
       ],
-      "id": "0d2f5a98-baa2-4469-a9a2-5f6f0d1e29dd",
-      "name": "Code in JavaScript1"
+      "id": "8fd482d4-6c21-4d51-94ce-eac46672793c",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "cursos_salesbot",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "curso_sinonimo",
+              "condition": "eq",
+              "keyValue": "={{ $json.output[0].content[0].text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        528,
+        -272
+      ],
+      "id": "352b9bf0-28cd-4ebe-9ce3-0a7626c1bb06",
+      "name": "Get many rows",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
     }
   ],
   "connections": {
-    "OpenAI Chat Model RAG": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Agente Rag",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         [
@@ -466,106 +343,7 @@
       "main": [
         [
           {
-            "node": "Agente Rag",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Supabase Vector Store": {
-      "ai_vectorStore": [
-        [
-          {
-            "node": "buscar_informacoes",
-            "type": "ai_vectorStore",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Docs": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "buscar_informacoes",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Embeddings OpenAI Vector": {
-      "ai_embedding": [
-        [
-          {
-            "node": "Supabase Vector Store",
-            "type": "ai_embedding",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "buscar_informacoes": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente Rag",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Docs1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "buscar_precos",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Embeddings OpenAI Vector1": {
-      "ai_embedding": [
-        [
-          {
-            "node": "Supabase Vector Store1",
-            "type": "ai_embedding",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "buscar_precos": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente Rag",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Supabase Vector Store1": {
-      "ai_vectorStore": [
-        [
-          {
-            "node": "buscar_precos",
-            "type": "ai_vectorStore",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Agente Rag": {
-      "main": [
-        [
-          {
-            "node": "Switch",
+            "node": "Message a model",
             "type": "main",
             "index": 0
           }
@@ -583,18 +361,29 @@
         ],
         [
           {
-            "node": "Code in JavaScript1",
+            "node": "Update leads1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code in JavaScript1": {
+    "Message a model": {
       "main": [
         [
           {
-            "node": "Update leads1",
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -622,7 +411,7 @@
             "content-length": "196",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "6bee913b-6ad9-4ea4-8a5b-1d95d4242c29",
+            "x-amocrm-requestid": "624b3dbc-6758-4e2b-b910-ce48023b5bef",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
@@ -633,7 +422,7 @@
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "19687015",
+            "leads[add][0][id]": "19689757",
             "leads[add][0][status_id]": "53917599",
             "leads[add][0][pipeline_id]": "5481944",
             "account[id]": "30214568",
@@ -643,23 +432,14 @@
           "executionMode": "production"
         }
       }
-    ],
-    "Code in JavaScript": [
-      {
-        "json": {
-          "lead_id": 19687015,
-          "curso": "Arquitetura e urbanismo",
-          "grau": "Graduação"
-        }
-      }
     ]
   },
-  "versionId": "1270bcc9-f0f4-4a8a-b236-f70328cacd2f",
+  "versionId": "8fe83d55-74b1-483c-bd91-6843ce55187f",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-10-14T15:09:40.569Z",
       "updatedAt": "2025-10-14T15:09:40.569Z",
+      "createdAt": "2025-10-14T15:09:40.569Z",
       "role": "workflow:owner",
       "workflowId": "1QcSlCdBYvlIljdh",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -667,8 +447,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
