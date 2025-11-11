@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-05T16:55:22.000Z",
   "createdAt": "2025-08-19T20:59:27.892Z",
-  "updatedAt": "2025-10-17T14:26:35.000Z",
   "id": "JZJSZfePPl6NQxTx",
   "name": "distribuicao_leads_anhanguera V2",
   "active": true,
@@ -26,7 +26,7 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "={{ $json.body['leads[add][0][id]'] }}"
+          "id": "={{ $json.body['leads[add][0][id]'] }}"
         },
         "options": {
           "with": [
@@ -379,12 +379,12 @@
       }
     ]
   },
-  "versionId": "4b20ea26-423f-4ae7-a2c6-5a05556692c5",
+  "versionId": "16c9cf90-23cc-4d18-806c-c89b84f6d453",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-08-19T20:59:27.897Z",
       "updatedAt": "2025-08-19T20:59:27.897Z",
+      "createdAt": "2025-08-19T20:59:27.897Z",
       "role": "workflow:owner",
       "workflowId": "JZJSZfePPl6NQxTx",
       "projectId": "TjZRFTZS7ptjaNGj"
