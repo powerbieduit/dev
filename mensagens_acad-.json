@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-21T18:16:54.049Z",
   "updatedAt": "2025-10-21T19:38:13.000Z",
+  "createdAt": "2025-08-21T18:16:54.049Z",
   "id": "15kmAHfNkXIOccRl",
   "name": "Mensagens_Acad",
   "active": true,
@@ -2021,8 +2021,8 @@
   "triggerCount": 4,
   "shared": [
     {
-      "createdAt": "2025-08-21T18:16:54.054Z",
       "updatedAt": "2025-08-21T18:16:54.054Z",
+      "createdAt": "2025-08-21T18:16:54.054Z",
       "role": "workflow:owner",
       "workflowId": "15kmAHfNkXIOccRl",
       "projectId": "TjZRFTZS7ptjaNGj"
