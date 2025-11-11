@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-18T15:59:31.513Z",
   "updatedAt": "2025-10-07T21:13:43.000Z",
+  "createdAt": "2025-09-18T15:59:31.513Z",
   "id": "1preUvpGH7vwHRU5",
   "name": "agente rag - follow up - csv",
   "active": false,
@@ -273,8 +273,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-09-18T15:59:31.518Z",
       "updatedAt": "2025-09-18T15:59:31.518Z",
+      "createdAt": "2025-09-18T15:59:31.518Z",
       "role": "workflow:owner",
       "workflowId": "1preUvpGH7vwHRU5",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -282,8 +282,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-30T20:41:48.074Z",
       "updatedAt": "2025-07-30T20:41:48.074Z",
+      "createdAt": "2025-07-30T20:41:48.074Z",
       "id": "HCAYGF54Hj7mAMlF",
       "name": "ai"
     }
