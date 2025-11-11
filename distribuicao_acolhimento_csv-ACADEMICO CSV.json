@@ -1,10 +1,10 @@
 {
+  "updatedAt": "2025-10-27T16:29:12.000Z",
   "createdAt": "2025-07-25T23:06:18.610Z",
-  "updatedAt": "2025-09-12T12:17:49.000Z",
   "id": "NHUSwGJlEgOIn4QM",
   "name": "distribuicao_acolhimento_csv",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -3413,12 +3413,12 @@
       }
     ]
   },
-  "versionId": "be4ba004-05c8-4e34-b26c-9a053cc0ce4a",
+  "versionId": "d2581dbd-5bdd-42cb-b169-b2807fab4063",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-25T23:06:18.616Z",
       "updatedAt": "2025-07-25T23:06:18.616Z",
+      "createdAt": "2025-07-25T23:06:18.616Z",
       "role": "workflow:owner",
       "workflowId": "NHUSwGJlEgOIn4QM",
       "projectId": "TjZRFTZS7ptjaNGj"
@@ -3426,8 +3426,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-25T19:56:58.514Z",
       "updatedAt": "2025-07-25T19:56:58.514Z",
+      "createdAt": "2025-07-25T19:56:58.514Z",
       "id": "XC7egqniXPXmFKMH",
       "name": "ACADEMICO CSV"
     }
