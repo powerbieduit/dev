@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-08-01T20:15:12.935Z",
   "updatedAt": "2025-08-06T18:14:19.000Z",
+  "createdAt": "2025-08-01T20:15:12.935Z",
   "id": "eehlrwp0lbPtz94o",
   "name": "Ñ APAGAR",
   "active": true,
@@ -104,8 +104,8 @@
   "triggerCount": 5,
   "shared": [
     {
-      "createdAt": "2025-08-01T20:15:12.940Z",
       "updatedAt": "2025-08-01T20:15:12.940Z",
+      "createdAt": "2025-08-01T20:15:12.940Z",
       "role": "workflow:owner",
       "workflowId": "eehlrwp0lbPtz94o",
       "projectId": "TjZRFTZS7ptjaNGj"
