@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-16T19:00:26.989Z",
   "updatedAt": "2025-09-30T19:32:22.000Z",
+  "createdAt": "2025-09-16T19:00:26.989Z",
   "id": "026E9uWluXmGGaFc",
   "name": "teste elevenlabs api",
   "active": false,
@@ -176,8 +176,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-09-16T19:00:26.991Z",
       "updatedAt": "2025-09-16T19:00:26.991Z",
+      "createdAt": "2025-09-16T19:00:26.991Z",
       "role": "workflow:owner",
       "workflowId": "026E9uWluXmGGaFc",
       "projectId": "TjZRFTZS7ptjaNGj"
