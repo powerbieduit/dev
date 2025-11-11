@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-10-29T18:45:12.000Z",
   "createdAt": "2025-07-31T20:27:16.876Z",
-  "updatedAt": "2025-10-09T21:11:14.000Z",
   "id": "EphfDCJgvSTJDyoD",
   "name": "DASHBOARD - CRUZEIRO COMERCIAL",
   "active": true,
@@ -260,13 +260,13 @@
       "parameters": {
         "content": "## ACEITE E NOVOS LEADS\n",
         "height": 2240,
-        "width": 2720,
+        "width": 2800,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1824,
+        1744,
         928
       ],
       "id": "12e3e11c-9c10-4129-83f5-cecd3d3a999d",
@@ -2341,12 +2341,12 @@
       }
     ]
   },
-  "versionId": "d9d332c6-fe0b-44b8-abf9-cdb9e1235dc7",
+  "versionId": "74cfe8b6-789e-4b25-9aaa-9eb744d39397",
   "triggerCount": 12,
   "shared": [
     {
-      "createdAt": "2025-07-31T20:27:16.888Z",
       "updatedAt": "2025-07-31T20:27:16.888Z",
+      "createdAt": "2025-07-31T20:27:16.888Z",
       "role": "workflow:owner",
       "workflowId": "EphfDCJgvSTJDyoD",
       "projectId": "TjZRFTZS7ptjaNGj"
