@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-25T19:59:54.161Z",
   "updatedAt": "2025-07-30T17:05:32.000Z",
+  "createdAt": "2025-07-25T19:59:54.161Z",
   "id": "HAh09akRwQQ56oCe",
   "name": "Distribuição SALESFORCE.json",
   "active": false,
@@ -396,8 +396,8 @@
   "triggerCount": 0,
   "shared": [
     {
-      "createdAt": "2025-07-25T19:59:54.162Z",
       "updatedAt": "2025-07-25T19:59:54.162Z",
+      "createdAt": "2025-07-25T19:59:54.162Z",
       "role": "workflow:owner",
       "workflowId": "HAh09akRwQQ56oCe",
       "projectId": "TjZRFTZS7ptjaNGj"
