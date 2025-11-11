@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-07-29T16:14:26.177Z",
   "updatedAt": "2025-08-21T21:18:42.000Z",
+  "createdAt": "2025-07-29T16:14:26.177Z",
   "id": "BBocg4upLSYXmuWq",
   "name": "criacao_leads_sumaread",
   "active": false,
@@ -732,8 +732,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-29T16:14:26.181Z",
       "updatedAt": "2025-07-29T16:14:26.181Z",
+      "createdAt": "2025-07-29T16:14:26.181Z",
       "role": "workflow:owner",
       "workflowId": "BBocg4upLSYXmuWq",
       "projectId": "TjZRFTZS7ptjaNGj"
