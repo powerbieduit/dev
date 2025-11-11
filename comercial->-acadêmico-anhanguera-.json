@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-05T16:55:40.000Z",
   "createdAt": "2025-07-31T16:28:30.464Z",
-  "updatedAt": "2025-10-08T19:05:40.000Z",
   "id": "5lkTL3MgtPZbQQ1p",
   "name": "Comercial > Acadêmico  Anhanguera",
   "active": true,
@@ -133,13 +133,14 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "={{ $json.body['leads[add][0][id]'] }}"
+          "id": "={{ $json.body['leads[add][0][id]'] }}"
         },
         "options": {
           "with": [
             "contacts"
           ]
-        }
+        },
+        "limit": 1
       },
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
@@ -620,12 +621,12 @@
       }
     ]
   },
-  "versionId": "1c1ef990-fb32-43d5-84a2-5606ca02be0f",
+  "versionId": "84278e7f-394d-43d9-bde6-fccf868c7974",
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-31T16:28:30.471Z",
       "updatedAt": "2025-07-31T16:28:30.471Z",
+      "createdAt": "2025-07-31T16:28:30.471Z",
       "role": "workflow:owner",
       "workflowId": "5lkTL3MgtPZbQQ1p",
       "projectId": "TjZRFTZS7ptjaNGj"
