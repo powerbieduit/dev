@@ -1,6 +1,6 @@
 {
-  "createdAt": "2025-09-06T05:59:20.147Z",
   "updatedAt": "2025-09-06T06:12:27.000Z",
+  "createdAt": "2025-09-06T05:59:20.147Z",
   "id": "2KUUEXvNBWEo9qGE",
   "name": "vila mariana - resp automática",
   "active": true,
@@ -138,8 +138,8 @@
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-09-06T05:59:20.151Z",
       "updatedAt": "2025-09-06T05:59:20.151Z",
+      "createdAt": "2025-09-06T05:59:20.151Z",
       "role": "workflow:owner",
       "workflowId": "2KUUEXvNBWEo9qGE",
       "projectId": "TjZRFTZS7ptjaNGj"
