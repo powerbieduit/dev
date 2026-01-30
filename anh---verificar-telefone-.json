@@ -672,6 +672,7 @@
     ]
   },
   "versionId": "77f6c89f-7592-4ca3-9659-6f7801bcc8c5",
+  "activeVersionId": "77f6c89f-7592-4ca3-9659-6f7801bcc8c5",
   "triggerCount": 1,
   "shared": [
     {
@@ -682,5 +683,639 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "77f6c89f-7592-4ca3-9659-6f7801bcc8c5",
+    "workflowId": "yuf6IFbTlwXEGD9F",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "772dbb57-0e90-42bb-b303-4103ef131dfa",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "85433edd-14e6-4f7c-a5b2-01bd496ccba8",
+        "name": "Webhook",
+        "webhookId": "772dbb57-0e90-42bb-b303-4103ef131dfa"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "260ef381-6904-4b3b-8739-8809d07c938e",
+        "name": "Get list of leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Extrai dados do JSON recebido do Kommo\nconst leads = $json._embedded?.leads || [];\n\nreturn leads.map(lead => {\n  // Cria um objeto auxiliar para facilitar acesso aos campos customizados\n  const campos = {};\n  for (const campo of lead.custom_fields_values || []) {\n    campos[campo.field_name] = campo.values?.[0]?.value || null;\n  }\n\n  // Extrai o ID do contato principal\n  const contact_id = lead._embedded?.contacts?.[0]?.id || null;\n\n  return {\n    id: lead.id,\n    contact_id,\n    nome: campos[\"Nome\"] || null,\n    cpf: campos[\"CPF\"] || null,\n    ra: campos[\"RA\"] || null,\n    curso: campos[\"Curso\"] || null,\n    telefone: campos[\"Telefone_Pesquisa\"] || null, // substituído aqui\n    status_id: lead.status_id\n  };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "a73534c8-986f-43c8-8f90-33c66155e292",
+        "name": "fixar campos"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "3a86fec0-eaef-46f7-a442-ded40af19ba4",
+                "leftValue": "={{ $json._embedded.leads[0].pipeline_id }}",
+                "rightValue": 9095532,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          848,
+          0
+        ],
+        "id": "fea26c68-3e1f-420c-97b4-d5991c622354",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.telefone }}"
+          },
+          "options": {
+            "with": []
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          640,
+          0
+        ],
+        "id": "972ebd22-0f5b-41a2-a978-ecb9ddf56a46",
+        "name": "pesquisa no comercial",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Wzp8hZo0JKf2JKw7",
+            "name": "Kommo comercial BU novo"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('Webhook').item.json.body['leads[add][0][id]'] }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":1473849,\"type\":\"text\"}",
+                      "value": "={{ $json.Nome }}"
+                    },
+                    {
+                      "data": "{\"id\":412932,\"type\":\"text\"}",
+                      "value": "={{ $json.Curso }}"
+                    },
+                    {
+                      "data": "{\"id\":412930,\"type\":\"text\"}",
+                      "value": "={{ $json.CPF }}"
+                    },
+                    {
+                      "data": "{\"id\":412928,\"type\":\"text\"}",
+                      "value": "={{ $json.RA }}"
+                    },
+                    {
+                      "data": "{\"id\":412934,\"type\":\"text\"}",
+                      "value": "={{ $json.Polo }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1872,
+          -176
+        ],
+        "id": "c0c968fa-4f16-4919-8268-4e3fec94abe3",
+        "name": "update lead (info comercial)",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Lista fixa com os nomes dos campos esperados no resultado\nconst nomesFixos = [\n  \"Curso\",\n  \"Nome\",\n  \"CPF\",\n  \"RA\",\n  \"Polo\",\n  \"Situação\",\n  \"Grau\",\n  \"Modalidade\",\n  \"Formação\"\n];\n\nconst campos = $json._embedded?.leads?.[0]?.custom_fields_values || [];\n\nconst resultado = {};\n\n// Inicializa todos os campos com string vazia\nfor (let i = 0; i < nomesFixos.length; i++) {\n  resultado[nomesFixos[i]] = \"\";\n}\n\n// Preenche os campos encontrados\nfor (let i = 0; i < campos.length; i++) {\n  const campo = campos[i];\n  const nome = campo.field_name;\n  const valor = campo.values && campo.values[0] ? campo.values[0].value : \"\";\n\n  if (nomesFixos.includes(nome)) {\n    resultado[nome] = valor;\n  }\n}\n\n// Agora retorna dentro de um array, como o n8n espera\nreturn [\n  {\n    json: resultado\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1696,
+          -176
+        ],
+        "id": "faf951e3-2929-4922-9bb9-0a849c263b8e",
+        "name": "Code"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1520,
+          -176
+        ],
+        "id": "fbec2cdb-9bee-4179-a4e0-a227383734bb",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json.id_mais_antigo }}",
+                "pipeline_id": 7355323,
+                "status_id": 143,
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": [
+                        38408
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2640,
+          64
+        ],
+        "id": "305ac5a6-550a-4667-b639-ae7a62c33b5b",
+        "name": "apagar lead",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('Code1').item.json.id_mais_recente }}",
+                "pipeline_id": 7355323,
+                "status_id": 60510447,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":412928,\"type\":\"text\"}",
+                      "value": "={{ $('Code2').item.json.campos_extraidos.RA }}"
+                    },
+                    {
+                      "data": "{\"id\":412930,\"type\":\"text\"}",
+                      "value": "={{ $('Code2').item.json.campos_extraidos.CPF }}"
+                    },
+                    {
+                      "data": "{\"id\":412932,\"type\":\"text\"}",
+                      "value": "={{ $('Code2').item.json.campos_extraidos.Curso }}"
+                    },
+                    {
+                      "data": "{\"id\":412934,\"type\":\"text\"}",
+                      "value": "={{ $('Code2').item.json.campos_extraidos.Polo }}"
+                    },
+                    {
+                      "data": "{\"id\":1473851,\"type\":\"text\"}",
+                      "value": "={{ $('Code2').item.json.campos_extraidos.Telefone }}"
+                    },
+                    {
+                      "data": "{\"id\":1473849,\"type\":\"text\"}",
+                      "value": "={{ $('Code2').item.json.campos_extraidos.Nome }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2960,
+          64
+        ],
+        "id": "4cec925c-6119-4e15-8b8e-c774e3266540",
+        "name": "update lead",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// 📌 Mapeamento real conforme seu JSON Kommo\nconst camposDesejados = {\n  412928: \"RA\",\n  412930: \"CPF\",\n  412932: \"Curso\",\n  412934: \"Polo\",\n  413910: \"Última fase\",\n  413906: \"Responsável\",\n  1469689: \"PTC\",\n  1473849: \"Nome\",\n  1473851: \"Telefone\"\n};\n\n// ✅ Leads retornados\nconst leads = $json._embedded?.leads || [];\nconst quantidade_encontrada = leads.length;\n\n// ❌ Se nenhum lead, retorna vazio\nif (quantidade_encontrada === 0) {\n  return [{ json: { quantidade_encontrada, id_mais_antigo: null, id_mais_recente: null, campos_extraidos: null } }];\n}\n\n// ✅ Ordena os leads por ID crescente (mais antigo primeiro)\nconst leadsOrdenados = leads\n  .filter(l => typeof l.id === 'number')\n  .sort((a, b) => a.id - b.id);\n\nconst leadMaisAntigo = leadsOrdenados[0];\nconst leadMaisRecente = leadsOrdenados[leadsOrdenados.length - 1];\n\n// ✅ Extrai campos do mais antigo\nconst camposMapeados = {};\nfor (const [fieldId, nomeCampo] of Object.entries(camposDesejados)) {\n  const valor = leadMaisAntigo.custom_fields_values?.find(f => f.field_id === Number(fieldId))?.values?.[0]?.value ?? null;\n  camposMapeados[nomeCampo] = valor;\n}\n\n// ✅ Retorna tudo\nreturn [{\n  json: {\n    quantidade_encontrada,\n    id_mais_antigo: leadMaisAntigo.id,\n    id_mais_recente: leadMaisRecente.id,\n    campos_extraidos: camposMapeados\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1840,
+          80
+        ],
+        "id": "6ed01f99-ee1b-4aab-a870-3dcc128e611f",
+        "name": "Code2",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "jsCode": "// ⚙️ Mapeamento de ID de campo para nome legível\n\n\n// 🎯 Acessa o JSON de entrada\nconst input = $json;\n\n// 🧩 Constrói o resultado final a partir dos dados já extraídos\nconst resultado = {\n  id_mais_antigo: input.id_mais_antigo,\n  id_mais_recente: input.id_mais_recente,\n  quantidade_encontrada: input.quantidade_encontrada\n};\n\n\nreturn [{ json: resultado }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2368,
+          64
+        ],
+        "id": "87b27de1-0654-4e90-90da-873d03ed9f96",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "857b2829-e6dd-412c-a374-9d7a97536571",
+                "leftValue": "={{ $json.quantidade_encontrada }}",
+                "rightValue": 1,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          2112,
+          80
+        ],
+        "id": "b4d3f65f-f4f6-4960-aa8b-7e4c95abf12d",
+        "name": "If1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          2400,
+          272
+        ],
+        "id": "b9e0a191-a4f5-43a8-899d-a45777bfd132",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $('fixar campos').item.json.telefone }}"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1520,
+          160
+        ],
+        "id": "38e9bc31-42f9-4f83-9640-a8f71d316a7e",
+        "name": "Pesquisa acadêmico",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1232,
+          144
+        ],
+        "id": "cb86c9e1-2428-401f-a03a-ca0b7abe038f",
+        "name": "Merge"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1056,
+          -96
+        ],
+        "id": "f0f7f287-eeae-4640-8456-4fc287321fd9",
+        "name": "Merge2"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "677d31de-f5d4-4648-8f83-eeb99416e66d",
+                "leftValue": "={{ $json._embedded.leads[0].id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1264,
+          -96
+        ],
+        "id": "c8e069b0-dfd6-4eb7-80d3-31a209e03f20",
+        "name": "If2"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Get list of leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of leads": {
+        "main": [
+          [
+            {
+              "node": "fixar campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "pesquisa no comercial": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "fixar campos": {
+        "main": [
+          [
+            {
+              "node": "pesquisa no comercial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "update lead (info comercial)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "apagar lead": {
+        "main": [
+          [
+            {
+              "node": "update lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code2": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "apagar lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pesquisa acadêmico": {
+        "main": [
+          [
+            {
+              "node": "Code2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Pesquisa acadêmico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge2": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 1
+            }
+          ],
+          [
+            {
+              "node": "Pesquisa acadêmico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
