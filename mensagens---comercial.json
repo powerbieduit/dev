@@ -1,0 +1,4141 @@
+{
+  "updatedAt": "2026-01-30T19:38:29.234Z",
+  "createdAt": "2025-08-21T18:16:54.049Z",
+  "id": "15kmAHfNkXIOccRl",
+  "name": "Mensagens - Comercial",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "envio_msgs_csv_comercial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1936,
+        864
+      ],
+      "id": "f2211c78-4eba-42e8-8904-aa8641dc1dd1",
+      "name": "Webhook",
+      "webhookId": "673f269e-e1a5-4413-b381-a4d8190e7348"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(item => {\n  const root = item.json || {};\n  // Se vier no formato novo (body: {...}), usa body; senão, usa o próprio json (compatível com o antigo)\n  const src = root.body ?? root;\n\n  const unifiedPhone = onlyDigits(src.phone ?? src.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(src.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN'\n        : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(src.leadId),\n    phone: unifiedPhone,\n    text: (src.text ?? '').toString(),\n    agent: (src.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(src.timestamp),\n    tipo: (src.tipo ?? '').toString(),\n    meta: {\n      original: root,                 // payload de entrada completo para auditoria\n      normalizedAt: new Date().toISOString(),\n      errors: [],\n    },\n  };\n\n  // validações leves\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2768,
+        928
+      ],
+      "id": "a00ac74e-7454-4a63-ae27-3dc6d31e3f47",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log_conversa_kommo_comercial",
+          "mode": "list",
+          "cachedResultName": "log_conversa_kommo_comercial"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "=+{{ $json.phone }}",
+            "direction": "={{ $json.direction }}",
+            "sender_type": "CONSULTOR",
+            "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "texto": "={{ $json.meta.original.body.text }}",
+            "agente": "={{ $json.meta.original.body.agent }}",
+            "content_type": "TEXTO"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content_type",
+              "displayName": "content_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sender_type",
+              "displayName": "sender_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agente",
+              "displayName": "agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "texto",
+              "displayName": "texto",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_at",
+              "displayName": "message_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3040,
+        928
+      ],
+      "id": "29df3852-8124-40fd-afeb-cd939f51bcec",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "obsUG5lfx2MNGOjM",
+          "name": "log_conversas_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node — Payload Normalizer + Phone Extractor (SP +5511)\n// Modo: \"Run Once for All Items\"\n\n// Helpers =============================\n\nfunction onlyDigits(s) {\n  if (!s) return '';\n  return String(s).replace(/\\D+/g, '') || '';\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nfunction safePick(obj, ...paths) {\n  for (const p of paths) {\n    try {\n      const val = p.split('.').reduce((acc, k) => (acc ? acc[k] : undefined), obj);\n      if (typeof val === 'string' && val.trim()) return val;\n    } catch (e) {}\n  }\n  return '';\n}\n\n// =====================================\n\nreturn items.map(item => {\n  const root = item.json || {};\n  const src = root.body ?? root;  // compatível com payload novo e antigo\n\n  // =====================================================\n  // EXTRAÇÃO DE TELEFONE (versão extendida + compatível)\n  // =====================================================\n\n  const rawPhone = safePick(\n    root,\n    'body.data.key.remoteJid',\n    'data.key.remoteJid',\n    'remoteJid',\n    'body.phone',\n    'phone'\n  );\n\n  const digits = onlyDigits(rawPhone);\n\n  // remove prefixos duplicados 55 / 11\n  let local = digits;\n  if (local.startsWith('55')) local = local.slice(2);\n  if (local.startsWith('11')) local = local.slice(2);\n\n  // mantém celular SP: 9 últimos dígitos (padrão)\n  if (local.length >= 9) {\n    local = local.slice(-9);\n  }\n\n  const phoneFormatted = local ? `+5511${local}` : '';\n\n  // =====================================================\n  // NORMALIZAÇÃO DO PAYLOAD\n  // =====================================================\n\n  const dirRaw = upperOrEmpty(src.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(src.leadId),\n    phone: digits || null,  // telefone numérico “limpo”\n    phone_raw: rawPhone,\n    phone_digits: digits,\n    phone_formatted: phoneFormatted,\n\n    text: (src.text ?? '').toString(),\n    agent: (src.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(src.timestamp),\n    tipo: (src.tipo ?? '').toString(),\n\n    meta: {\n      original: root,\n      normalizedAt: new Date().toISOString(),\n      errors: []\n    }\n  };\n\n  // Validações leves\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido (digits)');\n\n  return { json: out };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        176
+      ],
+      "id": "e776608d-2680-40b1-90bc-d3e1afdde338",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log_conversa_kommo_comercial",
+          "mode": "list",
+          "cachedResultName": "log_conversa_kommo_comercial"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ $json.phone_formatted }}",
+            "direction": "IN",
+            "sender_type": "CANDIDATO",
+            "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "texto": "={{ $json.meta.original.body.data.message.conversation || \" \"}}",
+            "content_type": "TEXTO"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content_type",
+              "displayName": "content_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sender_type",
+              "displayName": "sender_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agente",
+              "displayName": "agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "texto",
+              "displayName": "texto",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_at",
+              "displayName": "message_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        528,
+        176
+      ],
+      "id": "06a408b4-cffe-4184-a398-40ef37b6432e",
+      "name": "Insert rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "obsUG5lfx2MNGOjM",
+          "name": "log_conversas_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.data.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3ade8225-066a-4aee-b45a-a99b5d8d05be"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AUDIO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6b26b52d-602f-45e3-8e06-6e2945856bb1",
+                    "leftValue": "={{ $json.body.data.messageType }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TEXTO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f4a26780-4c7e-4d90-b4c9-0ad18ac5fedc",
+                    "leftValue": "={{ $json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TEXTO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4f066334-f8ee-4ccc-b08a-743a18c176af",
+                    "leftValue": "={{ $json.body.data.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IMAGEM"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8d8c3daa-2de9-4ac8-aa26-89e816c129a4",
+                    "leftValue": "={{ $json.body.data.messageType }}",
+                    "rightValue": "interactiveMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f6639f3b-7710-4bd4-be43-8b827ca0ec77",
+                    "leftValue": "={{ $json.body.data.messageType }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "=IMAGEM"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -320,
+        128
+      ],
+      "id": "4e7271d2-4f5f-4440-b771-1147b36ebb70",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "transcription",
+              "value": "=audio: {{$json[\"text\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "82526613-7fab-4213-9681-62d386cb2798",
+      "name": "Extrair Texto",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        576,
+        -48
+      ],
+      "id": "546ffd9f-0c96-4b81-81d8-a2ad49ce036a",
+      "name": "Transcribe a recording",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node (JavaScript)\n// Modo: Run Once for Each Item\n// Objetivo:\n//  - Formatar telefone no padrão +5511xxxxxxxxx\n//  - Extrair URL do áudio (audioMessage.url) da Evolution\n//  - Manter metadados úteis\n\nconst item = items[0] || { json: {} };\nconst json = item.json || {};\n\n// =========================\n// Helper: pegar campo string\n// =========================\nfunction pick(obj, path) {\n  if (!obj) return '';\n  try {\n    const parts = path.split('.');\n    let cur = obj;\n    for (const p of parts) {\n      if (cur == null) return '';\n      cur = cur[p];\n    }\n    if (typeof cur === 'string' && cur.trim()) return cur;\n    return '';\n  } catch (e) {\n    return '';\n  }\n}\n\n// =========================\n// 1) TELEFONE\n// =========================\nconst raw =\n  pick(json, 'body.data.key.remoteJid') ||\n  pick(json, 'data.key.remoteJid') ||\n  pick(json, 'body.phone') ||\n  pick(json, 'phone') ||\n  '';\n\nconst digits = (raw.match(/\\d+/g) || []).join(''); // só dígitos\n\nlet local = digits;\n\n// Remove 55 e 11 do início, se tiver\nif (local.startsWith('55')) local = local.slice(2);\nif (local.startsWith('11')) local = local.slice(2);\n\n// Últimos 9 dígitos (celular SP). Se tiver menos, mantém o que tiver.\nif (local.length >= 9) {\n  local = local.slice(-9);\n} else if (local.length === 0) {\n  local = '';\n}\n\nconst phone_formatted = local ? `+5511${local}` : '';\n\n// =========================\n// 2) ÁUDIO (URL)\n// =========================\nconst bodyData = (json.body && json.body.data) ? json.body.data : (json.data || {});\nconst audioMsg = (bodyData.message && bodyData.message.audioMessage) ? bodyData.message.audioMessage : {};\n\nconst audioUrl  = audioMsg.url || null;\nconst audioMime = audioMsg.mime_type || null;\nconst audioId   = audioMsg.id || null;\n\n// =========================\n// 3) Metadados\n// =========================\nconst from        = (bodyData.key && bodyData.key.remoteJid) ? bodyData.key.remoteJid : (raw || null);\nconst pushName    = bodyData.pushName || null;\nconst timestamp   = bodyData.messageTimestamp || null;\nconst timestampIso = timestamp ? new Date(timestamp * 1000).toISOString() : null;\n\n// =========================\n// 4) Monta json final\n// =========================\nitem.json = {\n  ...json,\n  from_raw: from,\n  pushName,\n  timestamp,\n  timestamp_iso: timestampIso,\n  phone_raw: raw,\n  phone_digits: digits,\n  phone_formatted,\n  audio_url: audioUrl,\n  audio_mime_type: audioMime,\n  audio_id: audioId,\n  hasAudio: Boolean(audioUrl),\n};\n\n// IMPORTANTE: sempre retorna array de itens\nreturn [item];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "79a01de4-26e9-444b-a39e-cab489864aac",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log_conversa_kommo_comercial",
+          "mode": "list",
+          "cachedResultName": "log_conversa_kommo_comercial"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ $json.remetente }}",
+            "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "sender_type": "CANDIDATO",
+            "direction": "IN",
+            "content_type": "AUDIO",
+            "texto": "={{ $json.mensagem }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content_type",
+              "displayName": "content_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sender_type",
+              "displayName": "sender_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agente",
+              "displayName": "agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "texto",
+              "displayName": "texto",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_at",
+              "displayName": "message_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1168,
+        -48
+      ],
+      "id": "53a199d2-4b56-4802-9f3a-74132a56ac8b",
+      "name": "Insert rows in a table2",
+      "credentials": {
+        "postgres": {
+          "id": "obsUG5lfx2MNGOjM",
+          "name": "log_conversas_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  // Pega o conteúdo original do When Executed by Another Workflow\n  const webhookData =\n    $node[\"When Executed by Another Workflow\"]?.json?.body?.data || {};\n\n  // ====== FORMATAÇÃO DO TELEFONE ======\n  let from = webhookData.key?.remoteJid || \"\";\n\n  // Remove sufixo do WhatsApp\n  from = from.replace(\"@s.whatsapp.net\", \"\");\n\n  // Garante que começa com \"+\"\n  if (from && !from.startsWith(\"+\")) {\n    from = \"+\" + from;\n  }\n\n  // Nome do remetente\n  const pushName = webhookData.pushName || null;\n\n  // Timestamp original\n  const timestamp = webhookData.messageTimestamp || null;\n\n  // Transcrição do áudio (pega do item atual)\n  const transcription = item.json?.transcription || \"\";\n\n  // Monta o JSON final para inserir no banco\n  item.json = {\n    remetente: from,           // Telefone formatado\n    nome: pushName,\n    mensagem: transcription,\n    tipo: \"audio\",\n    data_hora: timestamp\n      ? new Date(timestamp * 1000).toISOString()\n      : new Date().toISOString()\n  };\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        -48
+      ],
+      "id": "6973a50b-3bdf-4bc5-9b29-87a6990d460a",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "functionCode": "if (item.binary?.file0) {\n  item.binary.file = item.binary.file0;\n  delete item.binary.file0;\n}\n\n// Força o formato aceito pelo OpenAI\nif (item.binary?.file) {\n  item.binary.file.fileName = \"audio.ogg\";   // renomeia\n  item.binary.file.mimeType = \"audio/ogg\";   // força MIME válido\n}\n\nreturn item;"
+      },
+      "id": "6e0b5255-4eb8-4e56-8b17-afe6b4927034",
+      "name": "Padronizar binário (file0→file)",
+      "type": "n8n-nodes-base.functionItem",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "df0bf879-7e78-413e-b2f5-a602d82fc8a9",
+      "name": "Responder ao Webhook (JSON)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        3200,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3216,
+        224
+      ],
+      "id": "d84ae1a6-aa0c-4281-85ef-b7045703c66a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"error\": \"audio_processing_failed\",\n  \"message\": \"Falha no processamento do áudio\"\n}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "4a552277-a3c5-4972-ba34-c0ca6210a408",
+      "name": "Webhook response on error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        2608,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "audios_csv_comercial",
+        "responseMode": "responseNode",
+        "options": {
+          "binaryPropertyName": "file"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1984,
+        128
+      ],
+      "id": "ef7747ee-bec9-467e-9479-bbb2c29d7c92",
+      "name": "Webhook2",
+      "webhookId": "ec10fe26-4c2f-4142-82a2-2baa07332952"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "transcription",
+              "value": "={{$json[\"text\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2b539565-84f2-42d3-89d1-06bf324c0273",
+      "name": "Extrair Texto1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        2608,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "file0",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2320,
+        144
+      ],
+      "id": "134f7a6e-13b9-4f56-91dc-e8ab174c251a",
+      "name": "Transcribe a recording1",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agente_audio",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2848,
+        304
+      ],
+      "id": "faf6622b-3b43-4410-b679-3a7d85971798",
+      "name": "Webhook3",
+      "webhookId": "14764769-99a5-494f-a930-ee0935051723"
+    },
+    {
+      "parameters": {
+        "content": "## Extensão - Envio de Aúdios\n",
+        "height": 496,
+        "width": 1680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        -48
+      ],
+      "id": "aab13eef-4c07-4fcd-bc06-f17108839141",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Evolution - Aúdio/Imagens/Mensagens Recebidas\n\n\n",
+        "height": 768,
+        "width": 2112
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        -128
+      ],
+      "id": "1f289078-8c9c-495a-9ec9-ef687e125e1c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Extensão - Envio de Mensagens\n\n",
+        "height": 816,
+        "width": 2448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1776,
+        592
+      ],
+      "id": "080cf741-04ab-40d8-94c8-77d9efbb7360",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const msg = item.json?.body?.data?.message;\n  const base64Image = msg?.base64;\n  const imageInfo = msg?.imageMessage;\n\n  if (base64Image && imageInfo) {\n    const buffer = Buffer.from(base64Image, \"base64\");\n\n    // Cria o binário no formato esperado pelos nós de upload/análise\n    item.binary = {\n      file: {\n        data: buffer.toString('base64'),\n        mimeType: imageInfo.mime_type || \"image/jpeg\",\n        fileName: `imagem_${imageInfo.id || Date.now()}.jpg`\n      }\n    };\n\n    // Mantém metadados úteis\n    item.json = {\n      caption: imageInfo.caption || null,\n      mime_type: imageInfo.mime_type || \"image/jpeg\",\n      sha256: imageInfo.sha256 || null,\n      id: imageInfo.id || null,\n      from: item.json?.body?.data?.key?.remoteJid || null,\n      pushName: item.json?.body?.data?.pushName || null,\n      timestamp: item.json?.body?.data?.messageTimestamp || null\n    };\n  } else {\n    item.json = { error: \"Nenhuma imagem encontrada no payload.\" };\n  }\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        384
+      ],
+      "id": "986c2c9e-a77b-4665-9a84-a445e04487ba",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Você é um agente que analisa imagens enviadas via whatsapp dentro de um canal de atendimento pós venda da Universidade Cruzeiro do Sul. \n\nO que você analisar será gravado em um banco de dados que contém o histórico de mensagens trocadas entre cliente e consultor. \n\ninforme resumidamente o que está na tela, sem muitas informações. \n",
+        "inputType": "base64",
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        464,
+        384
+      ],
+      "id": "8d5b6db2-a537-4dc4-9c70-9d0d9b450d9c",
+      "name": "Analyze image",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "transcription",
+              "value": "=imagem: {{ $json.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eef3a23b-d8ec-4524-872b-c9cd62aa72fe",
+      "name": "Extrair Texto2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        768,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  // Dados do webhook\n  const webhookData =\n    $node[\"When Executed by Another Workflow\"]?.json?.body?.data || {};\n\n  // Extrai o remoteJid (telefone bruto)\n  let from = webhookData.key?.remoteJid || \"\";\n\n  // --- FORMATAÇÃO DO TELEFONE ---\n  // Remove o sufixo @s.whatsapp.net\n  from = from.replace(\"@s.whatsapp.net\", \"\");\n\n  // Garante que começa com \"+\"\n  if (!from.startsWith(\"+\")) {\n    from = \"+\" + from;\n  }\n\n  // Nome e timestamp\n  const pushName = webhookData.pushName || null;\n  const timestamp = webhookData.messageTimestamp || null;\n\n  // Legenda da imagem (se existir)\n  const caption = webhookData.message?.imageMessage?.caption || \"\";\n\n  // Transcrição (OCR / IA) vinda do item atual\n  const transcription = item.json?.transcription || \"\";\n\n  // Junta caption + transcrição\n  const mensagemFinal = [caption, transcription]\n    .filter(Boolean)\n    .join(\" | \");\n\n  // JSON final\n  item.json = {\n    remetente: from,        // telefone formatado\n    nome: pushName,\n    mensagem: mensagemFinal,\n    tipo: \"imagem\",\n    data_hora: timestamp\n      ? new Date(timestamp * 1000).toISOString()\n      : new Date().toISOString()\n  };\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        368
+      ],
+      "id": "493d998a-36e7-40f5-bfa3-0985fa59a32c",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log_conversa_kommo_comercial",
+          "mode": "list",
+          "cachedResultName": "log_conversa_kommo_comercial"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sender_type": "CANDIDATO",
+            "direction": "IN",
+            "phone": "={{ $json.remetente }}",
+            "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "texto": "={{ $json.mensagem }}",
+            "content_type": "IMAGEM"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content_type",
+              "displayName": "content_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sender_type",
+              "displayName": "sender_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agente",
+              "displayName": "agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "texto",
+              "displayName": "texto",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_at",
+              "displayName": "message_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1152,
+        368
+      ],
+      "id": "e54a5b88-00d1-4dd9-8867-1bc51f01b77a",
+      "name": "Insert rows in a table3",
+      "credentials": {
+        "postgres": {
+          "id": "obsUG5lfx2MNGOjM",
+          "name": "log_conversas_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.tipo }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3ade8225-066a-4aee-b45a-a99b5d8d05be"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AUDIO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6b26b52d-602f-45e3-8e06-6e2945856bb1",
+                    "leftValue": "={{ $json.body.tipo }}",
+                    "rightValue": "Manual",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TEXTO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4f066334-f8ee-4ccc-b08a-743a18c176af",
+                    "leftValue": "={{ $json.body.tipo }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IMAGEM"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2224,
+        832
+      ],
+      "id": "312e4b87-b675-4ed1-b90b-ffb03362b032",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(({ json }) => {\n  const unifiedPhone = onlyDigits(json.phone ?? json.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(json.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(json.leadId),\n    phone: unifiedPhone,\n    text: (json.text ?? '').toString(),\n    agent: (json.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(json.timestamp),\n    tipo: (json.tipo ?? '').toString(),\n    meta: {\n      original: json,              // payload de entrada para auditoria\n      normalizedAt: new Date().toISOString()\n    }\n  };\n\n  // (Opcional) validações leves: marque erros sem quebrar o fluxo\n  out.meta.errors = [];\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2992,
+        672
+      ],
+      "id": "ca36e3f5-f1a6-4abf-8632-5099a5833f26",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const body = item.json?.body;\n\n  if (body?.text) {\n    const base64Image = body.text;\n\n    // Converte o base64 recebido em Buffer\n    const buffer = Buffer.from(base64Image, \"base64\");\n\n    // Cria o binário com o formato que o n8n reconhece\n    item.binary = {\n      file: {\n        data: buffer.toString(\"base64\"), // 👈 ESSENCIAL para o botão “View” funcionar\n        mimeType: \"image/jpeg\",          // ou \"image/png\" se for o caso\n        fileName: `imagem_${body.leadId || Date.now()}.jpg`,\n      },\n    };\n\n    // Mantém metadados no JSON\n    item.json = {\n      leadId: body.leadId || null,\n      phone: body.phone || null,\n      mime_type: \"image/jpeg\",\n      received_at: new Date().toISOString(),\n    };\n  } else {\n    item.json = { error: \"Nenhum campo base64 encontrado em body.text.\" };\n  }\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2560,
+        1184
+      ],
+      "id": "297b4ced-d4ba-4238-8399-a8ca82264169",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Você é um agente que analisa imagens enviadas via whatsapp dentro de um canal de atendimento pós venda da Universidade Cruzeiro do Sul. \n\nO que você analisar será gravado em um banco de dados que contém o histórico de mensagens trocadas entre cliente e consultor. \n\ninforme resumidamente o que está na tela, sem muitas informações. \n",
+        "inputType": "base64",
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2768,
+        1184
+      ],
+      "id": "9f4153d8-085b-4d60-8f49-bc7df0482753",
+      "name": "Analyze image1",
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "transcription",
+              "value": "=imagem: {{ $json.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eff80c97-6485-494c-9269-2e705009af19",
+      "name": "Extrair Texto4",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        3072,
+        1168
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log_conversa_kommo_comercial",
+          "mode": "list",
+          "cachedResultName": "log_conversa_kommo_comercial"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "direction": "={{ $('Webhook').item.json.body.direction }}",
+            "phone": "=+{{ $json.meta.original.phone }}",
+            "sender_type": "CONSULTOR",
+            "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+            "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}\n",
+            "content_type": "AUDIO",
+            "agente": "={{ $('Webhook').item.json.body.agent }}",
+            "texto": "={{ $('Webhook').item.json.body.text }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content_type",
+              "displayName": "content_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sender_type",
+              "displayName": "sender_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agente",
+              "displayName": "agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "texto",
+              "displayName": "texto",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_at",
+              "displayName": "message_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3264,
+        704
+      ],
+      "id": "c0c3c042-7e7a-4fb5-9008-3cc1fead69a8",
+      "name": "Insert rows in a table6",
+      "credentials": {
+        "postgres": {
+          "id": "obsUG5lfx2MNGOjM",
+          "name": "log_conversas_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(({ json }) => {\n  const unifiedPhone = onlyDigits(json.phone ?? json.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(json.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(json.leadId),\n    phone: unifiedPhone,\n    text: (json.text ?? '').toString(),\n    agent: (json.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(json.timestamp),\n    tipo: (json.tipo ?? '').toString(),\n    meta: {\n      original: json,              // payload de entrada para auditoria\n      normalizedAt: new Date().toISOString()\n    }\n  };\n\n  // (Opcional) validações leves: marque erros sem quebrar o fluxo\n  out.meta.errors = [];\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3344,
+        1152
+      ],
+      "id": "71a845db-f88c-46c1-ad88-9cb918fe630d",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "log_conversa_kommo_comercial",
+          "mode": "list",
+          "cachedResultName": "log_conversa_kommo_comercial"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": 0,
+            "phone": "=",
+            "direction": "=",
+            "sender_type": "=",
+            "texto": "=",
+            "message_at": "="
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content_type",
+              "displayName": "content_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sender_type",
+              "displayName": "sender_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agente",
+              "displayName": "agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "texto",
+              "displayName": "texto",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_at",
+              "displayName": "message_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_em",
+              "displayName": "recebido_em",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3552,
+        1184
+      ],
+      "id": "10f7210a-20ab-41a8-b6ee-c0612394ce44",
+      "name": "Insert rows in a table7",
+      "credentials": {
+        "postgres": {
+          "id": "obsUG5lfx2MNGOjM",
+          "name": "log_conversas_comercial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data",
+              "type": "any"
+            },
+            {
+              "name": "body",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -720,
+        160
+      ],
+      "id": "68fcd420-35c7-4007-a41e-34ea0cb04071",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recebe o base64 vindo do campo body.text\nconst base64Data = $input.first().json.body.text\n\n// Cria um arquivo binário no formato mp4\nreturn [\n  {\n    json: { leadId: $json[\"body\"][\"leadId\"], phone: $json[\"body\"][\"phone\"] },\n    binary: {\n      data: {\n        data: Buffer.from(base64Data, 'base64'),\n        mimeType: 'video/mp4',\n        fileName: 'mensagem.mp4',\n      },\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2608,
+        720
+      ],
+      "id": "569b695e-cfc5-4350-8a48-168218ba5b29",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v21.0/{{$json[\"audio_id\"]}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAVtQLT2wukBPZBxZC9yxTZCTvbCbQZCasYZAdzEBLAgHrBPQX2PaxfR7uKMIr3ZBAbEW4RPlIYNs1ZCZCeU2YACBt3PVseU8rwm81U0P0I1Wy2RXJGFB4ZAppTTeBvmutFz8QPgPMltxZBElNFdL5hWACFzZBlZBE1OjlPDwS7EZA5ZCGb7tysIRcPQJIfAtxVAFieYtvPgZDZD"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        112,
+        -48
+      ],
+      "id": "b236880d-5710-4c4d-859c-305697642b7b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"url\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAVtQLT2wukBPZBxZC9yxTZCTvbCbQZCasYZAdzEBLAgHrBPQX2PaxfR7uKMIr3ZBAbEW4RPlIYNs1ZCZCeU2YACBt3PVseU8rwm81U0P0I1Wy2RXJGFB4ZAppTTeBvmutFz8QPgPMltxZBElNFdL5hWACFzZBlZBE1OjlPDwS7EZA5ZCGb7tysIRcPQJIfAtxVAFieYtvPgZDZD"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        320,
+        96
+      ],
+      "id": "b4815b90-3355-45f1-8a74-46d71e01321d",
+      "name": "HTTP Request1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Extrair Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Texto": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Padronizar binário (file0→file)": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "Padronizar binário (file0→file)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Texto1": {
+      "main": [
+        [
+          {
+            "node": "Responder ao Webhook (JSON)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording1": {
+      "main": [
+        [
+          {
+            "node": "Extrair Texto1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Webhook response on error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Extrair Texto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Texto2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image1": {
+      "main": [
+        [
+          {
+            "node": "Extrair Texto4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Texto4": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook2": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+            "content-length": "51507",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
+            "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryyiF299jM04mo8vGk",
+            "origin": "https://admamoeduitcombr.kommo.com",
+            "priority": "u=1, i",
+            "referer": "https://admamoeduitcombr.kommo.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "187.101.249.134",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-pb-secret": "troque-isto",
+            "x-real-ip": "187.101.249.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "metadata": "{\"timestamp\":\"2026-01-21T19:50:30.570Z\",\"size\":51025,\"type\":\"audio/mp4;codecs=opus\",\"source\":\"kommo_extension\",\"audioHash\":\"5102500024667479706973\",\"leadId\":\"20403123\",\"agent\":\"Admin Sistema\"}"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/audios_csv_comercial",
+          "executionMode": "production"
+        },
+        "binary": {
+          "file0": {
+            "mimeType": "audio/mp4;codecs=opus",
+            "fileType": "audio",
+            "fileExtension": "m4a",
+            "data": "filesystem-v2",
+            "fileName": "audio.webm",
+            "id": "filesystem-v2:workflows/15kmAHfNkXIOccRl/executions/temp/binary_data/aa54cf61-8fa2-4f04-83ad-76264a4ad48b",
+            "fileSize": "51 kB"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+            "content-length": "185",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en;q=0.8",
+            "content-type": "application/json",
+            "origin": "https://admamoeduitcombr.kommo.com",
+            "priority": "u=1, i",
+            "referer": "https://admamoeduitcombr.kommo.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "187.101.249.134",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-real-ip": "187.101.249.134"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leadId": "20403123",
+            "phone": "5511945010493",
+            "text": "Hello, dash, dash, dash, dash, dash.",
+            "agent": "Diogo Alves",
+            "direction": "OUT",
+            "timestamp": "2026-01-21T20:36:15.672Z",
+            "tipo": "audio"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/envio_msgs_csv_comercial",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "data": {
+            "key": {
+              "id": "wamid.HBgMNTUzNTg0NjkxNDU5FQIAEhgUM0FEMzFFQUFGNDA0QUVDQUVCMzUA",
+              "remoteJid": "553584691459@s.whatsapp.net",
+              "fromMe": false
+            },
+            "pushName": "Daltro Mendonça",
+            "message": {
+              "contextInfo": {
+                "stanzaId": "wamid.HBgMNTUzNTg0NjkxNDU5FQIAERgSREJEN0Q2MDVDQTgyMUZFM0UzAA=="
+              }
+            },
+            "contextInfo": {
+              "stanzaId": "wamid.HBgMNTUzNTg0NjkxNDU5FQIAERgSREJEN0Q2MDVDQTgyMUZFM0UzAA=="
+            },
+            "messageType": "interactiveMessage",
+            "messageTimestamp": 1769798175,
+            "source": "unknown",
+            "instanceId": "d8bb7bbd-90b9-443f-b41d-aebffb21477a"
+          },
+          "body": {
+            "event": "messages.upsert",
+            "instance": "comercial_cruzeiro",
+            "data": {
+              "key": {
+                "id": "wamid.HBgMNTUzNTg0NjkxNDU5FQIAEhgUM0FEMzFFQUFGNDA0QUVDQUVCMzUA",
+                "remoteJid": "553584691459@s.whatsapp.net",
+                "fromMe": false
+              },
+              "pushName": "Daltro Mendonça",
+              "message": {
+                "contextInfo": {
+                  "stanzaId": "wamid.HBgMNTUzNTg0NjkxNDU5FQIAERgSREJEN0Q2MDVDQTgyMUZFM0UzAA=="
+                }
+              },
+              "contextInfo": {
+                "stanzaId": "wamid.HBgMNTUzNTg0NjkxNDU5FQIAERgSREJEN0Q2MDVDQTgyMUZFM0UzAA=="
+              },
+              "messageType": "interactiveMessage",
+              "messageTimestamp": 1769798175,
+              "source": "unknown",
+              "instanceId": "d8bb7bbd-90b9-443f-b41d-aebffb21477a"
+            },
+            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/comercial_cruzeiro",
+            "date_time": "2026-01-30T15:36:16.821Z",
+            "server_url": "https://outros-evolution-api.ca31ey.easypanel.host",
+            "apikey": "EAAVtQLT2wukBPZBxZC9yxTZCTvbCbQZCasYZAdzEBLAgHrBPQX2PaxfR7uKMIr3ZBAbEW4RPlIYNs1ZCZCeU2YACBt3PVseU8rwm81U0P0I1Wy2RXJGFB4ZAppTTeBvmutFz8QPgPMltxZBElNFdL5hWACFzZBlZBE1OjlPDwS7EZA5ZCGb7tysIRcPQJIfAtxVAFieYtvPgZDZD"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "82582629-b996-451c-9d33-7fb8ffd37b33",
+  "activeVersionId": "82582629-b996-451c-9d33-7fb8ffd37b33",
+  "triggerCount": 3,
+  "shared": [
+    {
+      "updatedAt": "2025-08-21T18:16:54.054Z",
+      "createdAt": "2025-08-21T18:16:54.054Z",
+      "role": "workflow:owner",
+      "workflowId": "15kmAHfNkXIOccRl",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-01-30T19:38:32.000Z",
+    "createdAt": "2026-01-30T19:38:29.249Z",
+    "versionId": "82582629-b996-451c-9d33-7fb8ffd37b33",
+    "workflowId": "15kmAHfNkXIOccRl",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "envio_msgs_csv_comercial",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1936,
+          864
+        ],
+        "id": "f2211c78-4eba-42e8-8904-aa8641dc1dd1",
+        "name": "Webhook",
+        "webhookId": "673f269e-e1a5-4413-b381-a4d8190e7348"
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(item => {\n  const root = item.json || {};\n  // Se vier no formato novo (body: {...}), usa body; senão, usa o próprio json (compatível com o antigo)\n  const src = root.body ?? root;\n\n  const unifiedPhone = onlyDigits(src.phone ?? src.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(src.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN'\n        : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(src.leadId),\n    phone: unifiedPhone,\n    text: (src.text ?? '').toString(),\n    agent: (src.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(src.timestamp),\n    tipo: (src.tipo ?? '').toString(),\n    meta: {\n      original: root,                 // payload de entrada completo para auditoria\n      normalizedAt: new Date().toISOString(),\n      errors: [],\n    },\n  };\n\n  // validações leves\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2768,
+          928
+        ],
+        "id": "a00ac74e-7454-4a63-ae27-3dc6d31e3f47",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "log_conversa_kommo_comercial",
+            "mode": "list",
+            "cachedResultName": "log_conversa_kommo_comercial"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "phone": "=+{{ $json.phone }}",
+              "direction": "={{ $json.direction }}",
+              "sender_type": "CONSULTOR",
+              "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "texto": "={{ $json.meta.original.body.text }}",
+              "agente": "={{ $json.meta.original.body.agent }}",
+              "content_type": "TEXTO"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direction",
+                "displayName": "direction",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "content_type",
+                "displayName": "content_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "sender_type",
+                "displayName": "sender_type",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agente",
+                "displayName": "agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "message_at",
+                "displayName": "message_at",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3040,
+          928
+        ],
+        "id": "29df3852-8124-40fd-afeb-cd939f51bcec",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "obsUG5lfx2MNGOjM",
+            "name": "log_conversas_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Function node — Payload Normalizer + Phone Extractor (SP +5511)\n// Modo: \"Run Once for All Items\"\n\n// Helpers =============================\n\nfunction onlyDigits(s) {\n  if (!s) return '';\n  return String(s).replace(/\\D+/g, '') || '';\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nfunction safePick(obj, ...paths) {\n  for (const p of paths) {\n    try {\n      const val = p.split('.').reduce((acc, k) => (acc ? acc[k] : undefined), obj);\n      if (typeof val === 'string' && val.trim()) return val;\n    } catch (e) {}\n  }\n  return '';\n}\n\n// =====================================\n\nreturn items.map(item => {\n  const root = item.json || {};\n  const src = root.body ?? root;  // compatível com payload novo e antigo\n\n  // =====================================================\n  // EXTRAÇÃO DE TELEFONE (versão extendida + compatível)\n  // =====================================================\n\n  const rawPhone = safePick(\n    root,\n    'body.data.key.remoteJid',\n    'data.key.remoteJid',\n    'remoteJid',\n    'body.phone',\n    'phone'\n  );\n\n  const digits = onlyDigits(rawPhone);\n\n  // remove prefixos duplicados 55 / 11\n  let local = digits;\n  if (local.startsWith('55')) local = local.slice(2);\n  if (local.startsWith('11')) local = local.slice(2);\n\n  // mantém celular SP: 9 últimos dígitos (padrão)\n  if (local.length >= 9) {\n    local = local.slice(-9);\n  }\n\n  const phoneFormatted = local ? `+5511${local}` : '';\n\n  // =====================================================\n  // NORMALIZAÇÃO DO PAYLOAD\n  // =====================================================\n\n  const dirRaw = upperOrEmpty(src.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(src.leadId),\n    phone: digits || null,  // telefone numérico “limpo”\n    phone_raw: rawPhone,\n    phone_digits: digits,\n    phone_formatted: phoneFormatted,\n\n    text: (src.text ?? '').toString(),\n    agent: (src.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(src.timestamp),\n    tipo: (src.tipo ?? '').toString(),\n\n    meta: {\n      original: root,\n      normalizedAt: new Date().toISOString(),\n      errors: []\n    }\n  };\n\n  // Validações leves\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido (digits)');\n\n  return { json: out };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          160,
+          176
+        ],
+        "id": "e776608d-2680-40b1-90bc-d3e1afdde338",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "log_conversa_kommo_comercial",
+            "mode": "list",
+            "cachedResultName": "log_conversa_kommo_comercial"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "phone": "={{ $json.phone_formatted }}",
+              "direction": "IN",
+              "sender_type": "CANDIDATO",
+              "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "texto": "={{ $json.meta.original.body.data.message.conversation || \" \"}}",
+              "content_type": "TEXTO"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direction",
+                "displayName": "direction",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "content_type",
+                "displayName": "content_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "sender_type",
+                "displayName": "sender_type",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agente",
+                "displayName": "agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "message_at",
+                "displayName": "message_at",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          528,
+          176
+        ],
+        "id": "06a408b4-cffe-4184-a398-40ef37b6432e",
+        "name": "Insert rows in a table1",
+        "credentials": {
+          "postgres": {
+            "id": "obsUG5lfx2MNGOjM",
+            "name": "log_conversas_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.body.data.messageType }}",
+                      "rightValue": "audioMessage",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "3ade8225-066a-4aee-b45a-a99b5d8d05be"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "AUDIO"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6b26b52d-602f-45e3-8e06-6e2945856bb1",
+                      "leftValue": "={{ $json.body.data.messageType }}",
+                      "rightValue": "text",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "TEXTO"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "f4a26780-4c7e-4d90-b4c9-0ad18ac5fedc",
+                      "leftValue": "={{ $json.body.data.messageType }}",
+                      "rightValue": "conversation",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "TEXTO"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "4f066334-f8ee-4ccc-b08a-743a18c176af",
+                      "leftValue": "={{ $json.body.data.messageType }}",
+                      "rightValue": "imageMessage",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "IMAGEM"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "8d8c3daa-2de9-4ac8-aa26-89e816c129a4",
+                      "leftValue": "={{ $json.body.data.messageType }}",
+                      "rightValue": "interactiveMessage",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "f6639f3b-7710-4bd4-be43-8b827ca0ec77",
+                      "leftValue": "={{ $json.body.data.messageType }}",
+                      "rightValue": "image",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "=IMAGEM"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -320,
+          128
+        ],
+        "id": "4e7271d2-4f5f-4440-b771-1147b36ebb70",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "transcription",
+                "value": "=audio: {{$json[\"text\"]}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "82526613-7fab-4213-9681-62d386cb2798",
+        "name": "Extrair Texto",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          800,
+          -64
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "audio",
+          "operation": "transcribe",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          576,
+          -48
+        ],
+        "id": "546ffd9f-0c96-4b81-81d8-a2ad49ce036a",
+        "name": "Transcribe a recording",
+        "retryOnFail": true,
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Code Node (JavaScript)\n// Modo: Run Once for Each Item\n// Objetivo:\n//  - Formatar telefone no padrão +5511xxxxxxxxx\n//  - Extrair URL do áudio (audioMessage.url) da Evolution\n//  - Manter metadados úteis\n\nconst item = items[0] || { json: {} };\nconst json = item.json || {};\n\n// =========================\n// Helper: pegar campo string\n// =========================\nfunction pick(obj, path) {\n  if (!obj) return '';\n  try {\n    const parts = path.split('.');\n    let cur = obj;\n    for (const p of parts) {\n      if (cur == null) return '';\n      cur = cur[p];\n    }\n    if (typeof cur === 'string' && cur.trim()) return cur;\n    return '';\n  } catch (e) {\n    return '';\n  }\n}\n\n// =========================\n// 1) TELEFONE\n// =========================\nconst raw =\n  pick(json, 'body.data.key.remoteJid') ||\n  pick(json, 'data.key.remoteJid') ||\n  pick(json, 'body.phone') ||\n  pick(json, 'phone') ||\n  '';\n\nconst digits = (raw.match(/\\d+/g) || []).join(''); // só dígitos\n\nlet local = digits;\n\n// Remove 55 e 11 do início, se tiver\nif (local.startsWith('55')) local = local.slice(2);\nif (local.startsWith('11')) local = local.slice(2);\n\n// Últimos 9 dígitos (celular SP). Se tiver menos, mantém o que tiver.\nif (local.length >= 9) {\n  local = local.slice(-9);\n} else if (local.length === 0) {\n  local = '';\n}\n\nconst phone_formatted = local ? `+5511${local}` : '';\n\n// =========================\n// 2) ÁUDIO (URL)\n// =========================\nconst bodyData = (json.body && json.body.data) ? json.body.data : (json.data || {});\nconst audioMsg = (bodyData.message && bodyData.message.audioMessage) ? bodyData.message.audioMessage : {};\n\nconst audioUrl  = audioMsg.url || null;\nconst audioMime = audioMsg.mime_type || null;\nconst audioId   = audioMsg.id || null;\n\n// =========================\n// 3) Metadados\n// =========================\nconst from        = (bodyData.key && bodyData.key.remoteJid) ? bodyData.key.remoteJid : (raw || null);\nconst pushName    = bodyData.pushName || null;\nconst timestamp   = bodyData.messageTimestamp || null;\nconst timestampIso = timestamp ? new Date(timestamp * 1000).toISOString() : null;\n\n// =========================\n// 4) Monta json final\n// =========================\nitem.json = {\n  ...json,\n  from_raw: from,\n  pushName,\n  timestamp,\n  timestamp_iso: timestampIso,\n  phone_raw: raw,\n  phone_digits: digits,\n  phone_formatted,\n  audio_url: audioUrl,\n  audio_mime_type: audioMime,\n  audio_id: audioId,\n  hasAudio: Boolean(audioUrl),\n};\n\n// IMPORTANTE: sempre retorna array de itens\nreturn [item];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -80,
+          -32
+        ],
+        "id": "79a01de4-26e9-444b-a39e-cab489864aac",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "log_conversa_kommo_comercial",
+            "mode": "list",
+            "cachedResultName": "log_conversa_kommo_comercial"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "phone": "={{ $json.remetente }}",
+              "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "sender_type": "CANDIDATO",
+              "direction": "IN",
+              "content_type": "AUDIO",
+              "texto": "={{ $json.mensagem }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direction",
+                "displayName": "direction",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "content_type",
+                "displayName": "content_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "sender_type",
+                "displayName": "sender_type",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agente",
+                "displayName": "agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "message_at",
+                "displayName": "message_at",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1168,
+          -48
+        ],
+        "id": "53a199d2-4b56-4802-9f3a-74132a56ac8b",
+        "name": "Insert rows in a table2",
+        "credentials": {
+          "postgres": {
+            "id": "obsUG5lfx2MNGOjM",
+            "name": "log_conversas_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  // Pega o conteúdo original do When Executed by Another Workflow\n  const webhookData =\n    $node[\"When Executed by Another Workflow\"]?.json?.body?.data || {};\n\n  // ====== FORMATAÇÃO DO TELEFONE ======\n  let from = webhookData.key?.remoteJid || \"\";\n\n  // Remove sufixo do WhatsApp\n  from = from.replace(\"@s.whatsapp.net\", \"\");\n\n  // Garante que começa com \"+\"\n  if (from && !from.startsWith(\"+\")) {\n    from = \"+\" + from;\n  }\n\n  // Nome do remetente\n  const pushName = webhookData.pushName || null;\n\n  // Timestamp original\n  const timestamp = webhookData.messageTimestamp || null;\n\n  // Transcrição do áudio (pega do item atual)\n  const transcription = item.json?.transcription || \"\";\n\n  // Monta o JSON final para inserir no banco\n  item.json = {\n    remetente: from,           // Telefone formatado\n    nome: pushName,\n    mensagem: transcription,\n    tipo: \"audio\",\n    data_hora: timestamp\n      ? new Date(timestamp * 1000).toISOString()\n      : new Date().toISOString()\n  };\n\n  return item;\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          976,
+          -48
+        ],
+        "id": "6973a50b-3bdf-4bc5-9b29-87a6990d460a",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "functionCode": "if (item.binary?.file0) {\n  item.binary.file = item.binary.file0;\n  delete item.binary.file0;\n}\n\n// Força o formato aceito pelo OpenAI\nif (item.binary?.file) {\n  item.binary.file.fileName = \"audio.ogg\";   // renomeia\n  item.binary.file.mimeType = \"audio/ogg\";   // força MIME válido\n}\n\nreturn item;"
+        },
+        "id": "6e0b5255-4eb8-4e56-8b17-afe6b4927034",
+        "name": "Padronizar binário (file0→file)",
+        "type": "n8n-nodes-base.functionItem",
+        "typeVersion": 1,
+        "position": [
+          2160,
+          128
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "df0bf879-7e78-413e-b2f5-a602d82fc8a9",
+        "name": "Responder ao Webhook (JSON)",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          3200,
+          0
+        ]
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          3216,
+          224
+        ],
+        "id": "d84ae1a6-aa0c-4281-85ef-b7045703c66a",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\n  \"error\": \"audio_processing_failed\",\n  \"message\": \"Falha no processamento do áudio\"\n}",
+          "options": {
+            "responseCode": 422
+          }
+        },
+        "id": "4a552277-a3c5-4972-ba34-c0ca6210a408",
+        "name": "Webhook response on error",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          2608,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "audios_csv_comercial",
+          "responseMode": "responseNode",
+          "options": {
+            "binaryPropertyName": "file"
+          }
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1984,
+          128
+        ],
+        "id": "ef7747ee-bec9-467e-9479-bbb2c29d7c92",
+        "name": "Webhook2",
+        "webhookId": "ec10fe26-4c2f-4142-82a2-2baa07332952"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "transcription",
+                "value": "={{$json[\"text\"]}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "2b539565-84f2-42d3-89d1-06bf324c0273",
+        "name": "Extrair Texto1",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          2608,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "audio",
+          "operation": "transcribe",
+          "binaryPropertyName": "file0",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          2320,
+          144
+        ],
+        "id": "134f7a6e-13b9-4f56-91dc-e8ab174c251a",
+        "name": "Transcribe a recording1",
+        "retryOnFail": true,
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "agente_audio",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          2848,
+          304
+        ],
+        "id": "faf6622b-3b43-4410-b679-3a7d85971798",
+        "name": "Webhook3",
+        "webhookId": "14764769-99a5-494f-a930-ee0935051723"
+      },
+      {
+        "parameters": {
+          "content": "## Extensão - Envio de Aúdios\n",
+          "height": 496,
+          "width": 1680
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          1904,
+          -48
+        ],
+        "id": "aab13eef-4c07-4fcd-bc06-f17108839141",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## Evolution - Aúdio/Imagens/Mensagens Recebidas\n\n\n",
+          "height": 768,
+          "width": 2112
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -464,
+          -128
+        ],
+        "id": "1f289078-8c9c-495a-9ec9-ef687e125e1c",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "## Extensão - Envio de Mensagens\n\n",
+          "height": 816,
+          "width": 2448
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          1776,
+          592
+        ],
+        "id": "080cf741-04ab-40d8-94c8-77d9efbb7360",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const msg = item.json?.body?.data?.message;\n  const base64Image = msg?.base64;\n  const imageInfo = msg?.imageMessage;\n\n  if (base64Image && imageInfo) {\n    const buffer = Buffer.from(base64Image, \"base64\");\n\n    // Cria o binário no formato esperado pelos nós de upload/análise\n    item.binary = {\n      file: {\n        data: buffer.toString('base64'),\n        mimeType: imageInfo.mime_type || \"image/jpeg\",\n        fileName: `imagem_${imageInfo.id || Date.now()}.jpg`\n      }\n    };\n\n    // Mantém metadados úteis\n    item.json = {\n      caption: imageInfo.caption || null,\n      mime_type: imageInfo.mime_type || \"image/jpeg\",\n      sha256: imageInfo.sha256 || null,\n      id: imageInfo.id || null,\n      from: item.json?.body?.data?.key?.remoteJid || null,\n      pushName: item.json?.body?.data?.pushName || null,\n      timestamp: item.json?.body?.data?.messageTimestamp || null\n    };\n  } else {\n    item.json = { error: \"Nenhuma imagem encontrada no payload.\" };\n  }\n\n  return item;\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          256,
+          384
+        ],
+        "id": "986c2c9e-a77b-4665-9a84-a445e04487ba",
+        "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "resource": "image",
+          "operation": "analyze",
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "GPT-4O-MINI"
+          },
+          "text": "Você é um agente que analisa imagens enviadas via whatsapp dentro de um canal de atendimento pós venda da Universidade Cruzeiro do Sul. \n\nO que você analisar será gravado em um banco de dados que contém o histórico de mensagens trocadas entre cliente e consultor. \n\ninforme resumidamente o que está na tela, sem muitas informações. \n",
+          "inputType": "base64",
+          "binaryPropertyName": "file",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          464,
+          384
+        ],
+        "id": "8d5b6db2-a537-4dc4-9c70-9d0d9b450d9c",
+        "name": "Analyze image",
+        "retryOnFail": true,
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "transcription",
+                "value": "=imagem: {{ $json.content }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "eef3a23b-d8ec-4524-872b-c9cd62aa72fe",
+        "name": "Extrair Texto2",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          768,
+          368
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  // Dados do webhook\n  const webhookData =\n    $node[\"When Executed by Another Workflow\"]?.json?.body?.data || {};\n\n  // Extrai o remoteJid (telefone bruto)\n  let from = webhookData.key?.remoteJid || \"\";\n\n  // --- FORMATAÇÃO DO TELEFONE ---\n  // Remove o sufixo @s.whatsapp.net\n  from = from.replace(\"@s.whatsapp.net\", \"\");\n\n  // Garante que começa com \"+\"\n  if (!from.startsWith(\"+\")) {\n    from = \"+\" + from;\n  }\n\n  // Nome e timestamp\n  const pushName = webhookData.pushName || null;\n  const timestamp = webhookData.messageTimestamp || null;\n\n  // Legenda da imagem (se existir)\n  const caption = webhookData.message?.imageMessage?.caption || \"\";\n\n  // Transcrição (OCR / IA) vinda do item atual\n  const transcription = item.json?.transcription || \"\";\n\n  // Junta caption + transcrição\n  const mensagemFinal = [caption, transcription]\n    .filter(Boolean)\n    .join(\" | \");\n\n  // JSON final\n  item.json = {\n    remetente: from,        // telefone formatado\n    nome: pushName,\n    mensagem: mensagemFinal,\n    tipo: \"imagem\",\n    data_hora: timestamp\n      ? new Date(timestamp * 1000).toISOString()\n      : new Date().toISOString()\n  };\n\n  return item;\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          976,
+          368
+        ],
+        "id": "493d998a-36e7-40f5-bfa3-0985fa59a32c",
+        "name": "Code in JavaScript3"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "log_conversa_kommo_comercial",
+            "mode": "list",
+            "cachedResultName": "log_conversa_kommo_comercial"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "sender_type": "CANDIDATO",
+              "direction": "IN",
+              "phone": "={{ $json.remetente }}",
+              "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "texto": "={{ $json.mensagem }}",
+              "content_type": "IMAGEM"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direction",
+                "displayName": "direction",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "content_type",
+                "displayName": "content_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "sender_type",
+                "displayName": "sender_type",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agente",
+                "displayName": "agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "message_at",
+                "displayName": "message_at",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1152,
+          368
+        ],
+        "id": "e54a5b88-00d1-4dd9-8867-1bc51f01b77a",
+        "name": "Insert rows in a table3",
+        "credentials": {
+          "postgres": {
+            "id": "obsUG5lfx2MNGOjM",
+            "name": "log_conversas_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.body.tipo }}",
+                      "rightValue": "audio",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "3ade8225-066a-4aee-b45a-a99b5d8d05be"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "AUDIO"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6b26b52d-602f-45e3-8e06-6e2945856bb1",
+                      "leftValue": "={{ $json.body.tipo }}",
+                      "rightValue": "Manual",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "TEXTO"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "4f066334-f8ee-4ccc-b08a-743a18c176af",
+                      "leftValue": "={{ $json.body.tipo }}",
+                      "rightValue": "image",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "IMAGEM"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          2224,
+          832
+        ],
+        "id": "312e4b87-b675-4ed1-b90b-ffb03362b032",
+        "name": "Switch1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(({ json }) => {\n  const unifiedPhone = onlyDigits(json.phone ?? json.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(json.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(json.leadId),\n    phone: unifiedPhone,\n    text: (json.text ?? '').toString(),\n    agent: (json.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(json.timestamp),\n    tipo: (json.tipo ?? '').toString(),\n    meta: {\n      original: json,              // payload de entrada para auditoria\n      normalizedAt: new Date().toISOString()\n    }\n  };\n\n  // (Opcional) validações leves: marque erros sem quebrar o fluxo\n  out.meta.errors = [];\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2992,
+          672
+        ],
+        "id": "ca36e3f5-f1a6-4abf-8632-5099a5833f26",
+        "name": "Code2"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const body = item.json?.body;\n\n  if (body?.text) {\n    const base64Image = body.text;\n\n    // Converte o base64 recebido em Buffer\n    const buffer = Buffer.from(base64Image, \"base64\");\n\n    // Cria o binário com o formato que o n8n reconhece\n    item.binary = {\n      file: {\n        data: buffer.toString(\"base64\"), // 👈 ESSENCIAL para o botão “View” funcionar\n        mimeType: \"image/jpeg\",          // ou \"image/png\" se for o caso\n        fileName: `imagem_${body.leadId || Date.now()}.jpg`,\n      },\n    };\n\n    // Mantém metadados no JSON\n    item.json = {\n      leadId: body.leadId || null,\n      phone: body.phone || null,\n      mime_type: \"image/jpeg\",\n      received_at: new Date().toISOString(),\n    };\n  } else {\n    item.json = { error: \"Nenhum campo base64 encontrado em body.text.\" };\n  }\n\n  return item;\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2560,
+          1184
+        ],
+        "id": "297b4ced-d4ba-4238-8399-a8ca82264169",
+        "name": "Code in JavaScript5"
+      },
+      {
+        "parameters": {
+          "resource": "image",
+          "operation": "analyze",
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "GPT-4O-MINI"
+          },
+          "text": "Você é um agente que analisa imagens enviadas via whatsapp dentro de um canal de atendimento pós venda da Universidade Cruzeiro do Sul. \n\nO que você analisar será gravado em um banco de dados que contém o histórico de mensagens trocadas entre cliente e consultor. \n\ninforme resumidamente o que está na tela, sem muitas informações. \n",
+          "inputType": "base64",
+          "binaryPropertyName": "file",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          2768,
+          1184
+        ],
+        "id": "9f4153d8-085b-4d60-8f49-bc7df0482753",
+        "name": "Analyze image1",
+        "retryOnFail": true,
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "keepOnlySet": true,
+          "values": {
+            "string": [
+              {
+                "name": "transcription",
+                "value": "=imagem: {{ $json.content }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "eff80c97-6485-494c-9269-2e705009af19",
+        "name": "Extrair Texto4",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 2,
+        "position": [
+          3072,
+          1168
+        ]
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "log_conversa_kommo_comercial",
+            "mode": "list",
+            "cachedResultName": "log_conversa_kommo_comercial"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "direction": "={{ $('Webhook').item.json.body.direction }}",
+              "phone": "=+{{ $json.meta.original.phone }}",
+              "sender_type": "CONSULTOR",
+              "message_at": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}",
+              "recebido_em": "={{ DateTime.fromISO(\"2026-01-21T14:30:43.313-05:00\").setZone(\"America/Sao_Paulo\").toISO() }}\n",
+              "content_type": "AUDIO",
+              "agente": "={{ $('Webhook').item.json.body.agent }}",
+              "texto": "={{ $('Webhook').item.json.body.text }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "direction",
+                "displayName": "direction",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "content_type",
+                "displayName": "content_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "sender_type",
+                "displayName": "sender_type",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "agente",
+                "displayName": "agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "message_at",
+                "displayName": "message_at",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3264,
+          704
+        ],
+        "id": "c0c3c042-7e7a-4fb5-9008-3cc1fead69a8",
+        "name": "Insert rows in a table6",
+        "credentials": {
+          "postgres": {
+            "id": "obsUG5lfx2MNGOjM",
+            "name": "log_conversas_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Function node\n// Normaliza payloads diferentes num formato único\n\nfunction onlyDigits(s) {\n  if (s == null) return null;\n  const digits = String(s).replace(/\\D+/g, '');\n  return digits || null;\n}\n\nfunction isoDateOrNow(s) {\n  if (!s) return new Date().toISOString();\n  const d = new Date(s);\n  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();\n}\n\nfunction upperOrEmpty(s) {\n  return (s ?? '').toString().trim().toUpperCase();\n}\n\nfunction toIntOrNull(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nreturn items.map(({ json }) => {\n  const unifiedPhone = onlyDigits(json.phone ?? json.userPhone);\n\n  // direção normalizada (aceita variações, mas default OUT se vier inválido)\n  const dirRaw = upperOrEmpty(json.direction);\n  const direction =\n    dirRaw === 'IN' || dirRaw === 'OUT'\n      ? dirRaw\n      : (dirRaw.startsWith('IN') ? 'IN' : (dirRaw.startsWith('OUT') ? 'OUT' : 'OUT'));\n\n  const out = {\n    leadId: toIntOrNull(json.leadId),\n    phone: unifiedPhone,\n    text: (json.text ?? '').toString(),\n    agent: (json.agent ?? '').toString(),\n    direction,\n    timestamp: isoDateOrNow(json.timestamp),\n    tipo: (json.tipo ?? '').toString(),\n    meta: {\n      original: json,              // payload de entrada para auditoria\n      normalizedAt: new Date().toISOString()\n    }\n  };\n\n  // (Opcional) validações leves: marque erros sem quebrar o fluxo\n  out.meta.errors = [];\n  if (!out.leadId) out.meta.errors.push('leadId ausente/ inválido');\n  if (!out.phone) out.meta.errors.push('phone ausente/ inválido');\n\n  return { json: out };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3344,
+          1152
+        ],
+        "id": "71a845db-f88c-46c1-ad88-9cb918fe630d",
+        "name": "Code3"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "log_conversa_kommo_comercial",
+            "mode": "list",
+            "cachedResultName": "log_conversa_kommo_comercial"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id": 0,
+              "phone": "=",
+              "direction": "=",
+              "sender_type": "=",
+              "texto": "=",
+              "message_at": "="
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "direction",
+                "displayName": "direction",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "content_type",
+                "displayName": "content_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sender_type",
+                "displayName": "sender_type",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "agente",
+                "displayName": "agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "texto",
+                "displayName": "texto",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "message_at",
+                "displayName": "message_at",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "recebido_em",
+                "displayName": "recebido_em",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3552,
+          1184
+        ],
+        "id": "10f7210a-20ab-41a8-b6ee-c0612394ce44",
+        "name": "Insert rows in a table7",
+        "credentials": {
+          "postgres": {
+            "id": "obsUG5lfx2MNGOjM",
+            "name": "log_conversas_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data",
+                "type": "any"
+              },
+              {
+                "name": "body",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -720,
+          160
+        ],
+        "id": "68fcd420-35c7-4007-a41e-34ea0cb04071",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Recebe o base64 vindo do campo body.text\nconst base64Data = $input.first().json.body.text\n\n// Cria um arquivo binário no formato mp4\nreturn [\n  {\n    json: { leadId: $json[\"body\"][\"leadId\"], phone: $json[\"body\"][\"phone\"] },\n    binary: {\n      data: {\n        data: Buffer.from(base64Data, 'base64'),\n        mimeType: 'video/mp4',\n        fileName: 'mensagem.mp4',\n      },\n    },\n  },\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2608,
+          720
+        ],
+        "id": "569b695e-cfc5-4350-8a48-168218ba5b29",
+        "name": "Code in JavaScript4"
+      },
+      {
+        "parameters": {
+          "url": "=https://graph.facebook.com/v21.0/{{$json[\"audio_id\"]}}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer EAAVtQLT2wukBPZBxZC9yxTZCTvbCbQZCasYZAdzEBLAgHrBPQX2PaxfR7uKMIr3ZBAbEW4RPlIYNs1ZCZCeU2YACBt3PVseU8rwm81U0P0I1Wy2RXJGFB4ZAppTTeBvmutFz8QPgPMltxZBElNFdL5hWACFzZBlZBE1OjlPDwS7EZA5ZCGb7tysIRcPQJIfAtxVAFieYtvPgZDZD"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          112,
+          -48
+        ],
+        "id": "b236880d-5710-4c4d-859c-305697642b7b",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "url": "={{ $json[\"url\"] }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer EAAVtQLT2wukBPZBxZC9yxTZCTvbCbQZCasYZAdzEBLAgHrBPQX2PaxfR7uKMIr3ZBAbEW4RPlIYNs1ZCZCeU2YACBt3PVseU8rwm81U0P0I1Wy2RXJGFB4ZAppTTeBvmutFz8QPgPMltxZBElNFdL5hWACFzZBlZBE1OjlPDwS7EZA5ZCGb7tysIRcPQJIfAtxVAFieYtvPgZDZD"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          320,
+          96
+        ],
+        "id": "b4815b90-3355-45f1-8a74-46d71e01321d",
+        "name": "HTTP Request1"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Switch1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Transcribe a recording": {
+        "main": [
+          [
+            {
+              "node": "Extrair Texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Texto": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Padronizar binário (file0→file)": {
+        "main": [
+          [
+            {
+              "node": "Transcribe a recording1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook2": {
+        "main": [
+          [
+            {
+              "node": "Padronizar binário (file0→file)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Texto1": {
+        "main": [
+          [
+            {
+              "node": "Responder ao Webhook (JSON)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Transcribe a recording1": {
+        "main": [
+          [
+            {
+              "node": "Extrair Texto1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Webhook response on error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook3": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          [
+            {
+              "node": "Analyze image",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Analyze image": {
+        "main": [
+          [
+            {
+              "node": "Extrair Texto2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Texto2": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript3": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript4",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in JavaScript5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code2": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript5": {
+        "main": [
+          [
+            {
+              "node": "Analyze image1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Analyze image1": {
+        "main": [
+          [
+            {
+              "node": "Extrair Texto4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Texto4": {
+        "main": [
+          [
+            {
+              "node": "Code3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code3": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript4": {
+        "main": [
+          [
+            {
+              "node": "Code2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Transcribe a recording",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version 82582629",
+    "description": "",
+    "autosaved": true
+  },
+  "tags": []
+}
