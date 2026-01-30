@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-29T18:45:12.000Z",
+  "updatedAt": "2026-01-30T22:57:59.441Z",
   "createdAt": "2025-07-31T20:27:16.876Z",
   "id": "EphfDCJgvSTJDyoD",
   "name": "DASHBOARD - CRUZEIRO COMERCIAL",
@@ -1001,8 +1001,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        1520,
-        5552
+        1552,
+        5616
       ],
       "id": "5f285923-9985-44fe-af93-31ace116fb51",
       "name": "dash recadastro",
@@ -2341,7 +2341,8 @@
       }
     ]
   },
-  "versionId": "74cfe8b6-789e-4b25-9aaa-9eb744d39397",
+  "versionId": "07af774c-89d7-4ae7-9757-def1007ea64b",
+  "activeVersionId": "74cfe8b6-789e-4b25-9aaa-9eb744d39397",
   "triggerCount": 12,
   "shared": [
     {
@@ -2352,5 +2353,1950 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "74cfe8b6-789e-4b25-9aaa-9eb744d39397",
+    "workflowId": "EphfDCJgvSTJDyoD",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "gravar-face-insta",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          2608,
+          336
+        ],
+        "id": "3841c33a-0a91-42ba-9467-818893e15dab",
+        "name": "Webhook1",
+        "webhookId": "98b8b2d8-56ea-4923-8956-9592af041185"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          4144,
+          304
+        ],
+        "id": "085cac1b-84b9-4f7c-ad9a-e26493ce6e35",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "content": "## LEADS - FONTE META (INSTA & FACE)\n\n",
+          "height": 944,
+          "width": 1840,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          2432,
+          -176
+        ],
+        "id": "28b8cfe9-c691-48fc-82af-d0e6b287d4f4",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "numberInputs": 3
+        },
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          3584,
+          272
+        ],
+        "id": "9d133c49-a3da-4249-8630-390afa31834a",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Run Once for All Items\n\n// 1) Unir todos os itens do input em um único objeto\nconst merged = $input.all().reduce((acc, item) => ({ ...acc, ...item.json }), {});\n\n// 2) Normalizar para número\nconst toNum = (v) => (v === undefined || v === null || v === '' ? 0 : Number(v));\n\nconst total_faceinsta     = toNum(merged.total_faceinsta);\nconst matriculados_de_fb  = toNum(merged.matriculados_de_fb);\nconst total_matriculados  = toNum(merged.total_matriculados);\nconst perdidos_de_fb      = toNum(merged.perdidos_de_fb);\nconst total_perdidos      = toNum(merged.total_perdidos);\n\n// 3) % matriculados (FB) sobre total_faceinsta\nconst percentual_matriculados_sobre_total_faceinsta = total_faceinsta > 0\n  ? ((matriculados_de_fb / total_faceinsta) * 100).toFixed(2) + \"%\"\n  : \"0.00%\";\n\n// 4) % perdidos (FB) sobre total_perdidos\nconst percentual_perdidos_sobre_total_perdidos = total_perdidos > 0\n  ? ((perdidos_de_fb / total_perdidos) * 100).toFixed(4) + \"%\"\n  : \"0.0000%\";\n\n// 5) Retorno\nreturn [\n  {\n    json: {\n      total_faceinsta,\n      total_matriculados,\n      matriculados_de_fb,\n      percentual_matriculados_sobre_total_faceinsta,\n      total_perdidos,\n      perdidos_de_fb,\n      percentual_perdidos_sobre_total_perdidos\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3840,
+          304
+        ],
+        "id": "68a3e21e-1daa-4ea4-b3a4-fb79b381316f",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH ids AS (\n  SELECT jsonb_array_elements_text($1::jsonb) AS id\n)\nSELECT\n  (\n    SELECT COUNT(DISTINCT m.id_lead)\n    FROM public.novos_ganhos m\n    JOIN ids ON ids.id = m.id_lead\n  )::int AS matriculados_de_fb,\n  (\n    SELECT COUNT(DISTINCT id_lead)\n    FROM public.novos_ganhos\n  )::int AS total_matriculados;",
+          "options": {
+            "queryReplacement": "={{ JSON.stringify($items(\"count por id\")[0].json.ids_face || []) }}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3168,
+          -16
+        ],
+        "id": "0833bf5b-767f-451e-aa91-150b411dace3",
+        "name": "calcula matriculados",
+        "credentials": {
+          "postgres": {
+            "id": "gv4NhIdkBb2qLSqQ",
+            "name": "Postgres CSV_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT COALESCE(JSON_AGG(DISTINCT id_lead), '[]'::json) AS ids_face\nFROM public.\"face-insta\";\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2928,
+          128
+        ],
+        "id": "6a601796-5940-4526-b6f3-a2141392301a",
+        "name": "count por id",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "-- SUPABASE (contagem)\nSELECT COUNT(*)::int AS total_faceinsta\nFROM public.\"face-insta\";\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3184,
+          496
+        ],
+        "id": "87194c25-1aae-46e4-b568-80c6d72608ee",
+        "name": "count geral",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH ids AS (\n  SELECT jsonb_array_elements_text($1::jsonb) AS id\n)\nSELECT\n  (\n    SELECT COUNT(DISTINCT m.id_lead)\n    FROM public.novos_perdidos m\n    JOIN ids ON ids.id = m.id_lead\n  )::int AS perdidos_de_fb,\n  (\n    SELECT COUNT(DISTINCT id_lead)\n    FROM public.novos_perdidos\n  )::int AS total_perdidos;",
+          "options": {
+            "queryReplacement": "={{ JSON.stringify($items(\"count por id\")[0].json.ids_face || []) }}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3168,
+          256
+        ],
+        "id": "a5e04f24-5507-428d-981e-1fef8c6d2a34",
+        "name": "calcula perdidos",
+        "credentials": {
+          "postgres": {
+            "id": "gv4NhIdkBb2qLSqQ",
+            "name": "Postgres CSV_comercial"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "941c3e39-fdf2-42bf-a637-9aa84157d435",
+                "name": "data",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3008,
+          1072
+        ],
+        "id": "3047a5f9-c044-4a8c-88b1-5e06b9841fdb",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2432,
+          1072
+        ],
+        "id": "9a6f07be-9ae4-4a38-8254-2cfbd3ff1d00",
+        "name": "Code2"
+      },
+      {
+        "parameters": {
+          "amount": "={{ $json.numero }}"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2624,
+          1072
+        ],
+        "id": "d1a4526d-51d1-444b-8010-91d5b882c43b",
+        "name": "Wait1",
+        "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst first = items[0]?.json ?? {};\n\nconst leadsFromRoot = first?._embedded?.leads;\nconst leadsFromData = first?.data?._embedded?.leads;\nconst leadsFromBody = first?.body?._embedded?.leads;\n\nlet leads = [leadsFromRoot, leadsFromData, leadsFromBody].find(Array.isArray);\n\nif (!Array.isArray(leads)) {\n  const looksLikeLeads = items.every(i => typeof i?.json === 'object' && ('id' in i.json));\n  if (looksLikeLeads) {\n    leads = items.map(i => i.json);\n  }\n}\n\nif (!Array.isArray(leads)) leads = [];\n\nreturn [\n  {\n    json: {\n      \"em-aceite\": leads.length\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3216,
+          1200
+        ],
+        "id": "cb923494-719e-4ed0-9a6b-f802d97f15a8",
+        "name": "Code3"
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          4128,
+          1952
+        ],
+        "id": "f3a6aa0c-d07e-408d-aab6-1f2358f24eef",
+        "name": "Respond to Webhook1"
+      },
+      {
+        "parameters": {
+          "numberInputs": 7
+        },
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          3776,
+          1856
+        ],
+        "id": "06c6e70a-e94c-4f79-bf91-75d5037757e9",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {
+          "content": "## ACEITE E NOVOS LEADS\n",
+          "height": 2240,
+          "width": 2800,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          1744,
+          928
+        ],
+        "id": "12e3e11c-9c10-4129-83f5-cecd3d3a999d",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n    COUNT(*) AS total_ids_novos\nFROM (\n    SELECT \n        id_lead,\n        MIN(timestamp) AS first_seen\n    FROM lead_status_history\n    GROUP BY id_lead\n) AS primeiros\nWHERE DATE(first_seen) >= $1::date\n  AND DATE(first_seen) < ($2::date + INTERVAL '1 day');",
+          "options": {
+            "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2816,
+          1312
+        ],
+        "id": "2f417228-cc73-4bb1-b357-59c5fe2e4186",
+        "name": "leads novos",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48566207",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2816,
+          1072
+        ],
+        "id": "2bddf85b-fa1b-4775-af7c-eb7925c80d79",
+        "name": "leads em aceite"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "dados-comercial",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          2032,
+          1536
+        ],
+        "id": "806da5ec-fa86-464f-8e8f-22e39f0ab82a",
+        "name": "novos-ganhos-perdidos",
+        "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "aceite",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          2064,
+          1072
+        ],
+        "id": "7b94a627-b834-456d-b812-74b4578ad207",
+        "name": "aceite",
+        "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT COUNT(DISTINCT RGM) AS total_alunos\nFROM alunos_atuais\nWHERE data_matricula >= $1::date\n  AND data_matricula < ($2::date + INTERVAL '1 day')\n  AND tipo_matricula = 'INGRESSANTE';",
+          "options": {
+            "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2816,
+          1744
+        ],
+        "id": "2bf046a3-040e-49aa-b360-f0af47728438",
+        "name": "leads ganhos1",
+        "credentials": {
+          "postgres": {
+            "id": "uP0rhiaOx9EYe8S0",
+            "name": "Supabase Academico"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT COUNT(DISTINCT id_lead) AS total_ids_perdidos\nFROM vw_leads_perdidos\nWHERE timestamp_status >= $1::date\n  AND timestamp_status <  ($2::date + INTERVAL '1 day');\n",
+          "options": {
+            "queryReplacement": "={{$json.query.start}} {{$json.query.end}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2816,
+          1520
+        ],
+        "id": "57f52a1d-1800-4328-a4a5-2ea064129e05",
+        "name": "leads perdidos",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48539249",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2592,
+          1984
+        ],
+        "id": "79c27ba6-2535-4f27-98d1-e98241bdd9b3",
+        "name": "leads em inscricao"
+      },
+      {
+        "parameters": {
+          "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48566195",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2464,
+          2512
+        ],
+        "id": "6dd22855-4b3c-4518-97ab-8d1e9454ff1c",
+        "name": "leads em processo seletivo"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2208,
+          2016
+        ],
+        "id": "e852bb6c-3c8e-4da5-8ee6-967bde570cec",
+        "name": "Code4"
+      },
+      {
+        "parameters": {
+          "amount": "={{ $json.numero }}"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2368,
+          1984
+        ],
+        "id": "3b41daa0-e81c-44f3-939e-bd429ab448d6",
+        "name": "Wait2",
+        "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2112,
+          2512
+        ],
+        "id": "4c9ee329-703d-429c-962c-7c5c06a324c6",
+        "name": "Code5"
+      },
+      {
+        "parameters": {
+          "amount": "={{ $json.numero }}"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2288,
+          2512
+        ],
+        "id": "06550701-c8b5-4f31-9991-151666c0282d",
+        "name": "Wait3",
+        "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "inscricao",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          2016,
+          2000
+        ],
+        "id": "2f523c64-0741-4658-b4ce-dbfee27c44a5",
+        "name": "inscricao",
+        "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "processo seletivo",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1888,
+          2512
+        ],
+        "id": "30a4efb4-5912-43cc-8a7b-a8c4fb41f832",
+        "name": "processo seletivo",
+        "webhookId": "7fe3df38-5f09-4937-b737-0dd439810750"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "941c3e39-fdf2-42bf-a637-9aa84157d435",
+                "name": "data",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2784,
+          1984
+        ],
+        "id": "0b417ebd-43e8-4b90-b08f-c3712f7d541c",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst first = items[0]?.json ?? {};\n\nconst leadsFromRoot = first?._embedded?.leads;\nconst leadsFromData = first?.data?._embedded?.leads;\nconst leadsFromBody = first?.body?._embedded?.leads;\n\nlet leads = [leadsFromRoot, leadsFromData, leadsFromBody].find(Array.isArray);\n\nif (!Array.isArray(leads)) {\n  const looksLikeLeads = items.every(i => typeof i?.json === 'object' && ('id' in i.json));\n  if (looksLikeLeads) {\n    leads = items.map(i => i.json);\n  }\n}\n\nif (!Array.isArray(leads)) leads = [];\n\nreturn [\n  {\n    json: {\n      \"em-aceite\": leads.length\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2976,
+          1936
+        ],
+        "id": "a6f58f00-b80d-4b01-9f94-1594756e9a38",
+        "name": "Code6"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "941c3e39-fdf2-42bf-a637-9aa84157d435",
+                "name": "data",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2672,
+          2512
+        ],
+        "id": "9c130cac-8c62-4428-ad44-72147749bac9",
+        "name": "Edit Fields2"
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst first = items[0]?.json ?? {};\n\nconst leadsFromRoot = first?._embedded?.leads;\nconst leadsFromData = first?.data?._embedded?.leads;\nconst leadsFromBody = first?.body?._embedded?.leads;\n\nlet leads = [leadsFromRoot, leadsFromData, leadsFromBody].find(Array.isArray);\n\nif (!Array.isArray(leads)) {\n  const looksLikeLeads = items.every(i => typeof i?.json === 'object' && ('id' in i.json));\n  if (looksLikeLeads) {\n    leads = items.map(i => i.json);\n  }\n}\n\nif (!Array.isArray(leads)) leads = [];\n\nreturn [\n  {\n    json: {\n      \"em-aceite\": leads.length\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2880,
+          2512
+        ],
+        "id": "35d8a28a-9079-4f59-9430-ff19a1babe20",
+        "name": "Code7"
+      },
+      {
+        "parameters": {
+          "url": "https://admamoeduitcombr.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=5481944&filter[statuses][0][status_id]=48539246",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImExNmNlYWNkMzAxZjMyYjg4NzAzOGE0NjYwZDc4NGY4YTk3ZTFjMTNlNjRkMzU5ZjU4NTM1NWQzYWMwZDdkMDVjZTY2ZWExOWExMzUyOTM5In0.eyJhdWQiOiI3MGFhNjUzZS04NmI5LTQ4ZjgtOTZhNy1kMjc4YzJiMTA4ZWEiLCJqdGkiOiJhMTZjZWFjZDMwMWYzMmI4ODcwMzhhNDY2MGQ3ODRmOGE5N2UxYzEzZTY0ZDM1OWY1ODUzNTVkM2FjMGQ3ZDA1Y2U2NmVhMTlhMTM1MjkzOSIsImlhdCI6MTc1MzQ3NDQzMywibmJmIjoxNzUzNDc0NDMzLCJleHAiOjE3NjYwMTYwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzAyMTQ1NjgsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI5Y2ZkNmQ3OC1lZWYxLTQ0NTYtOTBmZS01YWU2NjM0M2VmZDIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.kpJh8NWnz6vXtx-4f4uZ0MpdT-pBBrIafhwZ9QhMbJOH1BwOOZDVqPTSEpUAshugFGtwASRSaOBkWmMy-OyUp-50ueFj7ZR9efcqLpLiMlHJCM64F1wSIU4gz6AjbNlvwJdml2LYBZI88ymqEycW_G058RW_6tt--Zm9D9JklAjh68ZV3hNl980hrlMm2iKPOwN-GpMvZqtrn3RR6rw9lgWX00nQiphSfMSJX7GkI2Xnq5Si3VHKFaFnI6tUwQTbfO6EjxTgtu2cu6do9hl-hAad1Bt9trgtAVQVTeiwxXE-Uqx3R3YDgtFKpaMl9sAX0QTPwbDFjGUk3oQ6dNLJLg"
+              }
+            ]
+          },
+          "options": {
+            "pagination": {
+              "pagination": {
+                "parameters": {
+                  "parameters": [
+                    {
+                      "name": "page",
+                      "value": "={{ $pageCount + 1 }}"
+                    }
+                  ]
+                },
+                "requestInterval": 2000
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2320,
+          2944
+        ],
+        "id": "8fcd3009-898d-453f-979d-70bb1b12e4a5",
+        "name": "leads em atendimento"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "495ce514-a7e8-42e5-a348-76703230c472",
+                "name": "data1",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {
+            "ignoreConversionErrors": true
+          }
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2528,
+          2944
+        ],
+        "id": "f0897205-a15c-446e-aa71-d74183443030",
+        "name": "Edit Fields3",
+        "retryOnFail": false,
+        "executeOnce": false
+      },
+      {
+        "parameters": {
+          "jsCode": "// Mesma coleta que já fizemos\nfunction collectLeadsDeep(obj, acc) {\n  if (!obj) return;\n  if (Array.isArray(obj)) return obj.forEach(el => collectLeadsDeep(el, acc));\n  if (typeof obj === 'object') {\n    if (obj._embedded?.leads) acc.push(...obj._embedded.leads);\n    if ('id' in obj && 'responsible_user_id' in obj) acc.push(obj);\n    for (const v of Object.values(obj)) {\n      if (v && (typeof v === 'object' || Array.isArray(v))) collectLeadsDeep(v, acc);\n    }\n  }\n}\n\nconst found = [];\nfor (const it of items) collectLeadsDeep(it?.json, found);\n\n// Elimina duplicados por id\nconst seen = new Set();\nconst leads = [];\nfor (const l of found) {\n  if (!l?.id) continue;\n  if (seen.has(l.id)) continue;\n  seen.add(l.id);\n  leads.push(l);\n}\n\n// Agrupa só por responsável\nconst byResponsible = leads.reduce((acc, l) => {\n  const k = String(l.responsible_user_id ?? 'null');\n  acc[k] = (acc[k] || 0) + 1;\n  return acc;\n}, {});\n\n// Retorna só a contagem\nreturn [{ json: byResponsible }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2784,
+          2832
+        ],
+        "id": "78bc8511-2b34-4710-89ab-62cd96aea8a1",
+        "name": "Code8"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "distribuicao_comercial",
+          "returnAll": true
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          2784,
+          3008
+        ],
+        "id": "2bd4b74e-416c-4514-9ca3-27705725f9b4",
+        "name": "Get many rows",
+        "credentials": {
+          "supabaseApi": {
+            "id": "71OBWtC8t38iEtPO",
+            "name": "Supabase Academico"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// --- Funções utilitárias ---\nfunction isPlainObject(o) {\n  return o && typeof o === 'object' && !Array.isArray(o);\n}\nfunction looksLikeCountMap(obj) {\n  if (!isPlainObject(obj)) return false;\n  const entries = Object.entries(obj);\n  if (entries.length === 0) return false;\n  let numericPairs = 0;\n  for (const [k, v] of entries) {\n    if (!isNaN(Number(k)) && typeof v === 'number') numericPairs++;\n  }\n  return numericPairs >= Math.max(3, Math.ceil(entries.length * 0.6));\n}\nfunction collectRowsWithIdLeadNome(any, acc) {\n  if (!any) return;\n  if (Array.isArray(any)) {\n    for (const el of any) collectRowsWithIdLeadNome(el, acc);\n    return;\n  }\n  if (isPlainObject(any)) {\n    if ('id_lead' in any && 'nome' in any) acc.push(any);\n    for (const v of Object.values(any)) {\n      if (v && (isPlainObject(v) || Array.isArray(v))) collectRowsWithIdLeadNome(v, acc);\n    }\n  }\n}\n\n// --- Varre todos os items para encontrar: (a) mapa de contagem e (b) linhas do Supabase ---\nlet countMap = null;\nconst supaRows = [];\n\nfor (const it of items) {\n  const j = it?.json;\n\n  if (!countMap && looksLikeCountMap(j)) countMap = j;\n  if (!countMap && isPlainObject(j) && j.byResponsible && looksLikeCountMap(j.byResponsible)) {\n    countMap = j.byResponsible;\n  }\n\n  collectRowsWithIdLeadNome(j, supaRows);\n}\n\n// Segurança\nif (!countMap) {\n  return [{ json: { error: \"Mapa de contagens (byResponsible) não encontrado nos items.\", previewFirstItem: items?.[0]?.json ?? null } }];\n}\nif (supaRows.length === 0) {\n  return [{ json: { error: \"Nenhuma linha do Supabase com {id_lead, nome} foi encontrada.\", previewSecondItem: items?.[1]?.json ?? null } }];\n}\n\n// Monta mapa id -> nome (e opcionalmente outros campos)\nconst idToRow = {};\nfor (const row of supaRows) {\n  idToRow[String(row.id_lead)] = row; // guarda a linha inteira se quiser usar status/observacao depois\n}\n\n// Junta SOMENTE os que existem no Supabase\nconst joined = Object.entries(countMap)\n  .filter(([id]) => Object.prototype.hasOwnProperty.call(idToRow, String(id))) // <- filtro pedido\n  .map(([id, count]) => {\n    const r = idToRow[String(id)];\n    return {\n      responsible_user_id: Number(id),\n      nome: r?.nome ?? \"(Sem nome)\",\n      leads_count: count\n      // se quiser, acrescente: status: r?.status, observacao: r?.observacao\n    };\n  })\n  .sort((a, b) => b.leads_count - a.leads_count);\n\n// Retorna como múltiplos itens (um por responsável)\nreturn joined.map(r => ({ json: r }));\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3328,
+          2816
+        ],
+        "id": "6365696d-08fb-475c-b912-eefc09305e66",
+        "name": "Code9"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          3008,
+          2928
+        ],
+        "id": "97fbf606-e965-4570-8ba0-718948281704",
+        "name": "Merge2"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "lista_atendimento ",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1824,
+          2928
+        ],
+        "id": "199d201b-435c-447a-9df2-9c5389b20022",
+        "name": "em atendimento",
+        "webhookId": "b9a7cb38-824f-42a9-889f-6783a517659d"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Gera um número aleatório entre 1 e 4\nconst numero = Math.floor(Math.random() * 4) + 1;\n\n// Retorna no formato correto do n8n\nreturn [\n  { json: { numero } }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2000,
+          2944
+        ],
+        "id": "97c6060b-b180-4967-a114-fe334b98fcf0",
+        "name": "Code10"
+      },
+      {
+        "parameters": {
+          "amount": "={{ $json.numero }}"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2160,
+          2960
+        ],
+        "id": "e4cbca27-6175-48f0-8309-266d2cc64116",
+        "name": "Wait4",
+        "webhookId": "6010fafe-ebe1-4406-96c9-cca5903141c1"
+      },
+      {
+        "parameters": {
+          "tableId": "recadastros",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "id_lead",
+                "fieldValue": "={{ $json.body['leads[status][0][id]'] }}"
+              },
+              {
+                "fieldId": "timestamp",
+                "fieldValue": "={{ $now }}"
+              },
+              {
+                "fieldId": "tipo",
+                "fieldValue": "ia"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          2192,
+          3632
+        ],
+        "id": "05da3fae-b521-4f45-a68a-645a470eed48",
+        "name": "Create a row",
+        "credentials": {
+          "supabaseApi": {
+            "id": "PHQl6oEaPqgLjGGZ",
+            "name": "BANCO - AGENTE COMERCIAL"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "tableId": "recadastros",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "id_lead",
+                "fieldValue": "={{ $json.body['leads[status][0][id]'] }}"
+              },
+              {
+                "fieldId": "timestamp",
+                "fieldValue": "={{ $now }}"
+              },
+              {
+                "fieldId": "tipo",
+                "fieldValue": "recadastro"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          2192,
+          3392
+        ],
+        "id": "ac82ab8e-79e8-49a1-96c2-45d9e7a1eb1c",
+        "name": "Create a row1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "PHQl6oEaPqgLjGGZ",
+            "name": "BANCO - AGENTE COMERCIAL"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "recadastro_db",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1904,
+          3408
+        ],
+        "id": "c5fe5109-d25b-4204-8dd7-fcb53ced3e9b",
+        "name": "recadastro",
+        "webhookId": "810218fb-8280-48c5-b5d4-beb0a14505c4"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atendimento_ia_db",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1936,
+          3648
+        ],
+        "id": "78f8c1c4-bfde-471a-9175-710f7377a896",
+        "name": "atendimento ia",
+        "webhookId": "810218fb-8280-48c5-b5d4-beb0a14505c4"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "gravar_ativacoes",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1936,
+          3920
+        ],
+        "id": "138a0e3f-da15-4a18-be5a-8dd07b8a0936",
+        "name": "ativacoes",
+        "webhookId": "810218fb-8280-48c5-b5d4-beb0a14505c4"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ativados",
+            "mode": "list",
+            "cachedResultName": "ativados"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $json.body['leads[status][0][id]'] }}",
+              "timestamp": "={{ new Date($now).toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "timestamp",
+                "displayName": "timestamp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2144,
+          3920
+        ],
+        "id": "60c1886c-8adc-4e2f-a12b-195b43cacea6",
+        "name": "Insert rows in a table2",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## RECADASTRO - IA - ATIVAÇÕES\n",
+          "height": 928,
+          "width": 720
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          1776,
+          3296
+        ],
+        "id": "2e375685-bfa0-4020-934b-ed55c9d57b9d",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "dash_recadastro_agente",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1520,
+          5552
+        ],
+        "id": "5f285923-9985-44fe-af93-31ace116fb51",
+        "name": "dash recadastro",
+        "webhookId": "810218fb-8280-48c5-b5d4-beb0a14505c4"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT COUNT(*) AS qtde\nFROM ativados\nWHERE \"timestamp\" >= $1::date\n  AND \"timestamp\" <  ($2::date + INTERVAL '1 day');",
+          "options": {
+            "queryReplacement": "={{$json[\"body\"][\"date_from\"]}}, {{$json[\"body\"][\"date_to\"]}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1888,
+          4976
+        ],
+        "id": "46ce0d25-ba42-42f9-bdf3-197fc9c843e2",
+        "name": "Execute a SQL query1",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          2704,
+          5600
+        ],
+        "id": "0ddade5c-dcae-4f04-a721-7ba075cedbe0",
+        "name": "Respond to Webhook3"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  COALESCE(LOWER(TRIM(tipo)), '(vazio)') AS tipo,\n  COUNT(*) AS qtde\nFROM recadastros\nWHERE \"timestamp\" >= $1::date\n  AND \"timestamp\" <  ($2::date + INTERVAL '1 day')\nGROUP BY 1\nORDER BY qtde DESC;",
+          "options": {
+            "queryReplacement": "={{$json[\"body\"][\"date_from\"]}}, {{$json[\"body\"][\"date_to\"]}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1936,
+          5488
+        ],
+        "id": "03a7d377-dfd0-4046-b6db-654a160fb84c",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          2784,
+          5024
+        ],
+        "id": "ab9e49dd-613d-4ec9-ad84-d31bdd7456fa",
+        "name": "Respond to Webhook4"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ativacoes_comercial",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1600,
+          5024
+        ],
+        "id": "3259421c-8568-4d70-be21-49e6c00017ac",
+        "name": "ativacoes comercial",
+        "webhookId": "810218fb-8280-48c5-b5d4-beb0a14505c4"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "-- $1 = date_from (YYYY-MM-DD)\n-- $2 = date_to   (YYYY-MM-DD)\nSELECT\n  COUNT(*) FILTER (WHERE status_atual = 'Ganho')          AS ganho,\n  COUNT(*) FILTER (WHERE status_atual = 'Em atendimento') AS em_atendimento,\n  COUNT(*) FILTER (WHERE status_atual = 'Perdido')        AS perdido\nFROM public.view_ativados_retorno\nWHERE status_atual_timestamp >= $1::date\n  AND status_atual_timestamp <  ($2::date + INTERVAL '1 day');",
+          "options": {
+            "queryReplacement": "={{$json[\"body\"][\"date_from\"]}}, {{$json[\"body\"][\"date_to\"]}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1904,
+          5184
+        ],
+        "id": "bded2af4-67f0-4944-9786-a26735677419",
+        "name": "Execute a SQL query2",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          2272,
+          5024
+        ],
+        "id": "728cdb8d-eefd-4f17-a4ba-1a9a6857b708",
+        "name": "Merge3"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Lê todos os itens vindos do Merge\nconst input = $input.all();\n\n// Helpers\nconst toNum = (v) => Number(String(v ?? 0).replace(/[^\\d.-]/g, '')) || 0;\nconst round2 = (n) => Number(n.toFixed(2));\n\n// Encontra o item com a qtde total e o item com os contadores\nlet total = 0;\nlet counts = { ganho: 0, em_atendimento: 0, perdido: 0 };\n\nfor (const it of input) {\n  const j = it.json || {};\n  if ('qtde' in j) total = toNum(j.qtde);\n  if ('ganho' in j || 'em_atendimento' in j || 'perdido' in j) {\n    counts = {\n      ganho: toNum(j.ganho),\n      em_atendimento: toNum(j.em_atendimento),\n      perdido: toNum(j.perdido),\n    };\n  }\n}\n\n// Se não veio 'qtde', calcula pelo somatório (fallback)\nif (!total) {\n  total = counts.ganho + counts.em_atendimento + counts.perdido;\n}\n\n// Evita divisão por zero\nconst safeDiv = (num, den) => (den ? num / den : 0);\n\n// Percentuais\nconst pctGanho         = round2(safeDiv(counts.ganho, total) * 100);\nconst pctEmAtendimento = round2(safeDiv(counts.em_atendimento, total) * 100);\nconst pctPerdido       = round2(safeDiv(counts.perdido, total) * 100);\n\n// Opcional: calcula \"outros\" (se existir diferença)\nconst outros = Math.max(0, total - (counts.ganho + counts.em_atendimento + counts.perdido));\nconst pctOutros = round2(safeDiv(outros, total) * 100);\n\n// Retorna um único item consolidado\nreturn [\n  {\n    json: {\n      total,\n      counts,\n      percentuais: {\n        ganho: pctGanho,\n        em_atendimento: pctEmAtendimento,\n        perdido: pctPerdido,\n        outros: pctOutros,        // remova se não quiser\n      },\n    },\n  },\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2480,
+          5024
+        ],
+        "id": "ba58dbab-4119-4db3-bb5e-6c5961622fbc",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "-- $1 = date_from (YYYY-MM-DD)\n-- $2 = date_to   (YYYY-MM-DD)\nSELECT\n  status_atual,\n  tipo,\n  COUNT(DISTINCT id_lead) AS qtde\nFROM public.v_recadastros_com_status\nWHERE status_atual_timestamp >= $1::date\n  AND status_atual_timestamp <  ($2::date + INTERVAL '1 day')\nGROUP BY status_atual, tipo\nORDER BY status_atual, qtde DESC;",
+          "options": {
+            "queryReplacement": "={{$json[\"body\"][\"date_from\"]}}, {{$json[\"body\"][\"date_to\"]}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1968,
+          5728
+        ],
+        "id": "a97192f0-ed15-4662-8ab8-22ffe485c7a2",
+        "name": "Execute a SQL query3",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          2224,
+          5568
+        ],
+        "id": "0200eac8-abdb-4734-8e04-7814572130ae",
+        "name": "Merge4"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Entrada esperada (items): cada item tem json como em:\n// { tipo: \"ia\", qtde: \"715\" }                       // total do tipo\n// { status_atual: \"Ganho\", tipo: \"ia\", qtde: \"33\" } // recorte por status dentro do tipo\n//\n// Saída: uma linha por (tipo, status) com contagens e percentuais.\n\nconst rows = items.map(i => i.json);\n\n// 1) Totais por tipo (linhas que NÃO têm status_atual)\nconst totalsByTipo = new Map(); // tipo -> total\nfor (const r of rows) {\n  if (!('status_atual' in r)) {\n    const tipo = r.tipo ?? 'SEM_TIPO';\n    const n = Number(r.qtde ?? 0);\n    totalsByTipo.set(tipo, (totalsByTipo.get(tipo) ?? 0) + n);\n  }\n}\n\n// 2) Contagens por (tipo, status)\nconst countsByTipoStatus = new Map(); // key: tipo||status -> qtde\nfor (const r of rows) {\n  if ('status_atual' in r) {\n    const tipo = r.tipo ?? 'SEM_TIPO';\n    const status = r.status_atual ?? 'SEM_STATUS';\n    const n = Number(r.qtde ?? 0);\n    const key = `${tipo}||${status}`;\n    countsByTipoStatus.set(key, (countsByTipoStatus.get(key) ?? 0) + n);\n  }\n}\n\n// 3) Total geral (somando os totais por tipo)\nlet totalGeral = 0;\nfor (const v of totalsByTipo.values()) totalGeral += v;\n\n// 4) Garante presença dos pares esperados (ia/recadastro x 3 status)\n//    Caso queira tornar dinâmico, derive dos dados ao invés de fixar.\nconst tipos = Array.from(totalsByTipo.keys()).length\n  ? Array.from(totalsByTipo.keys())\n  : ['ia', 'recadastro'];\n\nconst statuses = ['Em atendimento', 'Ganho', 'Perdido'];\n\n// 5) Monta a saída com percentuais\nconst out = [];\nfor (const tipo of tipos) {\n  const tipoTotal = totalsByTipo.get(tipo) ?? 0;\n\n  for (const status of statuses) {\n    const key = `${tipo}||${status}`;\n    const count = countsByTipoStatus.get(key) ?? 0;\n\n    const pctInTipo = tipoTotal ? (count / tipoTotal) * 100 : 0;      // % do status dentro do tipo\n    const pctOfTotal = totalGeral ? (count / totalGeral) * 100 : 0;   // % do (status,tipo) no total geral\n\n    out.push({\n      tipo,\n      status_atual: status,\n      qtde: count,\n      tipo_total: tipoTotal,\n      pct_in_tipo: Number(pctInTipo.toFixed(2)),\n      pct_of_total: Number(pctOfTotal.toFixed(2)),\n    });\n  }\n}\n\n// 6) Se também quiser uma linha-resumo por tipo, descomente abaixo:\n// for (const tipo of tipos) {\n//   const tipoTotal = totalsByTipo.get(tipo) ?? 0;\n//   const pctTipoNoGeral = totalGeral ? (tipoTotal / totalGeral) * 100 : 0;\n//   out.push({\n//     tipo,\n//     status_atual: 'TOTAL_TIPO',\n//     qtde: tipoTotal,\n//     tipo_total: tipoTotal,\n//     pct_in_tipo: 100,\n//     pct_of_total: Number(pctTipoNoGeral.toFixed(2)),\n//   });\n// }\n\n// Retornar como tabela (uma linha por combinação)\nreturn out.map(r => ({ json: r }));\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2432,
+          5568
+        ],
+        "id": "1f9fecf9-53eb-41e1-9705-e152d86349a2",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          2560,
+          4544
+        ],
+        "id": "c4bcc751-552f-4d1d-8e3c-88255ee48700",
+        "name": "Respond to Webhook5"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "distrib_consultor",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          1584,
+          4528
+        ],
+        "id": "50b4c617-a1e8-4c0a-a84e-10d3d17313fe",
+        "name": "contagem distribuicao por consultor",
+        "webhookId": "1884aad1-d7cc-4c4a-bdc7-2dfb5dc6d1c5"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "-- $1 = start_date (YYYY-MM-DD)\n-- $2 = end_date   (YYYY-MM-DD)\n\nWITH distribuidos AS (\n  SELECT\n    btrim(consultor) AS consultor,\n    id_consultor,\n    COUNT(*)::int AS total_distribuidos\n  FROM distribuicao_por_consultor\n  WHERE \"timestamp\" >= ($1::date)::timestamptz\n    AND \"timestamp\" < (($2::date + INTERVAL '1 day')::timestamptz)\n  GROUP BY 1, 2\n),\nganhos_com_consultor AS (\n  SELECT\n    g.id_lead,\n    g.id_responsavel AS id_consultor_text,\n    btrim(d.consultor) AS consultor\n  FROM leads_ganhos g\n  JOIN distribuicao_por_consultor d\n    ON g.id_responsavel = d.id_consultor::text   -- ✅ conversão corrigida\n  WHERE (g.data_matricula AT TIME ZONE 'America/Sao_Paulo')::date\n        BETWEEN $1::date AND $2::date\n),\nganhos AS (\n  SELECT\n    consultor,\n    id_consultor_text,\n    COUNT(DISTINCT id_lead)::int AS leads_ganhos\n  FROM ganhos_com_consultor\n  GROUP BY 1, 2\n)\nSELECT\n  COALESCE(d.id_consultor::text, g.id_consultor_text)        AS id_consultor,\n  COALESCE(d.consultor, g.consultor)                         AS consultor,\n  COALESCE(d.total_distribuidos, 0)                          AS total_distribuidos,\n  COALESCE(g.leads_ganhos, 0)                                AS leads_ganhos,\n  CASE\n    WHEN COALESCE(d.total_distribuidos, 0) = 0 THEN 0\n    ELSE ROUND(\n      COALESCE(g.leads_ganhos, 0)::numeric / d.total_distribuidos * 100,\n      2\n    )\n  END AS taxa_ganho_pct\nFROM distribuidos d\nFULL JOIN ganhos g\n  ON g.id_consultor_text = d.id_consultor::text\nORDER BY leads_ganhos DESC, total_distribuidos DESC;\n",
+          "options": {
+            "queryReplacement": "={{ $json.body.start_date }},{{ $json.body.end_date }}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2016,
+          4416
+        ],
+        "id": "2de7d2da-8e76-4a39-ae05-c5a0d28414cb",
+        "name": "Execute a SQL query5",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "-- $1 = start_date (YYYY-MM-DD)\n-- $2 = end_date   (YYYY-MM-DD)\n\nWITH primeira_distribuicao_por_consultor AS (\n  SELECT\n    btrim(d.consultor) AS consultor,\n    d.id_lead,\n    MIN(d.\"timestamp\") AS primeiro_timestamp\n  FROM distribuicao_por_consultor d\n  GROUP BY btrim(d.consultor), d.id_lead\n),\n\nbase AS (\n  SELECT\n    p.consultor,\n    p.id_lead,\n    p.primeiro_timestamp::date AS data_distribuicao,\n    v.timestamp_status\n  FROM primeira_distribuicao_por_consultor p\n  LEFT JOIN vw_leads_perdidos v\n    ON v.id_lead = p.id_lead\n       AND v.status_id ILIKE 'Perdido'\n       AND v.timestamp_status >= p.primeiro_timestamp\n  WHERE p.primeiro_timestamp >= ($1::date)::timestamptz\n    AND p.primeiro_timestamp < (($2::date + INTERVAL '1 day')::timestamptz)\n),\n\nresumo AS (\n  SELECT\n    consultor,\n    COUNT(DISTINCT id_lead)::int AS total_distribuidos,\n    COUNT(DISTINCT id_lead) FILTER (\n      WHERE timestamp_status IS NOT NULL\n    )::int AS leads_perdidos\n  FROM base\n  GROUP BY consultor\n)\n\nSELECT\n  consultor,\n  total_distribuidos,\n  leads_perdidos,\n  ROUND(\n    CASE WHEN total_distribuidos = 0 THEN 0\n         ELSE (leads_perdidos::numeric / total_distribuidos * 100)\n    END, 2\n  ) AS taxa_perda_pct\nFROM resumo\nORDER BY leads_perdidos DESC, total_distribuidos DESC;\n",
+          "options": {
+            "queryReplacement": "={{ $json.body.start_date }},{{ $json.body.end_date }}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2048,
+          4672
+        ],
+        "id": "85b10610-bd97-4011-ad10-579c6c9824a4",
+        "name": "Execute a SQL query6",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          2320,
+          4544
+        ],
+        "id": "8cc55d77-9ffa-4395-b57c-0a74417502bd",
+        "name": "Merge5"
+      }
+    ],
+    "connections": {
+      "Webhook1": {
+        "main": [
+          [
+            {
+              "node": "count geral",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "count por id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "calcula matriculados": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "count por id": {
+        "main": [
+          [
+            {
+              "node": "calcula matriculados",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "calcula perdidos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "count geral": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 2
+            }
+          ]
+        ]
+      },
+      "calcula perdidos": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Code2": {
+        "main": [
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "leads em aceite",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Code3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code3": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leads novos": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "leads em aceite": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "novos-ganhos-perdidos": {
+        "main": [
+          [
+            {
+              "node": "leads novos",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "leads perdidos",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "leads ganhos1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "aceite": {
+        "main": [
+          [
+            {
+              "node": "Code2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leads perdidos": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 2
+            }
+          ]
+        ]
+      },
+      "leads ganhos1": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 3
+            }
+          ]
+        ]
+      },
+      "Code4": {
+        "main": [
+          [
+            {
+              "node": "Wait2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait2": {
+        "main": [
+          [
+            {
+              "node": "leads em inscricao",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leads em inscricao": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leads em processo seletivo": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code5": {
+        "main": [
+          [
+            {
+              "node": "Wait3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait3": {
+        "main": [
+          [
+            {
+              "node": "leads em processo seletivo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "inscricao": {
+        "main": [
+          [
+            {
+              "node": "Code4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "processo seletivo": {
+        "main": [
+          [
+            {
+              "node": "Code5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Code6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code6": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 4
+            }
+          ]
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "Code7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code7": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 5
+            }
+          ]
+        ]
+      },
+      "leads em atendimento": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields3": {
+        "main": [
+          [
+            {
+              "node": "Code8",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get many rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code8": {
+        "main": [
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many rows": {
+        "main": [
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge2": {
+        "main": [
+          [
+            {
+              "node": "Code9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code9": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 6
+            }
+          ]
+        ]
+      },
+      "em atendimento": {
+        "main": [
+          [
+            {
+              "node": "Code10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code10": {
+        "main": [
+          [
+            {
+              "node": "Wait4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait4": {
+        "main": [
+          [
+            {
+              "node": "leads em atendimento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "recadastro": {
+        "main": [
+          [
+            {
+              "node": "Create a row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "atendimento ia": {
+        "main": [
+          [
+            {
+              "node": "Create a row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ativacoes": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "dash recadastro": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Execute a SQL query3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query1": {
+        "main": [
+          [
+            {
+              "node": "Merge3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Merge4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ativacoes comercial": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query2",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query2": {
+        "main": [
+          [
+            {
+              "node": "Merge3",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge3": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query3": {
+        "main": [
+          [
+            {
+              "node": "Merge4",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge4": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript1": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "contagem distribuicao por consultor": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query5",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Execute a SQL query6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query5": {
+        "main": [
+          [
+            {
+              "node": "Merge5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge5": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query6": {
+        "main": [
+          [
+            {
+              "node": "Merge5",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
