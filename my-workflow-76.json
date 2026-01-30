@@ -1,0 +1,182 @@
+{
+  "updatedAt": "2026-01-29T18:53:29.571Z",
+  "createdAt": "2026-01-27T15:22:11.356Z",
+  "id": "-Tvt8VKdnw9ire-tnxtb0",
+  "name": "My workflow 76",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        -2288
+      ],
+      "id": "9c8f167c-12f2-4854-8369-405aa1b7cbc3",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "getByStage",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "5cb02829-6a5e-4ace-a0b9-e10c5a2d96c4",
+        "take": 400
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        -2288
+      ],
+      "id": "69ec40fb-3da8-47bb-ac98-511e70ab0480",
+      "name": "Buscar negócios por estágio",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -2288
+      ],
+      "id": "454241f3-43c5-4c22-9123-4a5e1c27ca0a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// n8n Code node (JavaScript)\n// Mode: Run Once for Each Item\n// Regras:\n// - Buscar campos por ID em additionalFields (não por índice)\n// - Consultora: se attendant/name vazio -> \"Supervisão\"\n// - RA + Data de Matrícula (formatada em ISO YYYY-MM-DD) + Polo + CPF + Cupom\n\nconst IDS = {\n  RA: \"8e3e5d01-397e-4e0b-b66e-f549a0ab2b73\",\n  MATRICULA: \"b75eb48d-f080-4bf2-b6ed-63bf2635893e\",\n  POLO: \"b8f71048-8925-4d2b-8255-9100ed5f69f0\",\n  CPF: \"5e0c7cda-6b62-42f5-acfc-77dc1e5b5a26\",\n  CUPOM: \"0cf87f13-2d1f-476f-bd2f-c66438761ff1\",\n};\n\nconst d = $json.data ?? {};\nconst afs = Array.isArray(d.additionalFields) ? d.additionalFields : [];\n\n// ----- Helpers -----\nfunction getAFById(fieldId) {\n  return afs.find(af => af?.additionalField?.id === fieldId) ?? null;\n}\n\nfunction getAFValueById(fieldId) {\n  const item = getAFById(fieldId);\n  if (!item) return null;\n  return item.valueDate ?? item.value ?? item.valueNumber ?? null;\n}\n\n// Formata para YYYY-MM-DD no fuso de São Paulo (melhor pro Sheets/DB)\nfunction formatYYYYMMDD_SaoPaulo(value) {\n  if (!value) return \"\";\n  const dt = new Date(value);\n  if (Number.isNaN(dt.getTime())) return \"\";\n\n  const parts = new Intl.DateTimeFormat(\"en-CA\", {\n    timeZone: \"America/Sao_Paulo\",\n    year: \"numeric\",\n    month: \"2-digit\",\n    day: \"2-digit\",\n  }).formatToParts(dt);\n\n  const get = (t) => parts.find(p => p.type === t)?.value ?? \"\";\n  return `${get(\"year\")}-${get(\"month\")}-${get(\"day\")}`;\n}\n\n// CPF: mantém só dígitos e zera à esquerda até 11\nfunction normalizeCPF(value) {\n  const digits = String(value ?? \"\").replace(/\\D+/g, \"\");\n  if (!digits) return \"\";\n  return digits.padStart(11, \"0\").slice(-11);\n}\n\n// ----- Valores por ID -----\nconst ra = getAFValueById(IDS.RA);\nconst matriculaRaw = getAFValueById(IDS.MATRICULA);\nconst polo = getAFValueById(IDS.POLO);\nconst cpfRaw = getAFValueById(IDS.CPF);\nconst cupom = getAFValueById(IDS.CUPOM);\n\n// Consultora: se vazio -> Supervisão\nconst consultora = (d.attendant?.name ?? \"\").toString().trim() || \"Supervisão\";\n\nreturn {\n  // principais\n  \"ID do Lead\": d.leadId ?? \"\",\n  \"Consultora\": consultora,\n\n  // por ID\n  \"RA\": ra ?? \"\",\n  \"Data de Matricula\": formatYYYYMMDD_SaoPaulo(matriculaRaw), // ISO (recomendado)\n  \"Polo\": (polo ?? \"\").toString().trim(),\n  \"CPF\": normalizeCPF(cpfRaw),\n  \"Cupom\": (cupom ?? \"\").toString().trim(),\n\n  // debug (opcional)\n  \"_debug_ra_found\": getAFById(IDS.RA) !== null,\n  \"_debug_matricula_found\": getAFById(IDS.MATRICULA) !== null,\n  \"_debug_matricula_raw\": matriculaRaw ?? null,\n  \"_debug_polo_found\": getAFById(IDS.POLO) !== null,\n  \"_debug_cpf_found\": getAFById(IDS.CPF) !== null,\n  \"_debug_cupom_found\": getAFById(IDS.CUPOM) !== null,\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        -2288
+      ],
+      "id": "ec601eb5-9520-4422-bec8-e89297e1e21e",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1YoOi8bJOdUc8M4vph7aYMTd8WSbEDC8MsCOl9BEmka4/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YoOi8bJOdUc8M4vph7aYMTd8WSbEDC8MsCOl9BEmka4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        -2288
+      ],
+      "id": "81d5a001-df23-4ad0-a2f1-19cb5ec86775",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "By4ggNOanXLS64XE",
+          "name": "powerbieduit"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Buscar negócios por estágio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar negócios por estágio": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3aafd39d-9ff8-4e70-a205-0d1630da58bf",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-01-27T15:22:11.361Z",
+      "createdAt": "2026-01-27T15:22:11.361Z",
+      "role": "workflow:owner",
+      "workflowId": "-Tvt8VKdnw9ire-tnxtb0",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
