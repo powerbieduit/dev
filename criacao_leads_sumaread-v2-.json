@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-03T16:49:43.000Z",
+  "updatedAt": "2026-01-28T14:51:05.123Z",
   "createdAt": "2025-08-19T21:00:44.158Z",
   "id": "Lec74yhTDupOfWxT",
   "name": "criacao_leads_sumaread V2",
@@ -8,167 +8,190 @@
   "nodes": [
     {
       "parameters": {
+        "httpMethod": "POST",
+        "path": "criacao_leads_sumare",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        496
+      ],
+      "id": "31e7c720-46dc-416f-9828-c959329df7d6",
+      "name": "Webhook",
+      "webhookId": "4691095e-ed75-4e0d-bc75-daffa5937dda"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "880e7b71-fbb8-4f91-91c3-14359444f0e4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1472,
+        1168
+      ],
+      "id": "e57cb40b-30bd-448b-a363-37062370e417",
+      "name": "Webhook1",
+      "webhookId": "880e7b71-fbb8-4f91-91c3-14359444f0e4"
+    },
+    {
+      "parameters": {
         "amount": 30
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -1040,
-        448
+        -800,
+        1072
       ],
-      "id": "eac88f95-ef0a-420b-b51d-cfabff38ba06",
-      "name": "Wait",
+      "id": "2b0d495f-7800-4d3e-91cf-e5b4bef6371f",
+      "name": "Wait1",
       "webhookId": "3fa03a24-3360-4e8b-982a-7571d3b418ad"
     },
     {
       "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{$items(\"Edit Fields\")[0].json.nome}}",
-              "responsible_user_id": "={{ $json.id_usuario }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
-                    "value": "=+55{{$items(\"Edit Fields\")[0].json.Telefone}}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
+        "content": "## google ads\n",
+        "height": 640,
+        "width": 3808,
+        "color": 5
       },
-      "type": "n8n-nodes-kommo.kommo",
+      "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        976,
-        160
+        -1584,
+        928
       ],
-      "id": "69dcf92e-8c68-4280-b969-fbbc55225a6f",
-      "name": "cria contato",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
+      "id": "73a91833-ae55-4cda-99ba-aa243aedc259",
+      "name": "Sticky Note"
     },
     {
       "parameters": {
-        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Define campos fixos\nconst camposFixos = ['id', 'name', 'telefone', 'email', 'curso', 'origem'];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\nif (quantidade_encontrada === 0) {\n  // Se nenhum lead for encontrado, retorna campos vazios\n  const vazio = {\n    quantidade_encontrada,\n    id: \"\",\n    name: \"\",\n    telefone: \"\",\n    email: \"\",\n    curso: \"\",\n    origem: \"Site - Sumaré\"  // valor fixo mesmo sem leads\n  };\n  return [{ json: vazio }];\n}\n\n// Seleciona o lead com menor ID\nconst leadEscolhido = leads.reduce((min, atual) => {\n  return atual.id < min.id ? atual : min;\n});\n\n// Extrai valores dos campos customizados\nconst fields = leadEscolhido.custom_fields_values || [];\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name?.toLowerCase().includes(nome.toLowerCase()))\n         ?.values?.[0]?.value ?? \"\";\n};\n\nconst resultado = {\n  quantidade_encontrada,\n  id: leadEscolhido.id,\n  name: leadEscolhido.name ?? \"\",\n  telefone: getCampo(\"telefone\"),\n  email: getCampo(\"email\"),\n  curso: getCampo(\"curso\")\n};\n\nreturn [{ json: resultado }];\n"
+        "content": "## site sumaread\n",
+        "height": 656,
+        "width": 3856,
+        "color": 5
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -640,
-        464
-      ],
-      "id": "356a33fe-763c-44e0-873c-392a14db622a",
-      "name": "Code"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "filter": {
-          "query": "=+55{{ $json.Telefone }}",
-          "pipelines": [
-            5617751
-          ]
-        },
-        "options": {
-          "with": [
-            "contacts"
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
+      "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -816,
-        448
+        -1632,
+        192
       ],
-      "id": "20cd387b-dfcf-4ddd-8568-7deb44c46950",
-      "name": "procura lead1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
+      "id": "b65578be-c561-4615-9da3-2460af49a7c8",
+      "name": "Sticky Note1"
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -240,
-        576
+        -128,
+        1184
       ],
-      "id": "11edfaa1-dd3d-4860-9b49-8f08efb6ed5b",
-      "name": "Merge"
+      "id": "db856925-36ae-4a90-8cb7-661bbef8da4f",
+      "name": "Merge2"
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios').first().json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os negócios').first().json.data[0].leadId }}",
+        "pipelineId": "group_header_SUMARE",
+        "stageId": "f29a213e-ec38-4325-bb46-c5187e391b15",
+        "attendantId": "={{ $json.data[0].attendant.id }}",
+        "additionalFields": {}
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
       "position": [
-        80,
-        160
+        320,
+        1088
       ],
-      "id": "6b7bfdd6-e970-4eed-aabe-637f4c87db72",
-      "name": "Code1"
+      "id": "209ba3ba-c54e-4aeb-a79d-56f9ef65c505",
+      "name": "Atualizar um negócio existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "9c9eb4b1-ec44-4fac-82b1-232006b7872e",
-              "name": "nome",
-              "value": "={{ $json.body.nome }}",
-              "type": "string"
-            },
-            {
-              "id": "6c48dde8-316e-4f35-b881-8bb13510d468",
-              "name": "Telefone",
-              "value": "={{ $json.body.celular }}",
-              "type": "string"
-            },
-            {
-              "id": "1ddb0708-1df2-428d-bc0c-bb58e1637e51",
-              "name": "Tipo",
-              "value": "={{ $json.body.tipo }}",
-              "type": "string"
-            },
-            {
-              "id": "c4256c50-7487-4aa2-9670-76a8733ca0de",
-              "name": "Email",
-              "value": "",
-              "type": "string"
-            },
-            {
-              "id": "9bd6722b-4efc-4abb-9493-2a0b695303a4",
-              "name": "Origem",
-              "value": "Site - Sumaré",
-              "type": "string"
-            }
+        "operation": "update",
+        "leadId": "={{ $('Buscar todos os negócios').item.json.data[0].leadId }}",
+        "name": "={{ $json.lead.name }}",
+        "phone": "={{ $json.lead.contacts[0].contactId }}",
+        "source": "SITE - SUMAREAD",
+        "additionalFields": {
+          "tags": [
+            "3b53c389-2a09-457e-a575-a4a522d00ec3"
           ]
-        },
-        "options": {}
+        }
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
       "position": [
-        -1264,
-        448
+        544,
+        1088
       ],
-      "id": "f80ef7ea-91e9-4c38-af4b-1d4207ad88c5",
-      "name": "Edit Fields"
+      "id": "7027359c-0036-4465-b60f-0b5b9832977d",
+      "name": "Atualizar um lead existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "options": {
+          "search": "={{ $('dados1').item.json.telefone }}"
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        1072
+      ],
+      "id": "3b38facb-0605-43e3-8338-b6c2112a8473",
+      "name": "Buscar todos os negócios",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "annotations",
+        "operation": "create",
+        "leadId": "={{ $json.data[0].leadId }}",
+        "note": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        320,
+        1280
+      ],
+      "id": "1dd63d46-5531-41a7-84f7-24ca765c0479",
+      "name": "Adicionar comentário ao lead",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
     },
     {
       "parameters": {
@@ -184,10 +207,10 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 143,
+                    "leftValue": "={{ $json.data[0].stageId }}",
+                    "rightValue": "8cdb6089-d8fb-4077-aa7a-69bf1d3db477",
                     "operator": {
-                      "type": "number",
+                      "type": "string",
                       "operation": "equals"
                     },
                     "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
@@ -207,10 +230,10 @@
                 "conditions": [
                   {
                     "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
-                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 49518854,
+                    "leftValue": "={{ $json.data[0].stageId }}",
+                    "rightValue": "fd2c4e1f-f7ab-46cb-8ce4-85243afc43f4\"",
                     "operator": {
-                      "type": "number",
+                      "type": "string",
                       "operation": "equals"
                     }
                   }
@@ -227,212 +250,97 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        288,
-        544
-      ],
-      "id": "72213d2d-e5d1-4a2c-ac09-90f36a1457dd",
-      "name": "Switch"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
-            {
-              "name": "={{$items(\"Edit Fields\")[0].json.nome}}",
-              "pipeline_id": 5617751,
-              "status_id": 49518221,
-              "responsible_user_id": "={{ $('Edit Fields1').item.json.id_usuario }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{$items(\"Edit Fields\")[0].json.nome}}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{$items(\"Edit Fields\")[0].json.Telefone}}"
-                  },
-                  {
-                    "data": "{\"id\":672274,\"type\":\"text\"}",
-                    "value": "={{$items(\"Code1\")[0].json.nome}}"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Site - Sumaré"
-                  },
-                  {
-                    "data": "{\"id\":673258,\"type\":\"text\"}",
-                    "value": "={{$items(\"Edit Fields\")[0].json.Tipo}}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        1200,
-        160
-      ],
-      "id": "9165a50b-9a4b-4170-8fce-1f0e500bd612",
-      "name": "cria lead (eduit new)",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "criacao_leads_sumare",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        -1488,
-        448
-      ],
-      "id": "31e7c720-46dc-416f-9828-c959329df7d6",
-      "name": "Webhook",
-      "webhookId": "4691095e-ed75-4e0d-bc75-daffa5937dda"
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "tableId": "distrib_sumare",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "status",
-              "condition": "eq",
-              "keyValue": "ATIVO"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        -144,
-        160
-      ],
-      "id": "7c857d66-085c-4221-bc15-b85f8b3c5b9a",
-      "name": "Get many rows",
-      "credentials": {
-        "supabaseApi": {
-          "id": "6o0bjFpYGr8jfz1r",
-          "name": "Supabase_BU"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "tableId": "distrib_sumare",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "id_usuario",
-              "condition": "eq",
-              "keyValue": "={{ $('Get many rows').item.json.id_usuario }}"
-            }
-          ]
-        },
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "ultimo_lead",
-              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        304,
-        160
-      ],
-      "id": "adfb9770-555c-48de-9cc4-90041e8040fb",
-      "name": "Update a row",
-      "credentials": {
-        "supabaseApi": {
-          "id": "6o0bjFpYGr8jfz1r",
-          "name": "Supabase_BU"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "4132718e-6d72-4894-ae80-9ac7d6fe84f3",
-              "name": "id_usuario",
-              "value": "={{ $json.id_usuario }}",
-              "type": "number"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        160
-      ],
-      "id": "4195d550-a796-4786-866f-ef91ccd7cb81",
-      "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        528,
-        160
-      ],
-      "id": "1b495b9c-b56b-4000-9684-112703b7148e",
-      "name": "Code2"
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "880e7b71-fbb8-4f91-91c3-14359444f0e4",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -1488,
+        96,
         1168
       ],
-      "id": "e57cb40b-30bd-448b-a363-37062370e417",
-      "name": "Webhook1",
-      "webhookId": "880e7b71-fbb8-4f91-91c3-14359444f0e4"
+      "id": "8383143b-b3f6-4693-b7cb-266cb9c29ea9",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('dados1').item.json.nome }}",
+        "email": "={{ $('dados1').item.json.email || '' }}",
+        "phone": "=55{{ $('dados1').item.json.telefone }}",
+        "source": "google ads_sumare",
+        "additionalFields": {
+          "tags": [
+            "5d302e72-6a48-4840-a0e0-4bab94267622"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        0,
+        944
+      ],
+      "id": "04d59619-268c-4e03-a472-87eca39a259f",
+      "name": "Criar um novo lead1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "5f0b194a-ea51-46d0-afc3-43d662e7424f",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        224,
+        944
+      ],
+      "id": "b62f81ec-3cd7-4425-9205-040c304c00d1",
+      "name": "Criar um novo negócio1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
+              "leftValue": "={{ $json.count }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        1072
+      ],
+      "id": "6c2670e7-0ff0-4d30-ab7b-e55d998e4999",
+      "name": "If1"
     },
     {
       "parameters": {
@@ -469,11 +377,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1264,
+        -1248,
         1168
       ],
       "id": "509a3646-334f-4f9b-9bca-1a22ff32446b",
-      "name": "Edit Fields2"
+      "name": "dados1"
     },
     {
       "parameters": {
@@ -482,353 +390,121 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -1040,
-        1168
+        -576,
+        528
       ],
-      "id": "2b0d495f-7800-4d3e-91cf-e5b4bef6371f",
-      "name": "Wait1",
+      "id": "4934dcea-588c-449a-9c36-3760eb4480d8",
+      "name": "Wait",
       "webhookId": "3fa03a24-3360-4e8b-982a-7571d3b418ad"
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{ $('Edit Fields2').item.json.nome }}",
-              "last_name": "=",
-              "responsible_user_id": "={{ $json.id_usuario }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
-                    "value": "={{ $('Edit Fields2').item.json.telefone }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        976,
-        880
-      ],
-      "id": "0f122e30-4d06-4421-895b-d9817061c6a1",
-      "name": "cria contato1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
-              "leftValue": "={{ $json.quantidade_encontrada }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -368,
-        1168
-      ],
-      "id": "888e40b0-8b35-4f5c-93ca-c367c0299f07",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Define campos fixos\nconst camposFixos = ['id', 'name', 'telefone', 'email', 'curso', 'origem'];\n\n// Conta quantos leads foram encontrados\nconst quantidade_encontrada = leads.length;\n\nif (quantidade_encontrada === 0) {\n  // Se nenhum lead for encontrado, retorna campos vazios\n  const vazio = {\n    quantidade_encontrada,\n    id: \"\",\n    name: \"\",\n    telefone: \"\",\n    email: \"\",\n    curso: \"\",\n    origem: \"Site - Sumaré\"  // valor fixo mesmo sem leads\n  };\n  return [{ json: vazio }];\n}\n\n// Seleciona o lead com menor ID\nconst leadEscolhido = leads.reduce((min, atual) => {\n  return atual.id < min.id ? atual : min;\n});\n\n// Extrai valores dos campos customizados\nconst fields = leadEscolhido.custom_fields_values || [];\nconst getCampo = (nome) => {\n  return fields.find(f => f.field_name?.toLowerCase().includes(nome.toLowerCase()))\n         ?.values?.[0]?.value ?? \"\";\n};\n\nconst resultado = {\n  quantidade_encontrada,\n  id: leadEscolhido.id,\n  name: leadEscolhido.name ?? \"\",\n  telefone: getCampo(\"telefone\"),\n  email: getCampo(\"email\"),\n  curso: getCampo(\"curso\")\n};\n\nreturn [{ json: resultado }];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -592,
-        1168
-      ],
-      "id": "9193e23d-a57f-4656-a274-6c3fbdc56447",
-      "name": "Code3"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "filter": {
-          "query": "={{ $json.telefone }}",
-          "pipelines": [
-            5617751
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -816,
-        1168
-      ],
-      "id": "01b1986e-8939-4326-8a7e-92552ee2e86e",
-      "name": "procura lead",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -144,
-        1264
+        432,
+        592
       ],
-      "id": "46407698-91b9-4772-b4df-0ff70be9362d",
-      "name": "Merge1"
+      "id": "0d34001e-f9f6-42b6-851b-0750e3c1b03e",
+      "name": "Merge"
     },
     {
       "parameters": {
-        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios1').first().json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os negócios1').first().json.data[0].leadId }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "b51e4a2a-13f7-4e19-8ac0-ea261e860b9a",
+        "attendantId": "={{ $json.data[0].attendant.id }}",
+        "additionalFields": {}
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        80,
-        880
-      ],
-      "id": "258a1f5e-3ca0-4d68-a030-39e9dd5dc571",
-      "name": "Code4"
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "tableId": "distrib_sumare",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "status",
-              "condition": "eq",
-              "keyValue": "ATIVO"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        -144,
-        880
+        880,
+        496
       ],
-      "id": "2bbb3d13-2b93-46ce-8b64-fed8f99fa16a",
-      "name": "Get many rows1",
+      "id": "7a39f974-6793-4b46-9677-158ea94b6dd4",
+      "name": "Atualizar um negócio existente1",
       "credentials": {
-        "supabaseApi": {
-          "id": "6o0bjFpYGr8jfz1r",
-          "name": "Supabase_BU"
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
         }
       }
     },
     {
       "parameters": {
         "operation": "update",
-        "tableId": "distrib_sumare",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "id_usuario",
-              "condition": "eq",
-              "keyValue": "={{ $('Get many rows1').item.json.id_usuario }}"
-            }
-          ]
-        },
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "ultimo_lead",
-              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
-            }
+        "leadId": "={{ $('Buscar todos os negócios1').item.json.data[0].leadId }}",
+        "name": "={{ $json.lead.name }}",
+        "phone": "={{ $json.lead.contacts[0].contactId }}",
+        "source": "SITE - SUMAREAD",
+        "additionalFields": {
+          "tags": [
+            "3b53c389-2a09-457e-a575-a4a522d00ec3"
           ]
         }
       },
-      "type": "n8n-nodes-base.supabase",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        304,
-        880
+        1088,
+        496
       ],
-      "id": "774b7cb4-8049-490c-b9c0-6437e02c2a0b",
-      "name": "Update a row1",
+      "id": "d490c6df-218b-4e89-b68c-e33626152e19",
+      "name": "Atualizar um lead existente",
       "credentials": {
-        "supabaseApi": {
-          "id": "6o0bjFpYGr8jfz1r",
-          "name": "Supabase_BU"
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
         }
       }
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "4132718e-6d72-4894-ae80-9ac7d6fe84f3",
-              "name": "id_usuario",
-              "value": "={{ $json.id_usuario }}",
-              "type": "number"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        880
-      ],
-      "id": "7194bddf-ec4d-4885-8461-544e61ae5f57",
-      "name": "Edit Fields3"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        528,
-        880
-      ],
-      "id": "2ddae426-ee21-4128-b2ca-0c16eb228bb2",
-      "name": "Code5"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
-            {
-              "name": "={{ $('Edit Fields2').item.json.nome }}",
-              "pipeline_id": 5617751,
-              "status_id": 49518221,
-              "responsible_user_id": "={{ $('Edit Fields3').item.json.id_usuario }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('Edit Fields2').item.json.nome }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "={{ $('Edit Fields2').item.json.telefone }}"
-                  },
-                  {
-                    "data": "{\"id\":672274,\"type\":\"text\"}",
-                    "value": "={{$items(\"Code4\")[0].json.nome}}"
-                  },
-                  {
-                    "data": "{\"id\":673258,\"type\":\"text\"}",
-                    "value": "={{ $('Edit Fields2').item.json.tipo }}"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Google-Ads"
-                  }
-                ]
-              },
-              "_embedded": {
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "tags": [
-                  {
-                    "id": [
-                      175399
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
+        "resource": "deals",
+        "options": {
+          "search": "={{ $('dados').item.json.telefone }}"
         }
       },
-      "type": "n8n-nodes-kommo.kommo",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        1200,
-        880
+        -272,
+        544
       ],
-      "id": "d54c73b0-6dbd-487f-816f-3ae23bc7981b",
-      "name": "cria lead",
+      "id": "7875d00f-5611-4e1a-a03b-5ef077275a36",
+      "name": "Buscar todos os negócios1",
       "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
         }
       }
     },
     {
       "parameters": {
-        "content": "## google ads\n",
-        "height": 656,
-        "width": 3664,
-        "color": 5
+        "resource": "annotations",
+        "operation": "create",
+        "leadId": "={{ $json.data[0].leadId }}",
+        "note": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
       },
-      "type": "n8n-nodes-base.stickyNote",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        -1568,
-        832
+        880,
+        688
       ],
-      "id": "73a91833-ae55-4cda-99ba-aa243aedc259",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "content": "## site sumaread\n",
-        "height": 656,
-        "width": 3664,
-        "color": 5
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -1616,
-        160
-      ],
-      "id": "b65578be-c561-4615-9da3-2460af49a7c8",
-      "name": "Sticky Note1"
+      "id": "3917f614-8416-4309-9056-161059745672",
+      "name": "Adicionar comentário ao lead1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
     },
     {
       "parameters": {
@@ -844,453 +520,10 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.status }}",
-                    "rightValue": "sem_curso",
+                    "leftValue": "={{ $json.data[0].stageId }}",
+                    "rightValue": "82c83778-4b0f-4139-879e-fb5f6bb470af",
                     "operator": {
                       "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "27ae7d4f-f4b0-4337-883c-3dc3db4e9743"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "curso não preenchido"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "3f3ab88a-82a0-4a4a-8d0d-5e3db93fb39d",
-                    "leftValue": "={{ $json.status }}",
-                    "rightValue": "=com_curso",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "curso preenchido"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        2704,
-        -304
-      ],
-      "id": "5f8b121e-c60e-4e39-9fff-37e44a140edf",
-      "name": "Switch3"
-    },
-    {
-      "parameters": {
-        "phoneNumberId": "794200977108142",
-        "recipientPhoneNumber": "={{ $('Code in JavaScript').item.json.telefone }}",
-        "template": "recadastro_semcurso_kfe6xi|pt_BR"
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [
-        2928,
-        -400
-      ],
-      "id": "9f76d404-b88d-4e3a-8381-62f7ab3dd626",
-      "name": "Send template2",
-      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "ZYIePjycu0XbxiBl",
-          "name": "WHATSAPP - CONTAS BU"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "phoneNumberId": "794200977108142",
-        "recipientPhoneNumber": "={{ $('Code in JavaScript').item.json.telefone }}",
-        "template": "recadastro_com_curso_3p4v97|pt_BR",
-        "components": {
-          "component": [
-            {
-              "bodyParameters": {
-                "parameter": [
-                  {
-                    "text": "={{ $json.curso }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [
-        2928,
-        -208
-      ],
-      "id": "8ff37df4-be4d-48ec-bf10-44d8a4527604",
-      "name": "Send template3",
-      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "ZYIePjycu0XbxiBl",
-          "name": "WHATSAPP - CONTAS BU"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "tableId": "dados_cliente_sum",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "telefone",
-              "keyValue": "={{ $('Send template2').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        3600,
-        -400
-      ],
-      "id": "a3e0a575-0aed-47d3-8b43-3c4f56232d9c",
-      "name": "Get a row2",
-      "alwaysOutputData": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "b710a8dd-f668-441a-b2bb-914ac4d854db",
-              "leftValue": "={{ $json.atendimento_ia }}",
-              "rightValue": "pause",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        3824,
-        -304
-      ],
-      "id": "ab934da6-6f58-4816-949e-492c63c1c5c6",
-      "name": "If2"
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "tableId": "dados_cliente_sum",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "telefone",
-              "condition": "eq",
-              "keyValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
-            }
-          ]
-        },
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "atendimento_ia"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        4048,
-        -400
-      ],
-      "id": "ade2d0b1-7632-4696-b77d-1032fcaa88bd",
-      "name": "Update a row2",
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "=Olá! Vi que você voltou a pesquisar sobre os próximos passos para sua carreira.   Como da última vez conversamos *sobre o curso de *{{ $('Code in JavaScript').item.json.curso }}*, queria saber: este parece ser um *bom momento para você investir no seu desenvolvimento*? ✨"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3376,
-        -208
-      ],
-      "id": "efa821db-5d6b-4e3d-9f27-bebafa8cc9ba",
-      "name": "Create new notes3",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "=Oi! Tudo bem? Vi que você deu uma olhada em nossos preços hoje. \n\nQue tal a gente conversar *5 minutinhos* sobre como *podemos te ajudar a alcançar seus objetivos*? 😉"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3376,
-        -400
-      ],
-      "id": "3274543e-29e7-4f89-a83a-ab74d9ab623b",
-      "name": "Create new notes4",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "tableId": "dados_cliente_sum",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "telefone",
-              "keyValue": "={{ $('Send template3').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        3600,
-        -208
-      ],
-      "id": "d90546ce-a05f-418c-803d-9a838cd002c0",
-      "name": "Get a row3",
-      "alwaysOutputData": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "tableId": "dados_cliente_sum",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "created_at",
-              "fieldValue": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
-            },
-            {
-              "fieldId": "telefone",
-              "fieldValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        4048,
-        -224
-      ],
-      "id": "ee45c361-a740-4202-9da0-a7454fe0d174",
-      "name": "Criar Cliente1",
-      "retryOnFail": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 11873040,
-              "status_id": 93544152,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+{{ $json.contacts[0].input }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3152,
-        -400
-      ],
-      "id": "759c9595-69b9-4081-b20c-64292b3d7569",
-      "name": "recadastro3",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 11873040,
-              "status_id": 93544152,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+{{ $json.contacts[0].input }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3152,
-        -208
-      ],
-      "id": "a20d8ac1-f565-4858-b7f0-b4adcb5e5b20",
-      "name": "recadastro2",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "// Pega todos os itens de entrada\nconst items = $input.all();\n\n// Mapeia cada item\nreturn items.map(item => {\n  const curso = (item.json.curso || \"\").trim().toLowerCase();\n\n  // Se for vazio ou \"não informado\", marca como sem curso\n  const status = (curso === \"\" || curso === \"não informado\")\n    ? \"sem_curso\"\n    : \"com_curso\";\n\n  return {\n    json: {\n      ...item.json,\n      status\n    }\n  };\n});\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2480,
-        -304
-      ],
-      "id": "ad81739d-21e4-4a8e-a93f-280afdeeb9fd",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 143,
-                    "operator": {
-                      "type": "number",
                       "operation": "equals"
                     },
                     "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
@@ -1310,10 +543,10 @@
                 "conditions": [
                   {
                     "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
-                    "leftValue": "={{ $('procura lead1').item.json._embedded.leads[0].status_id }}",
-                    "rightValue": 49518854,
+                    "leftValue": "={{ $json.data[0].stageId }}",
+                    "rightValue": "ac31cf80-7069-4810-9654-d0edfdf4997a",
                     "operator": {
-                      "type": "number",
+                      "type": "string",
                       "operation": "equals"
                     }
                   }
@@ -1330,517 +563,62 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        80,
-        1248
+        656,
+        576
       ],
-      "id": "8f4274a2-4911-483b-a984-e4202d3eebf0",
-      "name": "Switch2"
+      "id": "9c51a1d9-512b-4f21-bd0d-24e5936576e6",
+      "name": "Switch"
     },
     {
       "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.status }}",
-                    "rightValue": "sem_curso",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "27ae7d4f-f4b0-4337-883c-3dc3db4e9743"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "curso não preenchido"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "3f3ab88a-82a0-4a4a-8d0d-5e3db93fb39d",
-                    "leftValue": "={{ $json.status }}",
-                    "rightValue": "=com_curso",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "curso preenchido"
-            }
+        "operation": "create",
+        "name": "={{ $('dados').item.json.nome }}",
+        "email": "=",
+        "phone": "=55{{ $('dados').item.json.telefone }}",
+        "source": "SITE - SUMAREAD",
+        "additionalFields": {
+          "tags": [
+            "5d302e72-6a48-4840-a0e0-4bab94267622"
           ]
-        },
-        "options": {}
+        }
       },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        2608,
-        2400
-      ],
-      "id": "1fc7628b-c24b-4d65-a2fa-b39b915aa4d7",
-      "name": "Switch4"
-    },
-    {
-      "parameters": {
-        "phoneNumberId": "794200977108142",
-        "recipientPhoneNumber": "={{ $('Code in JavaScript1').item.json.telefone }}",
-        "template": "recadastro_semcurso_kfe6xi|pt_BR"
-      },
-      "type": "n8n-nodes-base.whatsApp",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        2832,
-        2304
+        416,
+        320
       ],
-      "id": "cd824bcc-b16a-4249-a46d-3b7f95dc9455",
-      "name": "Send template",
-      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
+      "id": "db17a193-3052-4356-82c0-dd65c1ef8ecb",
+      "name": "Criar um novo lead",
       "credentials": {
-        "whatsAppApi": {
-          "id": "ZYIePjycu0XbxiBl",
-          "name": "WHATSAPP - CONTAS BU"
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
         }
       }
     },
     {
       "parameters": {
-        "phoneNumberId": "794200977108142",
-        "recipientPhoneNumber": "={{ $('Code in JavaScript1').item.json.telefone }}",
-        "template": "recadastro_com_curso_3p4v97|pt_BR",
-        "components": {
-          "component": [
-            {
-              "bodyParameters": {
-                "parameter": [
-                  {
-                    "text": "={{ $json.curso }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "5f0b194a-ea51-46d0-afc3-43d662e7424f",
+        "attendantId": "=",
+        "additionalFields": {}
       },
-      "type": "n8n-nodes-base.whatsApp",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        2832,
-        2496
+        640,
+        320
       ],
-      "id": "e7053af3-aa49-44b5-9e86-0e317807fdc6",
-      "name": "Send template4",
-      "webhookId": "92ffd4d4-2332-467e-9881-f089f43e9370",
+      "id": "bd3c6dfb-c1c3-493c-a83f-5b980cb81d23",
+      "name": "Criar um novo negócio",
       "credentials": {
-        "whatsAppApi": {
-          "id": "ZYIePjycu0XbxiBl",
-          "name": "WHATSAPP - CONTAS BU"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "tableId": "dados_cliente_sum",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "telefone",
-              "keyValue": "={{ $('Send template').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        3504,
-        2304
-      ],
-      "id": "cadfc99d-2ceb-48f5-95fa-518b03ee8187",
-      "name": "Get a row",
-      "alwaysOutputData": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "b710a8dd-f668-441a-b2bb-914ac4d854db",
-              "leftValue": "={{ $json.atendimento_ia }}",
-              "rightValue": "pause",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        3728,
-        2400
-      ],
-      "id": "df52d74e-45d4-49f8-82cd-fad0b8f3ee90",
-      "name": "If3"
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "tableId": "dados_cliente_sum",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "telefone",
-              "condition": "eq",
-              "keyValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
-            }
-          ]
-        },
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "atendimento_ia"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        3952,
-        2304
-      ],
-      "id": "a5b22e84-5d5b-415d-b45e-9acfd1dbf9e0",
-      "name": "Update a row3",
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "=Olá! Vi que você voltou a pesquisar sobre os próximos passos para sua carreira.   Como da última vez conversamos *sobre o curso de *{{ $('Code in JavaScript1').item.json.curso }}*, queria saber: este parece ser um *bom momento para você investir no seu desenvolvimento*? ✨"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3280,
-        2496
-      ],
-      "id": "572d22ad-c985-418c-91f7-7e980fe301cd",
-      "name": "Create new notes",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "=Oi! Tudo bem? Vi que você deu uma olhada em nossos preços hoje. \n\nQue tal a gente conversar *5 minutinhos* sobre como *podemos te ajudar a alcançar seus objetivos*? 😉"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3280,
-        2304
-      ],
-      "id": "080f0c09-1330-44c5-ab6f-d81eca0bff57",
-      "name": "Create new notes5",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "tableId": "dados_cliente_sum",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "telefone",
-              "keyValue": "={{ $('Send template4').item.json.contacts[0].wa_id + '@s.whatsapp.net' }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        3504,
-        2496
-      ],
-      "id": "17d111cf-5d26-4892-80ea-6494e18027df",
-      "name": "Get a row4",
-      "alwaysOutputData": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "tableId": "dados_cliente_sum",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "created_at",
-              "fieldValue": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
-            },
-            {
-              "fieldId": "telefone",
-              "fieldValue": "={{ \"55\" + $('Webhook').item.json.body.celular + \"@s.whatsapp.net\" }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        3952,
-        2480
-      ],
-      "id": "13cb04a6-054b-4495-80e7-1ce7501349eb",
-      "name": "Criar Cliente",
-      "retryOnFail": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "iGh1fsnV8INZevlH",
-          "name": "Supabase IA ANH/SUM"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 11873040,
-              "status_id": 93544152,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+{{ $json.contacts[0].input }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3056,
-        2304
-      ],
-      "id": "113b3cf6-d892-49c1-9e6b-d60b1c65d938",
-      "name": "recadastro4",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 11873040,
-              "status_id": 93544152,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+{{ $json.contacts[0].input }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3056,
-        2496
-      ],
-      "id": "23ffcf31-3dc9-432d-9d8b-80b6fd25a52f",
-      "name": "recadastro5",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "// Pega todos os itens de entrada\nconst items = $input.all();\n\n// Mapeia cada item\nreturn items.map(item => {\n  const curso = (item.json.curso || \"\").trim().toLowerCase();\n\n  // Se for vazio ou \"não informado\", marca como sem curso\n  const status = (curso === \"\" || curso === \"não informado\")\n    ? \"sem_curso\"\n    : \"com_curso\";\n\n  return {\n    json: {\n      ...item.json,\n      status\n    }\n  };\n});\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2384,
-        2400
-      ],
-      "id": "fa2b658c-4f85-41d0-ad65-93f8d67c2030",
-      "name": "Code in JavaScript1"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 5617751,
-              "status_id": 0,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":693635,\"type\":\"select\"}",
-                    "value": "Recebida"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        512,
-        672
-      ],
-      "id": "024f39a2-2e9c-4f6a-a5af-a43913fdf0be",
-      "name": "Update leads1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        736,
-        672
-      ],
-      "id": "06254c01-c284-415e-a59c-caedfab7dbad",
-      "name": "Create new notes2",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
         }
       }
     },
@@ -1856,7 +634,7 @@
           "conditions": [
             {
               "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
-              "leftValue": "={{ $json.quantidade_encontrada }}",
+              "leftValue": "={{ $json.count }}",
               "rightValue": 0,
               "operator": {
                 "type": "number",
@@ -1871,345 +649,294 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -368,
-        448
+        80,
+        544
       ],
-      "id": "884e3a9d-926d-412e-9ae2-800192d3da92",
-      "name": "If4"
+      "id": "214ae5b3-e0e5-4ba4-a414-da25e49c737e",
+      "name": "If"
     },
     {
       "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
+        "assignments": {
+          "assignments": [
             {
-              "id": "={{ $json.id }}",
-              "pipeline_id": 5617751,
-              "status_id": 0,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":693635,\"type\":\"select\"}",
-                    "value": "Recebida"
-                  }
-                ]
-              }
+              "id": "31c410a6-9941-45fd-9e3b-7536194c7206",
+              "name": "tipo",
+              "value": "={{ $json.body.tipo }}",
+              "type": "string"
+            },
+            {
+              "id": "5ed3c871-a609-4c41-8649-a7dfe07a9e67",
+              "name": "nome",
+              "value": "={{ $json.body.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "f3a71701-7c91-4b76-98de-81b61004908f",
+              "name": "email",
+              "value": "={{ $json.body.email || \" \" }}",
+              "type": "string"
+            },
+            {
+              "id": "27488890-7bf0-456b-a9c9-1340dc5cbf08",
+              "name": "telefone",
+              "value": "={{ $json.body.celular }}",
+              "type": "string"
             }
           ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        256,
-        1360
-      ],
-      "id": "f171d33e-9112-4f59-babc-b2ed72337455",
-      "name": "Update leads2",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json.id }}",
-              "text": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        480,
-        1360
-      ],
-      "id": "5688e86b-fa39-4a1d-a66d-8cc0eb48c8a7",
-      "name": "Create new notes6",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "filter": {
-          "id": "={{ $('procura lead1').item.json._embedded.leads[0]._embedded.contacts[0].id }}"
         },
         "options": {}
       },
-      "type": "n8n-nodes-kommo.kommo",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1136,
+        528
+      ],
+      "id": "d4f00fce-001e-4566-84cb-e803e047b666",
+      "name": "dados"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7ab9aa71-2313-40a5-bb9e-8e0f7a9210c6",
+              "leftValue": "={{ $json.telefone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -928,
+        528
+      ],
+      "id": "35b37e1e-2bae-4cb6-8d78-a5f113ef7f2b",
+      "name": "If4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -32,
-        576
+        -720,
+        624
       ],
-      "id": "945886f0-3a82-4c38-9a45-2be6fccd4ca7",
-      "name": "Get list of contacts",
+      "id": "58e66c39-47f0-40b0-8966-04dc86d97eb3",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7ab9aa71-2313-40a5-bb9e-8e0f7a9210c6",
+              "leftValue": "={{ $json.telefone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1024,
+        1168
+      ],
+      "id": "714d5412-2de5-4808-8927-507e86efa137",
+      "name": "If5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        1264
+      ],
+      "id": "69f4d9ad-79ee-46b5-9b1a-8ec863d60a0a",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "wix_sumare",
+          "mode": "list",
+          "cachedResultName": "wix_sumare"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Webhook').item.json.body.celular }}",
+            "data": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        864,
+        304
+      ],
+      "id": "b357435c-30b8-4a35-ba0d-5d5154b4b5a4",
+      "name": "Insert rows in a table",
       "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
+        "postgres": {
+          "id": "OWpYaPo6TqJn4NV3",
+          "name": "banco site soead"
         }
       }
     },
     {
       "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "wix_sumare",
+          "mode": "list",
+          "cachedResultName": "wix_sumare"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone": "={{ $('Webhook1').item.json.body.user_column_data[2].string_value }}",
+            "data": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
             {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 11003376,
-              "status_id": 84631604,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+{{ $json.contacts[0].input }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        688,
-        544
-      ],
-      "id": "9f6e8663-bf21-4983-8c7c-e39800b44d4e",
-      "name": "recadastro",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
             {
-              "id": "={{ $('Code').item.json.id }}",
-              "pipeline_id": 11003376,
-              "status_id": 84631604,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+{{ $json.contacts[0].input }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      62864
-                    ]
-                  }
-                ]
-              }
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
             }
-          ]
-        }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
       "position": [
-        336,
-        1120
+        592,
+        928
       ],
-      "id": "80739628-e04c-4dfb-9c5c-b65e39483b69",
-      "name": "recadastro1",
+      "id": "c4f5d883-7858-490a-b8c3-3e32c3be0beb",
+      "name": "Insert rows in a table2",
       "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
+        "postgres": {
+          "id": "OWpYaPo6TqJn4NV3",
+          "name": "banco site soead"
         }
       }
     }
   ],
   "connections": {
-    "Wait": {
-      "main": [
-        [
-          {
-            "node": "procura lead1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "cria contato": {
-      "main": [
-        [
-          {
-            "node": "cria lead (eduit new)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "If4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "procura lead1": {
-      "main": [
-        [
-          {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Get list of contacts",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code1": {
-      "main": [
-        [
-          {
-            "node": "Update a row",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "recadastro",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "recadastro",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Update leads1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         [
           {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows": {
-      "main": [
-        [
-          {
-            "node": "Code1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update a row": {
-      "main": [
-        [
-          {
-            "node": "Code2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields1": {
-      "main": [
-        [
-          {
-            "node": "cria contato",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code2": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
+            "node": "dados",
             "type": "main",
             "index": 0
           }
@@ -2220,18 +947,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields2": {
-      "main": [
-        [
-          {
-            "node": "Wait1",
+            "node": "dados1",
             "type": "main",
             "index": 0
           }
@@ -2242,43 +958,145 @@
       "main": [
         [
           {
-            "node": "procura lead",
+            "node": "Buscar todos os negócios",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "cria contato1": {
+    "Merge2": {
       "main": [
         [
           {
-            "node": "cria lead",
+            "node": "Switch1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Atualizar um negócio existente": {
       "main": [
         [
           {
-            "node": "Get many rows1",
+            "node": "Atualizar um lead existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os negócios": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um negócio existente",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Merge1",
+            "node": "Atualizar um negócio existente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Adicionar comentário ao lead",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code3": {
+    "Criar um novo lead1": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo lead1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados1": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Buscar todos os negócios1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os negócios1": {
       "main": [
         [
           {
@@ -2289,394 +1107,47 @@
         ]
       ]
     },
-    "procura lead": {
+    "Switch": {
       "main": [
         [
           {
-            "node": "Code3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge1": {
-      "main": [
-        [
-          {
-            "node": "Switch2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code4": {
-      "main": [
-        [
-          {
-            "node": "Update a row1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows1": {
-      "main": [
-        [
-          {
-            "node": "Code4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update a row1": {
-      "main": [
-        [
-          {
-            "node": "Code5",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields3": {
-      "main": [
-        [
-          {
-            "node": "cria contato1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code5": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch3": {
-      "main": [
-        [
-          {
-            "node": "Send template2",
+            "node": "Atualizar um negócio existente1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Send template3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send template2": {
-      "main": [
-        [
-          {
-            "node": "recadastro3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send template3": {
-      "main": [
-        [
-          {
-            "node": "recadastro2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get a row2": {
-      "main": [
-        [
-          {
-            "node": "If2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If2": {
-      "main": [
-        [
-          {
-            "node": "Update a row2",
+            "node": "Atualizar um negócio existente1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Criar Cliente1",
+            "node": "Adicionar comentário ao lead1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Create new notes3": {
+    "Criar um novo lead": {
       "main": [
         [
           {
-            "node": "Get a row3",
+            "node": "Criar um novo negócio",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Create new notes4": {
+    "If": {
       "main": [
         [
           {
-            "node": "Get a row2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get a row3": {
-      "main": [
-        [
-          {
-            "node": "If2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "recadastro3": {
-      "main": [
-        [
-          {
-            "node": "Create new notes4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "recadastro2": {
-      "main": [
-        [
-          {
-            "node": "Create new notes3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript": {
-      "main": [
-        [
-          {
-            "node": "Switch3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch2": {
-      "main": [
-        [
-          {
-            "node": "recadastro1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "recadastro1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Update leads2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch4": {
-      "main": [
-        [
-          {
-            "node": "Send template",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Send template4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send template": {
-      "main": [
-        [
-          {
-            "node": "recadastro4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send template4": {
-      "main": [
-        [
-          {
-            "node": "recadastro5",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get a row": {
-      "main": [
-        [
-          {
-            "node": "If3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If3": {
-      "main": [
-        [
-          {
-            "node": "Update a row3",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Criar Cliente",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new notes": {
-      "main": [
-        [
-          {
-            "node": "Get a row4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new notes5": {
-      "main": [
-        [
-          {
-            "node": "Get a row",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get a row4": {
-      "main": [
-        [
-          {
-            "node": "If3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "recadastro4": {
-      "main": [
-        [
-          {
-            "node": "Create new notes5",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "recadastro5": {
-      "main": [
-        [
-          {
-            "node": "Create new notes",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "Switch4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update leads1": {
-      "main": [
-        [
-          {
-            "node": "Create new notes2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If4": {
-      "main": [
-        [
-          {
-            "node": "Get many rows",
+            "node": "Criar um novo lead",
             "type": "main",
             "index": 0
           }
@@ -2690,22 +1161,69 @@
         ]
       ]
     },
-    "Update leads2": {
+    "dados": {
       "main": [
         [
           {
-            "node": "Create new notes6",
+            "node": "If4",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get list of contacts": {
+    "If4": {
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table2",
             "type": "main",
             "index": 0
           }
@@ -2727,21 +1245,21 @@
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
             "user-agent": "Google-Ads-Notifications",
-            "content-length": "864",
+            "content-length": "876",
             "accept-encoding": "gzip, deflate, br",
             "content-type": "application/json",
             "from": "Google-Ads-Notifications(at)GoogleAdsNotifications.com",
-            "x-forwarded-for": "66.249.83.106",
+            "x-forwarded-for": "66.249.88.232",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "66.249.83.106"
+            "x-real-ip": "66.249.88.232"
           },
           "params": {},
           "query": {},
           "body": {
-            "lead_id": "018344323848716fd67190d84f2cf372361ce53abbabd6b026931c3ccc4ce706c67fd231af1d363a993b0ce2f1b7d7",
+            "lead_id": "012de882c92ade867be7f642357757367f082c841488b8cf40c1e8b52805f3f30f355761ff8c228ccdf86aeb754bdd",
             "user_column_data": [
               {
                 "column_name": "Em que programa tem interesse?",
@@ -2750,36 +1268,36 @@
               },
               {
                 "column_name": "Full Name",
-                "string_value": "Marcelo Silva",
+                "string_value": "Kauane Almeida",
                 "column_id": "FULL_NAME"
               },
               {
                 "column_name": "User Phone",
-                "string_value": "+5521994237787",
+                "string_value": "+5516991608512",
                 "column_id": "PHONE_NUMBER"
               },
               {
                 "column_name": "User Email",
-                "string_value": "marcelopet91@gmail.com",
+                "string_value": "kauanealmeidaalmeida3@gmail.com",
                 "column_id": "EMAIL"
               },
               {
                 "column_name": "City",
-                "string_value": "RiodeJaneiro",
+                "string_value": "RibeirãoPreto",
                 "column_id": "CITY"
               }
             ],
             "api_version": "1.0",
             "form_id": 75638173899,
-            "campaign_id": 19872554140,
+            "campaign_id": 23042122296,
             "google_key": "0420e21a-689d-4483-8218-b31aac6494f9",
             "is_test": false,
             "gcl_id": "",
             "adgroup_id": 0,
             "creative_id": 0,
-            "asset_group_id": 6463687008,
+            "asset_group_id": 6612210446,
             "lead_stage": "Raw lead",
-            "lead_submit_time": "2025-09-18T15:30:25.235311Z"
+            "lead_submit_time": "2025-12-12T03:32:18.596025Z"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/880e7b71-fbb8-4f91-91c3-14359444f0e4",
           "executionMode": "production"
@@ -2791,8 +1309,8 @@
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
-            "content-length": "79",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36",
+            "content-length": "78",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -2803,27 +1321,31 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "187.48.101.118",
+            "x-forwarded-for": "191.56.148.34",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "187.48.101.118"
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-real-ip": "191.56.148.34"
           },
           "params": {},
           "query": {},
           "body": {
-            "nome": "LILIAN RIBEIRO FERREIRA",
-            "celular": "11982887079",
+            "nome": "Luciano Freitas Santos",
+            "celular": "11956969983",
             "tipo": "Graduação"
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/criacao_leads_sumare",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "6e93001e-01d7-4695-8f6e-14b63932297f",
+  "versionId": "bd464ecd-e152-4887-9328-880331668e9d",
+  "activeVersionId": "bd464ecd-e152-4887-9328-880331668e9d",
   "triggerCount": 2,
   "shared": [
     {
@@ -2834,5 +1356,1241 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2026-01-28T14:51:07.000Z",
+    "createdAt": "2026-01-28T14:51:05.124Z",
+    "versionId": "bd464ecd-e152-4887-9328-880331668e9d",
+    "workflowId": "Lec74yhTDupOfWxT",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "criacao_leads_sumare",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -1408,
+          496
+        ],
+        "id": "31e7c720-46dc-416f-9828-c959329df7d6",
+        "name": "Webhook",
+        "webhookId": "4691095e-ed75-4e0d-bc75-daffa5937dda"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "880e7b71-fbb8-4f91-91c3-14359444f0e4",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -1472,
+          1168
+        ],
+        "id": "e57cb40b-30bd-448b-a363-37062370e417",
+        "name": "Webhook1",
+        "webhookId": "880e7b71-fbb8-4f91-91c3-14359444f0e4"
+      },
+      {
+        "parameters": {
+          "amount": 30
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -800,
+          1072
+        ],
+        "id": "2b0d495f-7800-4d3e-91cf-e5b4bef6371f",
+        "name": "Wait1",
+        "webhookId": "3fa03a24-3360-4e8b-982a-7571d3b418ad"
+      },
+      {
+        "parameters": {
+          "content": "## google ads\n",
+          "height": 640,
+          "width": 3808,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -1584,
+          928
+        ],
+        "id": "73a91833-ae55-4cda-99ba-aa243aedc259",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## site sumaread\n",
+          "height": 656,
+          "width": 3856,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -1632,
+          192
+        ],
+        "id": "b65578be-c561-4615-9da3-2460af49a7c8",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          -128,
+          1184
+        ],
+        "id": "db856925-36ae-4a90-8cb7-661bbef8da4f",
+        "name": "Merge2"
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar todos os negócios').first().json.data[0].id }}",
+          "leadId": "={{ $('Buscar todos os negócios').first().json.data[0].leadId }}",
+          "pipelineId": "group_header_SUMARE",
+          "stageId": "f29a213e-ec38-4325-bb46-c5187e391b15",
+          "attendantId": "={{ $json.data[0].attendant.id }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          320,
+          1088
+        ],
+        "id": "209ba3ba-c54e-4aeb-a79d-56f9ef65c505",
+        "name": "Atualizar um negócio existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Buscar todos os negócios').item.json.data[0].leadId }}",
+          "name": "={{ $json.lead.name }}",
+          "phone": "={{ $json.lead.contacts[0].contactId }}",
+          "source": "SITE - SUMAREAD",
+          "additionalFields": {
+            "tags": [
+              "3b53c389-2a09-457e-a575-a4a522d00ec3"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          544,
+          1088
+        ],
+        "id": "7027359c-0036-4465-b60f-0b5b9832977d",
+        "name": "Atualizar um lead existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "options": {
+            "search": "={{ $('dados1').item.json.telefone }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -576,
+          1072
+        ],
+        "id": "3b38facb-0605-43e3-8338-b6c2112a8473",
+        "name": "Buscar todos os negócios",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "annotations",
+          "operation": "create",
+          "leadId": "={{ $json.data[0].leadId }}",
+          "note": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          320,
+          1280
+        ],
+        "id": "1dd63d46-5531-41a7-84f7-24ca765c0479",
+        "name": "Adicionar comentário ao lead",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.data[0].stageId }}",
+                      "rightValue": "8cdb6089-d8fb-4077-aa7a-69bf1d3db477",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
+                      "leftValue": "={{ $json.data[0].stageId }}",
+                      "rightValue": "fd2c4e1f-f7ab-46cb-8ce4-85243afc43f4\"",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          96,
+          1168
+        ],
+        "id": "8383143b-b3f6-4693-b7cb-266cb9c29ea9",
+        "name": "Switch1"
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "name": "={{ $('dados1').item.json.nome }}",
+          "email": "={{ $('dados1').item.json.email || '' }}",
+          "phone": "=55{{ $('dados1').item.json.telefone }}",
+          "source": "google ads_sumare",
+          "additionalFields": {
+            "tags": [
+              "5d302e72-6a48-4840-a0e0-4bab94267622"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          0,
+          944
+        ],
+        "id": "04d59619-268c-4e03-a472-87eca39a259f",
+        "name": "Criar um novo lead1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "create",
+          "leadId": "={{ $json.id }}",
+          "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+          "stageId": "5f0b194a-ea51-46d0-afc3-43d662e7424f",
+          "attendantId": "=",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          224,
+          944
+        ],
+        "id": "b62f81ec-3cd7-4425-9205-040c304c00d1",
+        "name": "Criar um novo negócio1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
+                "leftValue": "={{ $json.count }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -352,
+          1072
+        ],
+        "id": "6c2670e7-0ff0-4d30-ab7b-e55d998e4999",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "31c410a6-9941-45fd-9e3b-7536194c7206",
+                "name": "tipo",
+                "value": "={{ $json.body.user_column_data[0].string_value }}",
+                "type": "string"
+              },
+              {
+                "id": "5ed3c871-a609-4c41-8649-a7dfe07a9e67",
+                "name": "nome",
+                "value": "={{ $json.body.user_column_data[1].string_value.replace('+', '') }}",
+                "type": "string"
+              },
+              {
+                "id": "f3a71701-7c91-4b76-98de-81b61004908f",
+                "name": "email",
+                "value": "={{ $json.body.user_column_data[3].string_value }}",
+                "type": "string"
+              },
+              {
+                "id": "27488890-7bf0-456b-a9c9-1340dc5cbf08",
+                "name": "telefone",
+                "value": "={{ $json.body.user_column_data[2].string_value }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1248,
+          1168
+        ],
+        "id": "509a3646-334f-4f9b-9bca-1a22ff32446b",
+        "name": "dados1"
+      },
+      {
+        "parameters": {
+          "amount": 30
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -576,
+          528
+        ],
+        "id": "4934dcea-588c-449a-9c36-3760eb4480d8",
+        "name": "Wait",
+        "webhookId": "3fa03a24-3360-4e8b-982a-7571d3b418ad"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          432,
+          592
+        ],
+        "id": "0d34001e-f9f6-42b6-851b-0750e3c1b03e",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar todos os negócios1').first().json.data[0].id }}",
+          "leadId": "={{ $('Buscar todos os negócios1').first().json.data[0].leadId }}",
+          "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+          "stageId": "b51e4a2a-13f7-4e19-8ac0-ea261e860b9a",
+          "attendantId": "={{ $json.data[0].attendant.id }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          880,
+          496
+        ],
+        "id": "7a39f974-6793-4b46-9677-158ea94b6dd4",
+        "name": "Atualizar um negócio existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Buscar todos os negócios1').item.json.data[0].leadId }}",
+          "name": "={{ $json.lead.name }}",
+          "phone": "={{ $json.lead.contacts[0].contactId }}",
+          "source": "SITE - SUMAREAD",
+          "additionalFields": {
+            "tags": [
+              "3b53c389-2a09-457e-a575-a4a522d00ec3"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          1088,
+          496
+        ],
+        "id": "d490c6df-218b-4e89-b68c-e33626152e19",
+        "name": "Atualizar um lead existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "options": {
+            "search": "={{ $('dados').item.json.telefone }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          544
+        ],
+        "id": "7875d00f-5611-4e1a-a03b-5ef077275a36",
+        "name": "Buscar todos os negócios1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "annotations",
+          "operation": "create",
+          "leadId": "={{ $json.data[0].leadId }}",
+          "note": "Aluno teve uma nova interação no site, fala que ELE QUER MATRICULAR!!!!"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          880,
+          688
+        ],
+        "id": "3917f614-8416-4309-9056-161059745672",
+        "name": "Adicionar comentário ao lead1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.data[0].stageId }}",
+                      "rightValue": "82c83778-4b0f-4139-879e-fb5f6bb470af",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "6c92131b-9059-450c-b2f1-9047bf5f0be9"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "d6c527d5-38b4-4e00-88bb-bab5dfd6413d",
+                      "leftValue": "={{ $json.data[0].stageId }}",
+                      "rightValue": "ac31cf80-7069-4810-9654-d0edfdf4997a",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          656,
+          576
+        ],
+        "id": "9c51a1d9-512b-4f21-bd0d-24e5936576e6",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "name": "={{ $('dados').item.json.nome }}",
+          "email": "=",
+          "phone": "=55{{ $('dados').item.json.telefone }}",
+          "source": "SITE - SUMAREAD",
+          "additionalFields": {
+            "tags": [
+              "5d302e72-6a48-4840-a0e0-4bab94267622"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          416,
+          320
+        ],
+        "id": "db17a193-3052-4356-82c0-dd65c1ef8ecb",
+        "name": "Criar um novo lead",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "create",
+          "leadId": "={{ $json.id }}",
+          "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+          "stageId": "5f0b194a-ea51-46d0-afc3-43d662e7424f",
+          "attendantId": "=",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          640,
+          320
+        ],
+        "id": "bd3c6dfb-c1c3-493c-a83f-5b980cb81d23",
+        "name": "Criar um novo negócio",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "5f1e3be6-2b81-4421-a45c-75af595cea49",
+                "leftValue": "={{ $json.count }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          80,
+          544
+        ],
+        "id": "214ae5b3-e0e5-4ba4-a414-da25e49c737e",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "31c410a6-9941-45fd-9e3b-7536194c7206",
+                "name": "tipo",
+                "value": "={{ $json.body.tipo }}",
+                "type": "string"
+              },
+              {
+                "id": "5ed3c871-a609-4c41-8649-a7dfe07a9e67",
+                "name": "nome",
+                "value": "={{ $json.body.nome }}",
+                "type": "string"
+              },
+              {
+                "id": "f3a71701-7c91-4b76-98de-81b61004908f",
+                "name": "email",
+                "value": "={{ $json.body.email || \" \" }}",
+                "type": "string"
+              },
+              {
+                "id": "27488890-7bf0-456b-a9c9-1340dc5cbf08",
+                "name": "telefone",
+                "value": "={{ $json.body.celular }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1136,
+          528
+        ],
+        "id": "d4f00fce-001e-4566-84cb-e803e047b666",
+        "name": "dados"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "7ab9aa71-2313-40a5-bb9e-8e0f7a9210c6",
+                "leftValue": "={{ $json.telefone }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -928,
+          528
+        ],
+        "id": "35b37e1e-2bae-4cb6-8d78-a5f113ef7f2b",
+        "name": "If4"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -720,
+          624
+        ],
+        "id": "58e66c39-47f0-40b0-8966-04dc86d97eb3",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "7ab9aa71-2313-40a5-bb9e-8e0f7a9210c6",
+                "leftValue": "={{ $json.telefone }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -1024,
+          1168
+        ],
+        "id": "714d5412-2de5-4808-8927-507e86efa137",
+        "name": "If5"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -800,
+          1264
+        ],
+        "id": "69f4d9ad-79ee-46b5-9b1a-8ec863d60a0a",
+        "name": "No Operation, do nothing1"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "wix_sumare",
+            "mode": "list",
+            "cachedResultName": "wix_sumare"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefone": "={{ $('Webhook').item.json.body.celular }}",
+              "data": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          864,
+          304
+        ],
+        "id": "b357435c-30b8-4a35-ba0d-5d5154b4b5a4",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "OWpYaPo6TqJn4NV3",
+            "name": "banco site soead"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "wix_sumare",
+            "mode": "list",
+            "cachedResultName": "wix_sumare"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefone": "={{ $('Webhook1').item.json.body.user_column_data[2].string_value }}",
+              "data": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          928
+        ],
+        "id": "c4f5d883-7858-490a-b8c3-3e32c3be0beb",
+        "name": "Insert rows in a table2",
+        "credentials": {
+          "postgres": {
+            "id": "OWpYaPo6TqJn4NV3",
+            "name": "banco site soead"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "dados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook1": {
+        "main": [
+          [
+            {
+              "node": "dados1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os negócios",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge2": {
+        "main": [
+          [
+            {
+              "node": "Switch1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os negócios": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch1": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Atualizar um negócio existente",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Adicionar comentário ao lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo lead1": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo negócio1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo lead1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "dados1": {
+        "main": [
+          [
+            {
+              "node": "If5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os negócios1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente1": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os negócios1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Atualizar um negócio existente1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Adicionar comentário ao lead1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo lead": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo lead",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "dados": {
+        "main": [
+          [
+            {
+              "node": "If4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If4": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If5": {
+        "main": [
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo negócio": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo negócio1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version bd464ecd",
+    "description": "",
+    "autosaved": true
+  },
   "tags": []
 }
