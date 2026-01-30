@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2025-11-05T16:56:41.000Z",
+  "updatedAt": "2026-01-09T15:24:03.027Z",
   "createdAt": "2025-08-01T18:08:25.175Z",
   "id": "Bytg5Eu5Z9nlt1Q7",
   "name": "api_sumare",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -114,7 +114,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1440,
+        1552,
         176
       ],
       "id": "51f3e528-452c-43aa-ab70-acbce654ef1f",
@@ -125,40 +125,12 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1664,
-        -96
+        1728,
+        -64
       ],
       "id": "64a6038c-2237-4801-872b-8d12b48a98a5",
       "name": "No Operation, do nothing",
       "executeOnce": true
-    },
-    {
-      "parameters": {
-        "url": "=https://sumaread.kommo.com/api/v4/leads?with=contact&query=+55{{ $('filtro ids maiores').item.json.celular }}&filter[statuses][0][pipeline_id]=5617751",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "=application/json"
-            },
-            {
-              "name": "authorization",
-              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjdkMzJjZmMwZWY2MGVmNWQ3MTkwNTZkYmUxOGQzOTRmMDc2NzQ1YjVhMjc1NjEyZjlkNDBkNjgwZDc0NzJlMWQ2NzM2ZmIzNTI3MmRkNzk4In0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI3ZDMyY2ZjMGVmNjBlZjVkNzE5MDU2ZGJlMThkMzk0ZjA3Njc0NWI1YTI3NTYxMmY5ZDQwZDY4MGQ3NDcyZTFkNjczNmZiMzUyNzJkZDc5OCIsImlhdCI6MTc1NDUxMTc0NywibmJmIjoxNzU0NTExNzQ3LCJleHAiOjE3Njk2NDQ4MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiMmUyYTVlMDMtM2MxZi00NzVhLTk0ZjQtN2Q2OTQ0YzJkZjliIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.RMyonc2PFiARdUlnypo1RArNKS0hInZbIuEyNgOUnsE6IJLHfXfPeXYlAREpeadBXvBNvGjtpTKCsqba89f49Ea01AiDWTkjyj6oLq9sLu4_MFFgA8VHyldj8XAGNpj7jfcwXEX0hLTOJXGSMRwLX2DAghngPc5TYtbiqMl4QbuJH7uXiPDrwhIObdk3MwBQwYA0RGNUrH8TUJuOCxteWKHnGX2HMJfqPr86c26nDniYYFq3ws4JYR5dPZjTLkOBt2Ji6U2zaYx_3rTNY2F3qoKfG0rHJIYKYAnaJap_-dVs9PatYGTpsqeouxGWIgHzj5ciHmeBoDtIaVsGooT2xw"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1888,
-        96
-      ],
-      "id": "54c83863-1332-4eb4-bf38-b5fbed8bd830",
-      "name": "HTTP Request1",
-      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -245,96 +217,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2736,
-        -144
+        3440,
+        -368
       ],
       "id": "4beb52c7-4474-419a-8a91-8ce5e9a4268a",
       "name": "Switch"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json.data._embedded.leads[0].id }}",
-              "pipeline_id": 5617751,
-              "status_id": 142,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
-                  },
-                  {
-                    "data": "{\"id\":662154,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
-                  },
-                  {
-                    "data": "{\"id\":662144,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  },
-                  {
-                    "data": "{\"id\":676343,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":673370,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.concurso || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.status }}"
-                  },
-                  {
-                    "data": "{\"id\":662156,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.turno || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662152,\"type\":\"text\"}",
-                    "value": "={{\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :\n  $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"]\n}}"
-                  },
-                  {
-                    "data": "{\"id\":669742,\"type\":\"text\"}",
-                    "value": "={{ +$('filtro ids maiores').item.json.aluno }}"
-                  },
-                  {
-                    "data": "{\"id\":662148,\"type\":\"date\"}",
-                    "value": "={{ \n  DateTime\n    .fromFormat($('filtro ids maiores').item.json.dtInscricao, 'MM-dd-yyyy', { zone: 'utc' })\n    .startOf('day')\n    .toFormat('X')            // <-- timestamp em segundos (o que o Kommo quer)\n}}\n\n"
-                  },
-                  {
-                    "data": "{\"id\":662150,\"type\":\"date\"}",
-                    "value": "={{\n  $('filtro ids maiores').item.json.dtMatricula\n    ? DateTime\n        .fromFormat($('filtro ids maiores').item.json.dtMatricula, 'MM-dd-yyyy', { zone: 'utc' })\n        .startOf('day')\n        .toFormat('X')\n    : null\n}}\n"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Inscrição - Sumaré"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3456,
-        -304
-      ],
-      "id": "95d2c29d-e092-41ed-acc7-d7da7acff3cf",
-      "name": "Update leads",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
     },
     {
       "parameters": {
@@ -348,34 +235,33 @@
           "conditions": [
             {
               "id": "b04af75c-9c81-40cc-a060-c8e908842c0f",
-              "leftValue": "={{ Array.isArray($json) && ($json.length === 0 || ($json.length === 1 && Object.keys($json[0]).length === 0)) }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.count }}",
+              "rightValue": 0,
               "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
+                "type": "number",
+                "operation": "notEquals"
               }
             },
             {
-              "id": "c3c1e341-b9a9-4a07-85e1-6eb379ac5c09",
+              "id": "889f46b6-c016-4109-a772-53469a760ff1",
               "leftValue": "={{ $json.data }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "exists",
+                "type": "array",
+                "operation": "notEmpty",
                 "singleValue": true
               }
             }
           ],
-          "combinator": "or"
+          "combinator": "and"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2112,
-        96
+        3200,
+        144
       ],
       "id": "4cc5f803-77c3-403d-9dad-19180d759c4c",
       "name": "If"
@@ -465,8 +351,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2560,
-        448
+        2976,
+        1280
       ],
       "id": "a1721853-3e34-4992-9482-f4595c2ee5a0",
       "name": "Switch2"
@@ -476,244 +362,11 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2336,
-        464
+        2752,
+        1296
       ],
       "id": "8997dc5e-c7a7-4473-86ed-0677c0eef78d",
       "name": "Merge"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "1841528e-4b7a-4123-84cd-6d7abf406b40",
-              "name": "data",
-              "value": "={{ $json.data }}",
-              "type": "object"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2560,
-        -128
-      ],
-      "id": "5a27e407-7582-44e7-8744-cc8808f2bf06",
-      "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json.data._embedded.leads[0].id }}",
-              "pipeline_id": 5617751,
-              "status_id": 0,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
-                  },
-                  {
-                    "data": "{\"id\":662154,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
-                  },
-                  {
-                    "data": "{\"id\":662144,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  },
-                  {
-                    "data": "{\"id\":676343,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":673370,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.concurso || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.status }}"
-                  },
-                  {
-                    "data": "{\"id\":662156,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.turno }}"
-                  },
-                  {
-                    "data": "{\"id\":662152,\"type\":\"text\"}",
-                    "value": "={{   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] }}"
-                  },
-                  {
-                    "data": "{\"id\":693635,\"type\":\"select\"}",
-                    "value": "Recebida"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Inscrição - Sumaré"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3232,
-        -112
-      ],
-      "id": "ab0aedff-49f9-43db-904e-607d7d322b7a",
-      "name": "Update leads1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "Candidato acetou o contrato"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3456,
-        -112
-      ],
-      "id": "83ab2772-2362-4f70-a583-7d7b8fb1c544",
-      "name": "Create new notes",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json.data._embedded.leads[0].id }}",
-              "pipeline_id": 5617751,
-              "status_id": 0,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
-                  },
-                  {
-                    "data": "{\"id\":662154,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
-                  },
-                  {
-                    "data": "{\"id\":662144,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  },
-                  {
-                    "data": "{\"id\":676343,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":673370,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.concurso || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.status }}"
-                  },
-                  {
-                    "data": "{\"id\":662156,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.turno }}"
-                  },
-                  {
-                    "data": "{\"id\":662152,\"type\":\"text\"}",
-                    "value": "={{   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P5\" ? \"Barra Funda\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P6\" ? \"Santo Amaro\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"FS_SP_O1\" ? \"SEDE\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P7\" ? \"Tatuapé\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] === \"ED_SP_P8\" ? \"Santana\" :   $item(\"0\").$node[\"filtro ids maiores\"].json[\"unidadeFisica\"] }}"
-                  },
-                  {
-                    "data": "{\"id\":693635,\"type\":\"select\"}",
-                    "value": "Recebida"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Inscrição - Sumaré"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3200,
-        80
-      ],
-      "id": "7b043244-adea-4e89-8760-317bca3e058c",
-      "name": "Update leads2",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "Candidato realizou a inscrição"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3456,
-        80
-      ],
-      "id": "810cd83c-34ad-4cac-b017-53e4a1102d01",
-      "name": "Create new notes1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
     },
     {
       "parameters": {
@@ -772,402 +425,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        1664,
-        96
+        1808,
+        176
       ],
       "id": "6d71064f-c2ad-4fff-a067-be92c74b518f",
       "name": "Update row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "By4ggNOanXLS64XE",
-          "name": "powerbieduit"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        3760,
-        240
-      ],
-      "id": "a93c5fdd-c701-40ea-8e92-fe2770d00e88",
-      "name": "Wait",
-      "webhookId": "4b750ebf-ca44-422e-bedb-c5561b57836d"
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        2864,
-        304
-      ],
-      "id": "fe545920-99bf-48e6-942f-50e5f5b23e20",
-      "name": "Create new contacts",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
-            {
-              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
-              "pipeline_id": 5617751,
-              "status_id": 142,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662154,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.cpf }}"
-                  },
-                  {
-                    "data": "{\"id\":662144,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.curso }}"
-                  },
-                  {
-                    "data": "{\"id\":673370,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.concurso }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  },
-                  {
-                    "data": "{\"id\":688527,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.email }}"
-                  },
-                  {
-                    "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.status }}"
-                  },
-                  {
-                    "data": "{\"id\":676343,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || '' }}"
-                  },
-                  {
-                    "data": "{\"id\":669742,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.aluno }}"
-                  },
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}"
-                  },
-                  {
-                    "data": "{\"id\":662148,\"type\":\"date\"}",
-                    "value": "={{ \n  DateTime\n    .fromFormat($('filtro ids maiores').item.json.dtInscricao, 'MM-dd-yyyy', { zone: 'utc' })\n    .startOf('day')\n    .toFormat('X')            // <-- timestamp em segundos (o que o Kommo quer)\n}}\n"
-                  },
-                  {
-                    "data": "{\"id\":662150,\"type\":\"date\"}",
-                    "value": "={{\n  $('filtro ids maiores').item.json.dtMatricula\n    ? DateTime\n        .fromFormat($('filtro ids maiores').item.json.dtMatricula, 'MM-dd-yyyy', { zone: 'utc' })\n        .startOf('day')\n        .toFormat('X')\n    : null\n}}\n"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Inscrição - Sumaré"
-                  }
-                ]
-              },
-              "_embedded": {
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3104,
-        288
-      ],
-      "id": "2c4936b5-4d7a-462a-a688-02bd7f3c32f2",
-      "name": "Create new leads",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        2864,
-        480
-      ],
-      "id": "b83702fb-b3df-4c3e-9d2b-09ad14218223",
-      "name": "Create new contacts1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
-            {
-              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
-              "pipeline_id": 5617751,
-              "status_id": 49518221,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662154,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.cpf || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662144,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.curso || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":673370,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.concurso }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":688527,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.email || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.status }}"
-                  },
-                  {
-                    "data": "{\"id\":676343,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || '' }}"
-                  },
-                  {
-                    "data": "{\"id\":669742,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.aluno || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":693635,\"type\":\"select\"}",
-                    "value": "Recebida"
-                  },
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.nome }}"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Inscrição - Sumaré"
-                  }
-                ]
-              },
-              "_embedded": {
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3104,
-        480
-      ],
-      "id": "20264760-e2c4-4310-af15-5f01d075e1f5",
-      "name": "Create new leads1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":650708,\"type\":\"multitext\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        2784,
-        656
-      ],
-      "id": "27e01d6f-f490-4125-a027-f03df7272a35",
-      "name": "Create new contacts2",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
-            {
-              "name": "={{ $('filtro ids maiores').item.json.nome }} {{ $('filtro ids maiores').item.json.sobrenome }}",
-              "pipeline_id": 5617751,
-              "status_id": 49518851,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":662154,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.cpf || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662144,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.curso || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":673370,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.concurso }}"
-                  },
-                  {
-                    "data": "{\"id\":689125,\"type\":\"text\"}",
-                    "value": "=+55{{ $('filtro ids maiores').item.json.celular || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":688527,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.email || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662146,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.status }}"
-                  },
-                  {
-                    "data": "{\"id\":676343,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.origemInscricao || '' }}"
-                  },
-                  {
-                    "data": "{\"id\":669742,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.aluno || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":662138,\"type\":\"text\"}",
-                    "value": "={{ $('filtro ids maiores').item.json.nome }}"
-                  },
-                  {
-                    "data": "{\"id\":688279,\"type\":\"select\"}",
-                    "value": "Inscrição - Sumaré"
-                  }
-                ]
-              },
-              "_embedded": {
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        3008,
-        656
-      ],
-      "id": "042f856f-6266-49f1-8998-012da4f5b8dc",
-      "name": "Create new leads2",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
+          "id": "WBAzBmkCdwnRet1o",
+          "name": "Google Sheets Mkt Eduit"
         }
       }
     },
@@ -1177,25 +443,55 @@
           "__rl": true,
           "value": "fXWWyKDxkTJ9v7GM",
           "mode": "list",
+          "cachedResultUrl": "/workflow/fXWWyKDxkTJ9v7GM",
           "cachedResultName": "distribuicao_sumare_api"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "id do lead": "={{ $json._embedded.leads[0].id }}"
+            "id_negocio": "={{ $json.id }}",
+            "id_lead": "={{ $('Criar um novo lead1').item.json.id }}",
+            "nome": "={{ $('Criar um novo lead1').item.json.name }}",
+            "telefone": "={{ $('Criar um novo lead1').item.json.phone }}"
           },
           "matchingColumns": [
             ""
           ],
           "schema": [
             {
-              "id": "id do lead",
-              "displayName": "id do lead",
+              "id": "id_lead",
+              "displayName": "id_lead",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "canBeUsedToMatch": true,
-              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "id_negocio",
+              "displayName": "id_negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
               "removed": false
             }
           ],
@@ -1208,35 +504,12 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        3744,
-        496
+        4384,
+        1312
       ],
       "id": "1b78c37d-9c1b-492b-ab4c-1a89b1e14feb",
       "name": "Execute Workflow",
       "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "b0665ca6-259c-4917-937e-64603dfce469",
-              "name": "={{ $json._embedded.leads[0].id }}",
-              "value": "={{ $json._embedded.leads[0].id }}",
-              "type": "number"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        3232,
-        656
-      ],
-      "id": "8a520116-e168-4975-9497-64d1e1bd144d",
-      "name": "Edit Fields"
     },
     {
       "parameters": {
@@ -1341,8 +614,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1440,
-        368
+        1408,
+        448
       ],
       "id": "93f1142e-b9f8-4289-82fa-566843e08ec7",
       "name": "No Operation, do nothing2"
@@ -1353,25 +626,55 @@
           "__rl": true,
           "value": "fXWWyKDxkTJ9v7GM",
           "mode": "list",
+          "cachedResultUrl": "/workflow/fXWWyKDxkTJ9v7GM",
           "cachedResultName": "distribuicao_sumare_api"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "id do lead": "={{ $('Create new leads2').item.json._embedded.leads[0].id }}"
+            "id_lead": "={{ $('Criar um novo lead').item.json.id }}",
+            "nome": "={{ $('Criar um novo lead').item.json.name }}",
+            "id_negocio": "={{ $json.id }}",
+            "telefone": "={{ $('Criar um novo lead').item.json.contacts[1].contactId }}"
           },
           "matchingColumns": [
             ""
           ],
           "schema": [
             {
-              "id": "id do lead",
-              "displayName": "id do lead",
+              "id": "id_lead",
+              "displayName": "id_lead",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "canBeUsedToMatch": true,
-              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "id_negocio",
+              "displayName": "id_negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
               "removed": false
             }
           ],
@@ -1384,12 +687,1113 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        3504,
-        656
+        4416,
+        1584
       ],
       "id": "db45ff60-e8fe-498d-8468-908bb3f5dbcd",
       "name": "Execute Workflow1",
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('Loop Over Items').first().json.nome }} {{ $('Loop Over Items').first().json.sobrenome }}",
+        "email": "={{ $('Loop Over Items').first().json.email }}",
+        "phone": "=55{{ $('Loop Over Items').first().json.celular }}",
+        "source": "Inscrição - Sumaré",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3184,
+        1632
+      ],
+      "id": "f7da981c-8a01-4f02-a9a5-5f95158173b3",
+      "name": "Criar um novo lead",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "f59220d0-a6ff-4bce-ba87-f01755ba8288",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3456,
+        1648
+      ],
+      "id": "a14dcefb-d940-4be5-9e0d-fa9c2f5b5a94",
+      "name": "Criar um novo negócio",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('Loop Over Items').first().json.nome }} {{ $('Loop Over Items').first().json.sobrenome }}",
+        "email": "={{ $('Loop Over Items').first().json.email }}",
+        "phone": "=55{{ $('Loop Over Items').first().json.celular }}",
+        "source": "Inscrição - Sumaré",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3408,
+        1328
+      ],
+      "id": "455a5a0a-328a-4f96-bee6-4f14f45d2db9",
+      "name": "Criar um novo lead1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "5f0b194a-ea51-46d0-afc3-43d662e7424f",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3616,
+        1344
+      ],
+      "id": "97cd7788-2125-4d62-83a3-8ec70c6792b6",
+      "name": "Criar um novo negócio1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "f59220d0-a6ff-4bce-ba87-f01755ba8288",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3664,
+        -96
+      ],
+      "id": "849a6a7d-a395-4285-aedf-972e26dab01e",
+      "name": "Atualizar um negócio existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "options": {
+          "search": "={{ $('filtro ids maiores').item.json.celular }}",
+          "filters": []
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        112
+      ],
+      "id": "1bd45c88-7d38-4dc6-9dbd-a330ff94f0cd",
+      "name": "Buscar todos os negócios1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "search": "=55{{ $('filtro ids maiores').item.json.celular }}",
+          "filters": []
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2256,
+        144
+      ],
+      "id": "ff20cdfd-07e1-4b50-917a-aee56df765a7",
+      "name": "Buscar todos os leads",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "name": "={{ $('Buscar todos os leads').item.json.data[0].name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Buscar todos os leads').item.json.data[0].phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "5c0ac2e8-745d-4854-8ba8-0f13bec04ac3"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3952,
+        -112
+      ],
+      "id": "1d8074a3-5ea5-4997-b092-49d1323e0217",
+      "name": "Atualizar um lead existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "ea747ec6-a5da-455c-90cf-0d663055b8a9",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3664,
+        -288
+      ],
+      "id": "8a3332b4-545a-4e47-8a5d-a1a5fbe1e939",
+      "name": "Atualizar um negócio existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "name": "={{ $('Buscar todos os leads').item.json.data[0].name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Buscar todos os leads').item.json.data[0].phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "c067ba14-6809-441a-b68b-fe99ae5bebd2"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3952,
+        -304
+      ],
+      "id": "776e55bc-6f3b-4015-bb68-820bdadddba1",
+      "name": "Atualizar um lead existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "5cb02829-6a5e-4ace-a0b9-e10c5a2d96c4",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3744,
+        -688
+      ],
+      "id": "1964a348-a69e-4c5a-9e0d-c01ea6763066",
+      "name": "Atualizar um negócio existente2",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "name": "={{ $('Buscar todos os leads').item.json.data[0].name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Buscar todos os leads').item.json.data[0].phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "7de15f40-ec91-407e-9d93-6ed53ed21abe"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3952,
+        -704
+      ],
+      "id": "0a24b181-6fd6-4cec-aaa3-2c22d9eecd2f",
+      "name": "Atualizar um lead existente2",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('Loop Over Items').first().json.nome }} {{ $('Loop Over Items').first().json.sobrenome }}",
+        "email": "={{ $('Loop Over Items').first().json.email }}",
+        "phone": "=55{{ $('Loop Over Items').first().json.celular }}",
+        "source": "Inscrição - Sumaré",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3488,
+        1056
+      ],
+      "id": "975acdd4-c187-4d47-99c7-365b2afb783b",
+      "name": "Criar um novo lead2",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "ce7983b4-2dd2-47fe-947f-643643920a03",
+        "stageId": "5cb02829-6a5e-4ace-a0b9-e10c5a2d96c4",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3728,
+        1072
+      ],
+      "id": "a5da39bf-348e-47ac-b5ba-b4aca1554494",
+      "name": "Criar um novo negócio2",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "sumareeadpolos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "402e49de-1078-4e2e-82a2-50dd53e69742"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42bc4a9c-167a-4709-89d8-520fba142337",
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "leadeduit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        4288,
+        -816
+      ],
+      "id": "f6e82771-cd04-41bd-b4f3-fade79b24d12",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente2').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente2').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente2').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "3cc85a04-d201-44ae-a372-9c501b37a75d"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4608,
+        -944
+      ],
+      "id": "3b381ea6-d6c5-4e3a-8b1b-75f3f6e1bea2",
+      "name": "Atualizar um lead existente3",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente2').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente2').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente2').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "4a869f9c-8ff6-4d0b-b7b9-19b242151d4b"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4688,
+        -800
+      ],
+      "id": "71fb7f4f-043e-4d98-89ef-c41a297eaecc",
+      "name": "Atualizar um lead existente4",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "sumareeadpolos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "402e49de-1078-4e2e-82a2-50dd53e69742"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42bc4a9c-167a-4709-89d8-520fba142337",
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "leadeduit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        4224,
+        -384
+      ],
+      "id": "010e025f-2d3a-4caf-9868-90a9b5fd215a",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente1').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente1').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente1').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "3cc85a04-d201-44ae-a372-9c501b37a75d"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4528,
+        -544
+      ],
+      "id": "37a5fe53-7d30-4ac3-a84c-96ace3e11e47",
+      "name": "Atualizar um lead existente5",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente1').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente1').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente1').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "4a869f9c-8ff6-4d0b-b7b9-19b242151d4b"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4592,
+        -400
+      ],
+      "id": "5e8f45c7-1a43-4321-aded-7d6025c5188d",
+      "name": "Atualizar um lead existente6",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "sumareeadpolos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "402e49de-1078-4e2e-82a2-50dd53e69742"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42bc4a9c-167a-4709-89d8-520fba142337",
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "leadeduit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        4176,
+        -96
+      ],
+      "id": "48218026-50fe-4da4-87f2-2db8d4ca131c",
+      "name": "Switch4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "3cc85a04-d201-44ae-a372-9c501b37a75d"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4480,
+        -208
+      ],
+      "id": "0f767586-520e-4b7c-8f22-22151f2d6432",
+      "name": "Atualizar um lead existente7",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "4a869f9c-8ff6-4d0b-b7b9-19b242151d4b"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4432,
+        48
+      ],
+      "id": "86916f96-c118-44b3-a257-bff467d54d0e",
+      "name": "Atualizar um lead existente8",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "sumareeadpolos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "402e49de-1078-4e2e-82a2-50dd53e69742"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42bc4a9c-167a-4709-89d8-520fba142337",
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "leadeduit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        4016,
+        992
+      ],
+      "id": "5f5baae4-c486-4b6d-ae84-7b9cd0103d88",
+      "name": "Switch5"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Criar um novo negócio2').item.json.id }}",
+        "name": "={{ $('Criar um novo lead2').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Criar um novo lead2').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "3cc85a04-d201-44ae-a372-9c501b37a75d"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4656,
+        816
+      ],
+      "id": "503444a9-3f5d-4845-b854-7231d95a01fd",
+      "name": "Atualizar um lead existente9",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Atualizar um lead existente2').item.json.id }}",
+        "name": "={{ $('Atualizar um lead existente2').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Atualizar um lead existente2').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "4a869f9c-8ff6-4d0b-b7b9-19b242151d4b"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4736,
+        1040
+      ],
+      "id": "85626598-64e5-4f31-aec1-4cddac1bd5d4",
+      "name": "Atualizar um lead existente10",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "sumareeadpolos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "402e49de-1078-4e2e-82a2-50dd53e69742"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42bc4a9c-167a-4709-89d8-520fba142337",
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "leadeduit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        3632,
+        1952
+      ],
+      "id": "6fe01e7a-97b2-42f7-a569-d976f398a00c",
+      "name": "Switch6"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Criar um novo lead').item.json.id }}",
+        "name": "={{ $('Criar um novo lead').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Criar um novo lead').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "3cc85a04-d201-44ae-a372-9c501b37a75d"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        3904,
+        1744
+      ],
+      "id": "23c06123-9856-4bd9-90d3-25498d24e176",
+      "name": "Atualizar um lead existente11",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "sumareeadpolos",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "402e49de-1078-4e2e-82a2-50dd53e69742"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42bc4a9c-167a-4709-89d8-520fba142337",
+                    "leftValue": "={{ $('Loop Over Items').item.json.origemInscricao }}",
+                    "rightValue": "leadeduit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        3776,
+        1360
+      ],
+      "id": "9fb0dc4c-24c7-4422-9fd9-21f0ad7edae0",
+      "name": "Switch7"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Criar um novo negócio1').item.json.id }}",
+        "name": "={{ $('Criar um novo lead1').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Criar um novo lead1').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "3cc85a04-d201-44ae-a372-9c501b37a75d"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4064,
+        1232
+      ],
+      "id": "825a1b1a-5a6b-48b0-80aa-6b307f56d36a",
+      "name": "Atualizar um lead existente13",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Criar um novo lead1').item.json.id }}",
+        "name": "={{ $('Criar um novo lead1').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Criar um novo lead1').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "4a869f9c-8ff6-4d0b-b7b9-19b242151d4b"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        1504
+      ],
+      "id": "53903504-c88b-4ce3-a3d0-bae717e23368",
+      "name": "Atualizar um lead existente14",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Criar um novo lead').item.json.id }}",
+        "name": "={{ $('Criar um novo lead').item.json.name }}",
+        "email": "={{ $('Buscar todos os leads').item.json.data[0].email }}",
+        "phone": "={{ $('Criar um novo lead').item.json.phone }}",
+        "source": "Inscrição - Sumare",
+        "additionalFields": {
+          "tags": [
+            "4a869f9c-8ff6-4d0b-b7b9-19b242151d4b"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        4160,
+        2032
+      ],
+      "id": "a0ff4a18-5a1a-4f92-b9a7-98a2013d7b20",
+      "name": "Atualizar um lead existente12",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6448,
+        336
+      ],
+      "id": "a93c5fdd-c701-40ea-8e92-fe2770d00e88",
+      "name": "Wait",
+      "webhookId": "4b750ebf-ca44-422e-bedb-c5561b57836d"
     }
   ],
   "connections": {
@@ -1455,36 +1859,25 @@
         ]
       ]
     },
-    "HTTP Request1": {
-      "main": [
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Switch": {
       "main": [
         [
           {
-            "node": "Update leads",
+            "node": "Atualizar um negócio existente2",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Update leads1",
+            "node": "Atualizar um negócio existente1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Update leads2",
+            "node": "Atualizar um negócio existente",
             "type": "main",
             "index": 0
           }
@@ -1495,7 +1888,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields1",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -1520,88 +1913,11 @@
         ]
       ]
     },
-    "Edit Fields1": {
-      "main": [
-        [
-          {
-            "node": "Switch",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update leads1": {
-      "main": [
-        [
-          {
-            "node": "Create new notes",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update leads2": {
-      "main": [
-        [
-          {
-            "node": "Create new notes1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Update row in sheet": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update leads": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new notes": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new notes1": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
+            "node": "Buscar todos os leads",
             "type": "main",
             "index": 0
           }
@@ -1612,87 +1928,21 @@
       "main": [
         [
           {
-            "node": "Create new contacts",
+            "node": "Criar um novo lead2",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Create new contacts1",
+            "node": "Criar um novo lead1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Create new contacts2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new contacts": {
-      "main": [
-        [
-          {
-            "node": "Create new leads",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new leads": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new contacts1": {
-      "main": [
-        [
-          {
-            "node": "Create new leads1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new leads1": {
-      "main": [
-        [
-          {
-            "node": "Execute Workflow",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new contacts2": {
-      "main": [
-        [
-          {
-            "node": "Create new leads2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create new leads2": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
+            "node": "Criar um novo lead",
             "type": "main",
             "index": 0
           }
@@ -1704,17 +1954,6 @@
         [
           {
             "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Execute Workflow1",
             "type": "main",
             "index": 0
           }
@@ -1778,6 +2017,453 @@
           }
         ]
       ]
+    },
+    "Criar um novo lead": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo lead1": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio1": {
+      "main": [
+        [
+          {
+            "node": "Switch7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os negócios1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os leads": {
+      "main": [
+        [
+          {
+            "node": "Buscar todos os negócios1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente1": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente2": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente2": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo lead2": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio2": {
+      "main": [
+        [
+          {
+            "node": "Switch5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio": {
+      "main": [
+        [
+          {
+            "node": "Switch6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente3": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente4": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente5": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente6": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente7": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente8": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch5": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente9": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente10": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch6": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente12",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente11": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch7": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente13",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente14",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente13": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente14": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente12": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1798,22 +2484,26 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-11-05T13:00:58.004-03:00",
-          "Readable date": "November 5th 2025, 1:00:58 pm",
-          "Readable time": "1:00:58 pm",
-          "Day of week": "Wednesday",
-          "Year": "2025",
-          "Month": "November",
+          "timestamp": "2026-01-05T10:00:50.005-03:00",
+          "Readable date": "January 5th 2026, 10:00:50 am",
+          "Readable time": "10:00:50 am",
+          "Day of week": "Monday",
+          "Year": "2026",
+          "Month": "January",
           "Day of month": "05",
-          "Hour": "13",
+          "Hour": "10",
           "Minute": "00",
-          "Second": "58",
+          "Second": "50",
           "Timezone": "America/Sao_Paulo (UTC-03:00)"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "1ad3e91e-88f4-42b7-a31a-d96846ed1719",
+  "versionId": "03e805db-d019-489e-a37c-89331f82f0d8",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -1824,5 +2514,6 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
