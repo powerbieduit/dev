@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2025-11-10T18:07:52.000Z",
+  "updatedAt": "2025-11-28T15:15:23.000Z",
   "createdAt": "2025-09-08T15:14:31.379Z",
   "id": "IgOWFfW4ekpHKPrA",
   "name": "feedback_conversas acad - csv",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -207,8 +207,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -384,
-        400
+        -880,
+        544
       ],
       "id": "49c9c167-7bc9-44cd-b5e4-0a2152224d14",
       "name": "OpenAI Chat Model",
@@ -379,6 +379,42 @@
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.modelSelector",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        432
+      ],
+      "id": "00239908-ae86-4f6f-984b-037365a23c1a",
+      "name": "Model Selector"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -672,
+        608
+      ],
+      "id": "c62bd80f-920c-41dd-bfcb-0a9813ddfa0e",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "connections": {
@@ -463,7 +499,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "Model Selector",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -535,6 +571,28 @@
           }
         ]
       ]
+    },
+    "Model Selector": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Model Selector",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -577,7 +635,8 @@
       }
     ]
   },
-  "versionId": "ad43b597-d167-42da-ae59-ff08d745284d",
+  "versionId": "d45ad050-2964-42c4-be69-4163ed1d1b47",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -588,5 +647,6 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
