@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-05T15:11:11.000Z",
+  "updatedAt": "2026-01-29T15:47:44.666Z",
   "createdAt": "2025-08-13T21:14:23.506Z",
   "id": "II43T9a4h9ftQjga",
   "name": "Dash Academico",
@@ -107,8 +107,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1168,
-        112
+        144,
+        256
       ],
       "id": "6ac604d5-7600-4eb4-ac56-3f0880f6b392",
       "name": "Edit Fields"
@@ -121,8 +121,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        240,
-        96
+        -528,
+        256
       ],
       "id": "9e8e8680-be3f-489b-936d-f90dd041f87e",
       "name": "Extract from File"
@@ -134,8 +134,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        896,
-        112
+        -80,
+        256
       ],
       "id": "2449745a-69a7-43b6-b631-5c9a2b42894d",
       "name": "Code"
@@ -148,25 +148,11 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        608,
-        96
+        -304,
+        256
       ],
       "id": "a90c2797-2cf6-4e60-9b46-16c1d9ce1421",
       "name": "Loop Over Items"
-    },
-    {
-      "parameters": {
-        "amount": 4
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -384,
-        96
-      ],
-      "id": "44e0ff45-4a03-4b8f-87fb-7d9d10a314ee",
-      "name": "Wait2",
-      "webhookId": "a91f3595-df9f-4269-92f2-4ba555f6cea9"
     },
     {
       "parameters": {
@@ -177,16 +163,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1744,
-        -160
+        1040,
+        64
       ],
       "id": "41b3718f-1528-4019-a991-28f00ae13575",
       "name": "run eventos",
       "executeOnce": true,
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
@@ -361,31 +347,17 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1504,
-        112
+        368,
+        256
       ],
       "id": "6721c10b-ff38-4e00-9d6f-72e24213596b",
       "name": "atualiza atuais",
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
-    },
-    {
-      "parameters": {
-        "amount": 10
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -880,
-        96
-      ],
-      "id": "a45ae4f5-26a0-45e1-9cee-254844dfe3bd",
-      "name": "Wait4",
-      "webhookId": "e17e12e5-516b-4633-b58e-2d0e67d74c96"
     },
     {
       "parameters": {
@@ -400,8 +372,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -128,
-        96
+        -752,
+        256
       ],
       "id": "ea47a315-73b5-4ebb-9c06-79b931a3aecb",
       "name": "matriculados",
@@ -425,8 +397,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -880,
-        720
+        -1424,
+        800
       ],
       "id": "0de90042-48cc-4743-b94e-ce1205e49bee",
       "name": "repasse",
@@ -445,8 +417,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -672,
-        720
+        -1200,
+        800
       ],
       "id": "fba62a67-a4ca-4497-8370-488f30742fe4",
       "name": "Extract from File1"
@@ -459,8 +431,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -480,
-        720
+        -976,
+        800
       ],
       "id": "50564503-7eec-4673-8c85-a096b2b61494",
       "name": "Loop Over Items1"
@@ -472,8 +444,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -192,
-        736
+        -752,
+        800
       ],
       "id": "62493f5c-ae77-47d3-a326-540cb93db900",
       "name": "Code1"
@@ -555,8 +527,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        48,
-        736
+        -528,
+        800
       ],
       "id": "37b964da-e10c-45c9-8ebc-dc92570547e0",
       "name": "Edit Fields1"
@@ -568,8 +540,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        496,
-        736
+        -80,
+        880
       ],
       "id": "2fb6a90f-acc6-4282-861b-3119e1a8537b",
       "name": "Wait5",
@@ -580,8 +552,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        96,
-        560
+        -752,
+        608
       ],
       "id": "6b58ae47-90a6-4bfd-a834-1bd8211f0a94",
       "name": "No Operation, do nothing1"
@@ -795,30 +767,30 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        304,
-        736
+        -304,
+        800
       ],
       "id": "aa5d8fad-2f7e-41f4-a05f-c8cef0722db2",
       "name": "inserir repasse",
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
     {
       "parameters": {
-        "content": "## Atualizar Grad\n",
+        "content": "Atualizar Banco\n\n\n\n",
         "height": 784,
-        "width": 3872,
+        "width": 3888,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1008,
-        -288
+        -1536,
+        -304
       ],
       "id": "07316a14-26c0-4736-b0bf-363912b8b483",
       "name": "Sticky Note1"
@@ -826,15 +798,15 @@
     {
       "parameters": {
         "content": "## Repasse\n",
-        "height": 464,
+        "height": 560,
         "width": 1696,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1008,
-        512
+        -1536,
+        560
       ],
       "id": "8e78c6ae-d22e-451e-90cf-f447ace24320",
       "name": "Sticky Note2"
@@ -845,7 +817,7 @@
       "typeVersion": 1,
       "position": [
         -1200,
-        96
+        256
       ],
       "id": "9e3a5dc0-5c31-4b0f-9dee-144dfd185466",
       "name": "When clicking ‘Execute workflow’"
@@ -951,8 +923,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1216,
-        -160
+        592,
+        64
       ],
       "id": "5909ebd0-47cc-4543-92cf-186b508b8bea",
       "name": "Edit Fields2"
@@ -965,8 +937,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        624,
-        -160
+        144,
+        64
       ],
       "id": "bf5fa721-c60d-4cdd-b956-12ef935e4646",
       "name": "Extract from File2"
@@ -978,8 +950,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        928,
-        -160
+        368,
+        64
       ],
       "id": "fd6febf8-4ce2-47f0-941b-c9f9afd94a12",
       "name": "Code2"
@@ -1165,16 +1137,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1488,
-        -160
+        816,
+        64
       ],
       "id": "20de9343-6574-4228-aaf5-41cd9f638856",
       "name": "atualiza atuais1",
       "executeOnce": false,
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
@@ -1191,8 +1163,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        400,
-        -160
+        -80,
+        64
       ],
       "id": "d10090cb-bcf0-4c45-8286-bcdc1a76cbff",
       "name": "matriculados pos",
@@ -1213,37 +1185,37 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2016,
-        -160
+        1264,
+        64
       ],
       "id": "9e596258-a269-43a7-9a24-860f1f17c910",
       "name": "historico",
       "executeOnce": true,
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "TRUNCATE public.alunos_anterior;\n\nINSERT INTO public.alunos_anterior (\n  chave, rgm, ciclo, nome, cpf, curso, serie, data_matricula,\n  tipo_matricula, situacao, fone_cel, email_ad, grau, modalidade, formacao, polo\n)\nSELECT\n  chave, rgm, ciclo, nome, cpf, curso, serie,\n  data_matricula::date,\n  tipo_matricula, situacao, fone_cel, email_ad, grau, modalidade, formacao, polo\nFROM public.alunos_atuais\nWHERE ciclo = '2025/2';\n\nTRUNCATE public.alunos_atuais;\n",
+        "query": "TRUNCATE public.alunos_anterior;\n\nWITH ciclos_atuais AS (\n  SELECT DISTINCT ON (grau)\n         grau,\n         ciclo\n  FROM public.turma_seq\n  WHERE grau IN ('Graduação', 'Pós-Graduação')\n  ORDER BY grau, ciclo DESC\n)\nINSERT INTO public.alunos_anterior (\n  chave, rgm, ciclo, nome, cpf, curso, serie, data_matricula,\n  tipo_matricula, situacao, fone_cel, email_ad, grau, modalidade, formacao, polo\n)\nSELECT\n  a.chave, a.rgm, a.ciclo, a.nome, a.cpf, a.curso, a.serie,\n  a.data_matricula::date,\n  a.tipo_matricula, a.situacao, a.fone_cel, a.email_ad,\n  a.grau, a.modalidade, a.formacao, a.polo\nFROM public.alunos_atuais a\nJOIN ciclos_atuais c\n  ON a.ciclo = c.ciclo\n AND lower(trim(a.grau)) = lower(trim(c.grau));\n\nTRUNCATE public.alunos_atuais;\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -624,
-        96
+        -976,
+        256
       ],
       "id": "81f7d01e-e801-4b4b-bd43-5117da55f8c3",
       "name": "insert atual em anterior",
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
@@ -1256,16 +1228,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2320,
-        -160
+        1488,
+        64
       ],
       "id": "e59eaa90-0d48-440f-8716-3a60c6696927",
       "name": "ingressantes academico",
       "executeOnce": true,
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
@@ -1300,9 +1272,9 @@
             "grau": "={{ $json.grau }}",
             "modalidade": "={{ $json.modalidade }}",
             "formacao": "={{ $json.formacao }}",
-            "chave": "={{ $json.chave }}",
             "polo": "={{ $json.polo }}",
-            "turma": "={{ $json.turma }}"
+            "turma": "={{ $json.turma }}",
+            "chave": "={{ $json.chave }}"
           },
           "matchingColumns": [
             "rgm"
@@ -1442,7 +1414,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "removed": false
             },
             {
               "id": "polo",
@@ -1471,8 +1444,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2624,
-        -160
+        1712,
+        64
       ],
       "id": "8874c773-1009-4bcb-b3b0-a5cedaaab5c7",
       "name": "ingressantes comercial",
@@ -1492,15 +1465,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -688,
-        -144
+        -1344,
+        -608
       ],
       "id": "3e4012c3-c9bb-4e21-a6cf-2c485144ebfc",
       "name": "dConsultor",
+      "executeOnce": false,
       "credentials": {
         "postgres": {
-          "id": "uP0rhiaOx9EYe8S0",
-          "name": "Supabase Academico"
+          "id": "h4ACXR4OOUjZwmTq",
+          "name": "Academico 2"
         }
       }
     },
@@ -1557,8 +1531,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -384,
-        -144
+        -1120,
+        -608
       ],
       "id": "81290b00-fcf6-48c7-a1da-17590d81c6f0",
       "name": "upsert dConsultor",
@@ -1568,6 +1542,21 @@
           "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
         }
       }
+    },
+    {
+      "parameters": {
+        "content": "Atualizar dConsultores\n",
+        "height": 384,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        -736
+      ],
+      "id": "5e9cad1d-df5a-4662-87b3-088894b00a4d",
+      "name": "Sticky Note"
     }
   ],
   "connections": {
@@ -1622,33 +1611,11 @@
         ]
       ]
     },
-    "Wait2": {
-      "main": [
-        [
-          {
-            "node": "matriculados",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "atualiza atuais": {
       "main": [
         [
           {
             "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait4": {
-      "main": [
-        [
-          {
-            "node": "insert atual em anterior",
             "type": "main",
             "index": 0
           }
@@ -1765,7 +1732,7 @@
       "main": [
         [
           {
-            "node": "Wait4",
+            "node": "insert atual em anterior",
             "type": "main",
             "index": 0
           }
@@ -1842,7 +1809,7 @@
       "main": [
         [
           {
-            "node": "Wait2",
+            "node": "matriculados",
             "type": "main",
             "index": 0
           }
@@ -1870,6 +1837,11 @@
           }
         ]
       ]
+    },
+    "ingressantes comercial": {
+      "main": [
+        []
+      ]
     }
   },
   "settings": {
@@ -1881,8 +1853,18 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "d53395d1-a1fe-4348-9a1f-e162f409e72c",
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {},
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "3b24ec26-8094-4bc3-addb-62444273065d",
+  "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
     {
@@ -1893,5 +1875,6 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
