@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-05T16:55:22.000Z",
+  "updatedAt": "2026-01-30T11:54:13.003Z",
   "createdAt": "2025-08-19T20:59:27.892Z",
   "id": "JZJSZfePPl6NQxTx",
   "name": "distribuicao_leads_anhanguera V2",
@@ -8,130 +8,16 @@
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "distribuir",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        224,
-        -496
-      ],
-      "id": "06728b0f-7d03-4bfd-b7f8-8e1fa37ad2a3",
-      "name": "Webhook",
-      "webhookId": "7f243a9a-a88d-4c65-afcb-a4c1ac737b16"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "filter": {
-          "id": "={{ $json.body['leads[add][0][id]'] }}"
-        },
-        "options": {
-          "with": [
-            "contacts"
-          ]
-        },
-        "limit": 1
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        448,
-        -496
-      ],
-      "id": "3b46acc7-5a5f-43e1-9832-fcd52f8df94b",
-      "name": "Get list of leads",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "// Acessa o primeiro lead\nconst lead = $json._embedded?.leads?.[0];\n\n// Garante que o lead existe\nif (!lead) {\n  return [{ json: { id: null, telefone: null, contact_id: null } }];\n}\n\n// Pega o campo \"Telefone\"\nconst telefone = lead.custom_fields_values?.find(f => f.field_name === \"Telefone\")?.values?.[0]?.value || null;\n\n// Pega o ID do contato principal\nconst contact_id = lead._embedded?.contacts?.[0]?.id || null;\n\n// Retorna ID, Telefone e ID do contato\nreturn [\n  {\n    json: {\n      id: lead.id,\n      telefone,\n      contact_id\n    }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        672,
-        -496
-      ],
-      "id": "69788286-4d30-40d3-8cc5-89d4eb258a73",
-      "name": "Code"
-    },
-    {
-      "parameters": {
         "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1120,
-        -496
+        1072,
+        -160
       ],
-      "id": "c9649088-6dfb-4b32-aaab-7ba090ba6a78",
-      "name": "Code8"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Webhook').item.json.body['leads[add][0][id]'] }}",
-              "pipeline_id": 9095532,
-              "responsible_user_id": "={{ $json.id_usuario }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        1984,
-        -496
-      ],
-      "id": "18dacbb5-ed17-44f4-b706-21f4e47782ab",
-      "name": "Update leads",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "updateContacts",
-        "collection": {
-          "contact": [
-            {
-              "id": "={{ $('Get list of leads').item.json._embedded.leads[0]._embedded.contacts[0].id }}",
-              "responsible_user_id": "={{ $('Edit Fields').item.json.id_usuario }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        2208,
-        -496
-      ],
-      "id": "869ec838-ff8e-4e69-953b-e131b17e588a",
-      "name": "Update contacts1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "Wzp8hZo0JKf2JKw7",
-          "name": "Kommo comercial BU novo"
-        }
-      }
+      "id": "6f155229-70b2-4386-9360-a67c0227b97b",
+      "name": "Code9"
     },
     {
       "parameters": {
@@ -150,11 +36,11 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        896,
-        -496
+        848,
+        -160
       ],
-      "id": "d8e32f6c-754c-42ea-a51c-0634248aed27",
-      "name": "Get many rows",
+      "id": "7c84b26f-6181-427e-bf18-bfd004583aa1",
+      "name": "Get many rows1",
       "credentials": {
         "supabaseApi": {
           "id": "6o0bjFpYGr8jfz1r",
@@ -169,9 +55,9 @@
         "filters": {
           "conditions": [
             {
-              "keyName": "id_usuario",
+              "keyName": "Id_consultor_dc",
               "condition": "eq",
-              "keyValue": "={{ $json.id_usuario }}"
+              "keyValue": "={{ $json.Id_consultor_dc }}"
             }
           ]
         },
@@ -187,10 +73,339 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1312,
-        -496
+        1296,
+        -160
       ],
-      "id": "d2d81bb9-326b-4802-95d7-be01ddd52aaa",
+      "id": "ba979259-456d-4ed9-b1a4-a72eb735f561",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "020e936f-1c74-4bc5-b28a-e1e7bee1bd95",
+              "name": "id_usuario",
+              "value": "={{ $json.Id_consultor_dc }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1744,
+        -160
+      ],
+      "id": "a0221ef0-8572-4591-94fe-806b976366be",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -160
+      ],
+      "id": "87cfa536-7e64-42a3-931e-07fdae7a08c3",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "distribuir_anhanguera",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        96,
+        288
+      ],
+      "id": "424475af-f2da-412c-8977-d471faa91414",
+      "name": "webhook datacrazy",
+      "webhookId": "7f243a9a-a88d-4c65-afcb-a4c1ac737b16"
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('webhook datacrazy').item.json.query.id_negocio }}",
+        "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+        "pipelineId": "3b3eb014-349a-412d-9391-2c18139d66e8",
+        "stageId": "=",
+        "attendantId": "={{ $('Edit Fields1').item.json.id_usuario }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2192,
+        -160
+      ],
+      "id": "2cc5c626-cdef-4b71-b563-dffba40d3363",
+      "name": "Atualizar um negócio existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+        "name": "={{ $('webhook datacrazy').item.json.query.nome }}",
+        "phone": "={{ $('webhook datacrazy').item.json.query.telefone }}",
+        "additionalFields": {
+          "attendant": {
+            "attendantDetails": {
+              "id": "={{ $json.id_usuario }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -160
+      ],
+      "id": "e998d4a0-f12c-4fad-a102-3ef1de36a33c",
+      "name": "Atualizar um lead existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## DATACRAZY\n",
+        "height": 368,
+        "width": 2624
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        64,
+        176
+      ],
+      "id": "d07979fb-794b-43fd-817b-44b7c4306731",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_distribuidos_soead",
+          "mode": "list",
+          "cachedResultName": "leads_distribuidos_soead"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('Atualizar um lead existente').item.json.id }}",
+            "consultor": "={{ $('Code3').item.json.nome }}",
+            "data": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}\n"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consultor",
+              "displayName": "consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2400,
+        -160
+      ],
+      "id": "69db8300-5da7-41c0-bea0-6576a113abb4",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "kFIumdJuJdHBXSMk",
+          "name": "bu_leads"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node\n// Mode: Run Once for Each Item\n\nconst MAP_NOME_PARA_ATTENDANT_ID = {\n  \"camila\":   \"6931959356e1666c5fac8164\",\n  \"rodrigo\":  \"69308785282556107f455c3a\",\n  \"tatiane\":  \"6930600060da910f521163d3\",\n  \"gustavo\":  \"69319f033499cb5f0f06b613\",\n  \"gabriel\":  \"692f40742f7368e0e8ad1339\",\n};\n\nfunction norm(s) {\n  return String(s ?? \"\")\n    .trim()\n    .toLowerCase();\n}\n\nconst nome = $json.nome;\nconst key = norm(nome);\n\nconst attendantId_dc = MAP_NOME_PARA_ATTENDANT_ID[key] ?? null;\n\nreturn [\n  {\n    json: {\n      ...$json,\n      attendantNome_dc: nome ?? null,\n      attendantId_dc, // <-- este é o \"PARA\"\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        288
+      ],
+      "id": "2b68834e-46ff-49a3-89b8-e7aca6a60290",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://messaging.g1.datacrazy.io/api/messaging/conversations/{{ $('Edit Fields').item.json.Id_conversa }}/change-attendant",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer dc_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MzA1NGNmNmE4OTRjMmQyYTIyN2I2MCIsInRlbmFudElkIjoiMTQyYjlmZjItYzkzZS00NDc1LTkxYzEtNTI2MWQxNzBmMDdlIiwibmFtZSI6Ik44biBCVSIsImlhdCI6MTc2NDc3NTExOX0.yFHr9iI2E82M2btjw72glbpc_jZKkyjwWrX2xWqDsag"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "attendantId",
+              "value": "={{ $('Edit Fields').item.json.attendantId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2336,
+        288
+      ],
+      "id": "1eac83a7-6c51-412a-b06d-6e342c654f5b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        288
+      ],
+      "id": "e4946b52-e908-40f0-bd45-9df3eb493f14",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "distrib_anhanguera",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "Ativo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        320,
+        288
+      ],
+      "id": "8768a58e-3295-4852-8797-4b44ef92e5b3",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "6o0bjFpYGr8jfz1r",
+          "name": "Supabase_BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "distrib_anhanguera",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Id_consultor_dc",
+              "condition": "eq",
+              "keyValue": "={{ $json.Id_consultor_dc }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_lead",
+              "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        768,
+        288
+      ],
+      "id": "29a8aa0e-cbf8-48cc-902c-604ab1cc360a",
       "name": "Update a row",
       "credentials": {
         "supabaseApi": {
@@ -206,8 +421,20 @@
             {
               "id": "020e936f-1c74-4bc5-b28a-e1e7bee1bd95",
               "name": "id_usuario",
-              "value": "={{ $json.id_usuario }}",
-              "type": "number"
+              "value": "={{ $('Code in JavaScript').item.json.Id_consultor_dc }}",
+              "type": "string"
+            },
+            {
+              "id": "c0e85e35-be18-4df5-9ce8-22db9fef3f64",
+              "name": "attendantId",
+              "value": "={{ $('Code in JavaScript').item.json.attendantId_dc }}",
+              "type": "string"
+            },
+            {
+              "id": "3eb9565c-3a3a-4870-b147-87557f3b1b7c",
+              "name": "Id_conversa",
+              "value": "={{ $('webhook datacrazy').item.json.query.id_conversa }}",
+              "type": "string"
             }
           ]
         },
@@ -216,10 +443,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1776,
-        -496
+        1664,
+        288
       ],
-      "id": "eb356d3b-7c57-417d-bc83-41f2cfb205c5",
+      "id": "00738261-1fc9-4178-adae-5c3ed1a81424",
       "name": "Edit Fields"
     },
     {
@@ -229,37 +456,229 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1520,
-        -496
+        992,
+        288
       ],
-      "id": "0f1ecbad-cfb6-40c7-a35b-e41794e19f2c",
-      "name": "Code1"
+      "id": "6183bdc2-036a-4738-b6fc-441786cfe1f1",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios').item.json.data[0].id }}",
+        "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+        "pipelineId": "3b3eb014-349a-412d-9391-2c18139d66e8",
+        "stageId": "=",
+        "attendantId": "={{ $('Edit Fields').item.json.id_usuario }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        288
+      ],
+      "id": "85b76742-6a8f-40d7-a332-299768fd0bd1",
+      "name": "Atualizar um negócio existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+        "name": "={{ $('webhook datacrazy').item.json.query.nome }}",
+        "phone": "={{ $('webhook datacrazy').item.json.query.telefone }}",
+        "additionalFields": {
+          "attendant": {
+            "attendantDetails": {
+              "id": "={{ $json.id_usuario }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        288
+      ],
+      "id": "124c253c-4119-4884-add3-3e9a5b1775a4",
+      "name": "Atualizar um lead existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_distribuidos_soead",
+          "mode": "list",
+          "cachedResultName": "leads_distribuidos_soead"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('Atualizar um lead existente1').item.json.id }}",
+            "consultor": "={{ $('Code4').item.json.nome }}",
+            "data": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}\n"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "consultor",
+              "displayName": "consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2560,
+        288
+      ],
+      "id": "dbd3b0e7-a1a2-407c-ab9a-184bd77dc2a1",
+      "name": "Insert rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "kFIumdJuJdHBXSMk",
+          "name": "bu_leads"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "options": {
+          "search": "={{ $('webhook datacrazy').item.json.query.telefone }}"
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        288
+      ],
+      "id": "5a64162b-40b2-4a31-b083-74b2bd66784d",
+      "name": "Buscar todos os negócios",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
     }
   ],
   "connections": {
-    "Webhook": {
+    "Code9": {
       "main": [
         [
           {
-            "node": "Get list of leads",
+            "node": "Update a row1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get list of leads": {
+    "Get many rows1": {
       "main": [
         [
           {
-            "node": "Code",
+            "node": "Code9",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code": {
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhook datacrazy": {
       "main": [
         [
           {
@@ -270,7 +689,51 @@
         ]
       ]
     },
-    "Code8": {
+    "Atualizar um lead existente": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um negócio existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Buscar todos os negócios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
       "main": [
         [
           {
@@ -281,22 +744,11 @@
         ]
       ]
     },
-    "Update leads": {
-      "main": [
-        [
-          {
-            "node": "Update contacts1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Get many rows": {
       "main": [
         [
           {
-            "node": "Code8",
+            "node": "Code",
             "type": "main",
             "index": 0
           }
@@ -307,7 +759,7 @@
       "main": [
         [
           {
-            "node": "Code1",
+            "node": "Code4",
             "type": "main",
             "index": 0
           }
@@ -318,14 +770,47 @@
       "main": [
         [
           {
-            "node": "Update leads",
+            "node": "Atualizar um lead existente1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code1": {
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um negócio existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os negócios": {
       "main": [
         [
           {
@@ -340,46 +825,58 @@
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "dCpCqA316QocWWea"
+    "errorWorkflow": "dCpCqA316QocWWea",
+    "timeSavedMode": "fixed",
+    "availableInMCP": false
   },
   "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {
-    "Webhook": [
+    "webhook datacrazy": [
       {
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "188",
-            "accept-encoding": "gzip",
-            "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "8c3c4a58-aec8-4115-bb8e-244e4cb8a8a8",
-            "x-forwarded-for": "169.150.216.79",
+            "user-agent": "axios/1.13.2",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-697bd0c50000000019b207ddac48a491-19b207ddac48a491-00",
+            "tracestate": "dd=t.tid:697bd0c500000000;t.dm:-3;s:-1;p:19b207ddac48a491",
+            "x-datadog-parent-id": "1851551045462303889",
+            "x-datadog-sampling-priority": "-1",
+            "x-datadog-tags": "_dd.p.tid=697bd0c500000000",
+            "x-datadog-trace-id": "1851551045462303889",
+            "x-forwarded-for": "34.39.163.243",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "169.150.216.79"
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-real-ip": "34.39.163.243"
           },
           "params": {},
-          "query": {},
-          "body": {
-            "leads[add][0][id]": "19606370",
-            "leads[add][0][status_id]": "70788396",
-            "leads[add][0][pipeline_id]": "9095532",
-            "account[id]": "30298412",
-            "account[subdomain]": "sumaread"
+          "query": {
+            "id_lead": "fe751c96-1f10-4735-840e-9fd50b180fd3",
+            "id_negocio": "d3df1bea-09ff-4d6e-8104-ed52bfb84216",
+            "telefone": "5511966468728",
+            "nome": "Danny",
+            "id_conversa": "697bd0a9a3b1c5070603f14b"
           },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/distribuir",
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/distribuir_anhanguera",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "16c9cf90-23cc-4d18-806c-c89b84f6d453",
+  "versionId": "a269b360-cd82-49f0-82f7-efb223d207ae",
+  "activeVersionId": "a269b360-cd82-49f0-82f7-efb223d207ae",
   "triggerCount": 1,
   "shared": [
     {
@@ -390,5 +887,832 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2026-01-30T11:54:50.000Z",
+    "createdAt": "2026-01-30T11:54:13.013Z",
+    "versionId": "a269b360-cd82-49f0-82f7-efb223d207ae",
+    "workflowId": "JZJSZfePPl6NQxTx",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1072,
+          -160
+        ],
+        "id": "6f155229-70b2-4386-9360-a67c0227b97b",
+        "name": "Code9"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "distrib_anhanguera",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "Ativo"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          848,
+          -160
+        ],
+        "id": "7c84b26f-6181-427e-bf18-bfd004583aa1",
+        "name": "Get many rows1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "6o0bjFpYGr8jfz1r",
+            "name": "Supabase_BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "distrib_anhanguera",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "Id_consultor_dc",
+                "condition": "eq",
+                "keyValue": "={{ $json.Id_consultor_dc }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "ultimo_lead",
+                "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1296,
+          -160
+        ],
+        "id": "ba979259-456d-4ed9-b1a4-a72eb735f561",
+        "name": "Update a row1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "6o0bjFpYGr8jfz1r",
+            "name": "Supabase_BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "020e936f-1c74-4bc5-b28a-e1e7bee1bd95",
+                "name": "id_usuario",
+                "value": "={{ $json.Id_consultor_dc }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1744,
+          -160
+        ],
+        "id": "a0221ef0-8572-4591-94fe-806b976366be",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1520,
+          -160
+        ],
+        "id": "87cfa536-7e64-42a3-931e-07fdae7a08c3",
+        "name": "Code3"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "distribuir_anhanguera",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          96,
+          288
+        ],
+        "id": "424475af-f2da-412c-8977-d471faa91414",
+        "name": "webhook datacrazy",
+        "webhookId": "7f243a9a-a88d-4c65-afcb-a4c1ac737b16"
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('webhook datacrazy').item.json.query.id_negocio }}",
+          "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+          "pipelineId": "3b3eb014-349a-412d-9391-2c18139d66e8",
+          "stageId": "=",
+          "attendantId": "={{ $('Edit Fields1').item.json.id_usuario }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          2192,
+          -160
+        ],
+        "id": "2cc5c626-cdef-4b71-b563-dffba40d3363",
+        "name": "Atualizar um negócio existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+          "name": "={{ $('webhook datacrazy').item.json.query.nome }}",
+          "phone": "={{ $('webhook datacrazy').item.json.query.telefone }}",
+          "additionalFields": {
+            "attendant": {
+              "attendantDetails": {
+                "id": "={{ $json.id_usuario }}"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          1968,
+          -160
+        ],
+        "id": "e998d4a0-f12c-4fad-a102-3ef1de36a33c",
+        "name": "Atualizar um lead existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## DATACRAZY\n",
+          "height": 368,
+          "width": 2624
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          64,
+          176
+        ],
+        "id": "d07979fb-794b-43fd-817b-44b7c4306731",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads_distribuidos_soead",
+            "mode": "list",
+            "cachedResultName": "leads_distribuidos_soead"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $('Atualizar um lead existente').item.json.id }}",
+              "consultor": "={{ $('Code3').item.json.nome }}",
+              "data": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}\n"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "consultor",
+                "displayName": "consultor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2400,
+          -160
+        ],
+        "id": "69db8300-5da7-41c0-bea0-6576a113abb4",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "kFIumdJuJdHBXSMk",
+            "name": "bu_leads"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Code node\n// Mode: Run Once for Each Item\n\nconst MAP_NOME_PARA_ATTENDANT_ID = {\n  \"camila\":   \"6931959356e1666c5fac8164\",\n  \"rodrigo\":  \"69308785282556107f455c3a\",\n  \"tatiane\":  \"6930600060da910f521163d3\",\n  \"gustavo\":  \"69319f033499cb5f0f06b613\",\n  \"gabriel\":  \"692f40742f7368e0e8ad1339\",\n};\n\nfunction norm(s) {\n  return String(s ?? \"\")\n    .trim()\n    .toLowerCase();\n}\n\nconst nome = $json.nome;\nconst key = norm(nome);\n\nconst attendantId_dc = MAP_NOME_PARA_ATTENDANT_ID[key] ?? null;\n\nreturn [\n  {\n    json: {\n      ...$json,\n      attendantNome_dc: nome ?? null,\n      attendantId_dc, // <-- este é o \"PARA\"\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1216,
+          288
+        ],
+        "id": "2b68834e-46ff-49a3-89b8-e7aca6a60290",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://messaging.g1.datacrazy.io/api/messaging/conversations/{{ $('Edit Fields').item.json.Id_conversa }}/change-attendant",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer dc_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MzA1NGNmNmE4OTRjMmQyYTIyN2I2MCIsInRlbmFudElkIjoiMTQyYjlmZjItYzkzZS00NDc1LTkxYzEtNTI2MWQxNzBmMDdlIiwibmFtZSI6Ik44biBCVSIsImlhdCI6MTc2NDc3NTExOX0.yFHr9iI2E82M2btjw72glbpc_jZKkyjwWrX2xWqDsag"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "attendantId",
+                "value": "={{ $('Edit Fields').item.json.attendantId }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          2336,
+          288
+        ],
+        "id": "1eac83a7-6c51-412a-b06d-6e342c654f5b",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Entrada: items (cada item.json é um consultor ativo vindo do Supabase)\n\n// Sorteio em todos os ativos (duplicatas contam como chances extras)\nconst escolhido = items[Math.floor(Math.random() * items.length)];\n\nreturn [{\n  json: escolhido.json,\n  pairedItem: { item: items.indexOf(escolhido) }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          544,
+          288
+        ],
+        "id": "e4946b52-e908-40f0-bd45-9df3eb493f14",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "distrib_anhanguera",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "status",
+                "condition": "eq",
+                "keyValue": "Ativo"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          320,
+          288
+        ],
+        "id": "8768a58e-3295-4852-8797-4b44ef92e5b3",
+        "name": "Get many rows",
+        "credentials": {
+          "supabaseApi": {
+            "id": "6o0bjFpYGr8jfz1r",
+            "name": "Supabase_BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "distrib_anhanguera",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "Id_consultor_dc",
+                "condition": "eq",
+                "keyValue": "={{ $json.Id_consultor_dc }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "ultimo_lead",
+                "fieldValue": "={{ new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString() }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          768,
+          288
+        ],
+        "id": "29a8aa0e-cbf8-48cc-902c-604ab1cc360a",
+        "name": "Update a row",
+        "credentials": {
+          "supabaseApi": {
+            "id": "6o0bjFpYGr8jfz1r",
+            "name": "Supabase_BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "020e936f-1c74-4bc5-b28a-e1e7bee1bd95",
+                "name": "id_usuario",
+                "value": "={{ $('Code in JavaScript').item.json.Id_consultor_dc }}",
+                "type": "string"
+              },
+              {
+                "id": "c0e85e35-be18-4df5-9ce8-22db9fef3f64",
+                "name": "attendantId",
+                "value": "={{ $('Code in JavaScript').item.json.attendantId_dc }}",
+                "type": "string"
+              },
+              {
+                "id": "3eb9565c-3a3a-4870-b147-87557f3b1b7c",
+                "name": "Id_conversa",
+                "value": "={{ $('webhook datacrazy').item.json.query.id_conversa }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1664,
+          288
+        ],
+        "id": "00738261-1fc9-4178-adae-5c3ed1a81424",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Entrada: items (podem ter duplicatas do mesmo id_usuario)\n\n// Vamos guardar o primeiro de cada id_usuario\nconst vistos = new Set();\nconst unicos = [];\n\nfor (const it of items) {\n  const j = it.json;\n  const id = j.id_usuario;\n\n  if (!vistos.has(id)) {\n    vistos.add(id);\n    unicos.push(it); // mantém só o primeiro que aparecer\n  }\n}\n\n// Retorna apenas 1 por id_usuario\nreturn unicos;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          992,
+          288
+        ],
+        "id": "6183bdc2-036a-4738-b6fc-441786cfe1f1",
+        "name": "Code4"
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar todos os negócios').item.json.data[0].id }}",
+          "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+          "pipelineId": "3b3eb014-349a-412d-9391-2c18139d66e8",
+          "stageId": "=",
+          "attendantId": "={{ $('Edit Fields').item.json.id_usuario }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          2112,
+          288
+        ],
+        "id": "85b76742-6a8f-40d7-a332-299768fd0bd1",
+        "name": "Atualizar um negócio existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('webhook datacrazy').item.json.query.id_lead }}",
+          "name": "={{ $('webhook datacrazy').item.json.query.nome }}",
+          "phone": "={{ $('webhook datacrazy').item.json.query.telefone }}",
+          "additionalFields": {
+            "attendant": {
+              "attendantDetails": {
+                "id": "={{ $json.id_usuario }}"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          1888,
+          288
+        ],
+        "id": "124c253c-4119-4884-add3-3e9a5b1775a4",
+        "name": "Atualizar um lead existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads_distribuidos_soead",
+            "mode": "list",
+            "cachedResultName": "leads_distribuidos_soead"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $('Atualizar um lead existente1').item.json.id }}",
+              "consultor": "={{ $('Code4').item.json.nome }}",
+              "data": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}\n"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "consultor",
+                "displayName": "consultor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2560,
+          288
+        ],
+        "id": "dbd3b0e7-a1a2-407c-ab9a-184bd77dc2a1",
+        "name": "Insert rows in a table1",
+        "credentials": {
+          "postgres": {
+            "id": "kFIumdJuJdHBXSMk",
+            "name": "bu_leads"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "options": {
+            "search": "={{ $('webhook datacrazy').item.json.query.telefone }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          1440,
+          288
+        ],
+        "id": "5a64162b-40b2-4a31-b083-74b2bd66784d",
+        "name": "Buscar todos os negócios",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Code9": {
+        "main": [
+          [
+            {
+              "node": "Update a row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many rows1": {
+        "main": [
+          [
+            {
+              "node": "Code9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update a row1": {
+        "main": [
+          [
+            {
+              "node": "Code3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "webhook datacrazy": {
+        "main": [
+          [
+            {
+              "node": "Get many rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os negócios",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Update a row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many rows": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update a row": {
+        "main": [
+          [
+            {
+              "node": "Code4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code4": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente1": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os negócios": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version a269b360",
+    "description": "",
+    "autosaved": true
+  },
   "tags": []
 }
