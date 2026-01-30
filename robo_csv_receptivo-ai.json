@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-06T16:13:39.000Z",
+  "updatedAt": "2026-01-30T13:19:36.114Z",
   "createdAt": "2025-10-14T15:09:40.562Z",
   "id": "1QcSlCdBYvlIljdh",
   "name": "robo_csv_receptivo",
@@ -119,8 +119,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        1184,
-        -272
+        1152,
+        -224
       ],
       "id": "0f23853a-5fd9-46b3-8e5c-7bbe9c0ba13a",
       "name": "Switch"
@@ -150,24 +150,16 @@
                     "value": "={{ $json[\"Grau site 2\"] || \" \"}}"
                   },
                   {
-                    "data": "{\"id\":690915,\"type\":\"text\"}",
-                    "value": "={{ $json[\"Grau site 3\"] || \" \"}}"
-                  },
-                  {
                     "data": "{\"id\":690923,\"type\":\"text\"}",
-                    "value": "={{ $json[\"Tipo 1\"] || \" \"}}"
+                    "value": "={{ $json.modalidade || \" \"}}"
                   },
                   {
                     "data": "{\"id\":690925,\"type\":\"text\"}",
-                    "value": "={{ $json[\"Tipo 2\"] || \" \"}}"
-                  },
-                  {
-                    "data": "{\"id\":690927,\"type\":\"text\"}",
-                    "value": "={{ $json[\"Tipo 3\"] || \" \"}}"
+                    "value": "={{ $json.modalidade2 || \" \"}}"
                   },
                   {
                     "data": "{\"id\":690917,\"type\":\"text\"}",
-                    "value": "={{ $json.Semestres }}"
+                    "value": "={{ $json.Semestres || \" \"}}"
                   },
                   {
                     "data": "{\"id\":690919,\"type\":\"text\"}",
@@ -192,6 +184,14 @@
                   {
                     "data": "{\"id\":690937,\"type\":\"text\"}",
                     "value": "={{ $json.Contagem || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":693631,\"type\":\"text\"}",
+                    "value": "={{ $json['Tipo 1'] || \" \"}}"
+                  },
+                  {
+                    "data": "{\"id\":693633,\"type\":\"text\"}",
+                    "value": "={{ $json['Tipo 2'] || \" \"}}"
                   }
                 ]
               }
@@ -202,8 +202,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2192,
-        -384
+        1616,
+        -496
       ],
       "id": "d416081c-a965-4b99-be86-16014943c8d2",
       "name": "Update leads",
@@ -239,8 +239,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1744,
-        -160
+        1760,
+        -80
       ],
       "id": "1dc924f3-86b8-49d0-9833-3e9f99aa2172",
       "name": "Update leads1",
@@ -253,34 +253,93 @@
     },
     {
       "parameters": {
-        "modelId": {
+        "promptType": "define",
+        "text": "=Corrija o nome deste curso se necessário: {{ $json.curso }}",
+        "options": {
+          "systemMessage": "=Utilize a tool \"Buscar Cursos\" para encontrar o {{ $json.curso }}\n\nSe estiver abreviado (ex: RH, TI, ADM), expanda para o nome completo no output.\nSe tiver erro gramatical, corrija.\nSe estiver correto, mantenha como está.\n\nNo output, aplique Title Case (primeira letra de cada palavra em maiúscula), exceto as palavras \"de\", \"em\" e \"da\", que devem estar sempre em minúsculas (a menos que sejam a primeira palavra do nome).\n\nRetorne APENAS o nome do curso corrigido, sem explicações ou demais informações. Somente o curso encontrado na TOOL. Não retorne mais nada fora isso."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        288,
+        -272
+      ],
+      "id": "00533059-02cb-479c-84ef-f752bfa39efc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
           "__rl": true,
-          "value": "gpt-3.5-turbo",
           "mode": "list",
-          "cachedResultName": "GPT-3.5-TURBO"
-        },
-        "responses": {
-          "values": [
-            {
-              "content": "=Corrija o nome deste curso se necessário: {{ $json.curso }}\n\nSe estiver abreviado (ex: RH, TI, ADM), expanda para o nome completo.\nSe tiver erro gramatical, corrija.\nSe estiver correto, mantenha como está.\n\nRetorne APENAS o nome do curso corrigido, sem explicações."
-            }
-          ]
+          "value": "gpt-4.1-mini"
         },
         "builtInTools": {},
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 2,
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
       "position": [
         176,
-        -272
+        16
       ],
-      "id": "8fd482d4-6c21-4d51-94ce-eac46672793c",
-      "name": "Message a model",
+      "id": "a7466b03-4a59-4021-b444-23d18e22add7",
+      "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
           "id": "4fXizCuCrLR4SEIp",
           "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        544,
+        240
+      ],
+      "id": "3a1be9e5-dfab-4d34-a12c-9d6920e089c0",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "=Pesquise o {{ $json.curso }} ",
+        "tableName": {
+          "__rl": true,
+          "value": "cursos_salesbot_nome",
+          "mode": "list",
+          "cachedResultName": "cursos_salesbot_nome"
+        },
+        "topK": 1,
+        "includeDocumentMetadata": false,
+        "options": {
+          "queryName": "match_cursos_salesbot_nome"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        16
+      ],
+      "id": "d911938a-b828-4f33-933a-541090ef5a79",
+      "name": "Buscar Cursos",
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
         }
       }
     },
@@ -294,7 +353,7 @@
             {
               "keyName": "curso_sinonimo",
               "condition": "eq",
-              "keyValue": "={{ $json.output[0].content[0].text }}"
+              "keyValue": "={{ $json.output }}"
             }
           ]
         }
@@ -302,8 +361,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        528,
-        -272
+        832,
+        -240
       ],
       "id": "352b9bf0-28cd-4ebe-9ce3-0a7626c1bb06",
       "name": "Get many rows",
@@ -343,7 +402,7 @@
       "main": [
         [
           {
-            "node": "Message a model",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -368,12 +427,45 @@
         ]
       ]
     },
-    "Message a model": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Buscar Cursos",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
       "main": [
         [
           {
             "node": "Get many rows",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Cursos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -411,18 +503,18 @@
             "content-length": "196",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "624b3dbc-6758-4e2b-b910-ce48023b5bef",
-            "x-forwarded-for": "169.150.216.79",
+            "x-amocrm-requestid": "a06b44c3-7e4e-417a-a82f-33114d91434e",
+            "x-forwarded-for": "169.150.216.80",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "169.150.216.79"
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-real-ip": "169.150.216.80"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "19689757",
+            "leads[add][0][id]": "20506971",
             "leads[add][0][status_id]": "53917599",
             "leads[add][0][pipeline_id]": "5481944",
             "account[id]": "30214568",
@@ -430,11 +522,15 @@
           },
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/robocsv",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "8fe83d55-74b1-483c-bd91-6843ce55187f",
+  "versionId": "ed094b64-b203-471d-b70f-5b75c5f2fc8e",
+  "activeVersionId": "ed094b64-b203-471d-b70f-5b75c5f2fc8e",
   "triggerCount": 1,
   "shared": [
     {
@@ -445,6 +541,494 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2026-01-30T13:20:41.000Z",
+    "createdAt": "2026-01-30T13:19:36.115Z",
+    "versionId": "ed094b64-b203-471d-b70f-5b75c5f2fc8e",
+    "workflowId": "1QcSlCdBYvlIljdh",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "robocsv",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -480,
+          -288
+        ],
+        "id": "b0a83118-0d44-4e7f-b7a4-6b5d23215f00",
+        "name": "Webhook",
+        "webhookId": "7e753d5c-3924-441d-91af-273fa2514315"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -256,
+          -288
+        ],
+        "id": "c30b43fe-cce5-4a81-9e01-e809005bd10e",
+        "name": "Get list of leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Este node assume que a entrada vem do node anterior (por ex. HTTP Request do Kommo)\nconst results = [];\n\nfor (const item of items) {\n  const leads = item.json._embedded?.leads || [];\n\n  for (const lead of leads) {\n    // Campo \"Curso\"\n    const cursoField = lead.custom_fields_values?.find(f => f.field_name === \"Curso\");\n    const cursoValue = cursoField?.values?.[0]?.value || null;\n\n    // Campo \"Grau_new\"\n    const grauField = lead.custom_fields_values?.find(f => f.field_name === \"Grau_new\");\n    const grauValue = grauField?.values?.[0]?.value || null;\n\n    results.push({\n      json: {\n        lead_id: lead.id,\n        curso: cursoValue,\n        grau: grauValue\n      }\n    });\n  }\n}\n\nreturn results;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -32,
+          -288
+        ],
+        "id": "574987e6-8bd5-406a-b99c-04e80b1f5157",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.curso_sinonimo }}",
+                      "rightValue": "=Status: Não Encontrado",
+                      "operator": {
+                        "type": "string",
+                        "operation": "exists",
+                        "singleValue": true
+                      },
+                      "id": "87b2f354-6826-4050-b3b9-745e4ab35411"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Curso encontrado"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "4b5e2a65-4292-4b56-967a-a8a2fb0372f5",
+                      "leftValue": "={{ $json.curso_sinonimo }}",
+                      "rightValue": "=Não Encontrado",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notExists",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Curso "
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          1152,
+          -224
+        ],
+        "id": "0f23853a-5fd9-46b3-8e5c-7bbe9c0ba13a",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('Code in JavaScript').item.json.lead_id }}",
+                "pipeline_id": 5481944,
+                "status_id": 0,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":31782,\"type\":\"text\"}",
+                      "value": "={{ $json.Curso || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690911,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Grau site 1\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690913,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Grau site 2\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690923,\"type\":\"text\"}",
+                      "value": "={{ $json.modalidade || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690925,\"type\":\"text\"}",
+                      "value": "={{ $json.modalidade2 || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690917,\"type\":\"text\"}",
+                      "value": "={{ $json.Semestres || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690919,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Semestres 2\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690921,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Semestres 3\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690929,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Preço eduit 1\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690931,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Preço eduit 2\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690933,\"type\":\"text\"}",
+                      "value": "={{ $json[\"Preço eduit 3\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":690937,\"type\":\"text\"}",
+                      "value": "={{ $json.Contagem || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":693631,\"type\":\"text\"}",
+                      "value": "={{ $json['Tipo 1'] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":693633,\"type\":\"text\"}",
+                      "value": "={{ $json['Tipo 2'] || \" \"}}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1616,
+          -496
+        ],
+        "id": "d416081c-a965-4b99-be86-16014943c8d2",
+        "name": "Update leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('Code in JavaScript').item.json.lead_id }}",
+                "pipeline_id": 5481944,
+                "status_id": 0,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":31782,\"type\":\"text\"}",
+                      "value": "=Não Encontrado"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1760,
+          -80
+        ],
+        "id": "1dc924f3-86b8-49d0-9833-3e9f99aa2172",
+        "name": "Update leads1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Corrija o nome deste curso se necessário: {{ $json.curso }}",
+          "options": {
+            "systemMessage": "=Utilize a tool \"Buscar Cursos\" para encontrar o {{ $json.curso }}\n\nSe estiver abreviado (ex: RH, TI, ADM), expanda para o nome completo no output.\nSe tiver erro gramatical, corrija.\nSe estiver correto, mantenha como está.\n\nNo output, aplique Title Case (primeira letra de cada palavra em maiúscula), exceto as palavras \"de\", \"em\" e \"da\", que devem estar sempre em minúsculas (a menos que sejam a primeira palavra do nome).\n\nRetorne APENAS o nome do curso corrigido, sem explicações ou demais informações. Somente o curso encontrado na TOOL. Não retorne mais nada fora isso."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          288,
+          -272
+        ],
+        "id": "00533059-02cb-479c-84ef-f752bfa39efc",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          176,
+          16
+        ],
+        "id": "a7466b03-4a59-4021-b444-23d18e22add7",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          544,
+          240
+        ],
+        "id": "3a1be9e5-dfab-4d34-a12c-9d6920e089c0",
+        "name": "Embeddings OpenAI",
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolDescription": "=Pesquise o {{ $json.curso }} ",
+          "tableName": {
+            "__rl": true,
+            "value": "cursos_salesbot_nome",
+            "mode": "list",
+            "cachedResultName": "cursos_salesbot_nome"
+          },
+          "topK": 1,
+          "includeDocumentMetadata": false,
+          "options": {
+            "queryName": "match_cursos_salesbot_nome"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1.3,
+        "position": [
+          512,
+          16
+        ],
+        "id": "d911938a-b828-4f33-933a-541090ef5a79",
+        "name": "Buscar Cursos",
+        "credentials": {
+          "supabaseApi": {
+            "id": "PHQl6oEaPqgLjGGZ",
+            "name": "BANCO - AGENTE COMERCIAL"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "cursos_salesbot",
+          "limit": 1,
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "curso_sinonimo",
+                "condition": "eq",
+                "keyValue": "={{ $json.output }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          832,
+          -240
+        ],
+        "id": "352b9bf0-28cd-4ebe-9ce3-0a7626c1bb06",
+        "name": "Get many rows",
+        "alwaysOutputData": true,
+        "credentials": {
+          "supabaseApi": {
+            "id": "PHQl6oEaPqgLjGGZ",
+            "name": "BANCO - AGENTE COMERCIAL"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Get list of leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of leads": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Update leads",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Update leads1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings OpenAI": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Buscar Cursos",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Get many rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Cursos": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many rows": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version ed094b64",
+    "description": "",
+    "autosaved": true
+  },
   "tags": [
     {
       "updatedAt": "2025-07-30T20:41:48.074Z",
