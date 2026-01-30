@@ -825,6 +825,7 @@
     ]
   },
   "versionId": "cbc4e6f2-012d-4700-9760-64cc10f8f0b9",
+  "activeVersionId": "cbc4e6f2-012d-4700-9760-64cc10f8f0b9",
   "triggerCount": 1,
   "shared": [
     {
@@ -835,6 +836,793 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "cbc4e6f2-012d-4700-9760-64cc10f8f0b9",
+    "workflowId": "bmLFlalPBtflCrjZ",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "2561cb25-2f0e-48d8-ba3d-9194688efd32",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -1008,
+          96
+        ],
+        "id": "7fd35c64-a96e-4ae2-91f7-28dc37911681",
+        "name": "Webhook",
+        "webhookId": "2561cb25-2f0e-48d8-ba3d-9194688efd32"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          560,
+          0
+        ],
+        "id": "69521ea0-198b-4141-a557-1bd272c157df",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Pega o array de leads\nconst leads = $json._embedded?.leads || [];\n\n// Se houver mais de um lead, pega o último (normalmente o atual)\nconst lead = leads[leads.length - 1];\n\n// Garante que o objeto exista\nif (!lead) {\n  return [{ json: { erro: \"Nenhum lead encontrado\" } }];\n}\n\n// Extrai os campos customizados\nconst campos = lead.custom_fields_values || [];\nconst resultado = {};\n\n// Percorre todos os campos e guarda apenas o \"value\"\nfor (const campo of campos) {\n  const nomeCampo = campo.field_name?.toLowerCase().replace(/\\s+/g, \"_\") || campo.field_id;\n  const valores = campo.values?.map(v => v.value).filter(v => v != null) || [];\n  resultado[nomeCampo] = valores.join(\", \");\n}\n\n// Monta o JSON final padronizado\nreturn [\n  {\n    json: {\n      id: lead.id,\n      nome: lead.name,\n      responsible_user_id: lead.responsible_user_id, // 👈 adiciona aqui\n      ...resultado\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -560,
+          96
+        ],
+        "id": "fb5c2039-1e66-4b46-bf12-0f3ba739903c",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -784,
+          96
+        ],
+        "id": "6eaecb01-0c9f-47b6-8cff-4940dd6a243e",
+        "name": "Get list of leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://csvatendimento.kommo.com/api/v4/contacts?with=leads&query=",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "with",
+                "value": "leads"
+              },
+              {
+                "name": "query",
+                "value": "={{ $('Code').item.json.telefone_comercial }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjM0MjljZmY4NmEwMmQ2NjAzMzg2ZDY1NTc5MDJjOWQ5NDMyM2M2MDRmZjg0Njg5ZjBkZDJmZjFhMWNhYzZhNThkNmFmN2IzNWQ3YmRkNzgwIn0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiIzNDI5Y2ZmODZhMDJkNjYwMzM4NmQ2NTU3OTAyYzlkOTQzMjNjNjA0ZmY4NDY4OWYwZGQyZmYxYTFjYWM2YTU4ZDZhZjdiMzVkN2JkZDc4MCIsImlhdCI6MTc2MjIwMDgxOSwibmJmIjoxNzYyMjAwODE5LCJleHAiOjE3OTUyMTkyMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiJmZGU2ODY0ZC05MGVhLTQzNjYtYmEzMS0xMDkwMTU5NjI2NjUiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.d2ldrFRWry1SNQh-6nJDItCdqMFnwusUyoYQ9GMVoaRKMFm8F0Wsc9x4KF8pQR5x9wyQdVFdAiXglf6kAsQO3444Jmu1IfD6NQcX6xra4Me02CCeo5Itns6gtl3S1YB8Lpz9Wwx3VHbAKdfoXy5zXMeIaP1W2PusyftvQ6B04UwCgUuT4l76Qg_XfN38er14m9RRi40c3guUsP4mCPnrveLOLXNWoXy_H5FgUVoEt_2CDGUBN3-U9PzIt_R0ea4-pgcd0zWplp6fdIl4nK8k36ZW5srdd4a8YgqnFZQHGwaYz2hn_1IssP2gxuP8jcgzqxDajvOaI-hnn5Vvsx-c5w"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -112,
+          96
+        ],
+        "id": "0eeb1966-7df8-4e33-845a-28ab4ea1d741",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "bbb73f46-55fb-447a-b8f7-7ad4c0391fbb",
+                "name": "data",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          112,
+          96
+        ],
+        "id": "4e454109-6ebe-4baa-aa4c-7ae1ecbfe785",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $('Code').item.json.nome }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":288546,\"type\":\"multitext\"}",
+                      "value": "={{ $('Code').item.json.telefone_comercial }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          784,
+          192
+        ],
+        "id": "1982c437-19b7-4dd8-a8e6-c9dfbb273266",
+        "name": "cria contato",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Code').item.json.nome }}",
+                "price": 0,
+                "pipeline_id": 6961711,
+                "status_id": 58205935,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":334080,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.nome || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":1014523,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json[\"email_acadêmico\"] || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":330938,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.curso || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":330926,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.cpf || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":331044,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.turma_de_ingresso || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":330992,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.polo }}"
+                    },
+                    {
+                      "data": "{\"id\":330876,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.rgm || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":330988,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.grau_new || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":330990,\"type\":\"text\"}",
+                      "value": "={{ $('Code').item.json.modalidade || \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":1029777,\"type\":\"text\"}",
+                      "value": "={{\n  String($('Code').item.json?.nome ?? '').trim().slice(0, 3)\n  + '@' +\n  String($('Code').item.json?.cpf ?? '').trim().slice(0, 3)\n  +\n  String($('Code').item.json?.rgm ?? '').trim().slice(0, 4)\n|| \" \"}}"
+                    },
+                    {
+                      "data": "{\"id\":414754,\"type\":\"text\"}",
+                      "value": "Calouro"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}",
+                            "is_main": false
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1008,
+          192
+        ],
+        "id": "e02d8808-f38f-4939-8ad3-cd6ebcd311b9",
+        "name": "cria lead",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "d911b53c-6e75-4a8a-b500-42397fbe01aa",
+                      "leftValue": "={{ $json.data }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "object",
+                        "operation": "notEmpty",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "84528fc5-8058-446e-bd69-9b68bc0fb110",
+                      "leftValue": "={{ $json.data }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "object",
+                        "operation": "empty",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          336,
+          96
+        ],
+        "id": "54070b29-d7f5-4555-b34d-2d31c9aff1de",
+        "name": "Switch"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          560,
+          192
+        ],
+        "id": "a7dfc8ee-cddd-4e19-9d6d-7dd0990c0a95",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads_ganhos",
+            "mode": "list",
+            "cachedResultName": "leads_ganhos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "RGM": "={{ $json.rgm }}",
+              "id_lead": "={{ $json.id }}",
+              "id_responsavel": "={{ $json.responsible_user_id }}",
+              "curso": "={{ $json.curso }}",
+              "data_matricula": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") + \"Z\" }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "curso",
+                "displayName": "curso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_responsavel",
+                "displayName": "id_responsavel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RGM",
+                "displayName": "RGM",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data_matricula",
+                "displayName": "data_matricula",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -336,
+          96
+        ],
+        "id": "210dbe05-3e02-4ed2-bd03-646421290112",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "grad",
+            "mode": "list",
+            "cachedResultName": "grad"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefone": "={{ $('Code').item.json.telefone_comercial.replace('+', '') }}",
+              "email": "={{ $('Code').item.json['e-mail'] }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1552,
+          48
+        ],
+        "id": "af91a73b-0f5e-4eb1-8139-41cf386ed5bf",
+        "name": "Insert rows in a table1",
+        "credentials": {
+          "postgres": {
+            "id": "RAu49fv2bn0XUiom",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Code').item.json['formação'] }}",
+                      "rightValue": "Graduação",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "21de4447-08f0-4977-897b-929c434c58a4"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Graduação"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c81ad5cc-20c5-407a-9813-18d6208b6dcc",
+                      "leftValue": "={{ $('Code').item.json['formação'] }}",
+                      "rightValue": "Pós-Graduação",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          1216,
+          192
+        ],
+        "id": "914c44f6-a54a-4990-8773-05ed2628719f",
+        "name": "Switch1"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "grad",
+            "mode": "list",
+            "cachedResultName": "grad"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefone": "={{\n  String($('Code').item.json?.telefone_comercial ?? '').replace(/\\D/g, '')\n}}",
+              "email": "={{ $('Code').item.json['e-mail'] }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefone",
+                "displayName": "telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1568,
+          320
+        ],
+        "id": "c43626c5-9272-43f4-b86d-6f735c8dbf02",
+        "name": "Insert rows in a table2",
+        "credentials": {
+          "postgres": {
+            "id": "RAu49fv2bn0XUiom",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Get list of leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of leads": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "cria contato": {
+        "main": [
+          [
+            {
+              "node": "cria lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "cria contato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "cria lead": {
+        "main": [
+          [
+            {
+              "node": "Switch1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Insert rows in a table2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": [
     {
       "updatedAt": "2025-07-25T20:00:36.295Z",
