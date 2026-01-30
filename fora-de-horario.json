@@ -1,0 +1,814 @@
+{
+  "updatedAt": "2026-01-28T20:37:03.639Z",
+  "createdAt": "2026-01-28T20:13:37.306Z",
+  "id": "0j0v5H0RiFWP6Qtb1zWob",
+  "name": "Fora de Horario",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\n// São Paulo (24h)\nconst fmt = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo',\n  hour12: false,\n  hour: '2-digit',\n  minute: '2-digit',\n  second: '2-digit',\n  weekday: 'short',\n});\n\nconst parts = fmt.formatToParts(now);\nconst get = (t) => parts.find(p => p.type === t)?.value ?? '';\n\nconst hour   = Number(get('hour'));\nconst minute = Number(get('minute'));\nconst second = Number(get('second'));\n\n// Normaliza o weekday: remove acento/pontuação e baixa caixa\nconst wdRaw = get('weekday');\nconst wdNorm = String(wdRaw)\n  .normalize('NFD').replace(/\\p{Diacritic}/gu, '')\n  .replace(/\\W+/g, '') // remove ponto/traços/esp.\n  .toLowerCase();\n\n// Mapa robusto (aceita \"sab\", \"sabado\", \"sáb.\", etc.)\nconst dayMap = {\n  dom: 0, domingo: 0,\n  seg: 1, segunda: 1,\n  ter: 2, terca: 2, terça: 2,\n  qua: 3, quarta: 3,\n  qui: 4, quinta: 4,\n  sex: 5, sexta: 5,\n  sab: 6, sabado: 6,\n};\nconst day = dayMap[wdNorm] ?? dayMap[wdNorm.slice(0,3)] ?? -1;\n\n// Converte hora atual em \"minutos desde meia-noite\"\nconst minutesOfDay = hour * 60 + minute;\n\n// Janelas de atendimento (intervalo FECHADO: início e fim inclusivos)\n// Seg–Sex: 09:00 (540) até 19:00 (1140)\nconst inWeekWindow = (m) => m >= 9 * 60 && m <= 19 * 60;\n\n// Sábado: 09:00 (540) até 14:00 (840)\nconst inSaturdayWindow = (m) => m >= 9 * 60 && m <= 14 * 60;\n\nconst permitido =\n  (day >= 1 && day <= 5 && inWeekWindow(minutesOfDay)) ||\n  (day === 6 && inSaturdayWindow(minutesOfDay));\n\nreturn [{\n  json: {\n    status: permitido ? 'Permitido' : 'Negado',\n    hora_SP: `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}:${String(second).padStart(2,'0')}`,\n    dia_da_semana: day,   // 0=dom ... 6=sáb\n    weekday_raw: wdRaw,   // só pra debug\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        80
+      ],
+      "id": "83dff05d-e004-4c2f-aae1-753fe856d111",
+      "name": "Verfica Horario1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Edit Fields').item.json.ID_lead }}",
+        "name": "={{ $('Edit Fields').item.json.Nome }}",
+        "phone": "={{ $('Edit Fields').item.json.Telefone }}",
+        "company": "=",
+        "source": "={{ $('Edit Fields').item.json['Origem Lead'] }}",
+        "additionalFields": {
+          "tags": [
+            "60ec31af-1f18-45d8-9232-af073e7fcd4c"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        160,
+        288
+      ],
+      "id": "a16e0d97-4f8f-4096-a6d3-86b44d7917b2",
+      "name": "Atualizar um lead existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "Permitido",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5d7be53d-f8ad-408e-ba88-db0a6896e8a7"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "369c9736-295f-4008-9047-f61e78e1644f",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "Negado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        80
+      ],
+      "id": "a1675046-19c9-45b5-881e-15213154d234",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Fora do horario SUSUMA",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1152,
+        80
+      ],
+      "id": "cb2b55c2-e4b7-4bc2-9238-4a1434b4d679",
+      "name": "Webhook",
+      "webhookId": "08ab94e1-10f2-4ce7-b1ef-99d82cc373e5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4bfdfbee-bd70-40b8-8a3d-7101b7ee4dec",
+              "name": "Nome",
+              "value": "={{ $json.query.Nome }}",
+              "type": "string"
+            },
+            {
+              "id": "b33f3b2c-2d1b-4f94-9c70-b5308e17ca2d",
+              "name": "Telefone",
+              "value": "={{ $json.query.Telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "93030918-a5a8-402e-a06e-d7c4428ea7b4",
+              "name": "ID_lead",
+              "value": "={{ $json.query.Id_lead }}",
+              "type": "string"
+            },
+            {
+              "id": "2934dc45-3745-41ba-919a-a48cf0c5c7b7",
+              "name": "ID_negocio",
+              "value": "={{ $json.query.ID_negocio }}",
+              "type": "string"
+            },
+            {
+              "id": "a1447e97-b0ef-4ec7-81fd-e1fc09324854",
+              "name": "Origem Lead",
+              "value": "={{ $json.query.ID_origem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -832,
+        80
+      ],
+      "id": "dae0595f-6fcb-4a2c-8547-29ab8d6149de",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $('Webhook').item.json.query.ID_negocio }}",
+        "additionalFieldId": "ede24ef9-9a32-4f03-865f-33bcbe9cc7c2",
+        "value": "=fora"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        800,
+        288
+      ],
+      "id": "d995565f-82ae-4f74-8cc5-692805c6a3c5",
+      "name": "formacao",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        512,
+        288
+      ],
+      "id": "bcc0d32d-d9de-4659-99f0-c48c3198bce5",
+      "name": "Wait",
+      "webhookId": "dc3e2d5d-2501-4e18-ac23-228e814cfb8d"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Webhook').item.json.query.Id_lead }}",
+        "name": "={{ $('Edit Fields').item.json.Nome }}",
+        "phone": "={{ $('Edit Fields').item.json.Telefone }}",
+        "company": "=",
+        "source": "={{ $('Edit Fields').item.json['Origem Lead'] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -80
+      ],
+      "id": "2a2d8199-5902-4fab-9939-ab151fb1fd6b",
+      "name": "Atualizar um lead existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $('Edit Fields').item.json.ID_negocio }}",
+        "additionalFieldId": "ede24ef9-9a32-4f03-865f-33bcbe9cc7c2",
+        "value": "=atendimento"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -80
+      ],
+      "id": "d126e37e-b211-42e7-bd89-c5d3188afb69",
+      "name": "formacao1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        -80
+      ],
+      "id": "3330707a-88f7-4832-b251-2d4ee3e18a76",
+      "name": "Wait1",
+      "webhookId": "dc3e2d5d-2501-4e18-ac23-228e814cfb8d"
+    }
+  ],
+  "connections": {
+    "Verfica Horario1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar um lead existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Verfica Horario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "formacao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "formacao1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.13.2",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-697a72e2000000002ac9930ecc9ce33f-2ac9930ecc9ce33f-01",
+            "tracestate": "dd=t.tid:697a72e200000000;t.dm:-3;s:2;p:2ac9930ecc9ce33f",
+            "x-datadog-parent-id": "3083157111683474239",
+            "x-datadog-sampling-priority": "2",
+            "x-datadog-tags": "_dd.p.tid=697a72e200000000,_dd.p.dm=-3",
+            "x-datadog-trace-id": "3083157111683474239",
+            "x-forwarded-for": "34.95.240.194",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-real-ip": "34.95.240.194"
+          },
+          "params": {},
+          "query": {
+            "Id_lead": "451aedf2-db79-46a0-ac21-25b4d07f6335",
+            "Id_conversa": "6936d2b682abbe1bdcc0fb2c",
+            "ID_negocio": "49eb0515-028f-4400-be8f-4e11696c9ae8",
+            "Nome": "William",
+            "Telefone": "5511944690752",
+            "ID_origem": "asdasdasd"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/Fora do horario SUSUMA",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "6a607dab-1bcd-4134-9fe3-5f5dd4cb38cb",
+  "activeVersionId": "6a607dab-1bcd-4134-9fe3-5f5dd4cb38cb",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T20:13:37.313Z",
+      "createdAt": "2026-01-28T20:13:37.313Z",
+      "role": "workflow:owner",
+      "workflowId": "0j0v5H0RiFWP6Qtb1zWob",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-01-28T20:37:09.000Z",
+    "createdAt": "2026-01-28T20:37:03.640Z",
+    "versionId": "6a607dab-1bcd-4134-9fe3-5f5dd4cb38cb",
+    "workflowId": "0j0v5H0RiFWP6Qtb1zWob",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "const now = new Date();\n\n// São Paulo (24h)\nconst fmt = new Intl.DateTimeFormat('pt-BR', {\n  timeZone: 'America/Sao_Paulo',\n  hour12: false,\n  hour: '2-digit',\n  minute: '2-digit',\n  second: '2-digit',\n  weekday: 'short',\n});\n\nconst parts = fmt.formatToParts(now);\nconst get = (t) => parts.find(p => p.type === t)?.value ?? '';\n\nconst hour   = Number(get('hour'));\nconst minute = Number(get('minute'));\nconst second = Number(get('second'));\n\n// Normaliza o weekday: remove acento/pontuação e baixa caixa\nconst wdRaw = get('weekday');\nconst wdNorm = String(wdRaw)\n  .normalize('NFD').replace(/\\p{Diacritic}/gu, '')\n  .replace(/\\W+/g, '') // remove ponto/traços/esp.\n  .toLowerCase();\n\n// Mapa robusto (aceita \"sab\", \"sabado\", \"sáb.\", etc.)\nconst dayMap = {\n  dom: 0, domingo: 0,\n  seg: 1, segunda: 1,\n  ter: 2, terca: 2, terça: 2,\n  qua: 3, quarta: 3,\n  qui: 4, quinta: 4,\n  sex: 5, sexta: 5,\n  sab: 6, sabado: 6,\n};\nconst day = dayMap[wdNorm] ?? dayMap[wdNorm.slice(0,3)] ?? -1;\n\n// Converte hora atual em \"minutos desde meia-noite\"\nconst minutesOfDay = hour * 60 + minute;\n\n// Janelas de atendimento (intervalo FECHADO: início e fim inclusivos)\n// Seg–Sex: 09:00 (540) até 19:00 (1140)\nconst inWeekWindow = (m) => m >= 9 * 60 && m <= 19 * 60;\n\n// Sábado: 09:00 (540) até 14:00 (840)\nconst inSaturdayWindow = (m) => m >= 9 * 60 && m <= 14 * 60;\n\nconst permitido =\n  (day >= 1 && day <= 5 && inWeekWindow(minutesOfDay)) ||\n  (day === 6 && inSaturdayWindow(minutesOfDay));\n\nreturn [{\n  json: {\n    status: permitido ? 'Permitido' : 'Negado',\n    hora_SP: `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}:${String(second).padStart(2,'0')}`,\n    dia_da_semana: day,   // 0=dom ... 6=sáb\n    weekday_raw: wdRaw,   // só pra debug\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -544,
+          80
+        ],
+        "id": "83dff05d-e004-4c2f-aae1-753fe856d111",
+        "name": "Verfica Horario1"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Edit Fields').item.json.ID_lead }}",
+          "name": "={{ $('Edit Fields').item.json.Nome }}",
+          "phone": "={{ $('Edit Fields').item.json.Telefone }}",
+          "company": "=",
+          "source": "={{ $('Edit Fields').item.json['Origem Lead'] }}",
+          "additionalFields": {
+            "tags": [
+              "60ec31af-1f18-45d8-9232-af073e7fcd4c"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          160,
+          288
+        ],
+        "id": "a16e0d97-4f8f-4096-a6d3-86b44d7917b2",
+        "name": "Atualizar um lead existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.status }}",
+                      "rightValue": "Permitido",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "5d7be53d-f8ad-408e-ba88-db0a6896e8a7"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "369c9736-295f-4008-9047-f61e78e1644f",
+                      "leftValue": "={{ $json.status }}",
+                      "rightValue": "Negado",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          -240,
+          80
+        ],
+        "id": "a1675046-19c9-45b5-881e-15213154d234",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "Fora do horario SUSUMA",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -1152,
+          80
+        ],
+        "id": "cb2b55c2-e4b7-4bc2-9238-4a1434b4d679",
+        "name": "Webhook",
+        "webhookId": "08ab94e1-10f2-4ce7-b1ef-99d82cc373e5"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4bfdfbee-bd70-40b8-8a3d-7101b7ee4dec",
+                "name": "Nome",
+                "value": "={{ $json.query.Nome }}",
+                "type": "string"
+              },
+              {
+                "id": "b33f3b2c-2d1b-4f94-9c70-b5308e17ca2d",
+                "name": "Telefone",
+                "value": "={{ $json.query.Telefone }}",
+                "type": "string"
+              },
+              {
+                "id": "93030918-a5a8-402e-a06e-d7c4428ea7b4",
+                "name": "ID_lead",
+                "value": "={{ $json.query.Id_lead }}",
+                "type": "string"
+              },
+              {
+                "id": "2934dc45-3745-41ba-919a-a48cf0c5c7b7",
+                "name": "ID_negocio",
+                "value": "={{ $json.query.ID_negocio }}",
+                "type": "string"
+              },
+              {
+                "id": "a1447e97-b0ef-4ec7-81fd-e1fc09324854",
+                "name": "Origem Lead",
+                "value": "={{ $json.query.ID_origem }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -832,
+          80
+        ],
+        "id": "dae0595f-6fcb-4a2c-8547-29ab8d6149de",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $('Webhook').item.json.query.ID_negocio }}",
+          "additionalFieldId": "ede24ef9-9a32-4f03-865f-33bcbe9cc7c2",
+          "value": "=fora"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          800,
+          288
+        ],
+        "id": "d995565f-82ae-4f74-8cc5-692805c6a3c5",
+        "name": "formacao",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 15
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          512,
+          288
+        ],
+        "id": "bcc0d32d-d9de-4659-99f0-c48c3198bce5",
+        "name": "Wait",
+        "webhookId": "dc3e2d5d-2501-4e18-ac23-228e814cfb8d"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Webhook').item.json.query.Id_lead }}",
+          "name": "={{ $('Edit Fields').item.json.Nome }}",
+          "phone": "={{ $('Edit Fields').item.json.Telefone }}",
+          "company": "=",
+          "source": "={{ $('Edit Fields').item.json['Origem Lead'] }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          144,
+          -80
+        ],
+        "id": "2a2d8199-5902-4fab-9939-ab151fb1fd6b",
+        "name": "Atualizar um lead existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $('Edit Fields').item.json.ID_negocio }}",
+          "additionalFieldId": "ede24ef9-9a32-4f03-865f-33bcbe9cc7c2",
+          "value": "=atendimento"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          784,
+          -80
+        ],
+        "id": "d126e37e-b211-42e7-bd89-c5d3188afb69",
+        "name": "formacao1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 15
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          -80
+        ],
+        "id": "3330707a-88f7-4832-b251-2d4ee3e18a76",
+        "name": "Wait1",
+        "webhookId": "dc3e2d5d-2501-4e18-ac23-228e814cfb8d"
+      }
+    ],
+    "connections": {
+      "Verfica Horario1": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Atualizar um lead existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Verfica Horario1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "formacao",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente1": {
+        "main": [
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "formacao1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version 6a607dab",
+    "description": "",
+    "autosaved": true
+  },
+  "tags": []
+}
