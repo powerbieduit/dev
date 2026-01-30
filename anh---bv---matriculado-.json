@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-30T16:45:40.000Z",
+  "updatedAt": "2026-01-27T16:24:07.283Z",
   "createdAt": "2025-08-01T17:16:32.451Z",
   "id": "bFnxIJ0YiYbtWshX",
   "name": "ANH - BV - MATRICULADO",
@@ -29,7 +29,7 @@
         "collection": {
           "lead": [
             {
-              "name": "={{ $('get lead info comercial').first().json._embedded.leads[0].custom_fields_values[0].values[0].value }}",
+              "name": "={{ $('Code1').item.json.name }}",
               "pipeline_id": 7355323,
               "status_id": 60877039,
               "loss_reason_id": "=",
@@ -37,23 +37,31 @@
                 "custom_field": [
                   {
                     "data": "{\"id\":412930,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').first().json.campos.CPF.raw.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.cpf }}"
                   },
                   {
                     "data": "{\"id\":412934,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').first().json.campos.Polo.raw.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.polo }}"
                   },
                   {
                     "data": "{\"id\":412928,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').first().json.campos.RA.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.ra }}"
                   },
                   {
                     "data": "{\"id\":412932,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').first().json.campos.Curso.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.curso }}"
                   },
                   {
                     "data": "{\"id\":1473851,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').first().json.campos.Telefone.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.telefone }}"
+                  },
+                  {
+                    "data": "{\"id\":1469689,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.camposAdicionais.PTC.value }}"
+                  },
+                  {
+                    "data": "{\"id\":1457224,\"type\":\"select\"}",
+                    "value": "={{ $('Code1').item.json.modalidade }}"
                   }
                 ]
               },
@@ -97,12 +105,12 @@
         "collection": {
           "contact": [
             {
-              "name": "={{ $('get lead info comercial').first().json._embedded.leads[0].custom_fields_values[0].values[0].value }}",
+              "name": "={{ $('Code1').item.json.name }}",
               "custom_fields_values": {
                 "custom_field": [
                   {
                     "data": "{\"id\":346300,\"type\":\"multitext\"}",
-                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.telefone }}"
                   }
                 ]
               }
@@ -136,8 +144,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -16,
-        -48
+        176,
+        -544
       ],
       "id": "9f496cc3-d6a5-43be-9682-83acb96290d3",
       "name": "get lead info comercial",
@@ -152,7 +160,7 @@
       "parameters": {
         "resource": "leads",
         "filter": {
-          "query": "={{ $json.campos.Telefone.values[0].value }}"
+          "query": "={{ $json.telefone }}"
         },
         "options": {}
       },
@@ -173,7 +181,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst results = inputData.map(lead => {\n  const campos = {};\n\n  // Mapeia os campos personalizados\n  if (lead.custom_fields_values) {\n    lead.custom_fields_values.forEach(field => {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    });\n  }\n\n  // 📅 Converte a matrícula de timestamp para DD/MM/YYYY ou \"\" se inválida\n  let matriculaFormatada = \"\";\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000); // Unix timestamp\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000); // Ajuste GMT-3\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  return {\n    json: {\n      id: lead.id ?? \"\",\n      name: lead.name ?? \"\",\n      pipeline_id: lead.pipeline_id ?? \"\",\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? \"\",\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? \"\",\n      matriculaFormatada\n    }\n  };\n});\n\nreturn results;\n"
+        "jsCode": "// n8n Code Node - Run Once for All Items\n\nconst items = $input.all();\n\n// Pega o primeiro item da entrada\nlet root = items[0]?.json ?? {};\n\n// Caso a resposta venha como array na raiz (igual ao exemplo),\n// pega o primeiro elemento desse array\nif (Array.isArray(root)) {\n  root = root[0] ?? {};\n}\n\n// A lista de negócios vem em root.data\nconst inputData = root.data ?? [];\n\nconst results = inputData.map((business) => {\n  const lead = business.lead || {};\n  const stage = business.stage || {};\n  const pipeline = stage.pipeline || {};\n  const attendant = business.attendant || {};\n\n  // 📞 Telefone: usa phone ou primeiro contactId\n  let telefone = \"\";\n  if (lead.phone) {\n    telefone = lead.phone;\n  } else if (Array.isArray(lead.contacts) && lead.contacts.length > 0) {\n    telefone = lead.contacts[0]?.contactId || \"\";\n  }\n\n  // ✉️ Email\n  const email = lead.email || \"\";\n\n  // 🔧 Indexa additionalFields por NOME\n  const adicionaisPorNome = {};\n  if (Array.isArray(business.additionalFields)) {\n    for (const af of business.additionalFields) {\n      const nome = af.additionalField?.name;\n      if (!nome) continue;\n      adicionaisPorNome[nome] = af;\n    }\n  }\n\n  // 🧾 Campos importantes vindos de additionalFields\n  const cpf        = adicionaisPorNome[\"CPF\"]?.value        || \"\";\n  const ra         = adicionaisPorNome[\"RA\"]?.value         || \"\";\n  const polo       = adicionaisPorNome[\"Polo\"]?.value       || \"\";\n\n  // ✅ PTC vindo do additionalFields\n  const ptc        = adicionaisPorNome[\"PTC\"]?.value        || \"\";\n\n  // ✅ Troca: \"Modalidade\" agora vem do campo \"Nível\"\n  const modalidade = adicionaisPorNome[\"Nível\"]?.value      || \"\";\n\n  const curso      = adicionaisPorNome[\"Curso\"]?.value      || \"\";\n  const nivel      = adicionaisPorNome[\"Nível\"]?.value      || \"\";\n\n  // 📅 Matrícula (campo \"Matrícula\" → valueDate ou value) formatada DD/MM/YYYY (GMT-3)\n  let matriculaFormatada = \"\";\n  const matriculaRaw =\n    adicionaisPorNome[\"Matrícula\"]?.valueDate ||\n    adicionaisPorNome[\"Matrícula\"]?.value ||\n    \"\";\n\n  if (matriculaRaw) {\n    const d = new Date(matriculaRaw);\n    if (!isNaN(d.getTime())) {\n      const brasiliaDate = new Date(d.getTime() - 3 * 60 * 60 * 1000);\n      const pad = (n) => n.toString().padStart(2, \"0\");\n      matriculaFormatada =\n        `${pad(brasiliaDate.getDate())}/${pad(\n          brasiliaDate.getMonth() + 1\n        )}/${brasiliaDate.getFullYear()}`;\n    }\n  }\n\n  // 📅 createdAt do negócio formatado DD/MM/YYYY (GMT-3)\n  let createdAtFormatado = \"\";\n  if (business.createdAt) {\n    const d = new Date(business.createdAt);\n    if (!isNaN(d.getTime())) {\n      const brasiliaDate = new Date(d.getTime() - 3 * 60 * 60 * 1000);\n      const pad = (n) => n.toString().padStart(2, \"0\");\n      createdAtFormatado =\n        `${pad(brasiliaDate.getDate())}/${pad(\n          brasiliaDate.getMonth() + 1\n        )}/${brasiliaDate.getFullYear()}`;\n    }\n  }\n\n  // 🏷️ Tags (somente os nomes)\n  const tags = Array.isArray(lead.tags)\n    ? lead.tags.map((t) => t.name)\n    : [];\n\n  // 🔁 Mapa de campos adicionais completo (pra consulta futura)\n  const camposAdicionais = {};\n  if (Array.isArray(business.additionalFields)) {\n    for (const af of business.additionalFields) {\n      const nomeCampo = af.additionalField?.name || af.id;\n      if (!nomeCampo) continue;\n      camposAdicionais[nomeCampo] = {\n        value: af.value ?? null,\n        valueNumber: af.valueNumber ?? null,\n        valueDate: af.valueDate ?? null,\n        raw: af,\n      };\n    }\n  }\n\n  // Objeto bruto completo do negócio\n  const campos = business;\n\n  return {\n    json: {\n      // 🔐 DADOS SENSÍVEIS PRIMEIRO\n      name: lead.name ?? \"\",\n      telefone,\n      cpf,\n      ra,\n      matricula: matriculaFormatada,\n      email,\n\n      // 🎓 Dados acadêmicos\n      polo,\n\n      // ✅ adiciona PTC na saída\n      ptc,\n\n      // ✅ modalidade agora vem de \"Nível\"\n      modalidade,\n\n      curso,\n      nivel,\n\n      // 📛 IDs e nomes principais\n      business_id: business.id ?? \"\",\n      lead_id: lead.id ?? business.leadId ?? \"\",\n      stage_id: stage.id ?? business.stageId ?? \"\",\n      pipeline_id: pipeline.id ?? \"\",\n      attendant_id: attendant.id ?? business.attendantId ?? \"\",\n\n      stage_nome: stage.name ?? \"\",\n      pipeline_nome: pipeline.name ?? \"\",\n      attendant_nome: attendant.name ?? \"\",\n\n      // 🏷️ Tags e datas\n      tags,\n      status: business.status ?? \"\",\n      code: business.code ?? null,\n      createdAt: business.createdAt ?? \"\",\n      createdAtFormatado,\n      lastMovedAt: business.lastMovedAt ?? \"\",\n\n      // Campos auxiliares\n      camposAdicionais,\n      campos, // objeto bruto completo\n    },\n  };\n});\n\nreturn results;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -271,35 +279,39 @@
                   },
                   {
                     "data": "{\"id\":412930,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.CPF.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.cpf }}"
                   },
                   {
                     "data": "{\"id\":412932,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Curso.raw.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.curso }}"
                   },
                   {
                     "data": "{\"id\":412934,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Polo.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.polo }}"
                   },
                   {
                     "data": "{\"id\":1473851,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.telefone }}"
                   },
                   {
                     "data": "{\"id\":1454014,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Telefone.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.telefone }}"
                   },
                   {
                     "data": "{\"id\":412928,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.RA.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":1457224,\"type\":\"select\"}",
-                    "value": "={{ $('Code1').item.json.campos['Nível'].raw.values[0].value }}"
+                    "value": "={{ $('Code1').item.json.ra }}"
                   },
                   {
                     "data": "{\"id\":413910,\"type\":\"text\"}",
                     "value": "Calouro"
+                  },
+                  {
+                    "data": "{\"id\":1469689,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.camposAdicionais.PTC.value }}"
+                  },
+                  {
+                    "data": "{\"id\":1457224,\"type\":\"select\"}",
+                    "value": "={{ $('Code1').item.json.modalidade }}"
                   }
                 ]
               }
@@ -310,8 +322,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1104,
-        -176
+        1088,
+        -192
       ],
       "id": "94fdc7e5-bee7-405c-b7b8-e4b42e6129ac",
       "name": "Update leads",
@@ -319,6 +331,49 @@
         "kommoOAuth2Api": {
           "id": "0RLQwTFNZKVcXRY1",
           "name": "Kommo acadêmico BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "search": "={{ $json.query.TELEFONE }}"
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -544
+      ],
+      "id": "9f0d0562-0091-4357-91a6-7e856f12dd22",
+      "name": "Buscar todos os leads",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "options": {
+          "search": "={{ $json.query.TELEFONE }}"
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -48
+      ],
+      "id": "2b8856ac-253c-4262-98eb-3fe185a8f0ac",
+      "name": "Buscar todos os negócios",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "F5urhNb40QLbpbTU",
+          "name": "Credenciais DataCrazy BU"
         }
       }
     }
@@ -337,13 +392,7 @@
     },
     "get lead info comercial": {
       "main": [
-        [
-          {
-            "node": "Code1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "search leads - acad": {
@@ -394,7 +443,7 @@
       "main": [
         [
           {
-            "node": "get lead info comercial",
+            "node": "Buscar todos os negócios",
             "type": "main",
             "index": 0
           }
@@ -429,6 +478,22 @@
           }
         ]
       ]
+    },
+    "Buscar todos os leads": {
+      "main": [
+        []
+      ]
+    },
+    "Buscar todos os negócios": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -441,39 +506,3153 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {
+    "get lead info comercial": [
+      {
+        "json": {
+          "_page": 1,
+          "_links": {
+            "self": {
+              "href": "https://sumaread.kommo.com/api/v4/leads?page=1&limit=50"
+            },
+            "next": {
+              "href": "https://sumaread.kommo.com/api/v4/leads?page=2&limit=50"
+            }
+          },
+          "_embedded": {
+            "leads": [
+              {
+                "id": 5865868,
+                "name": "Lead #5865868",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1664016814,
+                "updated_at": 1684941858,
+                "closed_at": 1664371463,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5491159025265"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5865868?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5819670,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663893205,
+                "updated_at": 1684941859,
+                "closed_at": 1665081430,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5819670?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5820924,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663897426,
+                "updated_at": 1684941859,
+                "closed_at": 1664389863,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5820924?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5821102,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663897683,
+                "updated_at": 1684941859,
+                "closed_at": 1665084286,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5821102?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5824380,
+                "name": "Site-Preço-Pós-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663923977,
+                "updated_at": 1684941859,
+                "closed_at": 1665144829,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Pós-Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5824380?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5825514,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663930899,
+                "updated_at": 1684941859,
+                "closed_at": 1665418455,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5825514?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5828760,
+                "name": "Lead #5828760",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663936157,
+                "updated_at": 1684941859,
+                "closed_at": 1665668255,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511943094512"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5828760?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5836156,
+                "name": "Lead #5836156",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663940795,
+                "updated_at": 1684941859,
+                "closed_at": 1664389903,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511944916471"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5836156?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5837126,
+                "name": "Lead #5837126",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663942317,
+                "updated_at": 1684941859,
+                "closed_at": 1664028210,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+558195998799"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5837126?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5837228,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": null,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663942536,
+                "updated_at": 1684941859,
+                "closed_at": 1664028195,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511993621459"
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5837228?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5839128,
+                "name": "Lead #5839128",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": null,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663943325,
+                "updated_at": 1684941859,
+                "closed_at": 1677694154,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511954798507"
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5839128?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 104760,
+                      "name": "RB-Aluno",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5840744,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347724,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663946207,
+                "updated_at": 1684941859,
+                "closed_at": 1663952288,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511951216376"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Presencial/Técnico",
+                        "enum_id": 427709,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5840744?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5842212,
+                "name": "Lead #5842212",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663948296,
+                "updated_at": 1684941859,
+                "closed_at": 1663949491,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511960244492"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5842212?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5846358,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663952520,
+                "updated_at": 1684941859,
+                "closed_at": 1664389920,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação(EAD)"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662138,
+                    "field_name": "Nome",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Pamela Barbosa Argosini"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "'+5511965611894"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662144,
+                    "field_name": "Curso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "CCONT_EAD"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662146,
+                    "field_name": "Status da Inscrição",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Indefinido"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662148,
+                    "field_name": "Inscrição",
+                    "field_code": null,
+                    "field_type": "date",
+                    "values": [
+                      {
+                        "value": 1677726000
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662152,
+                    "field_name": "Polo",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Barra Funda"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 662154,
+                    "field_name": "CPF",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "37083069883"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5846358?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5752564,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347724,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663726380,
+                "updated_at": 1684941862,
+                "closed_at": 1663849880,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Presencial/Técnico",
+                        "enum_id": 427709,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5752564?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5755942,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663749912,
+                "updated_at": 1684941862,
+                "closed_at": 1664303000,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5755942?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5757982,
+                "name": "Lead #5757982",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347730,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663760100,
+                "updated_at": 1684941862,
+                "closed_at": 1663770086,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+551122404421"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5757982?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5680944,
+                "name": "Eliel Guimarães",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11337542,
+                "created_by": 8395835,
+                "updated_by": 8261837,
+                "created_at": 1663592093,
+                "updated_at": 1684941864,
+                "closed_at": 1663957184,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Contato Inválido",
+                        "enum_id": 427693,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5680944?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5727494,
+                "name": "Lead #5727494",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663686997,
+                "updated_at": 1684941864,
+                "closed_at": 1663688195,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511981312421"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5727494?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5671936,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663549780,
+                "updated_at": 1684941865,
+                "closed_at": 1663957114,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5671936?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5672190,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663550544,
+                "updated_at": 1684941865,
+                "closed_at": 1664297918,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5672190?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 62864,
+                      "name": "Recadastro_Site",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5673354,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663556170,
+                "updated_at": 1684941865,
+                "closed_at": 1663608616,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5673354?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5675556,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": null,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663575483,
+                "updated_at": 1684941865,
+                "closed_at": 1663591142,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5675556?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5676216,
+                "name": "Lead #5676216",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663580973,
+                "updated_at": 1684941865,
+                "closed_at": 1663591163,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511951198415"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5676216?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5678046,
+                "name": "Lead #5678046",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663588874,
+                "updated_at": 1684941865,
+                "closed_at": 1664299439,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511947998514"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5678046?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5650246,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663449375,
+                "updated_at": 1684941867,
+                "closed_at": 1663596442,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5650246?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5650558,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663450646,
+                "updated_at": 1684941867,
+                "closed_at": 1663956709,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5650558?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5650616,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663450821,
+                "updated_at": 1684941867,
+                "closed_at": 1663594600,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5650616?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5578126,
+                "name": "Lead #5578126",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663264640,
+                "updated_at": 1684941868,
+                "closed_at": 1663264840,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+447366576640"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5578126?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5591984,
+                "name": "Site-Preço-Pós-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663290581,
+                "updated_at": 1684941868,
+                "closed_at": 1663950566,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Pós-Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5591984?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5592236,
+                "name": "Lead #5592236",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366624,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663291391,
+                "updated_at": 1684941868,
+                "closed_at": 1663329741,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511949029220"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Matriculado/Concorrente",
+                        "enum_id": 427701,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5592236?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5593236,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663294769,
+                "updated_at": 1684941868,
+                "closed_at": 1664217415,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5593236?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5595317,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663307957,
+                "updated_at": 1684941868,
+                "closed_at": 1663950683,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5595317?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5595939,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663315084,
+                "updated_at": 1684941868,
+                "closed_at": 1663950751,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5595939?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5596447,
+                "name": "Lead #5596447",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663320185,
+                "updated_at": 1684941868,
+                "closed_at": 1663339418,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5596447?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5596551,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663321026,
+                "updated_at": 1684941868,
+                "closed_at": 1663950838,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5596551?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5597326,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663325624,
+                "updated_at": 1684941868,
+                "closed_at": 1663950920,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5597326?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5602324,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347724,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663330549,
+                "updated_at": 1684941868,
+                "closed_at": 1663334066,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Presencial/Técnico",
+                        "enum_id": 427709,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5602324?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    },
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5550198,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663185321,
+                "updated_at": 1684941869,
+                "closed_at": 1663950220,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5550198?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5551270,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663187259,
+                "updated_at": 1684941869,
+                "closed_at": 1663950238,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5551270?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5557002,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663201089,
+                "updated_at": 1684941869,
+                "closed_at": 1663950294,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5557002?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5557028,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663201158,
+                "updated_at": 1684941869,
+                "closed_at": 1664297199,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5557028?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5558442,
+                "name": "Site-Preço-Pós-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663205986,
+                "updated_at": 1684941869,
+                "closed_at": 1663950329,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Pós-Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5558442?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5561312,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11391803,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1661827020,
+                "updated_at": 1684941869,
+                "closed_at": 1663242820,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Contato Inválido",
+                        "enum_id": 427693,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5561312?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5561344,
+                "name": "Lead #5561344",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663212785,
+                "updated_at": 1684941869,
+                "closed_at": 1664299983,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511940201859"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5561344?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5562104,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663217365,
+                "updated_at": 1684941869,
+                "closed_at": 1663950369,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5562104?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5562318,
+                "name": "Site-Preço-Pós-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663218983,
+                "updated_at": 1684941869,
+                "closed_at": 1663950385,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Pós-Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5562318?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5562330,
+                "name": "Lead #5562330",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11347727,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663219059,
+                "updated_at": 1684941869,
+                "closed_at": 1663700363,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662142,
+                    "field_name": "Tipo de Ingresso",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "+5511946938910"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Não possui o Curso",
+                        "enum_id": 427699,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5562330?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59676,
+                      "name": "Recadastro",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5563828,
+                "name": "Site-Preço-Pós-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663234303,
+                "updated_at": 1684941869,
+                "closed_at": 1663700392,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Pós-Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5563828?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              },
+              {
+                "id": 5516566,
+                "name": "Site-Preço-Graduação",
+                "price": 0,
+                "responsible_user_id": 8395835,
+                "group_id": 0,
+                "status_id": 143,
+                "pipeline_id": 5617751,
+                "loss_reason_id": 11366627,
+                "created_by": 0,
+                "updated_by": 8261837,
+                "created_at": 1663128334,
+                "updated_at": 1684941871,
+                "closed_at": 1663950038,
+                "closest_task_at": null,
+                "is_deleted": false,
+                "custom_fields_values": [
+                  {
+                    "field_id": 662156,
+                    "field_name": "Modalidade",
+                    "field_code": null,
+                    "field_type": "text",
+                    "values": [
+                      {
+                        "value": "Graduação"
+                      }
+                    ]
+                  },
+                  {
+                    "field_id": 677719,
+                    "field_name": "Motivo da Perda",
+                    "field_code": null,
+                    "field_type": "select",
+                    "values": [
+                      {
+                        "value": "Sem resposta",
+                        "enum_id": 427711,
+                        "enum_code": null
+                      }
+                    ]
+                  }
+                ],
+                "score": null,
+                "account_id": 30298412,
+                "labor_cost": null,
+                "_links": {
+                  "self": {
+                    "href": "https://sumaread.kommo.com/api/v4/leads/5516566?page=1&limit=50"
+                  }
+                },
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": 59796,
+                      "name": "distribuição",
+                      "color": null
+                    }
+                  ],
+                  "companies": []
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
     "Webhook": [
       {
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "183",
-            "accept-encoding": "gzip",
-            "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "e2d090a4-5890-42f4-8116-73ab637350bb",
-            "x-forwarded-for": "169.150.216.79",
+            "user-agent": "axios/1.13.2",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-6978e1030000000020133e9f03ea8ffe-20133e9f03ea8ffe-00",
+            "tracestate": "dd=t.tid:6978e10300000000;t.dm:-3;s:-1;p:20133e9f03ea8ffe",
+            "x-datadog-parent-id": "2311259886457622526",
+            "x-datadog-sampling-priority": "-1",
+            "x-datadog-tags": "_dd.p.tid=6978e10300000000",
+            "x-datadog-trace-id": "2311259886457622526",
+            "x-forwarded-for": "34.95.240.194",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "169.150.216.79"
+            "x-forwarded-server": "93d4a78e6a59",
+            "x-real-ip": "34.95.240.194"
           },
           "params": {},
-          "query": {},
-          "body": {
-            "leads[add][0][id]": "19691557",
-            "leads[add][0][status_id]": "142",
-            "leads[add][0][pipeline_id]": "9095532",
-            "account[id]": "30298412",
-            "account[subdomain]": "sumaread"
+          "query": {
+            "ID LEAD": "f83e100b-f80f-476e-9ecf-39080113bcad",
+            "ID NEGOCIO": "eaa45a1b-2105-4e79-a622-49ab620aa847",
+            "TELEFONE": "5511932609674"
           },
+          "body": {},
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/e81e7018-b4a3-40c3-b52b-df71200bdaa7",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "e211c314-6903-41a9-9d79-bc2c25a3c1c1",
+  "versionId": "4fd857b1-ea87-48d1-aa7c-2aeee84e9a55",
+  "activeVersionId": "4fd857b1-ea87-48d1-aa7c-2aeee84e9a55",
   "triggerCount": 1,
   "shared": [
     {
@@ -484,5 +3663,506 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2026-01-27T16:24:09.000Z",
+    "createdAt": "2026-01-27T16:24:07.286Z",
+    "versionId": "4fd857b1-ea87-48d1-aa7c-2aeee84e9a55",
+    "workflowId": "bFnxIJ0YiYbtWshX",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "e81e7018-b4a3-40c3-b52b-df71200bdaa7",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -240,
+          -48
+        ],
+        "id": "8a5f4343-f86d-42b1-86c7-479e493d1e4f",
+        "name": "Webhook",
+        "webhookId": "e81e7018-b4a3-40c3-b52b-df71200bdaa7"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Code1').item.json.name }}",
+                "pipeline_id": 7355323,
+                "status_id": 60877039,
+                "loss_reason_id": "=",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":412930,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.cpf }}"
+                    },
+                    {
+                      "data": "{\"id\":412934,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.polo }}"
+                    },
+                    {
+                      "data": "{\"id\":412928,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.ra }}"
+                    },
+                    {
+                      "data": "{\"id\":412932,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.curso }}"
+                    },
+                    {
+                      "data": "{\"id\":1473851,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.telefone }}"
+                    },
+                    {
+                      "data": "{\"id\":1469689,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.camposAdicionais.PTC.value }}"
+                    },
+                    {
+                      "data": "{\"id\":1457224,\"type\":\"select\"}",
+                      "value": "={{ $('Code1').item.json.modalidade }}"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}",
+                            "is_main": false
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1760,
+          144
+        ],
+        "id": "f6d0c3ff-2704-43d4-8051-16981828f8cb",
+        "name": "Cria Lead",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $('Code1').item.json.name }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":346300,\"type\":\"multitext\"}",
+                      "value": "={{ $('Code1').item.json.telefone }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1536,
+          144
+        ],
+        "id": "d1bfb529-0b6b-4c91-a415-6f13acd32b9e",
+        "name": "Cria contato",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          176,
+          -544
+        ],
+        "id": "9f496cc3-d6a5-43be-9682-83acb96290d3",
+        "name": "get lead info comercial",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Wzp8hZo0JKf2JKw7",
+            "name": "Kommo comercial BU novo"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.telefone }}"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          432,
+          -48
+        ],
+        "id": "9dc04509-fbd9-4d31-aaf7-cf19ca24810a",
+        "name": "search leads - acad",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Code Node - Run Once for All Items\n\nconst items = $input.all();\n\n// Pega o primeiro item da entrada\nlet root = items[0]?.json ?? {};\n\n// Caso a resposta venha como array na raiz (igual ao exemplo),\n// pega o primeiro elemento desse array\nif (Array.isArray(root)) {\n  root = root[0] ?? {};\n}\n\n// A lista de negócios vem em root.data\nconst inputData = root.data ?? [];\n\nconst results = inputData.map((business) => {\n  const lead = business.lead || {};\n  const stage = business.stage || {};\n  const pipeline = stage.pipeline || {};\n  const attendant = business.attendant || {};\n\n  // 📞 Telefone: usa phone ou primeiro contactId\n  let telefone = \"\";\n  if (lead.phone) {\n    telefone = lead.phone;\n  } else if (Array.isArray(lead.contacts) && lead.contacts.length > 0) {\n    telefone = lead.contacts[0]?.contactId || \"\";\n  }\n\n  // ✉️ Email\n  const email = lead.email || \"\";\n\n  // 🔧 Indexa additionalFields por NOME\n  const adicionaisPorNome = {};\n  if (Array.isArray(business.additionalFields)) {\n    for (const af of business.additionalFields) {\n      const nome = af.additionalField?.name;\n      if (!nome) continue;\n      adicionaisPorNome[nome] = af;\n    }\n  }\n\n  // 🧾 Campos importantes vindos de additionalFields\n  const cpf        = adicionaisPorNome[\"CPF\"]?.value        || \"\";\n  const ra         = adicionaisPorNome[\"RA\"]?.value         || \"\";\n  const polo       = adicionaisPorNome[\"Polo\"]?.value       || \"\";\n\n  // ✅ PTC vindo do additionalFields\n  const ptc        = adicionaisPorNome[\"PTC\"]?.value        || \"\";\n\n  // ✅ Troca: \"Modalidade\" agora vem do campo \"Nível\"\n  const modalidade = adicionaisPorNome[\"Nível\"]?.value      || \"\";\n\n  const curso      = adicionaisPorNome[\"Curso\"]?.value      || \"\";\n  const nivel      = adicionaisPorNome[\"Nível\"]?.value      || \"\";\n\n  // 📅 Matrícula (campo \"Matrícula\" → valueDate ou value) formatada DD/MM/YYYY (GMT-3)\n  let matriculaFormatada = \"\";\n  const matriculaRaw =\n    adicionaisPorNome[\"Matrícula\"]?.valueDate ||\n    adicionaisPorNome[\"Matrícula\"]?.value ||\n    \"\";\n\n  if (matriculaRaw) {\n    const d = new Date(matriculaRaw);\n    if (!isNaN(d.getTime())) {\n      const brasiliaDate = new Date(d.getTime() - 3 * 60 * 60 * 1000);\n      const pad = (n) => n.toString().padStart(2, \"0\");\n      matriculaFormatada =\n        `${pad(brasiliaDate.getDate())}/${pad(\n          brasiliaDate.getMonth() + 1\n        )}/${brasiliaDate.getFullYear()}`;\n    }\n  }\n\n  // 📅 createdAt do negócio formatado DD/MM/YYYY (GMT-3)\n  let createdAtFormatado = \"\";\n  if (business.createdAt) {\n    const d = new Date(business.createdAt);\n    if (!isNaN(d.getTime())) {\n      const brasiliaDate = new Date(d.getTime() - 3 * 60 * 60 * 1000);\n      const pad = (n) => n.toString().padStart(2, \"0\");\n      createdAtFormatado =\n        `${pad(brasiliaDate.getDate())}/${pad(\n          brasiliaDate.getMonth() + 1\n        )}/${brasiliaDate.getFullYear()}`;\n    }\n  }\n\n  // 🏷️ Tags (somente os nomes)\n  const tags = Array.isArray(lead.tags)\n    ? lead.tags.map((t) => t.name)\n    : [];\n\n  // 🔁 Mapa de campos adicionais completo (pra consulta futura)\n  const camposAdicionais = {};\n  if (Array.isArray(business.additionalFields)) {\n    for (const af of business.additionalFields) {\n      const nomeCampo = af.additionalField?.name || af.id;\n      if (!nomeCampo) continue;\n      camposAdicionais[nomeCampo] = {\n        value: af.value ?? null,\n        valueNumber: af.valueNumber ?? null,\n        valueDate: af.valueDate ?? null,\n        raw: af,\n      };\n    }\n  }\n\n  // Objeto bruto completo do negócio\n  const campos = business;\n\n  return {\n    json: {\n      // 🔐 DADOS SENSÍVEIS PRIMEIRO\n      name: lead.name ?? \"\",\n      telefone,\n      cpf,\n      ra,\n      matricula: matriculaFormatada,\n      email,\n\n      // 🎓 Dados acadêmicos\n      polo,\n\n      // ✅ adiciona PTC na saída\n      ptc,\n\n      // ✅ modalidade agora vem de \"Nível\"\n      modalidade,\n\n      curso,\n      nivel,\n\n      // 📛 IDs e nomes principais\n      business_id: business.id ?? \"\",\n      lead_id: lead.id ?? business.leadId ?? \"\",\n      stage_id: stage.id ?? business.stageId ?? \"\",\n      pipeline_id: pipeline.id ?? \"\",\n      attendant_id: attendant.id ?? business.attendantId ?? \"\",\n\n      stage_nome: stage.name ?? \"\",\n      pipeline_nome: pipeline.name ?? \"\",\n      attendant_nome: attendant.name ?? \"\",\n\n      // 🏷️ Tags e datas\n      tags,\n      status: business.status ?? \"\",\n      code: business.code ?? null,\n      createdAt: business.createdAt ?? \"\",\n      createdAtFormatado,\n      lastMovedAt: business.lastMovedAt ?? \"\",\n\n      // Campos auxiliares\n      camposAdicionais,\n      campos, // objeto bruto completo\n    },\n  };\n});\n\nreturn results;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          208,
+          -48
+        ],
+        "id": "d4c90391-f5af-4695-a4c8-93299a6a7b75",
+        "name": "Code1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1088,
+          144
+        ],
+        "id": "c6694ff3-1b81-4a3b-b67e-b6d8dd45e253",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1312,
+          144
+        ],
+        "id": "a21a4c3f-5715-4b1c-89a4-84160c66c7f4",
+        "name": "Wait",
+        "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+      },
+      {
+        "parameters": {
+          "jsCode": "const leads = $json._embedded?.leads || [];\n\nif (leads.length === 0) {\n  return [{ json: { quantidade_encontrada: 0, id_mais_recente: \"\" } }];\n}\n\n// Ordena por ID (maior = mais recente)\nconst leadsOrdenados = leads\n  .filter(lead => typeof lead.id === \"number\")\n  .sort((a, b) => b.id - a.id);\n\nconst quantidade_encontrada = leads.length;\nconst id_mais_recente = leadsOrdenados[0]?.id ?? \"\";\n\n// Retorno final\nreturn [{\n  json: {\n    quantidade_encontrada,\n    id_mais_recente\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          640,
+          -48
+        ],
+        "id": "1f4dfee3-760f-419b-bc91-5d7dbbeec0b2",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "bbdc31a7-ea84-4942-80b3-1b81c2d0cfeb",
+                "leftValue": "={{ $json.quantidade_encontrada }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          832,
+          -48
+        ],
+        "id": "8ad68abb-b396-4071-8a14-d349b1fcfd90",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json.id_mais_recente }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":1473849,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.name }}"
+                    },
+                    {
+                      "data": "{\"id\":412930,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.cpf }}"
+                    },
+                    {
+                      "data": "{\"id\":412932,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.curso }}"
+                    },
+                    {
+                      "data": "{\"id\":412934,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.polo }}"
+                    },
+                    {
+                      "data": "{\"id\":1473851,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.telefone }}"
+                    },
+                    {
+                      "data": "{\"id\":1454014,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.telefone }}"
+                    },
+                    {
+                      "data": "{\"id\":412928,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.ra }}"
+                    },
+                    {
+                      "data": "{\"id\":413910,\"type\":\"text\"}",
+                      "value": "Calouro"
+                    },
+                    {
+                      "data": "{\"id\":1469689,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.camposAdicionais.PTC.value }}"
+                    },
+                    {
+                      "data": "{\"id\":1457224,\"type\":\"select\"}",
+                      "value": "={{ $('Code1').item.json.modalidade }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1088,
+          -192
+        ],
+        "id": "94fdc7e5-bee7-405c-b7b8-e4b42e6129ac",
+        "name": "Update leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "0RLQwTFNZKVcXRY1",
+            "name": "Kommo acadêmico BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {
+            "search": "={{ $json.query.TELEFONE }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -32,
+          -544
+        ],
+        "id": "9f0d0562-0091-4357-91a6-7e856f12dd22",
+        "name": "Buscar todos os leads",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "options": {
+            "search": "={{ $json.query.TELEFONE }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -32,
+          -48
+        ],
+        "id": "2b8856ac-253c-4262-98eb-3fe185a8f0ac",
+        "name": "Buscar todos os negócios",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "F5urhNb40QLbpbTU",
+            "name": "Credenciais DataCrazy BU"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Cria contato": {
+        "main": [
+          [
+            {
+              "node": "Cria Lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get lead info comercial": {
+        "main": [
+          []
+        ]
+      },
+      "search leads - acad": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "search leads - acad",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Cria contato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os negócios",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Update leads",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os leads": {
+        "main": [
+          []
+        ]
+      },
+      "Buscar todos os negócios": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version 4fd857b1",
+    "description": "",
+    "autosaved": true
+  },
   "tags": []
 }
