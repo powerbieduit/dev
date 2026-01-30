@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-04T14:38:29.000Z",
+  "updatedAt": "2025-12-01T15:42:20.000Z",
   "createdAt": "2025-07-25T19:56:45.653Z",
   "id": "Omx94aT4or4GKS3w",
   "name": "painel_distribuicao_csv",
@@ -25,7 +25,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT\n  responsavel,\n  ativo_inativo AS status,\n  almoco,\n  final_expediente,\n  pausa_distribuicao AS pausa,\n  volume_distribuicao AS volume,\n  tipo_atendimento,\n  fila,\n  id,\n  ultima_execucao\nFROM distribuicao_academico\nORDER BY responsavel;\n",
+        "query": "SELECT\n  responsavel,\n  ativo_inativo AS status,\n  almoco,\n  final_expediente,\n  pausa_distribuicao AS pausa,\n  volume_distribuicao AS volume,\n  tipo_atendimento,\n  fila,\n  id,\n  ultima_execucao\nFROM distribuicao_academico_duplicate\nORDER BY responsavel;\n",
         "options": {}
       },
       "id": "8bf33053-446c-452b-b6cc-d43a0ef3a267",
@@ -33,8 +33,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        224,
-        464
+        272,
+        544
       ],
       "credentials": {
         "postgres": {
@@ -52,8 +52,8 @@
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
       "position": [
-        672,
-        560
+        720,
+        640
       ]
     },
     {
@@ -65,8 +65,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
       "position": [
-        880,
-        560
+        928,
+        640
       ]
     },
     {
@@ -104,7 +104,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE distribuicao_academico SET\n  almoco = {{ $json.almoco ? `'${$json.almoco}'` : 'NULL' }},\n  final_expediente = {{ $json.final_expediente ? `'${$json.final_expediente}'` : 'NULL' }},\n  pausa_distribuicao = {{ $json.pausa ?? 'NULL' }},\n  volume_distribuicao = {{ $json.volume ?? 'NULL' }},\n  tipo_atendimento = '{{ $json.tipo_atendimento }}'\nWHERE id = {{ $json.id }};\n",
+        "query": "UPDATE distribuicao_academico_duplicate SET\n  almoco = {{ $json.almoco ? `'${$json.almoco}'` : 'NULL' }},\n  final_expediente = {{ $json.final_expediente ? `'${$json.final_expediente}'` : 'NULL' }},\n  pausa_distribuicao = {{ $json.pausa ?? 'NULL' }},\n  volume_distribuicao = {{ $json.volume ?? 'NULL' }},\n  tipo_atendimento = {{ $json.tipo_atendimento ? `'${$json.tipo_atendimento}'` : 'NULL' }}\nWHERE id = '{{ $json.id }}';\n",
         "options": {}
       },
       "id": "8c234a98-d441-4a60-8d84-ef7c025e82d7",
@@ -137,42 +137,13 @@
     },
     {
       "parameters": {
-        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=6961711&filter[statuses][0][status_id]=58225943&filter[statuses][1][pipeline_id]=6961711&filter[statuses][1][status_id]=61970803",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json"
-            },
-            {
-              "name": "authorization",
-              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjNkZmQwY2YwNTEyMzZlNDRlZDg1ZGMyNDg2ZmY3YWQ0ZGUyYTZkOGM5ZjgwYzQxZmRmZTU4ZjJmMzYwNmNlZThiZDcxY2UyNGQwNzYyNTY3In0.eyJhdWQiOiI0ZDJhZjJiMS00YjEzLTRiOTktODBkYS04MzA0YTMxYjYwZTMiLCJqdGkiOiIzZGZkMGNmMDUxMjM2ZTQ0ZWQ4NWRjMjQ4NmZmN2FkNGRlMmE2ZDhjOWY4MGM0MWZkZmU1OGYyZjM2MDZjZWU4YmQ3MWNlMjRkMDc2MjU2NyIsImlhdCI6MTc2MjI2NzEwMiwibmJmIjoxNzYyMjY3MTAyLCJleHAiOjE3OTU4MjQwMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiJlN2QyNWM0My0wZjA5LTQxMzEtYmU5MS1jMDMxMmM5NTUyYTUiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.aUqT7Jko2UATlM45pR2WWnfvFlKktQ1eKLvavhSQ2iwyohjKHlE5whdiWf-09PlbrQ-Zw9d-jFbP8gpVpAnJYfqoW1QL18jpX0McA4vSHuKArh-a32TlWg5JpisgQb_6q5SbcwqB_0dz8RAQIXCZyBiJWPRVgKriJtbdC5aptTRAaP0pEfevMjeK4eIMziUYprRLUi_-lY-hUAiuWVnxmSB0BWbqnv5-XCGse0hex783IIkCyod10lgaOE3Q_1sxzmdgdUIjdRoAjyCNRWhcnYbbOGIvY7sA8qpEHvHoUWOzR1kGPvpj1SzNX8Ecu4AmaVVNUkhIhgXnRrC77dFaXw"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        224,
-        272
-      ],
-      "id": "6be25153-8b31-423c-831c-5118fd055c60",
-      "name": "HTTP Request",
-      "executeOnce": true,
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "jsCode": "let parsed;\nlet leads = [];\n\ntry {\n  parsed = JSON.parse(items[0].json.data);\n  leads = parsed._embedded?.leads ?? [];\n} catch (e) {\n  // Se der erro no parse, mantém leads vazio\n  leads = [];\n}\n\nlet totalAtendimento = 0;\nlet totalAcolhimento = 0;\n\nfor (const lead of leads) {\n  if (lead.status_id === 58225943) {\n    totalAtendimento++;\n  } else if (lead.status_id === 61970803) {\n    totalAcolhimento++;\n  }\n}\n\nreturn [\n  {\n    json: {\n      tipo_atendimento: 'Atendimento',\n      total_leads_fila: totalAtendimento\n    }\n  },\n  {\n    json: {\n      tipo_atendimento: 'Acolhimento',\n      total_leads_fila: totalAcolhimento\n    }\n  }\n];\n"
+        "jsCode": "// Pega o primeiro item de entrada\nconst input = items[0].json;\n\n// Usa o count que já vem da API\nconst totalAtendimento = input.count ?? 0;\n\nreturn [\n  {\n    json: {\n      tipo_atendimento: 'Atendimento',\n      total_leads_fila: totalAtendimento\n    }\n  }\n];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        448,
-        272
+        512,
+        304
       ],
       "id": "b0523377-b79b-4e07-a8cb-a02ea01a1047",
       "name": "Code"
@@ -205,7 +176,7 @@
             {
               "id": "tipo_atendimento",
               "displayName": "tipo_atendimento",
-              "required": true,
+              "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
@@ -215,7 +186,7 @@
             {
               "id": "total_leads",
               "displayName": "total_leads",
-              "required": true,
+              "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "number",
@@ -239,8 +210,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        672,
-        272
+        704,
+        304
       ],
       "id": "b758466d-ae77-42c2-aed2-4a3e05548672",
       "name": "Postgres3",
@@ -260,8 +231,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        224,
-        672
+        272,
+        752
       ],
       "id": "97b8f1d1-f72a-4a66-89d7-2d4544d86c16",
       "name": "Postgres",
@@ -277,11 +248,36 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        448,
-        560
+        496,
+        640
       ],
       "id": "bc2cb243-c6b2-4633-8922-545a8c34f5f0",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {
+          "filters": [
+            {
+              "stages": "742714eb-ac5a-435f-8680-97e6ab8f2f6e"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        288,
+        304
+      ],
+      "id": "8514bfc8-ceca-4615-9341-371d036f757e",
+      "name": "leads em distribuicao",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
     }
   ],
   "connections": {
@@ -294,12 +290,12 @@
             "index": 0
           },
           {
-            "node": "HTTP Request",
+            "node": "Postgres",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Postgres",
+            "node": "leads em distribuicao",
             "type": "main",
             "index": 0
           }
@@ -372,17 +368,6 @@
         ]
       ]
     },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Postgres": {
       "main": [
         [
@@ -404,6 +389,17 @@
           }
         ]
       ]
+    },
+    "leads em distribuicao": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -414,30 +410,163 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {
-    "Webhook GET Distribuicao": [
+    "Webhook POST Atualizar": [
       {
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "content-length": "1873",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-            "origin": "https://estrutura-base-para-4587.bolt.host",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "application/json",
+            "origin": "https://painel.cruzeiroead.com.br",
             "priority": "u=1, i",
-            "referer": "https://estrutura-base-para-4587.bolt.host/",
-            "sec-ch-ua": "\"Google Chrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+            "referer": "https://painel.cruzeiroead.com.br/",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": "\"Windows\"",
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "191.204.188.30",
+            "x-forwarded-for": "45.183.83.6",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "191.204.188.30"
+            "x-real-ip": "45.183.83.6"
+          },
+          "params": {},
+          "query": {},
+          "body": [
+            {
+              "id": "e8e5ddd9-796c-4f89-8670-c5cbf3a2f02f",
+              "almoco": "14:30:00",
+              "final_expediente": "17:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "ab86c173-3353-4c43-9a2e-0a90507bb7bf",
+              "almoco": "14:30:00",
+              "final_expediente": "19:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "26882d34-6787-4a06-aa8a-691b42406570",
+              "almoco": "14:00:00",
+              "final_expediente": "18:00:00",
+              "pausa": "20",
+              "volume": "20",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "0b7f49cb-6fba-4f7b-8de8-f838fa03ea08",
+              "almoco": "14:30:00",
+              "final_expediente": "18:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "cd015251-1e3e-46be-a76e-2b8d38ac8f85",
+              "almoco": "16:00:00",
+              "final_expediente": "19:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "a19ff106-ca9b-42aa-b7cd-3d3ac5231b9f",
+              "almoco": "12:30:00",
+              "final_expediente": "18:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "b0335732-776e-4bf5-9d5b-44830cbca10d",
+              "almoco": "15:00:00",
+              "final_expediente": "20:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "b4a6025c-b5dc-4261-980f-fac1309637fd",
+              "almoco": "14:00:00",
+              "final_expediente": "19:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "e85ac56f-0dbb-4233-9825-b6b1616d07f7",
+              "almoco": "16:30:28",
+              "final_expediente": "20:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "eeb44e51-1193-4d77-812b-7b6873d011c8",
+              "almoco": "13:30:00",
+              "final_expediente": "17:00:00",
+              "pausa": "20",
+              "volume": "20",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "79dc861b-152e-4e8d-8bcf-a99ff64090ba",
+              "almoco": "13:00:00",
+              "final_expediente": "19:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            },
+            {
+              "id": "dd6cbed7-7666-45d1-bd90-368c8b97e217",
+              "almoco": "12:30:00",
+              "final_expediente": "19:00:00",
+              "pausa": "20",
+              "volume": "10",
+              "tipo_atendimento": "Atendimento"
+            }
+          ],
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/api/atualizar-distribuicao",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook GET Distribuicao": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "if-none-match": "W/\"b73-D5cypCV4mQ8WyQ66rO8jK2YbQL8\"",
+            "origin": "https://estrutura-base-para-4587.bolt.host",
+            "priority": "u=1, i",
+            "referer": "https://estrutura-base-para-4587.bolt.host/",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "189.47.96.172",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "189.47.96.172"
           },
           "params": {},
           "query": {},
@@ -447,7 +576,8 @@
       }
     ]
   },
-  "versionId": "4c0569fc-7435-4c27-8697-6f70cc1ff09e",
+  "versionId": "1e6a8061-9f49-42ca-b165-90fbb849d333",
+  "activeVersionId": "1e6a8061-9f49-42ca-b165-90fbb849d333",
   "triggerCount": 2,
   "shared": [
     {
@@ -458,5 +588,412 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-01T15:42:20.039Z",
+    "createdAt": "2025-12-01T15:42:20.039Z",
+    "versionId": "1e6a8061-9f49-42ca-b165-90fbb849d333",
+    "workflowId": "Omx94aT4or4GKS3w",
+    "nodes": [
+      {
+        "parameters": {
+          "path": "api/distribuicao",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "4986ed09-8fea-472a-bbf6-baff58ed9345",
+        "name": "Webhook GET Distribuicao",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          0,
+          464
+        ],
+        "webhookId": "027a53d9-b3d7-40af-80bd-a29c274a9bc7"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  responsavel,\n  ativo_inativo AS status,\n  almoco,\n  final_expediente,\n  pausa_distribuicao AS pausa,\n  volume_distribuicao AS volume,\n  tipo_atendimento,\n  fila,\n  id,\n  ultima_execucao\nFROM distribuicao_academico_duplicate\nORDER BY responsavel;\n",
+          "options": {}
+        },
+        "id": "8bf33053-446c-452b-b6cc-d43a0ef3a267",
+        "name": "Postgres - Select Distribuicao",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          272,
+          544
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "qYUQEV9RiMUYy4S5",
+            "name": "Distribuição Acadêmico"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "functionCode": "const dadosDistribuicao = [];\nlet filaAtendimento = 0;\nlet filaAcolhimento = 0;\n\nfor (const item of items) {\n  if (item.json.responsavel) {\n    // Responsáveis individuais\n    dadosDistribuicao.push(item.json);\n  } else if (item.json.tipo_atendimento === 'Atendimento') {\n    filaAtendimento = item.json.total_leads ?? 0;\n  } else if (item.json.tipo_atendimento === 'Acolhimento') {\n    filaAcolhimento = item.json.total_leads ?? 0;\n  }\n}\n\nreturn [{\n  json: {\n    distribuicao: dadosDistribuicao,\n    fila_atendimento: filaAtendimento,\n    fila_acolhimento: filaAcolhimento\n  }\n}];\n"
+        },
+        "id": "2d57f833-cb23-41d7-b20d-a74f276f5622",
+        "name": "Limpar JSON",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          720,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "b5eeed21-6fb8-4cac-b42d-b6968f3633a9",
+        "name": "Responder Webhook GET",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          928,
+          640
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "api/atualizar-distribuicao",
+          "responseMode": "lastNode",
+          "options": {
+            "allowedOrigins": "*"
+          }
+        },
+        "id": "67bfee2b-9ee6-4b85-a3fa-5cd44818e939",
+        "name": "Webhook POST Atualizar",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "56a42202-0fac-4176-83db-1fc35f22ca4b"
+      },
+      {
+        "parameters": {
+          "functionCode": "const array = Array.isArray($json) ? $json : $json.body;\n\nif (!Array.isArray(array)) {\n  throw new Error('O corpo da requisição não é um array nem contém um campo body com array');\n}\n\nreturn array.map(item => ({\n  json: {\n    id: item.id,\n    almoco: item.almoco,\n    final_expediente: item.final_expediente,\n    pausa: item.pausa,\n    volume: item.volume,\n    tipo_atendimento: item.tipo_atendimento\n  }\n}));\n"
+        },
+        "id": "fe0cd517-052d-49b6-a49f-5aaa20dfe8c1",
+        "name": "Preparar Updates",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          224,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "UPDATE distribuicao_academico_duplicate SET\n  almoco = {{ $json.almoco ? `'${$json.almoco}'` : 'NULL' }},\n  final_expediente = {{ $json.final_expediente ? `'${$json.final_expediente}'` : 'NULL' }},\n  pausa_distribuicao = {{ $json.pausa ?? 'NULL' }},\n  volume_distribuicao = {{ $json.volume ?? 'NULL' }},\n  tipo_atendimento = {{ $json.tipo_atendimento ? `'${$json.tipo_atendimento}'` : 'NULL' }}\nWHERE id = '{{ $json.id }}';\n",
+          "options": {}
+        },
+        "id": "8c234a98-d441-4a60-8d84-ef7c025e82d7",
+        "name": "Postgres - Update Distribuicao",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "qYUQEV9RiMUYy4S5",
+            "name": "Distribuição Acadêmico"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "3c52fb57-dcf6-4a07-a45c-8090d2a14827",
+        "name": "Responder Webhook POST",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          672,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Pega o primeiro item de entrada\nconst input = items[0].json;\n\n// Usa o count que já vem da API\nconst totalAtendimento = input.count ?? 0;\n\nreturn [\n  {\n    json: {\n      tipo_atendimento: 'Atendimento',\n      total_leads_fila: totalAtendimento\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          512,
+          304
+        ],
+        "id": "b0523377-b79b-4e07-a8cb-a02ea01a1047",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "fila_volume_tipo",
+            "mode": "list",
+            "cachedResultName": "fila_volume_tipo"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "tipo_atendimento": "={{ $json.tipo_atendimento }}",
+              "total_leads": "={{ $json.total_leads_fila }}",
+              "data_registro": "={{ new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"America/Sao_Paulo\" })) }}"
+            },
+            "matchingColumns": [
+              "tipo_atendimento"
+            ],
+            "schema": [
+              {
+                "id": "tipo_atendimento",
+                "displayName": "tipo_atendimento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "total_leads",
+                "displayName": "total_leads",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data_registro",
+                "displayName": "data_registro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          704,
+          304
+        ],
+        "id": "b758466d-ae77-42c2-aed2-4a3e05548672",
+        "name": "Postgres3",
+        "credentials": {
+          "postgres": {
+            "id": "qYUQEV9RiMUYy4S5",
+            "name": "Distribuição Acadêmico"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  tipo_atendimento,\n  total_leads\nFROM\n  fila_volume_tipo;\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          272,
+          752
+        ],
+        "id": "97b8f1d1-f72a-4a66-89d7-2d4544d86c16",
+        "name": "Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "qYUQEV9RiMUYy4S5",
+            "name": "Distribuição Acadêmico"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          496,
+          640
+        ],
+        "id": "bc2cb243-c6b2-4633-8922-545a8c34f5f0",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "options": {
+            "filters": [
+              {
+                "stages": "742714eb-ac5a-435f-8680-97e6ab8f2f6e"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          288,
+          304
+        ],
+        "id": "8514bfc8-ceca-4615-9341-371d036f757e",
+        "name": "leads em distribuicao",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook GET Distribuicao": {
+        "main": [
+          [
+            {
+              "node": "Postgres - Select Distribuicao",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "leads em distribuicao",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres - Select Distribuicao": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Limpar JSON": {
+        "main": [
+          [
+            {
+              "node": "Responder Webhook GET",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook POST Atualizar": {
+        "main": [
+          [
+            {
+              "node": "Preparar Updates",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Updates": {
+        "main": [
+          [
+            {
+              "node": "Postgres - Update Distribuicao",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres - Update Distribuicao": {
+        "main": [
+          [
+            {
+              "node": "Responder Webhook POST",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Postgres3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Limpar JSON",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "leads em distribuicao": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
