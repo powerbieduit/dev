@@ -271,6 +271,7 @@
     ]
   },
   "versionId": "a212030b-3471-4443-a854-169a3a2d1aab",
+  "activeVersionId": "a212030b-3471-4443-a854-169a3a2d1aab",
   "triggerCount": 2,
   "shared": [
     {
@@ -281,5 +282,166 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "a212030b-3471-4443-a854-169a3a2d1aab",
+    "workflowId": "2uLESgL5zrVSYGFd",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH ult AS (\n  SELECT id_usuario, MAX(ultimo_lead) AS ultimo_lead\n  FROM public.distrib_sumare\n  GROUP BY id_usuario\n)\nSELECT\n  a.nome,\n  a.id_usuario AS id_lead,\n  UPPER(a.status) AS status,\n  GREATEST(1, LEAST(3, COALESCE(a.qnt_distribuir, 1))) AS quantidade_leads,\n  NULL::text AS observacao,\n  u.ultimo_lead\nFROM public.sumare AS a\nLEFT JOIN ult AS u\n  ON u.id_usuario = a.id_usuario;\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -96,
+          -48
+        ],
+        "id": "8162c8db-6276-4c7e-86b8-167e5cbeb757",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "sTDl6Fd4x2B7Tlus",
+            "name": "bu-distribuicao"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          128,
+          -48
+        ],
+        "id": "5ddfd55e-0b95-403b-b05d-c6e832248604",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "atualizacao",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -320,
+          -48
+        ],
+        "id": "06b03dd1-e825-4bd4-8622-ee0bf1dd01a4",
+        "name": "consultores",
+        "webhookId": "b07991d9-027f-4379-a19a-4885f545b43e"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "editor",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -320,
+          -272
+        ],
+        "id": "4e18940a-ba59-4203-8d4f-f26bf1e9a228",
+        "name": "Webhook",
+        "webhookId": "115af0de-53e1-447b-9217-17fae44d2b1d"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH payload AS (\n  SELECT *\n  FROM jsonb_to_recordset(\n    '{{ JSON.stringify($json.body?.registros || []) }}'::jsonb\n  ) AS t (\n    id_usuario      text,\n    nome            text,\n    status          text,\n    qnt_distribuir  int,\n    ultimo_lead     timestamptz,\n    obs             text\n  )\n)\nUPDATE public.sumare AS a\nSET\n  status = CASE\n             WHEN UPPER(p.status) IN ('ATIVO','INATIVO') THEN UPPER(p.status)\n             ELSE a.status\n           END,\n  qnt_distribuir = GREATEST(1, LEAST(3, COALESCE(p.qnt_distribuir, a.qnt_distribuir))),\n  obs          = COALESCE(p.obs, a.obs),\n  ultimo_lead  = COALESCE(p.ultimo_lead, a.ultimo_lead)\nFROM payload p\nWHERE a.id_usuario::text = p.id_usuario::text\nRETURNING a.id_usuario, a.nome, a.status, a.qnt_distribuir, a.obs, a.ultimo_lead;\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -96,
+          -272
+        ],
+        "id": "a9dfefbd-c372-467a-955b-c0f6ea427f7e",
+        "name": "Execute a SQL query1",
+        "credentials": {
+          "postgres": {
+            "id": "sTDl6Fd4x2B7Tlus",
+            "name": "bu-distribuicao"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          128,
+          -272
+        ],
+        "id": "16f233e3-6bb5-4e2b-ae3f-66855fe37992",
+        "name": "Respond to Webhook1"
+      }
+    ],
+    "connections": {
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "consultores": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query1": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
