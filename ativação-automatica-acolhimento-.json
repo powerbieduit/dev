@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-05T16:21:55.000Z",
+  "updatedAt": "2025-12-16T16:39:35.879Z",
   "createdAt": "2025-10-10T17:53:04.400Z",
   "id": "GWu0Ks9sEngLb6eh",
   "name": "Ativação automatica acolhimento",
@@ -34,8 +34,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        192,
-        -96
+        3904,
+        -1584
       ],
       "id": "6a14b3f9-948b-4d5e-bee7-3e89b42dbd12",
       "name": "If"
@@ -48,8 +48,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        416,
-        -96
+        4128,
+        -1584
       ],
       "id": "a9c93b0c-62bd-480f-8ded-d1d2f82f54b6",
       "name": "Split Out",
@@ -72,8 +72,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1296,
-        -80
+        5008,
+        -1568
       ],
       "id": "873dc5ea-e012-4f37-b7a9-e9d46f053946",
       "name": "Edit Fields"
@@ -83,8 +83,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        4944,
-        144
+        8656,
+        -1344
       ],
       "id": "70dfa0b5-ac56-481c-bb4b-cb914dbbfdd0",
       "name": "Wait",
@@ -121,8 +121,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
-        1952,
-        -80
+        5664,
+        -1568
       ],
       "id": "0747f14a-6c67-4e1b-b926-afe2c1fd5936",
       "executeOnce": false
@@ -210,8 +210,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        3040,
-        -96
+        6752,
+        -1584
       ],
       "id": "016ddf04-dd1f-4249-9b83-dd4f68a3731a",
       "name": "Switch",
@@ -243,8 +243,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3568,
-        16
+        7280,
+        -1472
       ],
       "id": "955f6b00-7830-4d12-9381-01fd14412c8e",
       "name": "Update leads1",
@@ -262,8 +262,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        640,
-        -96
+        4352,
+        -1584
       ],
       "id": "1b7eb780-51ea-4f37-a08b-c35406762a5f",
       "name": "Loop Over Items"
@@ -296,8 +296,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1504,
-        -80
+        5216,
+        -1568
       ],
       "id": "467875b2-b98a-435f-ae46-83739da9add3",
       "name": "If1"
@@ -307,8 +307,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        864,
-        -224
+        4576,
+        -1712
       ],
       "id": "81c8b4fd-8414-4aa1-8b2f-88f89b8216de",
       "name": "No Operation, do nothing"
@@ -327,8 +327,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -256,
-        -96
+        -528,
+        1416
       ],
       "id": "fe278657-52b9-4f07-8b37-aa1882cd96cf",
       "name": "Trigger ativação- 11h30"
@@ -355,8 +355,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        3792,
-        16
+        7504,
+        -1472
       ],
       "id": "f8b603ad-7d9a-4269-aa1e-f1f60ca06d72",
       "name": "Send template1",
@@ -390,8 +390,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        3792,
-        -176
+        7504,
+        -1664
       ],
       "id": "8a40fb7e-3b6c-4776-9e4c-0104e25bfadc",
       "name": "Send template",
@@ -419,8 +419,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        4016,
-        16
+        7728,
+        -1472
       ],
       "id": "734f036e-719b-4235-a7e5-dd788f5e5db1",
       "name": "Create new notes1",
@@ -447,8 +447,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        4016,
-        -176
+        7728,
+        -1664
       ],
       "id": "6aace290-57eb-4108-ba05-3c7941059192",
       "name": "Create new notes",
@@ -476,8 +476,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2816,
-        -80
+        6528,
+        -1568
       ],
       "id": "eb2bde20-90fa-4536-94b2-2d6cf08e49af",
       "name": "Edit Fields1"
@@ -489,8 +489,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1072,
-        -80
+        4784,
+        -1568
       ],
       "id": "26ffc4d4-ccd2-4c2a-9a24-2fb1ba47140b",
       "name": "Wait1",
@@ -503,8 +503,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2160,
-        -80
+        5872,
+        -1568
       ],
       "id": "206ae786-2450-4fd1-a36e-382e019ca113",
       "name": "Wait2",
@@ -519,8 +519,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -32,
-        -96
+        3680,
+        -1584
       ],
       "id": "e87d074b-1f8d-498c-a488-c6f0087ed0fc",
       "name": "Aptos Ativação",
@@ -555,8 +555,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
-        880,
-        -80
+        4592,
+        -1568
       ],
       "alwaysOutputData": true
     },
@@ -567,8 +567,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1728,
-        -96
+        5440,
+        -1584
       ],
       "id": "057b451e-d923-4cf2-82c6-2c8472e17a4a",
       "name": "Code Info Leads"
@@ -589,8 +589,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2608,
-        -80
+        6320,
+        -1568
       ],
       "id": "d3cc992e-238b-4904-be8e-56ec0a015e53",
       "name": "Procura no supabase",
@@ -610,8 +610,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2384,
-        -80
+        6096,
+        -1568
       ],
       "id": "f07a0863-fbd7-477a-8e21-7eec348eca67",
       "alwaysOutputData": true
@@ -625,8 +625,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4240,
-        -176
+        7952,
+        -1664
       ],
       "id": "ee5ef03f-6eff-4890-99cb-29273109e074",
       "name": "Atualiza ativações",
@@ -685,8 +685,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4464,
-        -176
+        8176,
+        -1664
       ],
       "id": "ee620e29-9741-4504-8bab-7762a0554fd0",
       "name": "Atualiza contador",
@@ -706,8 +706,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4688,
-        -176
+        8400,
+        -1664
       ],
       "id": "cb2789c9-8be3-4b14-9a2b-0c19a6235ea9",
       "name": "Atualiza Historico",
@@ -727,8 +727,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4688,
-        16
+        8400,
+        -1472
       ],
       "id": "bf38df9a-973b-4458-908a-88c7048d76a2",
       "name": "Atualiza Historico2",
@@ -787,8 +787,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4464,
-        16
+        8176,
+        -1472
       ],
       "id": "63a34ea0-8770-4463-a9a5-ad87f8706d95",
       "name": "Atualiza contador2",
@@ -808,8 +808,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4240,
-        16
+        7952,
+        -1472
       ],
       "id": "26d023b4-3700-42f9-8fcb-3ce26b503a2c",
       "name": "Atualiza ativações2",
@@ -827,8 +827,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3344,
-        -176
+        7056,
+        -1664
       ],
       "id": "a188eb93-d291-49f6-b327-9d74618e6c33",
       "name": "Wait3",
@@ -841,8 +841,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        3344,
-        16
+        7056,
+        -1472
       ],
       "id": "3454d95b-449f-4935-bdf8-813cd46e130f",
       "name": "Wait4",
@@ -874,8 +874,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        3568,
-        -176
+        7280,
+        -1664
       ],
       "id": "b194515a-edf6-4604-9681-4a3360634197",
       "name": "Update leads",
@@ -883,6 +883,685 @@
         "kommoOAuth2Api": {
           "id": "UJXbFUmZVweNcdbc",
           "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "657d3861-7c65-436c-a3c3-f08ed61a2832",
+              "leftValue": "={{ $json.id_lead }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        1416
+      ],
+      "id": "f85d1291-793e-4bc6-8c2c-68b1cd668d90",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=id_lead",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        144,
+        1416
+      ],
+      "id": "b79cd7e3-065f-48e2-b666-21fcb47fec9b",
+      "name": "Split Out1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3280,
+        1440
+      ],
+      "id": "2f4772b4-9602-48cf-aaa0-9730fa9214a4",
+      "name": "Wait5",
+      "webhookId": "1d3b366f-b677-45a9-880b-78ea0d02a2b8"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.quantidade_repeticoes }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "a8b6e7e2-0812-448d-bd35-24cf60963e5c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "segunda ativação"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bbacc8d9-30ba-49b2-aff9-133faca32160",
+                    "leftValue": "={{ $json.quantidade_repeticoes }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": " Terceira ativação"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e127da7a-71c1-4aae-b984-da3ebf173d1f",
+                    "leftValue": "={{ $json.quantidade_repeticoes }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Mais q 3 "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1712,
+        1248
+      ],
+      "id": "4900de10-f8b4-4fde-b9f2-53ac62969c6f",
+      "name": "Switch1",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        368,
+        1416
+      ],
+      "id": "25255658-598d-4a7a-81a6-e2046b0f7602",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dc7403d9-bbcd-4312-b58c-3b5a2a884935",
+              "leftValue": "={{ $json.stage.id }}",
+              "rightValue": "b34d2b09-9853-42a1-902f-5b572622b9e1",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        1344
+      ],
+      "id": "39573ead-a187-4506-b58c-243bf36945b6",
+      "name": "If3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        592,
+        1152
+      ],
+      "id": "e0671b58-34c4-4364-a464-623b930320f4",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "01a10536-77c8-47ef-bfb8-e877db0f7bae",
+              "name": "quantidade_repeticoes",
+              "value": "={{ $json.quantidade_repeticoes }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1488,
+        1264
+      ],
+      "id": "a4fbacd1-00bf-4b0f-9994-03cea8b143e8",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  id_lead,\n  rgm,\n  ultima_ativacao,\n  NOW() - ultima_ativacao AS tempo_desde_ativacao\nFROM public.view_leads_sem_resposta\nWHERE NOW() - ultima_ativacao > INTERVAL '1 day';\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -304,
+        1416
+      ],
+      "id": "591bab11-4ddb-4366-90c9-da6e2b11a052",
+      "name": "Aptos Ativação1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza número para formato internacional (+55)\nfunction normalizeBR(raw) {\n  if (!raw) return null;\n  let digits = String(raw).replace(/\\D/g, '');\n  digits = digits.replace(/^0+/, ''); // remove zeros à esquerda\n  if (!digits.startsWith('55')) digits = '55' + digits;\n  digits = digits.replace(/^(55)+/, '55');\n  return '+' + digits;\n}\n\n// Helper para pegar valor em additionalFields pelo nome do campo\nfunction getFromAdditionalFields(additionalFields, fieldName) {\n  if (!Array.isArray(additionalFields)) return null;\n  const field = additionalFields.find(f =>\n    (f.additionalField?.name || '').toLowerCase() === fieldName.toLowerCase()\n  );\n  return field?.value ?? field?.valueNumber ?? field?.valueDate ?? null;\n}\n\n// ===== Entrada vinda do node do DataCrazy =====\n// Em geral, no n8n o item já vem como objeto único.\n// Se por algum motivo vier como array, pega o primeiro.\nconst negocio = Array.isArray($json) ? $json[0] : $json;\n\nif (!negocio) {\n  return [{\n    erro: 'Negócio não encontrado no input do DataCrazy'\n  }];\n}\n\n// Lead associado ao negócio\nconst lead = negocio.lead || {};\n\n// Telefone: tenta phone direto, depois contacts (prioriza WHATSAPP)\nlet telefone = lead.phone || null;\n\nif (!telefone && Array.isArray(lead.contacts)) {\n  const whats = lead.contacts.find(c => /whats/i.test(c.platform || ''));\n  telefone = whats?.contactId ?? lead.contacts[0]?.contactId ?? null;\n}\n\n// Normaliza telefone para +55...\ntelefone = normalizeBR(telefone);\n\n// Nome do aluno\nconst nomeAluno = lead.name || null;\n\n// Campos adicionais do negócio (Senha Provisória, E-mail AD, etc.)\nconst afs = negocio.additionalFields || [];\n\nconst senhaProvisoria     = getFromAdditionalFields(afs, 'Senha Provisória');\nconst emailAD             = getFromAdditionalFields(afs, 'E-mail AD');\nconst rgm                 = getFromAdditionalFields(afs, 'RGM');\nconst curso               = getFromAdditionalFields(afs, 'Curso');\nconst emailAcademico      = getFromAdditionalFields(afs, 'Email Acadêmico');\nconst situacaoAcademica   = getFromAdditionalFields(afs, 'Situacao Academica');\nconst cancelamentoAnalise = getFromAdditionalFields(afs, 'Cancelamento em analise');\n\n// ===== Saída no mesmo estilo do code antigo =====\nreturn [\n  {\n    // ID do NEGÓCIO no DataCrazy (UUID do card)\n    id_negocio: negocio.id ?? null,\n\n    // ID do LEAD no DataCrazy (objeto lead interno)\n    id_lead: lead.id ?? negocio.leadId ?? null,\n\n    // (se você ainda usa esse nome em outros fluxos como \"id_contato\",\n    // pode duplicar ou renomear aqui)\n    id_contato: lead.id ?? negocio.leadId ?? null,\n\n    nome: nomeAluno,\n    telefone,\n\n    // pipeline / etapa\n    pipeline_id: negocio.stage?.pipeline?.id ?? null,\n    status_id: negocio.stageId ?? negocio.stage?.id ?? null,\n    code: negocio.code ?? null, // número visível (#27994)\n\n    // emails / campos acadêmicos\n    email: lead.email ?? null,\n    email_academico: emailAcademico,\n    email_ad: emailAD ?? lead.email ?? null,\n    senha_provisoria: senhaProvisoria,\n    rgm,\n    curso,\n    situacao_academica: situacaoAcademica,\n    cancelamento_analise: cancelamentoAnalise,\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        1264
+      ],
+      "id": "6d56f041-fd36-4c5e-9f7d-574e0894d05a",
+      "name": "Code Info Leads1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "view_contagem_leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "lead_id",
+              "keyValue": "={{ $json.id_negocio }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        1264
+      ],
+      "id": "6678df4c-519f-4735-883a-dc6478825d16",
+      "name": "Procura no supabase1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "PHQl6oEaPqgLjGGZ",
+          "name": "BANCO - AGENTE COMERCIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO ultimas_ativacoe_acolhimento\n  (id_lead, id_lead_uuid, data, \"Ativação\")\nVALUES (\n  NULL,  \n  '{{ $('Code Info Leads1').item.json.id_negocio }}', \n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '2 ativação'\n)\nON CONFLICT (id_lead_uuid)\nDO UPDATE\nSET\n  data      = EXCLUDED.data,\n  \"Ativação\" = EXCLUDED.\"Ativação\";\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2608,
+        1168
+      ],
+      "id": "d25937b8-7db1-48c9-a520-31c9f8997f48",
+      "name": "Atualiza ativações1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id_uuid": "={{ $('Code Info Leads1').item.json.id_negocio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id_uuid",
+              "displayName": "lead_id_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2832,
+        1168
+      ],
+      "id": "53e5c487-84a8-4522-9f0c-2e29a87d6a21",
+      "name": "Atualiza contador1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO historico_ativacoes_acolhimento\n  (id_lead, id_lead_uuid, data_ativacao, \"Ativação\")\nVALUES (\n  NULL, \n  '{{ $('Code Info Leads1').item.json.id_negocio }}', \n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '2 ativação'\n);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3056,
+        1168
+      ],
+      "id": "5d623840-a1d5-43e5-a3cd-e899805a4e5b",
+      "name": "Atualiza Historico1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO historico_ativacoes_acolhimento\n  (id_lead, id_lead_uuid, data_ativacao, \"Ativação\")\nVALUES (\n  NULL,  -- id antigo (Kommo) não usamos mais\n  '{{ $('Code Info Leads1').item.json.id_negocio }}',\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '3 ativação'\n);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3056,
+        1360
+      ],
+      "id": "c2d4c373-60f6-42a0-b158-1e693b8a18a6",
+      "name": "Atualiza Historico3",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id_uuid": "={{ $('Code Info Leads1').item.json.id_negocio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id_uuid",
+              "displayName": "lead_id_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2832,
+        1360
+      ],
+      "id": "9ecc8409-85ad-49f8-a8b8-8400e18d9955",
+      "name": "Atualiza contador3",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO ultimas_ativacoe_acolhimento (id_lead, id_lead_uuid, data, \"Ativação\")\nVALUES (\n  NULL,  -- id antigo (Kommo) fica sempre nulo\n  '{{ $('Code Info Leads1').item.json.id_negocio }}',  -- novo ID (DataCrazy) / UUID\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '3 ativação'\n)\nON CONFLICT (id_lead_uuid)\nDO UPDATE\nSET\n  data      = EXCLUDED.data,\n  \"Ativação\" = EXCLUDED.\"Ativação\";\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2608,
+        1360
+      ],
+      "id": "912e4e1d-9739-4f20-9f9b-13d39d6c57eb",
+      "name": "Atualiza ativações3",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1936,
+        1168
+      ],
+      "id": "4efcc085-e40c-486b-b738-b8a180b4886d",
+      "name": "Wait8",
+      "webhookId": "cd8c2c53-8fa9-4b69-87f0-7e63aaa838be"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1936,
+        1360
+      ],
+      "id": "59ab8984-a077-4fbb-8068-06250dd6326d",
+      "name": "Wait9",
+      "webhookId": "6ffe6216-80cd-4ec5-8702-f259d8d7fea2"
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar negócio por ID').item.json.id }}",
+        "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+        "pipelineId": "fae865c0-fa41-449b-95a9-22c0a73f633e",
+        "stageId": "c237e49a-b696-4418-b01c-cfcc2d9cec17",
+        "additionalFields": {
+          "externalId": ""
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        1360
+      ],
+      "id": "1fb89d68-2a74-4200-8791-ce22cdbf5d95",
+      "name": "Atualizar um negócio existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar negócio por ID').item.json.id }}",
+        "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+        "pipelineId": "fae865c0-fa41-449b-95a9-22c0a73f633e",
+        "stageId": "d6afbf9e-cd91-4196-8889-c16ea754ad92",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        1168
+      ],
+      "id": "49a38ca1-3f48-4f6d-bb07-18c49ebffed9",
+      "name": "Atualizar um negócio existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "get",
+        "dealId": "={{ $json.id_lead }}"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        592,
+        1344
+      ],
+      "id": "4155be49-6f75-4e19-bbe8-157ca7aa4060",
+      "name": "Buscar negócio por ID",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+        "name": "={{ $('Code Info Leads1').item.json.nome }}",
+        "email": "={{ $('Code Info Leads1').item.json.email }}",
+        "phone": "={{ $('Code Info Leads1').item.json.telefone }}",
+        "additionalFields": {
+          "tags": [
+            "b6ebb25c-31ea-4457-8670-ae6d594ce361"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2384,
+        1168
+      ],
+      "id": "59351e8b-4066-4268-809f-9c40c334b830",
+      "name": "Atualizar um lead existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+        "name": "={{ $('Code Info Leads1').item.json.nome }}",
+        "email": "={{ $('Code Info Leads1').item.json.email }}",
+        "phone": "={{ $('Code Info Leads1').item.json.telefone }}",
+        "company": "=",
+        "additionalFields": {
+          "tags": [
+            "89d64f82-bc11-46ec-8896-95fb9a0cf903"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        2384,
+        1360
+      ],
+      "id": "0bb97f77-14e4-4bbd-8120-293154cab971",
+      "name": "Atualizar um lead existente1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
         }
       }
     }
@@ -1020,7 +1699,7 @@
       "main": [
         [
           {
-            "node": "Aptos Ativação",
+            "node": "Aptos Ativação1",
             "type": "main",
             "index": 0
           }
@@ -1257,6 +1936,287 @@
           }
         ]
       ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Wait8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar negócio por ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Code Info Leads1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aptos Ativação1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Info Leads1": {
+      "main": [
+        [
+          {
+            "node": "Procura no supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procura no supabase1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza ativações1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza contador1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza contador1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Historico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Historico1": {
+      "main": [
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Historico3": {
+      "main": [
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza contador3": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Historico3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza ativações3": {
+      "main": [
+        [
+          {
+            "node": "Atualiza contador3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait8": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um negócio existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait9": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um negócio existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar negócio por ID": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente": {
+      "main": [
+        [
+          {
+            "node": "Atualiza ativações1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza ativações3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1278,13 +2238,13 @@
     "Trigger ativação- 11h30": [
       {
         "json": {
-          "timestamp": "2025-11-05T11:30:00.006-03:00",
-          "Readable date": "November 5th 2025, 11:30:00 am",
+          "timestamp": "2025-12-06T11:30:00.010-03:00",
+          "Readable date": "December 6th 2025, 11:30:00 am",
           "Readable time": "11:30:00 am",
-          "Day of week": "Wednesday",
+          "Day of week": "Saturday",
           "Year": "2025",
-          "Month": "November",
-          "Day of month": "05",
+          "Month": "December",
+          "Day of month": "06",
           "Hour": "11",
           "Minute": "30",
           "Second": "00",
@@ -1293,7 +2253,8 @@
       }
     ]
   },
-  "versionId": "77c00332-7655-4c4d-99b7-16fff251e557",
+  "versionId": "81d209e4-a44b-44bc-8ac6-32b44346715d",
+  "activeVersionId": "81d209e4-a44b-44bc-8ac6-32b44346715d",
   "triggerCount": 1,
   "shared": [
     {
@@ -1304,5 +2265,2229 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-06T16:21:46.555Z",
+    "createdAt": "2025-12-06T16:21:46.555Z",
+    "versionId": "81d209e4-a44b-44bc-8ac6-32b44346715d",
+    "workflowId": "GWu0Ks9sEngLb6eh",
+    "nodes": [
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "657d3861-7c65-436c-a3c3-f08ed61a2832",
+                "leftValue": "={{ $json.id_lead }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          3904,
+          -1584
+        ],
+        "id": "6a14b3f9-948b-4d5e-bee7-3e89b42dbd12",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "=id_lead",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          4128,
+          -1584
+        ],
+        "id": "a9c93b0c-62bd-480f-8ded-d1d2f82f54b6",
+        "name": "Split Out",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b8c60a18-fcde-4af7-87fe-00c23de01c1b",
+                "name": "Data",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          5008,
+          -1568
+        ],
+        "id": "873dc5ea-e012-4f37-b7a9-e9d46f053946",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          8656,
+          -1344
+        ],
+        "id": "70dfa0b5-ac56-481c-bb4b-cb914dbbfdd0",
+        "name": "Wait",
+        "webhookId": "1d3b366f-b677-45a9-880b-78ea0d02a2b8"
+      },
+      {
+        "parameters": {
+          "url": "https://csvatendimento.kommo.com/api/v4/contacts",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "filter[id][]",
+                "value": "={{ $json.id_contato }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImM4ZTE3NmQ5NDlkZGQ0MzkwNzcwZDIzOGEzNTllNDgyZTljMzllNTAzY2MzMDliZWU4ODkxYjBmMTU0ZjY2YWJlMjhiZjY5MzBmY2NiNTdlIn0.eyJhdWQiOiI3YzkyNDg5My1kNWUwLTRhODMtYjQ3OS1mNGEzNTA5YzFiNmIiLCJqdGkiOiJjOGUxNzZkOTQ5ZGRkNDM5MDc3MGQyMzhhMzU5ZTQ4MmU5YzM5ZTUwM2NjMzA5YmVlODg5MWIwZjE1NGY2NmFiZTI4YmY2OTMwZmNjYjU3ZSIsImlhdCI6MTc2MjM1NTg1MSwibmJmIjoxNzYyMzU1ODUxLCJleHAiOjE4ODI4Mjg4MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI0NDkzZDAyOS1iYzFmLTQ5ODQtYjFkYi0xMmJiYTM2MWE1MGQiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.X2BszLJs2xThe2YEa7jN9P4oMfiPgYmwVnu1Kcagzk1PsiUGzvS1_ALVqCthptwrdF1sZLTry8_TdpV5n5RVmj4Wd0LhkETClM5c6Nyc6jckTkve0yw0fOpOA7qtF99qYSj4jxVLNzijvguGVAgTVdH3KCuwriWUWi3LIQHPcoTdTQpjsbDWNYREfmWAnWIuA5G8X6M2sJ2YpoDDVfep39fN-7p3BjKVL22nO6xxh4-Or6PR3vy4t-LuBbYtaY1VoVQubc_nLQKN9p2o146Tjlfcik10NwpnT4hr5D2mmfJPmIyZynaGdderMNQEhDPEjHy2fcmBgHA4w00PnQc0vg"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Get Contatos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          5664,
+          -1568
+        ],
+        "id": "0747f14a-6c67-4e1b-b926-afe2c1fd5936",
+        "executeOnce": false
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.quantidade_repeticoes }}",
+                      "rightValue": 1,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      },
+                      "id": "a8b6e7e2-0812-448d-bd35-24cf60963e5c"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "segunda ativação"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bbacc8d9-30ba-49b2-aff9-133faca32160",
+                      "leftValue": "={{ $json.quantidade_repeticoes }}",
+                      "rightValue": 2,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": " Terceira ativação"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "e127da7a-71c1-4aae-b984-da3ebf173d1f",
+                      "leftValue": "={{ $json.quantidade_repeticoes }}",
+                      "rightValue": 2,
+                      "operator": {
+                        "type": "number",
+                        "operation": "gt"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Mais q 3 "
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          6752,
+          -1584
+        ],
+        "id": "016ddf04-dd1f-4249-9b83-dd4f68a3731a",
+        "name": "Switch",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('Code Info Leads').item.json.id_lead }}",
+                "pipeline_id": 10848776,
+                "status_id": 94919612,
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": [
+                        236397
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          7280,
+          -1472
+        ],
+        "id": "955f6b00-7830-4d12-9381-01fd14412c8e",
+        "name": "Update leads1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          4352,
+          -1584
+        ],
+        "id": "1b7eb780-51ea-4f37-a08b-c35406762a5f",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "dc7403d9-bbcd-4312-b58c-3b5a2a884935",
+                "leftValue": "={{ $json.Data._embedded.leads[0].id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          5216,
+          -1568
+        ],
+        "id": "467875b2-b98a-435f-ae46-83739da9add3",
+        "name": "If1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          4576,
+          -1712
+        ],
+        "id": "81c8b4fd-8414-4aa1-8b2f-88f89b8216de",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 30 11 * * 1-6"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -528,
+          1416
+        ],
+        "id": "fe278657-52b9-4f07-8b37-aa1882cd96cf",
+        "name": "Trigger ativação- 11h30"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "591812090691346",
+          "recipientPhoneNumber": "={{ $('Extrair Telefones1').item.json.telefone }}",
+          "template": "ativacao_acolhimento_3_xisa8x|pt_BR",
+          "components": {
+            "component": [
+              {
+                "bodyParameters": {
+                  "parameter": [
+                    {
+                      "text": "={{ $('Code Info Leads').item.json.nome }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          7504,
+          -1472
+        ],
+        "id": "f8b603ad-7d9a-4269-aa1e-f1f60ca06d72",
+        "name": "Send template1",
+        "webhookId": "31c4572d-3c44-4761-b509-1194be8021aa",
+        "credentials": {
+          "whatsAppApi": {
+            "id": "yz8MmxofXX6p6m1f",
+            "name": "WACA - CSV ACADEMICO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "591812090691346",
+          "recipientPhoneNumber": "={{ $('Extrair Telefones1').item.json.telefone }}",
+          "template": "ativacao_acolhimento_2_228fgm|pt_BR",
+          "components": {
+            "component": [
+              {
+                "bodyParameters": {
+                  "parameter": [
+                    {
+                      "text": "={{ $('Code Info Leads').item.json.nome }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          7504,
+          -1664
+        ],
+        "id": "8a40fb7e-3b6c-4776-9e4c-0104e25bfadc",
+        "name": "Send template",
+        "webhookId": "31c4572d-3c44-4761-b509-1194be8021aa",
+        "credentials": {
+          "whatsAppApi": {
+            "id": "yz8MmxofXX6p6m1f",
+            "name": "WACA - CSV ACADEMICO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "notes",
+          "operation": "createNotes",
+          "notes": {
+            "common": [
+              {
+                "entity_id": "={{ $('Code Info Leads').item.json.id_lead }}",
+                "text": "Olá, [Nome do Aluno]! Tudo certo?  Estamos tentando falar com você para garantir que o início do seu curso na Cruzeiro do Sul Virtual aconteça da melhor forma possível.  Ainda não tivemos retorno e é importante confirmar se você conseguiu acessar a plataforma e se está com tudo em dia.  Por isso, vamos te passar algumas informações essenciais para o começo do curso. Se ainda estiver com dificuldades ou sem acesso, nos chame aqui agora mesmo. Podemos te ajudar rapidamente"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          7728,
+          -1472
+        ],
+        "id": "734f036e-719b-4235-a7e5-dd788f5e5db1",
+        "name": "Create new notes1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "notes",
+          "operation": "createNotes",
+          "notes": {
+            "common": [
+              {
+                "entity_id": "={{ $('Code Info Leads').item.json.id_lead }}",
+                "text": "=Olá, [Nome do Aluno]! Tudo bem?  Passando por aqui novamente para saber se conseguiu acessar a plataforma sem dificuldades.  Caso ainda esteja com alguma dúvida ou precise de apoio com o seu login, uso da plataforma ou informações do curso, estamos por aqui para te ajudar.  Fique à vontade para responder esta mensagem quando for mais conveniente."
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          7728,
+          -1664
+        ],
+        "id": "6aace290-57eb-4108-ba05-3c7941059192",
+        "name": "Create new notes",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "01a10536-77c8-47ef-bfb8-e877db0f7bae",
+                "name": "quantidade_repeticoes",
+                "value": "={{ $json.quantidade_repeticoes }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          6528,
+          -1568
+        ],
+        "id": "eb2bde20-90fa-4536-94b2-2d6cf08e49af",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          4784,
+          -1568
+        ],
+        "id": "26ffc4d4-ccd2-4c2a-9a24-2fb1ba47140b",
+        "name": "Wait1",
+        "webhookId": "83e8e73b-3dbd-4255-8329-a2b28f97b502"
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          5872,
+          -1568
+        ],
+        "id": "206ae786-2450-4fd1-a36e-382e019ca113",
+        "name": "Wait2",
+        "webhookId": "9c9b21a2-77fa-42ea-94f4-c5dc1d4d0a10"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  id_lead,\n  rgm,\n  ultima_ativacao,\n  NOW() - ultima_ativacao AS tempo_desde_ativacao\nFROM view_leads_sem_resposta\nWHERE NOW() - ultima_ativacao > INTERVAL '1 day';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3680,
+          -1584
+        ],
+        "id": "e87d074b-1f8d-498c-a488-c6f0087ed0fc",
+        "name": "Aptos Ativação",
+        "alwaysOutputData": true,
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://csvatendimento.kommo.com/api/v4/leads?filter[pipeline_id]=6961711&filter[id][0]={{ $json.id_lead }}&with=contacts\n",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImM4ZTE3NmQ5NDlkZGQ0MzkwNzcwZDIzOGEzNTllNDgyZTljMzllNTAzY2MzMDliZWU4ODkxYjBmMTU0ZjY2YWJlMjhiZjY5MzBmY2NiNTdlIn0.eyJhdWQiOiI3YzkyNDg5My1kNWUwLTRhODMtYjQ3OS1mNGEzNTA5YzFiNmIiLCJqdGkiOiJjOGUxNzZkOTQ5ZGRkNDM5MDc3MGQyMzhhMzU5ZTQ4MmU5YzM5ZTUwM2NjMzA5YmVlODg5MWIwZjE1NGY2NmFiZTI4YmY2OTMwZmNjYjU3ZSIsImlhdCI6MTc2MjM1NTg1MSwibmJmIjoxNzYyMzU1ODUxLCJleHAiOjE4ODI4Mjg4MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiI0NDkzZDAyOS1iYzFmLTQ5ODQtYjFkYi0xMmJiYTM2MWE1MGQiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.X2BszLJs2xThe2YEa7jN9P4oMfiPgYmwVnu1Kcagzk1PsiUGzvS1_ALVqCthptwrdF1sZLTry8_TdpV5n5RVmj4Wd0LhkETClM5c6Nyc6jckTkve0yw0fOpOA7qtF99qYSj4jxVLNzijvguGVAgTVdH3KCuwriWUWi3LIQHPcoTdTQpjsbDWNYREfmWAnWIuA5G8X6M2sJ2YpoDDVfep39fN-7p3BjKVL22nO6xxh4-Or6PR3vy4t-LuBbYtaY1VoVQubc_nLQKN9p2o146Tjlfcik10NwpnT4hr5D2mmfJPmIyZynaGdderMNQEhDPEjHy2fcmBgHA4w00PnQc0vg"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6973ba81-b237-40ae-bbfd-be12fb5b9897",
+        "name": "Get Base Geral",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          4592,
+          -1568
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "jsCode": "// Helper para procurar telefone em custom_fields_values\nfunction getPhoneFromCustomFields(cfvs) {\n  if (!Array.isArray(cfvs)) return null;\n  const phoneField = cfvs.find(f =>\n    /telefone|celular|whats/i.test(f.field_name || f.field_code || '')\n  );\n  return phoneField?.values?.[0]?.value || null;\n}\n\n// Normaliza número para formato internacional (+55)\nfunction normalizeBR(raw) {\n  if (!raw) return null;\n  let digits = String(raw).replace(/\\D/g, '');\n  digits = digits.replace(/^0+/, ''); // remove zeros à esquerda\n  if (!digits.startsWith('55')) digits = '55' + digits;\n  digits = digits.replace(/^(55)+/, '55');\n  return '+' + digits;\n}\n\n// Entrada do node anterior\nconst input = $json;\nconst lead = input.Data?._embedded?.leads?.[0];\nif (!lead) return [{ erro: \"Lead não encontrado na resposta\" }];\n\n// Extrai o ID do contato (pode estar embedado ou só no link)\nlet id_contato = null;\n\n// 1️⃣ tenta via embed (caso exista)\nid_contato = lead?._embedded?.contacts?.[0]?.id ?? null;\n\n// 2️⃣ tenta via link (caso o Kommo só mande o link)\nif (!id_contato) {\n  const contatoLink = lead?._embedded?.contacts?.[0]?._links?.self?.href\n    ?? lead?._links?.contacts?.[0]?.href;\n  if (contatoLink) {\n    const match = contatoLink.match(/contacts\\/(\\d+)/);\n    if (match) id_contato = parseInt(match[1]);\n  }\n}\n\n// Extrai o telefone\nlet telefone = null;\n\ntry {\n  const contact = lead?._embedded?.contacts?.[0];\n  if (contact?.custom_fields_values) {\n    telefone = getPhoneFromCustomFields(contact.custom_fields_values);\n  }\n} catch {}\n\n// 4️⃣ se não achou no contato, tenta nos campos do lead\nif (!telefone) telefone = getPhoneFromCustomFields(lead?.custom_fields_values);\n\n// 5️⃣ normaliza número\ntelefone = normalizeBR(telefone);\n\n// 🔹 Extrai o nome real do aluno (do campo personalizado)\nconst nomeAluno = lead?.custom_fields_values?.find(f => f.field_name === \"Nome do Aluno\")?.values?.[0]?.value\n  ?? lead?.name // fallback\n  ?? null;\n\n// 🔹 Monta saída final\nreturn [\n  {\n    id_lead: lead?.id ?? null,\n    id_contato,\n    nome: nomeAluno, // ← agora vem \"Weidy Michel De Aquino Coutinho\"\n    telefone,\n    pipeline_id: lead?.pipeline_id ?? null,\n    status_id: lead?.status_id ?? null,\n    rgm: lead?.custom_fields_values?.find(f => f.field_name === \"RGM\")?.values?.[0]?.value ?? null,\n    curso: lead?.custom_fields_values?.find(f => f.field_name === \"Curso\")?.values?.[0]?.value ?? null,\n    email_academico: lead?.custom_fields_values?.find(f => f.field_name === \"Email Acadêmico\")?.values?.[0]?.value ?? null,\n    situacao_academica: lead?.custom_fields_values?.find(f => f.field_name === \"Situacao Academica\")?.values?.[0]?.value ?? null,\n    cancelamento_analise: lead?.custom_fields_values?.find(f => f.field_name === \"Cancelamento em analise\")?.values?.[0]?.value ?? null,\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          5440,
+          -1584
+        ],
+        "id": "057b451e-d923-4cf2-82c6-2c8472e17a4a",
+        "name": "Code Info Leads"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "tableId": "view_contagem_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "lead_id",
+                "keyValue": "={{ $json.id_lead }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          6320,
+          -1568
+        ],
+        "id": "d3cc992e-238b-4904-be8e-56ec0a015e53",
+        "name": "Procura no supabase",
+        "alwaysOutputData": true,
+        "credentials": {
+          "supabaseApi": {
+            "id": "PHQl6oEaPqgLjGGZ",
+            "name": "BANCO - AGENTE COMERCIAL"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const saida = [];\nconst leads = $items(\"Code Info Leads\");  // node anterior que retorna o lead\nconst contatos = $items(\"Get Contatos\");    // node com os contatos completos\n\nfunction normalizeBR(raw) {\n  if (!raw) return null;\n  let digits = String(raw).replace(/\\D/g, '');\n  digits = digits.replace(/^0+/, '');\n  if (!digits.startsWith('55')) digits = '55' + digits;\n  digits = digits.replace(/^(55)+/, '55');\n  return '+' + digits;\n}\n\nfor (let i = 0; i < leads.length; i++) {\n  const lead = leads[i].json;\n  const idContato = lead.id_contato ?? lead.contato_id ?? null;\n\n  // Busca o contato correspondente\n  const contatoItem = contatos.find(c => {\n    try {\n      const parsed = JSON.parse(c.json.data); // parse do JSON string\n      const contato = parsed._embedded?.contacts?.[0];\n      return contato?.id === idContato;\n    } catch (e) {\n      return false;\n    }\n  });\n\n  let telefone = null;\n  let nome_contato = null;\n\n  if (contatoItem) {\n    try {\n      // ⚠️ Aqui fazemos o duplo parse: o primeiro parse acima transforma a string em JSON\n      const parsed = JSON.parse(contatoItem.json.data);\n      const contato = parsed._embedded?.contacts?.[0];\n      nome_contato = contato?.name ?? null;\n\n      // Extrai o campo de telefone corretamente\n      const campoTelefone = contato?.custom_fields_values?.find(f =>\n        /phone|telefone|celular|whats/i.test(f.field_name || f.field_code || '')\n      );\n\n      if (campoTelefone?.values?.length > 0) {\n        telefone = normalizeBR(campoTelefone.values[0].value);\n      }\n    } catch (e) {\n      telefone = null;\n    }\n  }\n\n  saida.push({\n    json: {\n      id_lead: lead.id_lead ?? null,\n      id_contato: idContato,\n      id_responsavel: lead.id_responsavel ?? null,\n      nome_contato,\n      telefone\n    }\n  });\n}\n\nreturn saida;\n"
+        },
+        "name": "Extrair Telefones1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          6096,
+          -1568
+        ],
+        "id": "f07a0863-fbd7-477a-8e21-7eec348eca67",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO ultimas_ativacoe_acolhimento (id_lead, data, \"Ativação\")\nVALUES (\n  {{ $('Extrair Telefones1').item.json.id_lead }},\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '2 ativação'\n)\nON CONFLICT (id_lead)\nDO UPDATE\nSET\n  data = EXCLUDED.data,\n  \"Ativação\" = EXCLUDED.\"Ativação\";\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          7952,
+          -1664
+        ],
+        "id": "ee5ef03f-6eff-4890-99cb-29273109e074",
+        "name": "Atualiza ativações",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id": "={{ $('Extrair Telefones1').item.json.id_lead }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          8176,
+          -1664
+        ],
+        "id": "ee620e29-9741-4504-8bab-7762a0554fd0",
+        "name": "Atualiza contador",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO historico_ativacoes_acolhimento (id_lead, data_ativacao, \"Ativação\")\nVALUES (\n  {{ $('Extrair Telefones1').item.json.id_lead }},\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '2 ativação'\n);\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          8400,
+          -1664
+        ],
+        "id": "cb2789c9-8be3-4b14-9a2b-0c19a6235ea9",
+        "name": "Atualiza Historico",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO historico_ativacoes_acolhimento (id_lead, data_ativacao, \"Ativação\")\nVALUES (\n  {{ $('Extrair Telefones1').item.json.id_lead }},\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '3 ativação'\n);\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          8400,
+          -1472
+        ],
+        "id": "bf38df9a-973b-4458-908a-88c7048d76a2",
+        "name": "Atualiza Historico2",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id": "={{ $('Extrair Telefones1').item.json.id_lead }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          8176,
+          -1472
+        ],
+        "id": "63a34ea0-8770-4463-a9a5-ad87f8706d95",
+        "name": "Atualiza contador2",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO ultimas_ativacoe_acolhimento (id_lead, data, \"Ativação\")\nVALUES (\n  {{ $('Extrair Telefones1').item.json.id_lead }},\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '3 ativação'\n)\nON CONFLICT (id_lead)\nDO UPDATE\nSET\n  data = EXCLUDED.data,\n  \"Ativação\" = EXCLUDED.\"Ativação\";\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          7952,
+          -1472
+        ],
+        "id": "26d023b4-3700-42f9-8fcb-3ce26b503a2c",
+        "name": "Atualiza ativações2",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          7056,
+          -1664
+        ],
+        "id": "a188eb93-d291-49f6-b327-9d74618e6c33",
+        "name": "Wait3",
+        "webhookId": "cd8c2c53-8fa9-4b69-87f0-7e63aaa838be"
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          7056,
+          -1472
+        ],
+        "id": "3454d95b-449f-4935-bdf8-813cd46e130f",
+        "name": "Wait4",
+        "webhookId": "6ffe6216-80cd-4ec5-8702-f259d8d7fea2"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('Extrair Telefones1').item.json.id_lead }}",
+                "pipeline_id": 10848776,
+                "status_id": 89834976,
+                "_embedded": {
+                  "tags": [
+                    {
+                      "id": [
+                        236395
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          7280,
+          -1664
+        ],
+        "id": "b194515a-edf6-4604-9681-4a3360634197",
+        "name": "Update leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "657d3861-7c65-436c-a3c3-f08ed61a2832",
+                "leftValue": "={{ $json.id_lead }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -80,
+          1416
+        ],
+        "id": "f85d1291-793e-4bc6-8c2c-68b1cd668d90",
+        "name": "If2"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "=id_lead",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          144,
+          1416
+        ],
+        "id": "b79cd7e3-065f-48e2-b666-21fcb47fec9b",
+        "name": "Split Out1",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          3280,
+          1440
+        ],
+        "id": "2f4772b4-9602-48cf-aaa0-9730fa9214a4",
+        "name": "Wait5",
+        "webhookId": "1d3b366f-b677-45a9-880b-78ea0d02a2b8"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.quantidade_repeticoes }}",
+                      "rightValue": 1,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      },
+                      "id": "a8b6e7e2-0812-448d-bd35-24cf60963e5c"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "segunda ativação"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bbacc8d9-30ba-49b2-aff9-133faca32160",
+                      "leftValue": "={{ $json.quantidade_repeticoes }}",
+                      "rightValue": 2,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": " Terceira ativação"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "e127da7a-71c1-4aae-b984-da3ebf173d1f",
+                      "leftValue": "={{ $json.quantidade_repeticoes }}",
+                      "rightValue": 2,
+                      "operator": {
+                        "type": "number",
+                        "operation": "gt"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Mais q 3 "
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          1712,
+          1248
+        ],
+        "id": "4900de10-f8b4-4fde-b9f2-53ac62969c6f",
+        "name": "Switch1",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          368,
+          1416
+        ],
+        "id": "25255658-598d-4a7a-81a6-e2046b0f7602",
+        "name": "Loop Over Items1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "dc7403d9-bbcd-4312-b58c-3b5a2a884935",
+                "leftValue": "={{ $json.stage.id }}",
+                "rightValue": "b34d2b09-9853-42a1-902f-5b572622b9e1",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          816,
+          1344
+        ],
+        "id": "39573ead-a187-4506-b58c-243bf36945b6",
+        "name": "If3"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          592,
+          1152
+        ],
+        "id": "e0671b58-34c4-4364-a464-623b930320f4",
+        "name": "No Operation, do nothing1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "01a10536-77c8-47ef-bfb8-e877db0f7bae",
+                "name": "quantidade_repeticoes",
+                "value": "={{ $json.quantidade_repeticoes }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1488,
+          1264
+        ],
+        "id": "a4fbacd1-00bf-4b0f-9994-03cea8b143e8",
+        "name": "Edit Fields3"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  id_lead,\n  rgm,\n  ultima_ativacao,\n  NOW() - ultima_ativacao AS tempo_desde_ativacao\nFROM public.view_leads_sem_resposta\nWHERE NOW() - ultima_ativacao > INTERVAL '1 day';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -304,
+          1416
+        ],
+        "id": "591bab11-4ddb-4366-90c9-da6e2b11a052",
+        "name": "Aptos Ativação1",
+        "alwaysOutputData": true,
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Normaliza número para formato internacional (+55)\nfunction normalizeBR(raw) {\n  if (!raw) return null;\n  let digits = String(raw).replace(/\\D/g, '');\n  digits = digits.replace(/^0+/, ''); // remove zeros à esquerda\n  if (!digits.startsWith('55')) digits = '55' + digits;\n  digits = digits.replace(/^(55)+/, '55');\n  return '+' + digits;\n}\n\n// Helper para pegar valor em additionalFields pelo nome do campo\nfunction getFromAdditionalFields(additionalFields, fieldName) {\n  if (!Array.isArray(additionalFields)) return null;\n  const field = additionalFields.find(f =>\n    (f.additionalField?.name || '').toLowerCase() === fieldName.toLowerCase()\n  );\n  return field?.value ?? field?.valueNumber ?? field?.valueDate ?? null;\n}\n\n// ===== Entrada vinda do node do DataCrazy =====\n// Em geral, no n8n o item já vem como objeto único.\n// Se por algum motivo vier como array, pega o primeiro.\nconst negocio = Array.isArray($json) ? $json[0] : $json;\n\nif (!negocio) {\n  return [{\n    erro: 'Negócio não encontrado no input do DataCrazy'\n  }];\n}\n\n// Lead associado ao negócio\nconst lead = negocio.lead || {};\n\n// Telefone: tenta phone direto, depois contacts (prioriza WHATSAPP)\nlet telefone = lead.phone || null;\n\nif (!telefone && Array.isArray(lead.contacts)) {\n  const whats = lead.contacts.find(c => /whats/i.test(c.platform || ''));\n  telefone = whats?.contactId ?? lead.contacts[0]?.contactId ?? null;\n}\n\n// Normaliza telefone para +55...\ntelefone = normalizeBR(telefone);\n\n// Nome do aluno\nconst nomeAluno = lead.name || null;\n\n// Campos adicionais do negócio (Senha Provisória, E-mail AD, etc.)\nconst afs = negocio.additionalFields || [];\n\nconst senhaProvisoria     = getFromAdditionalFields(afs, 'Senha Provisória');\nconst emailAD             = getFromAdditionalFields(afs, 'E-mail AD');\nconst rgm                 = getFromAdditionalFields(afs, 'RGM');\nconst curso               = getFromAdditionalFields(afs, 'Curso');\nconst emailAcademico      = getFromAdditionalFields(afs, 'Email Acadêmico');\nconst situacaoAcademica   = getFromAdditionalFields(afs, 'Situacao Academica');\nconst cancelamentoAnalise = getFromAdditionalFields(afs, 'Cancelamento em analise');\n\n// ===== Saída no mesmo estilo do code antigo =====\nreturn [\n  {\n    // ID do NEGÓCIO no DataCrazy (UUID do card)\n    id_negocio: negocio.id ?? null,\n\n    // ID do LEAD no DataCrazy (objeto lead interno)\n    id_lead: lead.id ?? negocio.leadId ?? null,\n\n    // (se você ainda usa esse nome em outros fluxos como \"id_contato\",\n    // pode duplicar ou renomear aqui)\n    id_contato: lead.id ?? negocio.leadId ?? null,\n\n    nome: nomeAluno,\n    telefone,\n\n    // pipeline / etapa\n    pipeline_id: negocio.stage?.pipeline?.id ?? null,\n    status_id: negocio.stageId ?? negocio.stage?.id ?? null,\n    code: negocio.code ?? null, // número visível (#27994)\n\n    // emails / campos acadêmicos\n    email: lead.email ?? null,\n    email_academico: emailAcademico,\n    email_ad: emailAD ?? lead.email ?? null,\n    senha_provisoria: senhaProvisoria,\n    rgm,\n    curso,\n    situacao_academica: situacaoAcademica,\n    cancelamento_analise: cancelamentoAnalise,\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1040,
+          1264
+        ],
+        "id": "6d56f041-fd36-4c5e-9f7d-574e0894d05a",
+        "name": "Code Info Leads1"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "tableId": "view_contagem_leads",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "lead_id",
+                "keyValue": "={{ $json.id_negocio }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1264,
+          1264
+        ],
+        "id": "6678df4c-519f-4735-883a-dc6478825d16",
+        "name": "Procura no supabase1",
+        "alwaysOutputData": true,
+        "credentials": {
+          "supabaseApi": {
+            "id": "PHQl6oEaPqgLjGGZ",
+            "name": "BANCO - AGENTE COMERCIAL"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO ultimas_ativacoe_acolhimento\n  (id_lead, id_lead_uuid, data, \"Ativação\")\nVALUES (\n  NULL,  \n  '{{ $('Code Info Leads1').item.json.id_negocio }}', \n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '2 ativação'\n)\nON CONFLICT (id_lead_uuid)\nDO UPDATE\nSET\n  data      = EXCLUDED.data,\n  \"Ativação\" = EXCLUDED.\"Ativação\";\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2608,
+          1168
+        ],
+        "id": "d25937b8-7db1-48c9-a520-31c9f8997f48",
+        "name": "Atualiza ativações1",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id_uuid": "={{ $('Code Info Leads1').item.json.id_negocio }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id_uuid",
+                "displayName": "lead_id_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2832,
+          1168
+        ],
+        "id": "53e5c487-84a8-4522-9f0c-2e29a87d6a21",
+        "name": "Atualiza contador1",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO historico_ativacoes_acolhimento\n  (id_lead, id_lead_uuid, data_ativacao, \"Ativação\")\nVALUES (\n  NULL, \n  '{{ $('Code Info Leads1').item.json.id_negocio }}', \n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '2 ativação'\n);\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3056,
+          1168
+        ],
+        "id": "5d623840-a1d5-43e5-a3cd-e899805a4e5b",
+        "name": "Atualiza Historico1",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO historico_ativacoes_acolhimento\n  (id_lead, id_lead_uuid, data_ativacao, \"Ativação\")\nVALUES (\n  NULL,  -- id antigo (Kommo) não usamos mais\n  '{{ $('Code Info Leads1').item.json.id_negocio }}',\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '3 ativação'\n);\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3056,
+          1360
+        ],
+        "id": "c2d4c373-60f6-42a0-b158-1e693b8a18a6",
+        "name": "Atualiza Historico3",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id_uuid": "={{ $('Code Info Leads1').item.json.id_negocio }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id_uuid",
+                "displayName": "lead_id_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2832,
+          1360
+        ],
+        "id": "9ecc8409-85ad-49f8-a8b8-8400e18d9955",
+        "name": "Atualiza contador3",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO ultimas_ativacoe_acolhimento (id_lead, id_lead_uuid, data, \"Ativação\")\nVALUES (\n  NULL,  -- id antigo (Kommo) fica sempre nulo\n  '{{ $('Code Info Leads1').item.json.id_negocio }}',  -- novo ID (DataCrazy) / UUID\n  NOW() AT TIME ZONE 'America/Sao_Paulo',\n  '3 ativação'\n)\nON CONFLICT (id_lead_uuid)\nDO UPDATE\nSET\n  data      = EXCLUDED.data,\n  \"Ativação\" = EXCLUDED.\"Ativação\";\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2608,
+          1360
+        ],
+        "id": "912e4e1d-9739-4f20-9f9b-13d39d6c57eb",
+        "name": "Atualiza ativações3",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1936,
+          1168
+        ],
+        "id": "4efcc085-e40c-486b-b738-b8a180b4886d",
+        "name": "Wait8",
+        "webhookId": "cd8c2c53-8fa9-4b69-87f0-7e63aaa838be"
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1936,
+          1360
+        ],
+        "id": "59ab8984-a077-4fbb-8068-06250dd6326d",
+        "name": "Wait9",
+        "webhookId": "6ffe6216-80cd-4ec5-8702-f259d8d7fea2"
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar negócio por ID').item.json.id }}",
+          "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+          "pipelineId": "fae865c0-fa41-449b-95a9-22c0a73f633e",
+          "stageId": "c237e49a-b696-4418-b01c-cfcc2d9cec17",
+          "additionalFields": {
+            "externalId": ""
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          2160,
+          1360
+        ],
+        "id": "1fb89d68-2a74-4200-8791-ce22cdbf5d95",
+        "name": "Atualizar um negócio existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar negócio por ID').item.json.id }}",
+          "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+          "pipelineId": "fae865c0-fa41-449b-95a9-22c0a73f633e",
+          "stageId": "d6afbf9e-cd91-4196-8889-c16ea754ad92",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          2160,
+          1168
+        ],
+        "id": "49a38ca1-3f48-4f6d-bb07-18c49ebffed9",
+        "name": "Atualizar um negócio existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "get",
+          "dealId": "={{ $json.id_lead }}"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          592,
+          1344
+        ],
+        "id": "4155be49-6f75-4e19-bbe8-157ca7aa4060",
+        "name": "Buscar negócio por ID",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+          "name": "={{ $('Code Info Leads1').item.json.nome }}",
+          "email": "={{ $('Code Info Leads1').item.json.email }}",
+          "phone": "={{ $('Code Info Leads1').item.json.telefone }}",
+          "additionalFields": {
+            "tags": [
+              "b6ebb25c-31ea-4457-8670-ae6d594ce361"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          2384,
+          1168
+        ],
+        "id": "59351e8b-4066-4268-809f-9c40c334b830",
+        "name": "Atualizar um lead existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Buscar negócio por ID').item.json.leadId }}",
+          "name": "={{ $('Code Info Leads1').item.json.nome }}",
+          "email": "={{ $('Code Info Leads1').item.json.email }}",
+          "phone": "={{ $('Code Info Leads1').item.json.telefone }}",
+          "company": "=",
+          "additionalFields": {
+            "tags": [
+              "89d64f82-bc11-46ec-8896-95fb9a0cf903"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          2384,
+          1360
+        ],
+        "id": "0bb97f77-14e4-4bbd-8120-293154cab971",
+        "name": "Atualizar um lead existente1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Contatos": {
+        "main": [
+          [
+            {
+              "node": "Wait2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Wait3",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait4",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update leads1": {
+        "main": [
+          [
+            {
+              "node": "Send template1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get Base Geral",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Code Info Leads",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Trigger ativação- 11h30": {
+        "main": [
+          [
+            {
+              "node": "Aptos Ativação1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send template1": {
+        "main": [
+          [
+            {
+              "node": "Create new notes1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send template": {
+        "main": [
+          [
+            {
+              "node": "Create new notes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new notes1": {
+        "main": [
+          [
+            {
+              "node": "Atualiza ativações2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new notes": {
+        "main": [
+          [
+            {
+              "node": "Atualiza ativações",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait2": {
+        "main": [
+          [
+            {
+              "node": "Extrair Telefones1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aptos Ativação": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Base Geral": {
+        "main": [
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code Info Leads": {
+        "main": [
+          [
+            {
+              "node": "Get Contatos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Procura no supabase": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Telefones1": {
+        "main": [
+          [
+            {
+              "node": "Procura no supabase",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza ativações": {
+        "main": [
+          [
+            {
+              "node": "Atualiza contador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza contador": {
+        "main": [
+          [
+            {
+              "node": "Atualiza Historico",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza Historico": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza Historico2": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza contador2": {
+        "main": [
+          [
+            {
+              "node": "Atualiza Historico2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza ativações2": {
+        "main": [
+          [
+            {
+              "node": "Atualiza contador2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait3": {
+        "main": [
+          [
+            {
+              "node": "Update leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait4": {
+        "main": [
+          [
+            {
+              "node": "Update leads1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update leads": {
+        "main": [
+          [
+            {
+              "node": "Send template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "Split Out1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait5": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch1": {
+        "main": [
+          [
+            {
+              "node": "Wait8",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait9",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items1": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Buscar negócio por ID",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If3": {
+        "main": [
+          [
+            {
+              "node": "Code Info Leads1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields3": {
+        "main": [
+          [
+            {
+              "node": "Switch1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aptos Ativação1": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code Info Leads1": {
+        "main": [
+          [
+            {
+              "node": "Procura no supabase1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Procura no supabase1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza ativações1": {
+        "main": [
+          [
+            {
+              "node": "Atualiza contador1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza contador1": {
+        "main": [
+          [
+            {
+              "node": "Atualiza Historico1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza Historico1": {
+        "main": [
+          [
+            {
+              "node": "Wait5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza Historico3": {
+        "main": [
+          [
+            {
+              "node": "Wait5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza contador3": {
+        "main": [
+          [
+            {
+              "node": "Atualiza Historico3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualiza ativações3": {
+        "main": [
+          [
+            {
+              "node": "Atualiza contador3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait8": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait9": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente1": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar negócio por ID": {
+        "main": [
+          [
+            {
+              "node": "If3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente": {
+        "main": [
+          [
+            {
+              "node": "Atualiza ativações1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente1": {
+        "main": [
+          [
+            {
+              "node": "Atualiza ativações3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
