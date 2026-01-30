@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2025-08-28T13:41:12.000Z",
+  "updatedAt": "2025-11-12T14:49:16.000Z",
   "createdAt": "2025-07-25T21:53:34.061Z",
   "id": "j7JFCySo5BqbTQEA",
   "name": "distribuicao_academico_csv",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -3412,7 +3412,8 @@
       }
     ]
   },
-  "versionId": "be4ba004-05c8-4e34-b26c-9a053cc0ce4a",
+  "versionId": "b8ea512c-f5e2-41d4-9378-ace4240222d5",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -3423,6 +3424,7 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": [
     {
       "updatedAt": "2025-07-25T19:56:58.514Z",
