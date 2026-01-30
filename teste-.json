@@ -1,188 +1,67 @@
 {
-  "updatedAt": "2025-08-25T10:02:31.000Z",
-  "createdAt": "2025-08-15T20:02:14.103Z",
-  "id": "YS52IEgcRRpBNTkk",
+  "updatedAt": "2025-07-30T17:06:05.000Z",
+  "createdAt": "2025-07-28T17:28:38.446Z",
+  "id": "RxvSVMPMeVVfPFeT",
   "name": "teste",
   "active": true,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "evolution-2310",
-        "options": {}
-      },
-      "id": "a899f197-32e1-4d4a-b3dc-b27caa6c47ee",
-      "name": "Webhook (Evolution)",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 1,
-      "position": [
-        -544,
-        80
-      ],
-      "webhookMethods": {
-        "POST": true
-      },
-      "webhookId": "ec432166-448a-44db-94a0-98b2f8923656"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "string": [
+        "curlImport": "",
+        "method": "GET",
+        "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=11115992&filter[statuses][0][status_id]=85286344",
+        "authentication": "none",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
             {
-              "value1": "={{ $json.body.instance }}",
-              "operation": "notEqual",
-              "value2": "2310"
+              "name": "accept",
+              "value": "application/json"
             },
             {
-              "value1": "={{ $json.body.data.messageType }}",
-              "operation": "notEqual",
-              "value2": "audioMessage"
+              "name": "authorization",
+              "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
             }
           ]
-        }
+        },
+        "sendBody": false,
+        "options": {},
+        "infoMessage": ""
       },
-      "id": "703c607e-161e-4858-8b1b-b6998195e4c3",
-      "name": "É ÁUDIO e fromMe?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 1,
-      "position": [
-        -288,
-        80
-      ]
-    },
-    {
-      "parameters": {
-        "options": {
-          "responseCode": 204
-        }
-      },
-      "id": "695dc965-5e5e-4938-b925-b45c9bc34187",
-      "name": "Descarta (204)",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $env.CHATWOOT_WEBHOOK_URL || 'https://chatwoot-chatwoot.mlhtlb.easypanel.host/chatwoot/webhook/2310' }}",
-        "options": {
-          "timeout": 30000
-        }
-      },
-      "id": "ff5e70d9-1d9f-4721-b57d-bd6eab3be0fb",
-      "name": "HTTP → Chatwoot",
+      "id": "689da33c-078c-423f-afc1-c06ce2f75248",
+      "name": "Get Atendimento",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 3,
+      "typeVersion": 4,
       "position": [
-        0,
-        208
-      ]
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "boolean": [
-            {
-              "value1": "={{ !['MESSAGES_UPSERT','MESSAGES_UPDATE','MESSAGES_DELETE'].includes($json.event) || ((($json.data?.key?.fromMe === true || $json.key?.fromMe === true) && !!($json.data?.message?.audioMessage || $json.message?.audioMessage))) }}"
-            }
-          ]
-        }
-      },
-      "id": "28ac56de-164d-4e91-8eb8-7d03e75ff7f1",
-      "name": "Descartar? (evento inválido OU áudio fromMe)",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 1,
-      "position": [
-        -240,
-        352
-      ]
-    },
-    {
-      "parameters": {
-        "options": {
-          "responseCode": 204
-        }
-      },
-      "id": "cdce2651-982e-4940-b71d-dbd33a39dbc0",
-      "name": "204 (B)",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1,
-      "position": [
-        128,
-        432
-      ]
-    },
-    {
-      "parameters": {
-        "path": "evolution-2310",
-        "options": {}
-      },
-      "id": "ea123fc6-f83b-4764-9126-3ff8ffab0ba4",
-      "name": "Webhook (Evolution)1",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 1,
-      "position": [
-        -512,
-        352
+        -4384,
+        384
       ],
-      "webhookMethods": {
-        "POST": true
-      },
-      "webhookId": "23f2fc76-4960-4743-9d73-631355b7ac08"
+      "alwaysOutputData": true
+    },
+    {
+      "id": "5764bfaa-b137-47f7-a0c4-a51155c974fe",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -4592,
+        384
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
     }
   ],
   "connections": {
-    "Webhook (Evolution)": {
+    "Start": {
       "main": [
         [
           {
-            "node": "É ÁUDIO e fromMe?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "É ÁUDIO e fromMe?": {
-      "main": [
-        [
-          {
-            "node": "Descarta (204)",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "204 (B)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Descartar? (evento inválido OU áudio fromMe)": {
-      "main": [
-        [],
-        [
-          {
-            "node": "204 (B)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Webhook (Evolution)1": {
-      "main": [
-        [
-          {
-            "node": "Descartar? (evento inválido OU áudio fromMe)",
+            "node": "Get Atendimento",
             "type": "main",
             "index": 0
           }
@@ -195,78 +74,92 @@
   },
   "staticData": null,
   "meta": null,
-  "pinData": {
-    "Webhook (Evolution)": [
-      {
-        "json": {
-          "headers": {
-            "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "axios/1.7.9",
-            "content-length": "1321",
-            "accept-encoding": "gzip, compress, deflate, br",
-            "content-type": "application/json",
-            "x-forwarded-for": "145.79.2.177",
-            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "145.79.2.177"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "event": "send.message",
-            "instance": "2310",
-            "data": {
-              "key": {
-                "remoteJid": "5511984393285@s.whatsapp.net",
-                "fromMe": true,
-                "id": "3EB0D79CE9B3EC5B1B26B0D2A6703B6698D531CF"
-              },
-              "pushName": "",
-              "status": "PENDING",
-              "message": {
-                "audioMessage": {
-                  "url": "https://mmg.whatsapp.net/v/t62.7114-24/533466467_767583856212310_8751971235371403137_n.enc?ccb=11-4&oh=01_Q5Aa2QE4s_j7comkLYKbQgqebQTckwTtsOBKnb2wg2MxhrgCrw&oe=68C7046B&_nc_sid=5e03e0&mms3=true",
-                  "mimetype": "audio/ogg; codecs=opus",
-                  "fileSha256": "WXjq5O4KpoUKefVk1KMCko9XNh0HoD+01you0+NjZRU=",
-                  "fileLength": "20191",
-                  "seconds": 2,
-                  "ptt": true,
-                  "mediaKey": "ETrRCQXPwJ67LWH0HtxyxXQuzSl+9o6LPkn6F6anAU4=",
-                  "fileEncSha256": "bJo/0BWD6ERtX8AN74c9Ucb6ImkuR1cE2CvPou6Q/HM=",
-                  "directPath": "/v/t62.7114-24/533466467_767583856212310_8751971235371403137_n.enc?ccb=11-4&oh=01_Q5Aa2QE4s_j7comkLYKbQgqebQTckwTtsOBKnb2wg2MxhrgCrw&oe=68C7046B&_nc_sid=5e03e0",
-                  "mediaKeyTimestamp": "1755288346"
-                }
-              },
-              "contextInfo": null,
-              "messageType": "audioMessage",
-              "messageTimestamp": 1755288346,
-              "instanceId": "209cb3d6-476c-42a2-a7fb-b06ad4bde65b",
-              "source": "unknown"
-            },
-            "destination": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/evolution-2310",
-            "date_time": "2025-08-15T17:05:46.222Z",
-            "sender": "5511942622310@s.whatsapp.net",
-            "server_url": "https://chatwoot-evolution-api.mlhtlb.easypanel.host",
-            "apikey": "98A25C70E2FB-4110-A1FE-1F9655284CD7"
-          },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/evolution-2310",
-          "executionMode": "production"
-        }
-      }
-    ]
-  },
-  "versionId": "e9c26a10-9198-4a41-a403-7a5bbbd1dc69",
-  "triggerCount": 2,
+  "pinData": null,
+  "versionId": "edb5f650-e2b2-4b40-a961-b47d44b78288",
+  "activeVersionId": "edb5f650-e2b2-4b40-a961-b47d44b78288",
+  "triggerCount": 0,
   "shared": [
     {
-      "updatedAt": "2025-08-15T20:02:14.108Z",
-      "createdAt": "2025-08-15T20:02:14.108Z",
+      "updatedAt": "2025-07-28T17:28:38.452Z",
+      "createdAt": "2025-07-28T17:28:38.452Z",
       "role": "workflow:owner",
-      "workflowId": "YS52IEgcRRpBNTkk",
+      "workflowId": "RxvSVMPMeVVfPFeT",
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "edb5f650-e2b2-4b40-a961-b47d44b78288",
+    "workflowId": "RxvSVMPMeVVfPFeT",
+    "nodes": [
+      {
+        "parameters": {
+          "curlImport": "",
+          "method": "GET",
+          "url": "https://csvatendimento.kommo.com/api/v4/leads?filter[statuses][0][pipeline_id]=11115992&filter[statuses][0][status_id]=85286344",
+          "authentication": "none",
+          "provideSslCertificates": false,
+          "sendQuery": false,
+          "sendHeaders": true,
+          "specifyHeaders": "keypair",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+              }
+            ]
+          },
+          "sendBody": false,
+          "options": {},
+          "infoMessage": ""
+        },
+        "id": "689da33c-078c-423f-afc1-c06ce2f75248",
+        "name": "Get Atendimento",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          -4384,
+          384
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "id": "5764bfaa-b137-47f7-a0c4-a51155c974fe",
+        "typeVersion": 1.1,
+        "name": "Start",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -4592,
+          384
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      }
+    ],
+    "connections": {
+      "Start": {
+        "main": [
+          [
+            {
+              "node": "Get Atendimento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
