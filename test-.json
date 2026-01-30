@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2025-08-25T16:34:50.000Z",
-  "createdAt": "2025-08-25T16:34:26.782Z",
-  "id": "5JMG5m99IBFw0o5v",
+  "updatedAt": "2025-08-06T18:12:22.000Z",
+  "createdAt": "2025-08-06T18:12:08.413Z",
+  "id": "EHAmfWstGIaC8Bhx",
   "name": "test",
   "active": false,
   "isArchived": true,
@@ -29,15 +29,15 @@
   "staticData": null,
   "meta": null,
   "pinData": null,
-  "versionId": "b5f7fcdb-cc99-4d8c-9f8c-cab8788c3837",
+  "versionId": "5f27fa15-f297-46bd-a6c7-1fe894b471a3",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
     {
-      "updatedAt": "2025-08-25T16:34:26.791Z",
-      "createdAt": "2025-08-25T16:34:26.791Z",
+      "updatedAt": "2025-08-06T18:12:08.416Z",
+      "createdAt": "2025-08-06T18:12:08.416Z",
       "role": "workflow:owner",
-      "workflowId": "5JMG5m99IBFw0o5v",
+      "workflowId": "EHAmfWstGIaC8Bhx",
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
