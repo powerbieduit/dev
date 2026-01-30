@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-08-12T15:15:26.000Z",
+  "updatedAt": "2025-12-11T17:51:24.000Z",
   "createdAt": "2025-07-25T20:01:01.751Z",
   "id": "VeFf1U6VN5ze7iei",
   "name": "comercial_p_academico_prioridade",
@@ -12,72 +12,10 @@
       "typeVersion": 3.2,
       "position": [
         -192,
-        384
+        368
       ],
       "id": "3a2b4a68-356d-4d72-aced-6e22ba27115b",
       "name": "Merge"
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{ $('Code').item.json.name }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":288546,\"type\":\"multitext\"}",
-                    "value": "={{ $('Code').item.json['Telefone Comercial'] }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        32,
-        384
-      ],
-      "id": "4ac4a0b9-076e-423a-9567-ed24b30c41ac",
-      "name": "cria contato",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "notesInFlow": false,
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "448bf7c0-76b9-4c78-8c00-8314fd70cc2c",
-              "name": "data",
-              "value": "={{ $json.data }}",
-              "type": "object"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -640,
-        192
-      ],
-      "id": "f8a2fc83-ae9d-41ba-aad2-83a42d0da629",
-      "name": "Set Auxiliar"
     },
     {
       "parameters": {
@@ -87,7 +25,7 @@
       "typeVersion": 2,
       "position": [
         -1088,
-        192
+        176
       ],
       "id": "94add38c-dc42-41de-a9d2-547c9a3ef6e9",
       "name": "Code"
@@ -97,8 +35,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        256,
-        192
+        32,
+        -16
       ],
       "id": "1df601c3-3e82-44ed-80fe-29182813e6da",
       "name": "No Operation, do nothing"
@@ -115,10 +53,10 @@
           "conditions": [
             {
               "id": "945bcf96-8c56-408c-94ea-242b260e6d6e",
-              "leftValue": "={{ $json._embedded.leads[0].pipeline_id }}",
-              "rightValue": 6961711,
+              "leftValue": "={{ $json.data[0].stage.pipeline.id }}",
+              "rightValue": "088b64ae-a2ab-4788-97cd-3c10d87643bb",
               "operator": {
-                "type": "number",
+                "type": "string",
                 "operation": "equals"
               }
             }
@@ -130,111 +68,11 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        32,
-        96
+        -192,
+        80
       ],
       "id": "aa6007c4-4f1a-48e4-af4f-2e1440440181",
       "name": "If1"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
-            {
-              "name": "={{ $('get lead info comercial').item.json._embedded.leads[0].name }}",
-              "pipeline_id": 6961711,
-              "status_id": 58225943,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":1020937,\"type\":\"text\"}",
-                    "value": "={{ $('get lead info comercial').item.json._embedded.leads[0].custom_fields_values[35].values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":330876,\"type\":\"text\"}",
-                    "value": "={{ $('Code').item.json.RGM }}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      146335
-                    ]
-                  }
-                ],
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}",
-                          "is_main": false
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        256,
-        384
-      ],
-      "id": "1d1e6fb8-152a-4004-8719-234cda692531",
-      "name": "cria lead",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json._embedded.leads[0].id }}",
-              "pipeline_id": 6961711,
-              "status_id": 58225943,
-              "_embedded": {
-                "tags": [
-                  {
-                    "id": [
-                      146335
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        256,
-        0
-      ],
-      "id": "c4518f50-da2b-4a8d-85a7-a95c07c946e6",
-      "name": "update para captura",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
     },
     {
       "parameters": {
@@ -248,7 +86,7 @@
       "typeVersion": 1,
       "position": [
         -1312,
-        192
+        176
       ],
       "id": "124efe83-f6e2-4856-b287-ac3e39dda495",
       "name": "get lead info comercial",
@@ -269,51 +107,11 @@
       "typeVersion": 2,
       "position": [
         -1536,
-        192
+        176
       ],
       "id": "fd6bd58d-924e-45a8-a1bf-0b12884999bd",
       "name": "Webhook",
       "webhookId": "dbc8ab78-f445-4762-b0c6-180efbfdbe64"
-    },
-    {
-      "parameters": {
-        "url": "=https://csvatendimento.kommo.com/api/v4/contacts?with=leads&query={{ $json['Telefone Comercial'] }}",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "with",
-              "value": "leads"
-            },
-            {
-              "name": "query",
-              "value": "={{ $json['Telefone Comercial'] }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json"
-            },
-            {
-              "name": "authorization",
-              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -864,
-        192
-      ],
-      "id": "98402b3e-ad4b-41f8-8029-23628ae58ef3",
-      "name": "HTTP Request"
     },
     {
       "parameters": {
@@ -329,37 +127,13 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.data }}",
-                    "rightValue": "",
+                    "leftValue": "={{ $json.count }}",
+                    "rightValue": 0,
                     "operator": {
-                      "type": "object",
-                      "operation": "exists",
-                      "singleValue": true
+                      "type": "number",
+                      "operation": "notEquals"
                     },
                     "id": "8872784d-b43c-4fd0-a6d0-402faa2732df"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "5f46c7e0-44fd-4dd4-8218-0dea640c66d2",
-                    "leftValue": "={{ $json.data }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "object",
-                      "operation": "empty",
-                      "singleValue": true
-                    }
                   }
                 ],
                 "combinator": "and"
@@ -367,37 +141,133 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "fallbackOutput": "extra"
+        }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
         -416,
-        192
+        176
       ],
       "id": "f023a9f3-6c61-48a6-9bce-ac3e28c5793a",
       "name": "Switch"
     },
     {
       "parameters": {
-        "resource": "leads",
-        "filter": {
-          "query": "={{ $json.data._embedded.contacts[0]._embedded.leads[0].id }}"
-        },
-        "options": {}
+        "options": {
+          "search": "={{ $json[\"Telefone Comercial\"] }}"
+        }
       },
-      "type": "n8n-nodes-kommo.kommo",
+      "type": "n8n-nodes-datacrazy.dataCrazy",
       "typeVersion": 1,
       "position": [
-        -192,
-        96
+        -864,
+        176
       ],
-      "id": "8a21ec17-8a31-42ce-98ed-12cf730d0f00",
-      "name": "Get list of leads",
+      "id": "bb261e0b-21c2-471d-8ec2-97d5623fd422",
+      "name": "Buscar todos os leads",
       "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('Code').item.json.Nome || \" \"}}",
+        "phone": "={{ $('Code').item.json[\"Telefone Comercial\"] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        32,
+        368
+      ],
+      "id": "47c064a3-96d2-435f-a345-e5a6f3afcfb9",
+      "name": "Criar um novo lead",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "b067d289-0963-4593-b7f4-307b967230f4",
+        "stageId": "49f75a84-3155-4f94-be95-9d94aa0012af",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        256,
+        368
+      ],
+      "id": "6acfb791-12cb-411a-80f1-1b0b0af02dd3",
+      "name": "Criar um novo negócio",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "options": {
+          "search": "={{ $('Code').item.json[\"Telefone Comercial\"] }}",
+          "filters": []
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        176
+      ],
+      "id": "3058b143-9ec2-4669-9980-1aa5ae7ce094",
+      "name": "Buscar todos os negócios",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios').item.json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+        "pipelineId": "7d1b30e3-b554-4225-8523-d2d21ffc7c35",
+        "stageId": "742714eb-ac5a-435f-8680-97e6ab8f2f6e",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        32,
+        176
+      ],
+      "id": "7604d1cf-069c-4ecb-9817-f7373e95a270",
+      "name": "Atualizar um negócio existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
         }
       }
     }
@@ -407,7 +277,7 @@
       "main": [
         [
           {
-            "node": "cria contato",
+            "node": "Criar um novo lead",
             "type": "main",
             "index": 0
           }
@@ -418,18 +288,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Set Auxiliar": {
-      "main": [
-        [
-          {
-            "node": "Switch",
+            "node": "Buscar todos os leads",
             "type": "main",
             "index": 0
           }
@@ -440,25 +299,14 @@
       "main": [
         [
           {
-            "node": "update para captura",
+            "node": "No Operation, do nothing",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "No Operation, do nothing",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "cria contato": {
-      "main": [
-        [
-          {
-            "node": "cria lead",
+            "node": "Atualizar um negócio existente",
             "type": "main",
             "index": 0
           }
@@ -487,22 +335,11 @@
         ]
       ]
     },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Set Auxiliar",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Switch": {
       "main": [
         [
           {
-            "node": "Get list of leads",
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -516,15 +353,47 @@
         ]
       ]
     },
-    "Get list of leads": {
+    "Buscar todos os leads": {
       "main": [
         [
           {
-            "node": "If1",
+            "node": "Buscar todos os negócios",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "Criar um novo lead": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio": {
+      "main": [
+        []
+      ]
+    },
+    "Buscar todos os negócios": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente": {
+      "main": [
+        []
       ]
     }
   },
@@ -537,8 +406,41 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "1c798c84-6b10-46ef-88a3-6fdf47f2ce3f",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "191",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "6b925589-4f3c-4fce-9ea3-b3cfe0eae59b",
+            "x-forwarded-for": "169.150.216.80",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "169.150.216.80"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "20081461",
+            "leads[add][0][status_id]": "143",
+            "leads[add][0][pipeline_id]": "5481944",
+            "account[id]": "30214568",
+            "account[subdomain]": "admamoeduitcombr"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/dbc8ab78-f445-4762-b0c6-180efbfdbe64",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "4d339f28-4032-44d0-8386-2a3851ddd360",
+  "activeVersionId": "4d339f28-4032-44d0-8386-2a3851ddd360",
   "triggerCount": 1,
   "shared": [
     {
@@ -549,5 +451,407 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-11T17:51:24.199Z",
+    "createdAt": "2025-12-11T17:51:24.199Z",
+    "versionId": "4d339f28-4032-44d0-8386-2a3851ddd360",
+    "workflowId": "VeFf1U6VN5ze7iei",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          -192,
+          368
+        ],
+        "id": "3a2b4a68-356d-4d72-aced-6e22ba27115b",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "jsCode": "const customFieldNames = [\n  \"Nome\",\n  \"CPF\",\n  \"Curso\",\n  \"Telefone Comercial\",\n  \"Polo\",\n  \"Email Acadêmico\",\n  \"Formação\",\n  \"RGM\"\n];\n\n// IDs reais que você copiou do JSON que me mandou\nconst fieldIdMap = {\n  \"Nome\": 304628,\n  \"CPF\": 31774,\n  \"Curso\": 31782,\n  \"Telefone Comercial\": 190582,\n  \"Polo\": 31780,\n  \"Email Acadêmico\": 666386, // ⚠️ Coloque aqui o ID correto!\n  \"Formação\": 31786,\n  \"RGM\": 31776\n};\n\nreturn $input.all().map(item => {\n  const lead = item.json._embedded?.leads?.[0] || {};\n\n  const result = {\n    id: lead.id || null,\n    name: lead.name || null,\n    pipeline_id: lead.pipeline_id || null,\n    status_id: lead.status_id || null,\n    created_at: lead.created_at || null,\n    updated_at: lead.updated_at || null\n  };\n\n  const customFields = {};\n  if (Array.isArray(lead.custom_fields_values)) {\n    lead.custom_fields_values.forEach(field => {\n      const name = field.field_name;\n      const value = field.values?.[0]?.value ?? null;\n      customFields[name] = value;\n    });\n  }\n\n  const finalCustomFields = [];\n\n  for (const fieldName of customFieldNames) {\n    const value = customFields[fieldName];\n    const field_id = fieldIdMap[fieldName];\n\n    // ⚠️ Esses campos são adicionados como propriedades diretas (o que o módulo da comunidade usa)\n    result[fieldName] = value ?? \"\";\n\n    // E aqui adicionamos corretamente no array de campos personalizados\n    if (\n      field_id &&\n      value !== null &&\n      value !== undefined &&\n      value !== \"\" &&\n      typeof value === \"string\"\n    ) {\n      finalCustomFields.push({\n        field_id,\n        values: [{ value }]\n      });\n    }\n  }\n\n  result.custom_fields_values = finalCustomFields;\n\n  return { json: result };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1088,
+          176
+        ],
+        "id": "94add38c-dc42-41de-a9d2-547c9a3ef6e9",
+        "name": "Code"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          32,
+          -16
+        ],
+        "id": "1df601c3-3e82-44ed-80fe-29182813e6da",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "945bcf96-8c56-408c-94ea-242b260e6d6e",
+                "leftValue": "={{ $json.data[0].stage.pipeline.id }}",
+                "rightValue": "088b64ae-a2ab-4788-97cd-3c10d87643bb",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -192,
+          80
+        ],
+        "id": "aa6007c4-4f1a-48e4-af4f-2e1440440181",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1312,
+          176
+        ],
+        "id": "124efe83-f6e2-4856-b287-ac3e39dda495",
+        "name": "get lead info comercial",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "dbc8ab78-f445-4762-b0c6-180efbfdbe64",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -1536,
+          176
+        ],
+        "id": "fd6bd58d-924e-45a8-a1bf-0b12884999bd",
+        "name": "Webhook",
+        "webhookId": "dbc8ab78-f445-4762-b0c6-180efbfdbe64"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.count }}",
+                      "rightValue": 0,
+                      "operator": {
+                        "type": "number",
+                        "operation": "notEquals"
+                      },
+                      "id": "8872784d-b43c-4fd0-a6d0-402faa2732df"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -416,
+          176
+        ],
+        "id": "f023a9f3-6c61-48a6-9bce-ac3e28c5793a",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "options": {
+            "search": "={{ $json[\"Telefone Comercial\"] }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -864,
+          176
+        ],
+        "id": "bb261e0b-21c2-471d-8ec2-97d5623fd422",
+        "name": "Buscar todos os leads",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "name": "={{ $('Code').item.json.Nome || \" \"}}",
+          "phone": "={{ $('Code').item.json[\"Telefone Comercial\"] }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          32,
+          368
+        ],
+        "id": "47c064a3-96d2-435f-a345-e5a6f3afcfb9",
+        "name": "Criar um novo lead",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "create",
+          "leadId": "={{ $json.id }}",
+          "pipelineId": "b067d289-0963-4593-b7f4-307b967230f4",
+          "stageId": "49f75a84-3155-4f94-be95-9d94aa0012af",
+          "attendantId": "=",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          256,
+          368
+        ],
+        "id": "6acfb791-12cb-411a-80f1-1b0b0af02dd3",
+        "name": "Criar um novo negócio",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "options": {
+            "search": "={{ $('Code').item.json[\"Telefone Comercial\"] }}",
+            "filters": []
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -640,
+          176
+        ],
+        "id": "3058b143-9ec2-4669-9980-1aa5ae7ce094",
+        "name": "Buscar todos os negócios",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar todos os negócios').item.json.data[0].id }}",
+          "leadId": "={{ $('Buscar todos os leads').item.json.data[0].id }}",
+          "pipelineId": "7d1b30e3-b554-4225-8523-d2d21ffc7c35",
+          "stageId": "742714eb-ac5a-435f-8680-97e6ab8f2f6e",
+          "attendantId": "=",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          32,
+          176
+        ],
+        "id": "7604d1cf-069c-4ecb-9817-f7373e95a270",
+        "name": "Atualizar um negócio existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Atualizar um negócio existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get lead info comercial": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "get lead info comercial",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os leads": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os negócios",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo lead": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo negócio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo negócio": {
+        "main": [
+          []
+        ]
+      },
+      "Buscar todos os negócios": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
