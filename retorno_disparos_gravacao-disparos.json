@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2025-10-24T15:35:13.000Z",
-  "createdAt": "2025-08-12T15:08:41.007Z",
-  "id": "vBQWXV2MCYF7Mduq",
+  "updatedAt": "2026-01-30T19:58:09.499Z",
+  "createdAt": "2026-01-27T15:03:50.027Z",
+  "id": "avM7XhtooD8PURZS4phpo",
   "name": "retorno_disparos_gravacao",
   "active": true,
   "isArchived": false,
@@ -23,10 +23,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        176
+        368,
+        96
       ],
-      "id": "7d0dbfce-ee5f-4867-bc49-1cb874d6271a",
+      "id": "830d3eed-9bd6-4a9a-96dd-c3fbf98e7cf0",
       "name": "Edit Fields"
     },
     {
@@ -38,10 +38,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        176
+        592,
+        96
       ],
-      "id": "aef2e199-8250-4ec2-a891-c24e62604d99",
+      "id": "198bfaea-200e-4fe2-9f37-8d2c8ee7c11d",
       "name": "Execute a SQL query",
       "credentials": {
         "postgres": {
@@ -67,10 +67,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        400
+        368,
+        320
       ],
-      "id": "43f540c7-987b-4353-92cb-94a4891a324a",
+      "id": "75518f8f-cf7a-49f1-91d4-d3dbbdbfb6b3",
       "name": "Edit Fields1"
     },
     {
@@ -90,10 +90,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        624
+        368,
+        544
       ],
-      "id": "f694076c-49cd-47a4-ab36-628b87c8d413",
+      "id": "7fd2e67c-5540-4749-a675-582cb0dcf098",
       "name": "Edit Fields2"
     },
     {
@@ -105,10 +105,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        400
+        592,
+        320
       ],
-      "id": "c39aa680-9e75-4dd1-8c7b-d48414cc4466",
+      "id": "e2783ea1-2b23-4d8f-965c-eaff8d98b011",
       "name": "Execute a SQL query1",
       "credentials": {
         "postgres": {
@@ -126,10 +126,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        624
+        592,
+        544
       ],
-      "id": "de98d104-5eef-4ad3-b9a2-210422cb3293",
+      "id": "f9eb5ad7-be42-4fe0-8d4a-078019f021e5",
       "name": "Execute a SQL query2",
       "credentials": {
         "postgres": {
@@ -147,10 +147,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        400
+        144,
+        320
       ],
-      "id": "2493b5cd-257e-403b-8bba-b6377b55a7db",
+      "id": "2d279528-459d-4f2c-87e8-4102d6e4caac",
       "name": "sem-resposta",
       "webhookId": "365e31d0-f98b-441e-8d8e-39136f198cb6"
     },
@@ -163,10 +163,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        624
+        144,
+        544
       ],
-      "id": "728c72c5-d7b6-449f-b929-8b016526efc7",
+      "id": "f4ee0982-fe58-4d63-9103-81fa615f6c9e",
       "name": "rematricula-feita",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -179,10 +179,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        176
+        144,
+        96
       ],
-      "id": "1aa248c7-8afd-4ecf-9f1b-4fb829bcc709",
+      "id": "64eb4727-d7ce-47d6-a521-13f17debc5a8",
       "name": "em-atendimento",
       "webhookId": "c59535cb-4325-4f16-a38e-a45f6b95ce08"
     },
@@ -195,10 +195,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -96,
-        80
+        0,
+        0
       ],
-      "id": "7d37b8c7-528b-4b43-9c5a-0d1c1a73645a",
+      "id": "c49998ca-ef3e-4af3-aeb2-1778b9432b6b",
       "name": "Sticky Note"
     },
     {
@@ -210,10 +210,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        1072
+        144,
+        992
       ],
-      "id": "42411163-39b1-417f-9b28-ae6c2c291a6c",
+      "id": "89696d6e-5d40-488b-aa9e-3dc1f08dcc3a",
       "name": "acesso realizado",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -234,10 +234,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        848
+        368,
+        768
       ],
-      "id": "0b967fc4-2e10-49ad-8307-8696ce1e7187",
+      "id": "f3c6c089-564e-4d15-bf19-587c088ee4d2",
       "name": "Edit Fields3"
     },
     {
@@ -249,10 +249,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        848
+        592,
+        768
       ],
-      "id": "126b6bc9-f89a-466e-be73-36c288ec17c7",
+      "id": "e1f2566c-e80e-4964-b8ff-19a24f896579",
       "name": "Execute a SQL query3",
       "credentials": {
         "postgres": {
@@ -278,10 +278,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        1072
+        368,
+        992
       ],
-      "id": "6beddbcc-a203-4bef-bf0b-9e6bf3211f53",
+      "id": "8b30a39a-9a87-430b-94d0-8abe439d9f4d",
       "name": "Edit Fields4"
     },
     {
@@ -293,10 +293,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        1072
+        592,
+        992
       ],
-      "id": "16f4ceff-d91c-43ae-8acc-69f090e163e2",
+      "id": "c0056836-f800-460b-9b80-9c793978251c",
       "name": "Execute a SQL query4",
       "credentials": {
         "postgres": {
@@ -322,10 +322,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        1296
+        368,
+        1216
       ],
-      "id": "b3b03f8a-f2d5-4fe1-a1a9-9781629da1c9",
+      "id": "94f82843-6fc1-4acc-aba5-5e872649276c",
       "name": "Edit Fields5"
     },
     {
@@ -337,10 +337,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        1296
+        592,
+        1216
       ],
-      "id": "1a6a798c-f87e-4b9d-8fc0-f75f0fd9b4cb",
+      "id": "b4a864e7-7775-42d4-8364-eccae57f946e",
       "name": "Execute a SQL query5",
       "credentials": {
         "postgres": {
@@ -358,10 +358,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        1296
+        144,
+        1216
       ],
-      "id": "85373b72-326d-487d-a394-ace1967bb742",
+      "id": "98746c20-3330-4e26-b19e-46c582a8a5df",
       "name": "nao acessou",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -372,7 +372,7 @@
             {
               "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
               "name": "id_lead",
-              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "value": "={{ $json.query.id_lead }}",
               "type": "string"
             }
           ]
@@ -382,10 +382,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        1520
+        368,
+        1440
       ],
-      "id": "e2c3a14f-a1aa-45bc-b5b6-0dc4b07016be",
+      "id": "3a85fedb-8dab-4e56-a92a-b3b840bf3db8",
       "name": "Edit Fields6"
     },
     {
@@ -397,10 +397,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        1520
+        592,
+        1440
       ],
-      "id": "86c039b1-4891-441f-995c-971f0624682f",
+      "id": "3aa40525-9070-40d3-97ef-6111c0fe7975",
       "name": "Execute a SQL query6",
       "credentials": {
         "postgres": {
@@ -418,10 +418,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        1520
+        144,
+        1440
       ],
-      "id": "2baf25ed-ae7a-4cb3-8393-f8244cbe6622",
+      "id": "35f23dd7-2f6b-4279-a842-1ad3bbaa7e34",
       "name": "pagou",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -434,10 +434,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        848
+        144,
+        768
       ],
-      "id": "f7dd9c42-f60a-4b00-bfc5-77068a399f11",
+      "id": "14e388f0-49c4-42b1-876f-4e3802858244",
       "name": "sem interesse",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -450,10 +450,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        1744
+        592,
+        1664
       ],
-      "id": "c23255e6-ef1c-4d43-bf56-f60b1bcce8e7",
+      "id": "1cd7aff0-92aa-4d1c-a348-0e044eb86956",
       "name": "Execute a SQL query7",
       "credentials": {
         "postgres": {
@@ -471,10 +471,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        1744
+        144,
+        1664
       ],
-      "id": "a11b437c-009c-4706-8449-38def8e899d7",
+      "id": "f61fcae6-3b00-4a0f-a35f-147921f0415f",
       "name": "gravar-ativacao",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -485,7 +485,7 @@
             {
               "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
               "name": "id_lead",
-              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "value": "={{ $json.query.id_lead }}",
               "type": "string"
             }
           ]
@@ -495,10 +495,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        1744
+        368,
+        1664
       ],
-      "id": "a3d23493-8a37-4429-a388-ec34d612c9f4",
+      "id": "a07cae22-df21-4a1f-a3a9-4bfc2c709f0a",
       "name": "Edit Fields7"
     },
     {
@@ -510,10 +510,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        1968
+        144,
+        1888
       ],
-      "id": "00bebf24-6db8-4d7d-bb91-1ad3ef3cba2b",
+      "id": "36b62287-e2ff-4c3c-8ebe-2414dd5a3e82",
       "name": "gravar_acolhimento1",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -526,10 +526,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        48,
-        2192
+        144,
+        2112
       ],
-      "id": "c384630c-279e-4309-b2ba-58f2de45d763",
+      "id": "5eac8a95-47e4-40a7-89d4-4cb11201840e",
       "name": "gravar_acolhimento2",
       "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
     },
@@ -540,7 +540,7 @@
             {
               "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
               "name": "id_lead",
-              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "value": "={{ $json.query['id do negocio'] }}",
               "type": "string"
             }
           ]
@@ -550,10 +550,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        1968
+        368,
+        1888
       ],
-      "id": "de97a484-5ebf-47b6-bdd4-a643139301b9",
+      "id": "27604235-1ff1-4648-8f09-306b7538b5c6",
       "name": "Edit Fields8"
     },
     {
@@ -562,8 +562,8 @@
           "assignments": [
             {
               "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
-              "name": "id_lead",
-              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "name": "id_negocio",
+              "value": "={{ $json.query.id_negocio }}",
               "type": "string"
             }
           ]
@@ -573,25 +573,25 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        2192
+        368,
+        2112
       ],
-      "id": "d1a8cbd4-26ba-412d-97c0-a9e50d59b651",
+      "id": "ebc64e6d-36b4-4ba4-8d29-368101c66ce4",
       "name": "Edit Fields9"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n 'sim', \n NULL, \n NULL, \n NULL,\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "query": "INSERT INTO interacao_acolhimento\n  (id_lead, id_lead_uuid, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES\n  (\n    NULL,\n    '{{ $json.id_lead }}',\n    NULL,\n    'sim',\n    NULL,\n    NULL,\n    NOW() AT TIME ZONE 'America/Sao_Paulo'\n  );\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        1968
+        592,
+        1888
       ],
-      "id": "7af4e56d-f71f-455a-a66b-68d231e70169",
+      "id": "3eb8e9b2-42ca-48ee-8d1d-4953fecbf2b8",
       "name": "Execute a SQL query8",
       "credentials": {
         "postgres": {
@@ -603,16 +603,16 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n NULL, \n 'sim', \n NULL, \n NULL,\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "query": "INSERT INTO interacao_acolhimento\n  (id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora, id_lead_uuid)\nVALUES\n  (\n    NULL,                 -- id_lead antigo (numérico) fica null\n    NULL,                 -- interacao_chatbot\n    'sim',                -- interacao_acolhimento\n    NULL,                 -- 2_mensagem\n    NULL,                 -- 3_mensagem\n    NOW() AT TIME ZONE 'America/Sao_Paulo',\n    '{{ $json.id_negocio }}' -- UUID novo vindo do webhook\n  );\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        2192
+        592,
+        2112
       ],
-      "id": "8858ec71-86bf-4531-a710-08374d5c9e74",
+      "id": "479e5dff-327e-4cf2-9cff-be968cb15c00",
       "name": "Execute a SQL query9",
       "credentials": {
         "postgres": {
@@ -630,10 +630,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        48,
-        2400
+        144,
+        2320
       ],
-      "id": "f809bd8f-e75f-4c85-b3af-aa4a7f8e9b36",
+      "id": "94e8d087-fa69-4978-8e95-e6534ec2f376",
       "name": "gravar_acolhimento3",
       "webhookId": "f29c63ac-fc50-4179-9cea-96489dfd9aaa"
     },
@@ -646,10 +646,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        48,
-        2592
+        144,
+        2512
       ],
-      "id": "58d99425-8815-44c2-9bd3-305203bb5fb9",
+      "id": "1f998b1c-0dec-41ca-91b4-d256abf75c60",
       "name": "gravar_acolhimento4",
       "webhookId": "f29c63ac-fc50-4179-9cea-96489dfd9aaa"
     },
@@ -659,8 +659,8 @@
           "assignments": [
             {
               "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
-              "name": "id_lead",
-              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "name": "id_negocio",
+              "value": "={{ $json.query['Id do Negocio'] }}",
               "type": "string"
             }
           ]
@@ -670,10 +670,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        2400
+        368,
+        2320
       ],
-      "id": "5ca50637-573e-4607-bf44-a9e15808bf41",
+      "id": "5173c3fe-a399-4441-a615-5cd11291b885",
       "name": "Edit Fields10"
     },
     {
@@ -682,8 +682,8 @@
           "assignments": [
             {
               "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
-              "name": "id_lead",
-              "value": "={{ $json.body['leads[add][0][id]'] }}",
+              "name": "id_negocio",
+              "value": "={{ $json.query['id do negocio'] }}",
               "type": "string"
             }
           ]
@@ -693,25 +693,25 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        2592
+        368,
+        2512
       ],
-      "id": "b01078ce-9eaf-497b-8940-7720555d21f1",
+      "id": "0beff440-f6f8-4e59-aedc-504dd8b1ca21",
       "name": "Edit Fields11"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n NULL, \n NULL, \n 'sim', \n NULL,\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "query": "INSERT INTO interacao_acolhimento\n  (id_lead, id_lead_uuid, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES\n  (\n    NULL,                    -- id_lead numérico legado\n    '{{ $json.id_negocio }}',   -- UUID novo\n    NULL,                    -- interacao_chatbot\n    NULL,                    -- interacao_acolhimento\n    'sim',                   -- 2_mensagem (mantém sua lógica)\n    NULL,                    -- 3_mensagem\n    NOW() AT TIME ZONE 'America/Sao_Paulo'\n  );\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        2400
+        592,
+        2320
       ],
-      "id": "8289bcef-a6e4-49c0-b55e-7f7ef870ccf8",
+      "id": "db5fc35a-90a5-470d-9bf9-cc7cc2976fa4",
       "name": "Execute a SQL query10",
       "credentials": {
         "postgres": {
@@ -723,16 +723,16 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO interacao_acolhimento \n(id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES \n('{{ $json.id_lead }}', \n NULL, \n NULL, \n NULL, \n 'sim',\n NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+        "query": "INSERT INTO interacao_acolhimento\n  (id_lead, id_lead_uuid, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES\n  (\n    NULL,\n    '{{ $json.id_negocio }}',\n    NULL,\n    NULL,\n    NULL,\n    'sim',\n    NOW() AT TIME ZONE 'America/Sao_Paulo'\n  );\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        2592
+        592,
+        2512
       ],
-      "id": "ced88482-2e8a-44b3-baf0-0e1b1cfd1541",
+      "id": "ef33bec1-0c74-45f4-bc7b-72db64ce8eed",
       "name": "Execute a SQL query11",
       "credentials": {
         "postgres": {
@@ -1010,13 +1010,10 @@
   },
   "settings": {
     "executionOrder": "v1",
-    "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "dCpCqA316QocWWea"
+    "availableInMCP": false
   },
   "staticData": null,
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
+  "meta": null,
   "pinData": {
     "em-atendimento": [
       {
@@ -1049,49 +1046,1237 @@
         }
       }
     ],
+    "gravar-ativacao": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.6.8",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-6924bb65000000003de46c818b38f226-3de46c818b38f226-01",
+            "tracestate": "dd=t.tid:6924bb6500000000;t.dm:-3;s:2;p:3de46c818b38f226",
+            "x-datadog-parent-id": "4459808834645979686",
+            "x-datadog-sampling-priority": "2",
+            "x-datadog-tags": "_dd.p.tid=6924bb6500000000,_dd.p.dm=-3",
+            "x-datadog-trace-id": "4459808834645979686",
+            "x-forwarded-for": "34.39.249.167",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "34.39.249.167"
+          },
+          "params": {},
+          "query": {
+            "id_lead": "cdcb042d-98e9-491e-9a98-a481e0c9a78d"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/gravar-ativacao",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "pagou": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.6.8",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-6925f0b10000000002f30b23db93abda-02f30b23db93abda-01",
+            "tracestate": "dd=t.tid:6925f0b100000000;t.dm:-3;s:2;p:02f30b23db93abda",
+            "x-datadog-parent-id": "212525856052194266",
+            "x-datadog-sampling-priority": "2",
+            "x-datadog-tags": "_dd.p.tid=6925f0b100000000,_dd.p.dm=-3",
+            "x-datadog-trace-id": "212525856052194266",
+            "x-forwarded-for": "34.39.185.12",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "34.39.185.12"
+          },
+          "params": {},
+          "query": {
+            "id_lead": "8a0a5f9d-14d1-49ca-b359-e1624e8ddc7b"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/pagou",
+          "executionMode": "production"
+        }
+      }
+    ],
     "gravar_acolhimento2": [
       {
         "json": {
           "headers": {
             "host": "n8n-new-n8n.ca31ey.easypanel.host",
-            "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "194",
-            "accept-encoding": "gzip",
-            "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "b14b69bd-31f1-4fc0-9b05-5e5eab438b02",
-            "x-forwarded-for": "169.150.216.79",
+            "user-agent": "axios/1.6.8",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-69264389000000006f5d3ebef583f586-6f5d3ebef583f586-01",
+            "tracestate": "dd=t.tid:6926438900000000;t.dm:-3;s:2;p:6f5d3ebef583f586",
+            "x-datadog-parent-id": "8024639100927866246",
+            "x-datadog-sampling-priority": "2",
+            "x-datadog-tags": "_dd.p.tid=6926438900000000,_dd.p.dm=-3",
+            "x-datadog-trace-id": "8024639100927866246",
+            "x-forwarded-for": "34.39.172.100",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "e73584281a1d",
-            "x-real-ip": "169.150.216.79"
+            "x-real-ip": "34.39.172.100"
           },
           "params": {},
-          "query": {},
-          "body": {
-            "leads[add][0][id]": "19262487",
-            "leads[add][0][status_id]": "60098663",
-            "leads[add][0][pipeline_id]": "6961711",
-            "account[id]": "31370511",
-            "account[subdomain]": "csvatendimento"
+          "query": {
+            "id_lead": "858d9f0f-37f8-4af6-a20a-2fda62e17c1d",
+            "id_negocio": "d3f897bb-ffa5-4f15-a1ea-fecb07e6a192",
+            "telefone": "5511947630393"
           },
+          "body": {},
           "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/acolhimento2",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "gravar_acolhimento3": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.6.8",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-692718f400000000180396fa97b8cdec-180396fa97b8cdec-01",
+            "tracestate": "dd=t.tid:692718f400000000;t.dm:-3;s:2;p:180396fa97b8cdec",
+            "x-datadog-parent-id": "1730392684871863788",
+            "x-datadog-sampling-priority": "2",
+            "x-datadog-tags": "_dd.p.tid=692718f400000000,_dd.p.dm=-3",
+            "x-datadog-trace-id": "1730392684871863788",
+            "x-forwarded-for": "34.151.212.236",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "34.151.212.236"
+          },
+          "params": {},
+          "query": {
+            "id do lead": "a9716ad8-163f-4d6c-8816-71aed67ec93d",
+            "Id do Negocio": "b5f82481-2839-44f3-bc7a-1ef2ea26592c",
+            "Negocio": "27994"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/2mensagem",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "gravar_acolhimento4": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.6.8",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-69272088000000002eaaa8e1ebeec4e1-2eaaa8e1ebeec4e1-00",
+            "tracestate": "dd=t.tid:6927208800000000;t.dm:-3;s:-1;p:2eaaa8e1ebeec4e1",
+            "x-datadog-parent-id": "3362685760064898273",
+            "x-datadog-sampling-priority": "-1",
+            "x-datadog-tags": "_dd.p.tid=6927208800000000",
+            "x-datadog-trace-id": "3362685760064898273",
+            "x-forwarded-for": "34.39.249.167",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "34.39.249.167"
+          },
+          "params": {},
+          "query": {
+            "Id do lead": "a9716ad8-163f-4d6c-8816-71aed67ec93d",
+            "id do negocio": "b5f82481-2839-44f3-bc7a-1ef2ea26592c",
+            "codigo": "27994"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/3mensagem",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "gravar_acolhimento1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "axios/1.13.2",
+            "content-length": "0",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "traceparent": "00-693c25cb00000000401da896b0431342-401da896b0431342-01",
+            "tracestate": "dd=t.tid:693c25cb00000000;t.dm:-3;s:2;p:401da896b0431342",
+            "x-datadog-parent-id": "4620034157907743554",
+            "x-datadog-sampling-priority": "2",
+            "x-datadog-tags": "_dd.p.tid=693c25cb00000000,_dd.p.dm=-3",
+            "x-datadog-trace-id": "4620034157907743554",
+            "x-forwarded-for": "34.95.201.132",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "34.95.201.132"
+          },
+          "params": {},
+          "query": {
+            "id do lead": "2dbf9472-9d27-443d-aab9-582760ad3afc",
+            "id do negocio": "44ebdd68-6884-49c0-8956-fb45c6b101a1"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/acolhimento1",
           "executionMode": "production"
         }
       }
     ]
   },
-  "versionId": "67a72375-ea2b-4aa5-a200-30b341cc6491",
+  "versionId": "95b04467-75a9-476f-8b3b-6014eff11768",
+  "activeVersionId": "95b04467-75a9-476f-8b3b-6014eff11768",
   "triggerCount": 12,
   "shared": [
     {
-      "updatedAt": "2025-08-12T15:08:41.011Z",
-      "createdAt": "2025-08-12T15:08:41.011Z",
+      "updatedAt": "2026-01-27T15:03:50.033Z",
+      "createdAt": "2026-01-27T15:03:50.033Z",
       "role": "workflow:owner",
-      "workflowId": "vBQWXV2MCYF7Mduq",
+      "workflowId": "avM7XhtooD8PURZS4phpo",
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2026-01-27T15:03:51.000Z",
+    "createdAt": "2026-01-27T15:03:50.035Z",
+    "versionId": "95b04467-75a9-476f-8b3b-6014eff11768",
+    "workflowId": "avM7XhtooD8PURZS4phpo",
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "22c71bdd-b0ab-4c7a-970c-99711a4d3fc9",
+                "name": "id_lead",
+                "value": "={{ $json.body['leads[add][0][id]'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          96
+        ],
+        "id": "830d3eed-9bd6-4a9a-96dd-c3fbf98e7cf0",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'ENTROU NO ATENDIMENTO', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          96
+        ],
+        "id": "198bfaea-200e-4fe2-9f37-8d2c8ee7c11d",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4f2543c-a088-44be-a81b-e0f03eecfe9d",
+                "name": "id_lead",
+                "value": "={{ $json.body['leads[add][0][id]'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          320
+        ],
+        "id": "75518f8f-cf7a-49f1-91d4-d3dbbdbfb6b3",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.body['leads[add][0][id]'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          544
+        ],
+        "id": "7fd2e67c-5540-4749-a675-582cb0dcf098",
+        "name": "Edit Fields2"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'SEM RESPOSTA', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          320
+        ],
+        "id": "e2783ea1-2b23-4d8f-965c-eaff8d98b011",
+        "name": "Execute a SQL query1",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'PAGOU', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          544
+        ],
+        "id": "f9eb5ad7-be42-4fe0-8d4a-078019f021e5",
+        "name": "Execute a SQL query2",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "sem-resposta",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          320
+        ],
+        "id": "2d279528-459d-4f2c-87e8-4102d6e4caac",
+        "name": "sem-resposta",
+        "webhookId": "365e31d0-f98b-441e-8d8e-39136f198cb6"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "rematricula-feita",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          544
+        ],
+        "id": "f4ee0982-fe58-4d63-9103-81fa615f6c9e",
+        "name": "rematricula-feita",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "entrou-na-fila",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          96
+        ],
+        "id": "64eb4727-d7ce-47d6-a521-13f17debc5a8",
+        "name": "em-atendimento",
+        "webhookId": "c59535cb-4325-4f16-a38e-a45f6b95ce08"
+      },
+      {
+        "parameters": {
+          "content": "* entrou para atendimento\n* sem resposta\n* rematricula feita\n",
+          "height": 2652,
+          "width": 880
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "c49998ca-ef3e-4af3-aeb2-1778b9432b6b",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "realizou-acesso",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          992
+        ],
+        "id": "89696d6e-5d40-488b-aa9e-3dc1f08dcc3a",
+        "name": "acesso realizado",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.body['leads[add][0][id]'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          768
+        ],
+        "id": "f3c6c089-564e-4d15-bf19-587c088ee4d2",
+        "name": "Edit Fields3"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'SEM INTERESSE', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          768
+        ],
+        "id": "e1f2566c-e80e-4964-b8ff-19a24f896579",
+        "name": "Execute a SQL query3",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.body['leads[add][0][id]'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          992
+        ],
+        "id": "8b30a39a-9a87-430b-94d0-8abe439d9f4d",
+        "name": "Edit Fields4"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'REALIZOU ACESSO', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          992
+        ],
+        "id": "c0056836-f800-460b-9b80-9c793978251c",
+        "name": "Execute a SQL query4",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.body['leads[add][0][id]'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          1216
+        ],
+        "id": "94f82843-6fc1-4acc-aba5-5e872649276c",
+        "name": "Edit Fields5"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'NÃO ACESSOU', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          1216
+        ],
+        "id": "b4a864e7-7775-42d4-8364-eccae57f946e",
+        "name": "Execute a SQL query5",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "nao-acessou",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          1216
+        ],
+        "id": "98746c20-3330-4e26-b19e-46c582a8a5df",
+        "name": "nao acessou",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.query.id_lead }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          1440
+        ],
+        "id": "3a85fedb-8dab-4e56-a92a-b3b840bf3db8",
+        "name": "Edit Fields6"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO retorno_disparos (rgm, retorno, data_registro)\nVALUES ('{{ $json.id_lead }}', 'PAGOU', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          1440
+        ],
+        "id": "3aa40525-9070-40d3-97ef-6111c0fe7975",
+        "name": "Execute a SQL query6",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "pagou",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          1440
+        ],
+        "id": "35f23dd7-2f6b-4279-a842-1ad3bbaa7e34",
+        "name": "pagou",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "seminteresse",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          768
+        ],
+        "id": "14e388f0-49c4-42b1-876f-4e3802858244",
+        "name": "sem interesse",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO disparos (rgm, data_ativacao)\nVALUES ('{{ $json.id_lead }}', NOW() AT TIME ZONE 'America/Sao_Paulo');\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          1664
+        ],
+        "id": "1cd7aff0-92aa-4d1c-a348-0e044eb86956",
+        "name": "Execute a SQL query7",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "gravar-ativacao",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          1664
+        ],
+        "id": "f61fcae6-3b00-4a0f-a35f-147921f0415f",
+        "name": "gravar-ativacao",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.query.id_lead }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          1664
+        ],
+        "id": "a07cae22-df21-4a1f-a3a9-4bfc2c709f0a",
+        "name": "Edit Fields7"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "acolhimento1",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          1888
+        ],
+        "id": "36b62287-e2ff-4c3c-8ebe-2414dd5a3e82",
+        "name": "gravar_acolhimento1",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "acolhimento2",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          144,
+          2112
+        ],
+        "id": "5eac8a95-47e4-40a7-89d4-4cb11201840e",
+        "name": "gravar_acolhimento2",
+        "webhookId": "031c304f-60f6-4e0d-b276-3325f4c256d8"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_lead",
+                "value": "={{ $json.query['id do negocio'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          1888
+        ],
+        "id": "27604235-1ff1-4648-8f09-306b7538b5c6",
+        "name": "Edit Fields8"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_negocio",
+                "value": "={{ $json.query.id_negocio }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          2112
+        ],
+        "id": "ebc64e6d-36b4-4ba4-8d29-368101c66ce4",
+        "name": "Edit Fields9"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO interacao_acolhimento\n  (id_lead, id_lead_uuid, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES\n  (\n    NULL,\n    '{{ $json.id_lead }}',\n    NULL,\n    'sim',\n    NULL,\n    NULL,\n    NOW() AT TIME ZONE 'America/Sao_Paulo'\n  );\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          1888
+        ],
+        "id": "3eb8e9b2-42ca-48ee-8d1d-4953fecbf2b8",
+        "name": "Execute a SQL query8",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO interacao_acolhimento\n  (id_lead, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora, id_lead_uuid)\nVALUES\n  (\n    NULL,                 -- id_lead antigo (numérico) fica null\n    NULL,                 -- interacao_chatbot\n    'sim',                -- interacao_acolhimento\n    NULL,                 -- 2_mensagem\n    NULL,                 -- 3_mensagem\n    NOW() AT TIME ZONE 'America/Sao_Paulo',\n    '{{ $json.id_negocio }}' -- UUID novo vindo do webhook\n  );\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          2112
+        ],
+        "id": "479e5dff-327e-4cf2-9cff-be968cb15c00",
+        "name": "Execute a SQL query9",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "2mensagem",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          144,
+          2320
+        ],
+        "id": "94e8d087-fa69-4978-8e95-e6534ec2f376",
+        "name": "gravar_acolhimento3",
+        "webhookId": "f29c63ac-fc50-4179-9cea-96489dfd9aaa"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "3mensagem",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          144,
+          2512
+        ],
+        "id": "1f998b1c-0dec-41ca-91b4-d256abf75c60",
+        "name": "gravar_acolhimento4",
+        "webhookId": "f29c63ac-fc50-4179-9cea-96489dfd9aaa"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_negocio",
+                "value": "={{ $json.query['Id do Negocio'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          2320
+        ],
+        "id": "5173c3fe-a399-4441-a615-5cd11291b885",
+        "name": "Edit Fields10"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d4b6a80c-b978-44d6-bb0a-bdd25f361d98",
+                "name": "id_negocio",
+                "value": "={{ $json.query['id do negocio'] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          368,
+          2512
+        ],
+        "id": "0beff440-f6f8-4e59-aedc-504dd8b1ca21",
+        "name": "Edit Fields11"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO interacao_acolhimento\n  (id_lead, id_lead_uuid, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES\n  (\n    NULL,                    -- id_lead numérico legado\n    '{{ $json.id_negocio }}',   -- UUID novo\n    NULL,                    -- interacao_chatbot\n    NULL,                    -- interacao_acolhimento\n    'sim',                   -- 2_mensagem (mantém sua lógica)\n    NULL,                    -- 3_mensagem\n    NOW() AT TIME ZONE 'America/Sao_Paulo'\n  );\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          2320
+        ],
+        "id": "db5fc35a-90a5-470d-9bf9-cc7cc2976fa4",
+        "name": "Execute a SQL query10",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO interacao_acolhimento\n  (id_lead, id_lead_uuid, interacao_chatbot, interacao_acolhimento, \"2_mensagem\", \"3_mensagem\", dia_hora)\nVALUES\n  (\n    NULL,\n    '{{ $json.id_negocio }}',\n    NULL,\n    NULL,\n    NULL,\n    'sim',\n    NOW() AT TIME ZONE 'America/Sao_Paulo'\n  );\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          592,
+          2512
+        ],
+        "id": "ef33bec1-0c74-45f4-bc7b-72db64ce8eed",
+        "name": "Execute a SQL query11",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "sem-resposta": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "rematricula-feita": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "em-atendimento": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "acesso realizado": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields3": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields4": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields5": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "nao acessou": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields6": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "pagou": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "sem interesse": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "gravar-ativacao": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields7": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "gravar_acolhimento1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "gravar_acolhimento2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields8": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields9": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "gravar_acolhimento3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "gravar_acolhimento4": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields10": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields11": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": "Version 95b04467",
+    "description": "",
+    "autosaved": true
+  },
   "tags": [
     {
       "updatedAt": "2025-07-25T20:01:08.349Z",
