@@ -265,6 +265,7 @@
     ]
   },
   "versionId": "e088164b-5503-401a-b5a8-cfb8dd502412",
+  "activeVersionId": "e088164b-5503-401a-b5a8-cfb8dd502412",
   "triggerCount": 1,
   "shared": [
     {
@@ -275,5 +276,146 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "e088164b-5503-401a-b5a8-cfb8dd502412",
+    "workflowId": "tQ75E09Q3OlUulWr",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "2310",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -1040,
+          80
+        ],
+        "id": "44917e53-a811-4e95-9e65-b48b48b343ea",
+        "name": "Webhook",
+        "webhookId": "accfc6d8-8d5b-45f7-951a-2390a0f4bf6f"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "={{ $json.body.instance }}",
+          "remoteJid": "={{ $json.body.data.key.remoteJid }}",
+          "messageText": "=📢 _Atenção!_ Este Whatsapp não está mais ativo. \n\nIremos te chamar pelo *número oficial* 😊\n\nAproveite e salve nosso contato na sua agenda. ",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          -816,
+          80
+        ],
+        "id": "69b33b63-4b19-44ee-a95e-8bf578ce88cb",
+        "name": "Enviar texto",
+        "credentials": {
+          "evolutionApi": {
+            "id": "nB4splEd6P979FNr",
+            "name": "Evolution - outros-evolution-api.ca31ey.easypanel"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "591812090691346",
+          "recipientPhoneNumber": "={{ $json.data.key.remoteJid.replace('@s.whatsapp.net', '') }}",
+          "template": "2130_resposta_automatica_b98hgp|pt_BR"
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1,
+        "position": [
+          -464,
+          80
+        ],
+        "id": "bda879d1-501b-4a12-a1ce-9436f038a550",
+        "name": "Send template",
+        "webhookId": "b4b7f757-307c-4ae4-85be-ee2fac9b556f",
+        "credentials": {
+          "whatsAppApi": {
+            "id": "yz8MmxofXX6p6m1f",
+            "name": "WACA - CSV ACADEMICO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "operation": "send-contact",
+          "instanceName": "2310",
+          "remoteJid": "={{ $json.data.key.remoteJid }}",
+          "contacts": {
+            "contactValues": [
+              {
+                "fullName": "Cruzeiro do Sul Suporte ao Aluno",
+                "wuid": "5511915184535",
+                "phoneNumber": "=+55 11 9 1518-4535",
+                "organization": "Cruzeiro do Sul Virtual",
+                "url": "www.cruzeiroead.com.br"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          -640,
+          80
+        ],
+        "id": "e3ca7b7a-6cdb-430b-be9b-c86517b08340",
+        "name": "Enviar contato",
+        "credentials": {
+          "evolutionApi": {
+            "id": "nB4splEd6P979FNr",
+            "name": "Evolution - outros-evolution-api.ca31ey.easypanel"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar texto": {
+        "main": [
+          [
+            {
+              "node": "Enviar contato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar contato": {
+        "main": [
+          [
+            {
+              "node": "Send template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
