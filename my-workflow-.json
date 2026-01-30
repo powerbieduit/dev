@@ -3,7 +3,7 @@
   "createdAt": "2025-07-26T04:24:11.469Z",
   "id": "IXyEvrsMEWv4G6p5",
   "name": "My workflow",
-  "active": false,
+  "active": true,
   "isArchived": true,
   "nodes": [
     {
@@ -63,6 +63,7 @@
   },
   "pinData": {},
   "versionId": "e5ac12af-4a98-4e2d-8d75-46a1645faa8f",
+  "activeVersionId": "e5ac12af-4a98-4e2d-8d75-46a1645faa8f",
   "triggerCount": 0,
   "shared": [
     {
@@ -73,5 +74,64 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "e5ac12af-4a98-4e2d-8d75-46a1645faa8f",
+    "workflowId": "IXyEvrsMEWv4G6p5",
+    "nodes": [
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "receptivo",
+          "remoteJid": "=120363402640430803@g.us",
+          "messageText": "=⚠️ Erro de  Execução: {{ $json.execution.error.message }}\n\nWorkflow: {{ $json.workflow.name }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "ab57010c-8cdf-443a-b718-1ff1b989e96e",
+        "name": "Enviar texto",
+        "credentials": {
+          "evolutionApi": {
+            "id": "nB4splEd6P979FNr",
+            "name": "teste evo"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          -64,
+          0
+        ],
+        "id": "d45bb663-fb60-4f36-a201-f24e472626bd",
+        "name": "Error Trigger"
+      }
+    ],
+    "connections": {
+      "Error Trigger": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
