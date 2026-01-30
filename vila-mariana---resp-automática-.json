@@ -135,6 +135,7 @@
     ]
   },
   "versionId": "157d57af-1693-4835-a216-d0a8877b29f7",
+  "activeVersionId": "157d57af-1693-4835-a216-d0a8877b29f7",
   "triggerCount": 1,
   "shared": [
     {
@@ -145,5 +146,69 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "157d57af-1693-4835-a216-d0a8877b29f7",
+    "workflowId": "2KUUEXvNBWEo9qGE",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "vilamariana",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "2042d067-5ea5-42ce-8504-d6bd478e2405",
+        "name": "Webhook",
+        "webhookId": "c01cca84-8c0f-44ae-895f-aff52f953339"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "vila mariana",
+          "remoteJid": "={{ $json.body.data.key.remoteJid }}",
+          "messageText": "Olá, tudo bem?\n\nEste número de *WhatsApp foi desativado*. Para obter atendimento, por favor, *clique no nosso novo link* de contato: 👉 https://wa.cruzeiroead.com.br/atendimento.\n\nEsperamos seu contato por lá! 😉\n\n*Até mais!*",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "462268ca-32d1-48c3-b37c-09910adcfdbf",
+        "name": "Enviar texto",
+        "credentials": {
+          "evolutionApi": {
+            "id": "nB4splEd6P979FNr",
+            "name": "Evolution - outros-evolution-api.ca31ey.easypanel"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
