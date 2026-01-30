@@ -141,6 +141,7 @@
   },
   "pinData": {},
   "versionId": "d0322c90-c4de-45af-b6a1-7bb5cd8592ed",
+  "activeVersionId": "d0322c90-c4de-45af-b6a1-7bb5cd8592ed",
   "triggerCount": 1,
   "shared": [
     {
@@ -151,5 +152,139 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "d0322c90-c4de-45af-b6a1-7bb5cd8592ed",
+    "workflowId": "V0Z8CF9kWtS8BvNx",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "tarefascsvcomercial",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -160,
+          0
+        ],
+        "id": "e2a9267b-33f2-4891-bf84-0347a48f5f6a",
+        "name": "Webhook",
+        "webhookId": "bc23dad9-47f3-4f1e-bf2d-05577e5161bb"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json.body['task[add][0][element_id]'] }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":683719,\"type\":\"select\"}",
+                      "value": "={{ \n  (() => {\n    const tipo = $json.body[\"task[add][0][task_type]\"];\n    if (tipo == 3271432) return \"Vestibular\";\n    if (tipo == 3287832) return \"Inscrição\";\n    if (tipo == 3298864) return \"Retorno\";\n    if (tipo == 3298872) return \"Interesse Futuro\";\n    if (tipo == 3310904) return \"Follow Up\";\n    if (tipo == 3378256) return \"Isenção\";\n    return \"Outro\";\n  })()\n}}"
+                    },
+                    {
+                      "data": "{\"id\":683717,\"type\":\"date_time\"}",
+                      "value": "={{ Math.floor(new Date($json.body['task[add][0][complete_till]'].replace(' ', 'T')).getTime() / 1000) }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          416,
+          0
+        ],
+        "id": "a85ba0b3-188b-4498-b7ec-34418acf19d7",
+        "name": "Update leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "b510b1ee-bd03-401a-8cea-11a047c3b884",
+                "leftValue": "={{ $json.body['task[add][0][task_type]'] }}",
+                "rightValue": "1",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              },
+              {
+                "id": "37417fd5-763f-4327-8fc0-1184389c6ea7",
+                "leftValue": "={{ $json.body['task[add][0][task_type]'] }}",
+                "rightValue": "2",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          112,
+          0
+        ],
+        "id": "b94e900f-1bd2-46f7-9980-f3d44fce4202",
+        "name": "Filter"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Update leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
