@@ -127,6 +127,7 @@
     ]
   },
   "versionId": "1385c8fb-5157-40e5-85df-ba4c37f8210a",
+  "activeVersionId": "1385c8fb-5157-40e5-85df-ba4c37f8210a",
   "triggerCount": 1,
   "shared": [
     {
@@ -137,5 +138,91 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "1385c8fb-5157-40e5-85df-ba4c37f8210a",
+    "workflowId": "1jMKODbyXXgxral1",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH params AS (\n  SELECT \n    NULLIF('{{$json.query.data_inicio || \"\"}}','')::date AS data_inicio,\n    NULLIF('{{$json.query.data_fim   || \"\"}}','')::date AS data_fim\n),\n\n-- Último retorno por RGM na janela\nult_retorno AS (\n  SELECT DISTINCT ON (r.rgm)\n         r.rgm,\n         COALESCE(NULLIF(btrim(r.retorno), ''), 'SEM RESPOSTA') AS retorno\n  FROM retorno_disparos r\n  CROSS JOIN params p\n  WHERE (p.data_inicio IS NULL OR r.data_registro::date >= p.data_inicio)\n    AND (p.data_fim    IS NULL OR r.data_registro::date <= p.data_fim)\n  ORDER BY r.rgm, r.data_registro DESC\n)\n\nSELECT json_build_object(\n  'ativacoes_por_dia',\n  COALESCE(\n    (\n      SELECT json_agg(row_to_json(a) ORDER BY a.dia)\n      FROM (\n        SELECT\n          t.data_ativacao::date AS dia,\n          COUNT(*) AS total\n        FROM disparos t\n        CROSS JOIN params p\n        WHERE (p.data_inicio IS NULL OR t.data_ativacao::date >= p.data_inicio)\n          AND (p.data_fim    IS NULL OR t.data_ativacao::date <= p.data_fim)\n        GROUP BY t.data_ativacao::date\n        ORDER BY t.data_ativacao::date\n      ) a\n    ),\n    '[]'::json\n  ),\n  'retornos_por_status',\n  COALESCE(\n    (\n      SELECT json_agg(row_to_json(b) ORDER BY b.quantidade DESC)\n      FROM (\n        SELECT\n          u.retorno,\n          COUNT(*) AS quantidade\n        FROM ult_retorno u\n        GROUP BY u.retorno\n        ORDER BY COUNT(*) DESC\n      ) b\n    ),\n    '[]'::json\n  )\n) AS payload;\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          208,
+          0
+        ],
+        "id": "f0f77a31-dc6f-40d8-971e-8c8167c729e0",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "QDCGVsYyhaarkGj6",
+            "name": "Disparos"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "path": "dashboard",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "87f1a268-1224-403b-9aeb-4d8c3d324f2a",
+        "name": "Webhook",
+        "webhookId": "f99c13f4-da33-434d-8396-a771f7c8d5c3"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          416,
+          0
+        ],
+        "id": "6c96e82d-dc2f-47c6-8dcc-cc2716a5927c",
+        "name": "Respond to Webhook"
+      }
+    ],
+    "connections": {
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
