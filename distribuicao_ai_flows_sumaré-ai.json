@@ -3,7 +3,7 @@
   "createdAt": "2025-09-05T20:40:06.220Z",
   "id": "43YAwqmzHhPHdJOs",
   "name": "distribuicao_ai_flows_sumaré",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -256,6 +256,7 @@
   },
   "pinData": {},
   "versionId": "b4c55c2f-691e-4654-b198-8327931f776c",
+  "activeVersionId": "b4c55c2f-691e-4654-b198-8327931f776c",
   "triggerCount": 0,
   "shared": [
     {
@@ -266,6 +267,255 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "b4c55c2f-691e-4654-b198-8327931f776c",
+    "workflowId": "43YAwqmzHhPHdJOs",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "telefone",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -528,
+          96
+        ],
+        "id": "c9b5e015-8d1e-4d44-a914-c390704d86ad",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://sumaread.kommo.com/api/v2/salesbot/run",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjgzNGY4MWNlZDJjM2Y4ZDgwMjdiY2Q2MDVhY2FkODMxMjU2ZTc0MTNkMjljNDY3MjU5OWYyM2I4MDlmMTc3MjRmMmU0YmQ0NjMyZmE1MTBjIn0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI4MzRmODFjZWQyYzNmOGQ4MDI3YmNkNjA1YWNhZDgzMTI1NmU3NDEzZDI5YzQ2NzI1OTlmMjNiODA5ZjE3NzI0ZjJlNGJkNDYzMmZhNTEwYyIsImlhdCI6MTc1NzM1MzA2MywibmJmIjoxNzU3MzUzMDYzLCJleHAiOjE4MDEzNTM2MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiY2QxYzVlNTEtMGZhYi00YjI0LTlmN2YtZDc5MTc5MTNkY2JkIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.HAOrmHblRCJo5tS1QXMpYfCqK2iejbO88CBoBTzvSjPh7D5eeqzYmjEy7OmRcksOTpZpwBjlRSvZseCM8jbVBeCBc_HuGV_coAeBMKZ4hwdIQevoHNkgaEOVf4d7OiuVub9K0DnjGsQ1MxAJDbkwMWsX_ItNXv1_fgwIjvm07Y5lYNb7alUsBNABdUtdS8fSQ0edbYmxrx2m39uQG_WOUJiO855A_VxpRJVLcu2sQauc_sUthJ5eewyV4lc34sV-35v3NR7FZ1bvGzXMYbnAnM_Pzng1cWiJnSxD36KcOi8X0GAMvLKK_Sm3hyv4213rFd0fj8uO3h7zoFramTYQSA"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "=[\n  {\n    \"entity_type\": \"2\",\n    \"entity_id\": {{ $json[\"data\"][\"_embedded\"][\"leads\"][0][\"id\"] }},\n    \"bot_id\": 50034\n  }\n]",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          96,
+          96
+        ],
+        "id": "9cf7c15b-153a-4c24-8a10-a2f17e2a8bf1",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "url": "=https://sumaread.kommo.com/api/v4/leads?query={{ '+' + $json.telefone.replace('@s.whatsapp.net', '') }}&filter[statuses][0][pipeline_id]=11873040&filter[statuses][0][status_id]=91899500",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjgzNGY4MWNlZDJjM2Y4ZDgwMjdiY2Q2MDVhY2FkODMxMjU2ZTc0MTNkMjljNDY3MjU5OWYyM2I4MDlmMTc3MjRmMmU0YmQ0NjMyZmE1MTBjIn0.eyJhdWQiOiJhMWJlNmUzOS02MDM2LTQ2OGItOWYzYS0zZDIyYjJmZjBhMjYiLCJqdGkiOiI4MzRmODFjZWQyYzNmOGQ4MDI3YmNkNjA1YWNhZDgzMTI1NmU3NDEzZDI5YzQ2NzI1OTlmMjNiODA5ZjE3NzI0ZjJlNGJkNDYzMmZhNTEwYyIsImlhdCI6MTc1NzM1MzA2MywibmJmIjoxNzU3MzUzMDYzLCJleHAiOjE4MDEzNTM2MDAsInN1YiI6IjExNjE2MDY4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMwMjk4NDEyLCJiYXNlX2RvbWFpbiI6ImtvbW1vLmNvbSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwidXNlcl9mbGFncyI6MCwiaGFzaF91dWlkIjoiY2QxYzVlNTEtMGZhYi00YjI0LTlmN2YtZDc5MTc5MTNkY2JkIiwiYXBpX2RvbWFpbiI6ImFwaS1nLmtvbW1vLmNvbSJ9.HAOrmHblRCJo5tS1QXMpYfCqK2iejbO88CBoBTzvSjPh7D5eeqzYmjEy7OmRcksOTpZpwBjlRSvZseCM8jbVBeCBc_HuGV_coAeBMKZ4hwdIQevoHNkgaEOVf4d7OiuVub9K0DnjGsQ1MxAJDbkwMWsX_ItNXv1_fgwIjvm07Y5lYNb7alUsBNABdUtdS8fSQ0edbYmxrx2m39uQG_WOUJiO855A_VxpRJVLcu2sQauc_sUthJ5eewyV4lc34sV-35v3NR7FZ1bvGzXMYbnAnM_Pzng1cWiJnSxD36KcOi8X0GAMvLKK_Sm3hyv4213rFd0fj8uO3h7zoFramTYQSA"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -304,
+          96
+        ],
+        "id": "51942160-5096-4f87-828d-cdfec43da483",
+        "name": "HTTP Request1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4143342d-f1f4-45c2-90ef-556cb7bffb69",
+                "name": "data",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -96,
+          96
+        ],
+        "id": "b0b4ca1e-ebe2-4abf-8b94-475807092b92",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "dados_cliente_sum",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "telefone",
+                "condition": "eq",
+                "keyValue": "={{ $('When Executed by Another Workflow').item.json.telefone }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "atendimento_ia",
+                "fieldValue": "pause"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          320,
+          96
+        ],
+        "id": "0fbe256f-7f17-4e60-ab6a-1962f609bff8",
+        "name": "Update a row",
+        "credentials": {
+          "supabaseApi": {
+            "id": "iGh1fsnV8INZevlH",
+            "name": "Supabase IA ANH/SUM"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "MfpFMb8bfaQRgbda",
+            "mode": "list",
+            "cachedResultName": "distribuir_atendimento_ia_sumaré"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Telefone": "={{ $json.telefone.replace('@s.whatsapp.net', '') }}"
+            },
+            "matchingColumns": [
+              "Telefone"
+            ],
+            "schema": [
+              {
+                "id": "Telefone",
+                "displayName": "Telefone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          528,
+          96
+        ],
+        "id": "5dad37ac-a736-4ab6-b1c1-2b85abd73bdd",
+        "name": "Execute Workflow"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Update a row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update a row": {
+        "main": [
+          [
+            {
+              "node": "Execute Workflow",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": [
     {
       "updatedAt": "2025-07-30T20:41:48.074Z",
