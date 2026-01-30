@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2025-09-23T19:14:48.000Z",
+  "updatedAt": "2025-11-12T14:49:13.000Z",
   "createdAt": "2025-07-25T19:57:29.444Z",
   "id": "RsjU4yDcMPNjhg3l",
   "name": "inativo_csv",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -289,7 +289,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "dc731cb4-2d5e-4f42-91ff-ded59cf6e4d2",
+  "versionId": "4176fa97-a364-47f5-a9c6-f44aca06ce1c",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -300,6 +301,7 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": [
     {
       "updatedAt": "2025-07-25T19:56:58.514Z",
