@@ -448,6 +448,7 @@
     ]
   },
   "versionId": "581e0b15-9512-4e9d-84c0-877ed23f8d8b",
+  "activeVersionId": "581e0b15-9512-4e9d-84c0-877ed23f8d8b",
   "triggerCount": 1,
   "shared": [
     {
@@ -458,5 +459,417 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "581e0b15-9512-4e9d-84c0-877ed23f8d8b",
+    "workflowId": "Dy35DImrzuctXV6R",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "e825259a-a2dd-4593-b5ce-f1a74e41d3e6",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -160,
+          112
+        ],
+        "id": "9a1eee40-07c8-4c88-8243-6af6bfd9ed3c",
+        "name": "Webhook",
+        "webhookId": "e825259a-a2dd-4593-b5ce-f1a74e41d3e6"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "public",
+            "mode": "list",
+            "cachedResultName": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "lead_status_history",
+            "mode": "list",
+            "cachedResultName": "lead_status_history"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $json.id_lead }}",
+              "status_id": "={{ $json.status_nome }}",
+              "timestamp": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status_id",
+                "displayName": "status_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "timestamp",
+                "displayName": "timestamp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          736,
+          112
+        ],
+        "id": "d21d9248-4834-455f-93cf-328c47624a3a",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Pega os dados brutos do corpo do webhook\nconst body = $json.body;\n\n// Extrai os campos necessários\nconst id_lead = body[\"leads[status][0][id]\"];\nconst status_id = body[\"leads[status][0][status_id]\"];\n\n// Mapeia o status_id para nome\nconst statusMap = {\n  \"48539240\": \"Contato inicial\",\n  \"48539243\": \"Sem resposta\",\n  \"48539246\": \"Em atendimento\",\n  \"74941508\": \"Aguardando Resposta\",\n  \"48539249\": \"Inscricao\",\n  \"48566195\": \"Processo Seletivo\",\n  \"48566198\": \"Em processo\",\n  \"48566201\": \"Aprovado/Reprovado\",\n  \"48566204\": \"Boleto Enviado\",\n  \"77728584\": \"Pagamento Confirmado\",\n  \"48566207\": \"Aceite\",\n  \"142\": \"Ganho\",\n  \"143\": \"Perdido\"\n};\n\nconst status_nome = statusMap[status_id] || \"Desconhecido\";\n\n// Retorna o objeto para o próximo node\nreturn [\n  {\n    json: {\n      id_lead,\n      status_id,\n      status_nome\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          288,
+          16
+        ],
+        "id": "530dad9a-f02c-4daf-95fc-c9c21760d728",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.status_nome }}",
+                      "rightValue": "=Ganho",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "0036ca58-7996-474c-ba57-eb99d3aadf19"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          512,
+          16
+        ],
+        "id": "681569d4-bc07-4042-8977-c8742ce22aea",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "public",
+            "mode": "list",
+            "cachedResultName": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "lead_status_history",
+            "mode": "list",
+            "cachedResultName": "lead_status_history"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $json.id_lead }}",
+              "status_id": "={{ $('Code').item.json.status_nome }}",
+              "timestamp": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status_id",
+                "displayName": "status_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "timestamp",
+                "displayName": "timestamp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          736,
+          -80
+        ],
+        "id": "81ab5aac-2c15-472f-b81a-33543b91eee0",
+        "name": "Insert rows in a table1",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## MOVIMENTAÇÃO DE LEADS - CSV\n",
+          "height": 560,
+          "width": 1408,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          -144
+        ],
+        "id": "7a9bbde4-bb39-4c16-82c2-af918ad17ad0",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.body[\"leads[status][0][pipeline_id]\"] }}",
+                      "rightValue": "=5481944",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "fe2f9d20-fdc1-4ed9-84ad-e9b1baf6b8f7"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "a45699a0-6768-4b4e-ba29-77cdc3c915b2",
+                      "leftValue": "={{ $json.body[\"leads[status][0][old_pipeline_id]\"] }}",
+                      "rightValue": "9994596",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "e1a5ef18-9c0e-4bf7-bd8d-e3f1f0a46a40",
+                      "leftValue": "={{ $json.body[\"leads[status][0][old_pipeline_id]\"] }}",
+                      "rightValue": "11292916",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          64,
+          80
+        ],
+        "id": "f3e58793-fa07-4bca-ac7b-75d1b795d656",
+        "name": "Switch1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          288,
+          208
+        ],
+        "id": "b39175f5-89fe-4a05-8ea8-6b97a78cc95c",
+        "name": "No Operation, do nothing"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Switch1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch1": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
