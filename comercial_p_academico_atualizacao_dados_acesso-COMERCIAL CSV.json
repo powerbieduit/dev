@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-28T15:19:19.000Z",
+  "updatedAt": "2025-12-11T17:51:12.000Z",
   "createdAt": "2025-07-25T20:00:54.794Z",
   "id": "zi5SJlenVGiNj64Z",
   "name": "comercial_p_academico_atualizacao_dados_acesso",
@@ -8,449 +8,499 @@
   "nodes": [
     {
       "parameters": {
-        "resource": "leads",
-        "operation": "createLeads",
-        "collection": {
-          "lead": [
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Cria Lead').item.json._embedded.leads[0].id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
             {
-              "name": "={{ $('Code1').item.json.name }}",
-              "pipeline_id": 6961711,
-              "status_id": 58205935,
-              "loss_reason_id": "=",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":330926,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.CPF.raw.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":330992,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Polo.raw.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":330876,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.RGM.raw.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":1014523,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":1029777,\"type\":\"text\"}",
-                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
-                  },
-                  {
-                    "data": "{\"id\":330988,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos['Formação'].raw.values[0].value || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":330990,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Modalidade_Curso2.raw.values[0].value || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":331044,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos['Turma de Ingresso'].raw.values[0].value || ''}}"
-                  },
-                  {
-                    "data": "{\"id\":330938,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos.Curso.raw.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":330930,\"type\":\"date\"}",
-                    "value": "={{ $('Code1').item.json.campos['Matrícula'].raw.values[0].value || ''}}"
-                  }
-                ]
-              },
-              "_embedded": {
-                "contacts": [
-                  {
-                    "id": {
-                      "contact": [
-                        {
-                          "id": "={{ $json._embedded.contacts[0].id }}",
-                          "is_main": false
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -448,
-        272
-      ],
-      "id": "8523444c-2d14-4fdb-be3f-67d765cc8473",
-      "name": "Cria Lead",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "contacts",
-        "operation": "createContacts",
-        "collection": {
-          "contact": [
-            {
-              "name": "={{ $('Code1').item.json.id }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":288546,\"type\":\"multitext\"}",
-                    "value": "={{ $('Code1').item.json.campos['Telefone Comercial'].values[0].value }}"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -672,
-        272
-      ],
-      "id": "6d4f39c1-dd0a-4e8b-9783-90320b6af306",
-      "name": "Cria contato",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json._embedded.leads[0].id }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "number",
-                      "operation": "notEmpty",
-                      "singleValue": true
-                    },
-                    "id": "ddfe7e8e-f862-4b82-afdf-54ee403390b3"
-                  }
-                ],
-                "combinator": "and"
-              }
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "986baac2-90b6-48e4-ac4f-c54ebf200c06",
-                    "leftValue": "={{ $json.json }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "exists",
-                      "singleValue": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        -1344,
-        80
-      ],
-      "id": "6604cb59-56dd-42e2-8fd7-7e9aafc1427d",
-      "name": "Switch"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "06889e10-ecff-478a-8e0a-f1787943cde9",
-              "leftValue": "={{ $json._embedded.leads[0].pipeline_id }}",
-              "rightValue": 6961711,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
             }
           ],
-          "combinator": "and"
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
       "position": [
-        -1120,
-        -16
+        1728,
+        16
       ],
-      "id": "bf671784-f9de-4402-a806-2477d646694d",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $json._embedded.leads[0].id }}",
-              "pipeline_id": 6961711,
-              "status_id": 0,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":1014523,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":1029777,\"type\":\"text\"}",
-                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -896,
-        -112
-      ],
-      "id": "51053e34-ebd1-4a53-8d33-040b8f377946",
-      "name": "atualiza",
+      "id": "82ee8006-1514-45fb-b632-9d47753fc6af",
+      "name": "Insert rows in a table6",
       "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
         }
       }
     },
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "446aab4a-3a2e-42c5-b3d8-4593aed52382",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('atualiza1').item.json._embedded.leads[0].id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
         "options": {}
       },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
       "position": [
-        -2464,
-        80
+        1680,
+        -176
       ],
-      "id": "11c071ad-8471-4055-ade6-429d144389e6",
-      "name": "Webhook",
-      "webhookId": "446aab4a-3a2e-42c5-b3d8-4593aed52382"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "filter": {
-          "id": "={{ $json.body['leads[add][0][id]'] }}"
-        },
-        "options": {},
-        "limit": 1
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -2240,
-        80
-      ],
-      "id": "931ce390-ef20-4081-bfdc-6b430b209a4d",
-      "name": "get lead info comercial",
+      "id": "b9f550e5-180f-4856-b25c-7f469c3277ce",
+      "name": "Insert rows in a table5",
       "credentials": {
-        "kommoOAuth2Api": {
-          "id": "nwQNgfBiNqLrzKlG",
-          "name": "Kommo Comercial CSV"
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
         }
       }
     },
     {
       "parameters": {
-        "resource": "leads",
-        "filter": {
-          "query": "={{ $('Code1').item.json.campos[\"Telefone Comercial\"].values[0].value }}"
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
         },
-        "options": {
-          "with": [
-            "contacts"
-          ]
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
         },
-        "limit": 1
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -1568,
-        80
-      ],
-      "id": "0b55f02b-c5cd-4d4f-85cc-3a9336ad16b4",
-      "name": "search leads - acad",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst output = [];\n\nfor (const lead of inputData) {\n  const campos = {};\n\n  if (lead.custom_fields_values) {\n    for (const field of lead.custom_fields_values) {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    }\n  }\n\n  // Campo \"Matrícula\" formatado (Unix → DD/MM/YYYY)\n  let matriculaFormatada = null;\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000);\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  output.push({\n    json: {\n      id: lead.id,\n      name: lead.name,\n      pipeline_id: lead.pipeline_id,\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? null,\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? null,\n      matriculaFormatada\n    }\n  });\n}\n\n// Retorna um array de itens, cada um separado (forma esperada pelo n8n)\nreturn output;\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -2016,
-        80
-      ],
-      "id": "db9b9c17-93fe-403b-8b95-1a0b99634462",
-      "name": "Code1"
-    },
-    {
-      "parameters": {
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('atualiza').item.json._embedded.leads[0].id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
             {
-              "id": "={{ $json._embedded.leads[0].id }}",
-              "pipeline_id": 6961711,
-              "status_id": 0,
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":1014523,\"type\":\"text\"}",
-                    "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
-                  },
-                  {
-                    "data": "{\"id\":1029777,\"type\":\"text\"}",
-                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
-                  }
-                ]
-              }
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1440,
+        -368
+      ],
+      "id": "f00c8fae-b512-4652-a98f-8feb8a7efb58",
+      "name": "Insert rows in a table4",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "novos_matriculados_academico",
+          "mode": "list",
+          "cachedResultName": "novos_matriculados_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('atualiza1').item.json._embedded.leads[0].id }}",
+            "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Horario",
+              "displayName": "Horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1_ativação",
+              "displayName": "1_ativação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1472,
+        -176
+      ],
+      "id": "0c6da9e2-ce93-48e6-8c56-441aeefbdc00",
+      "name": "Insert rows in a table3",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "novos_matriculados_academico",
+          "mode": "list",
+          "cachedResultName": "novos_matriculados_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $json._embedded.leads[0].id }}",
+            "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Horario",
+              "displayName": "Horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1_ativação",
+              "displayName": "1_ativação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1504,
+        16
+      ],
+      "id": "db05ae02-5fad-45e9-8b91-7466465492c3",
+      "name": "Insert rows in a table2",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "novos_matriculados_academico",
+          "mode": "list",
+          "cachedResultName": "novos_matriculados_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_lead": "={{ $('atualiza').item.json._embedded.leads[0].id }}",
+            "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rgm",
+              "displayName": "rgm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Horario",
+              "displayName": "Horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1_ativação",
+              "displayName": "1_ativação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1232,
+        -368
+      ],
+      "id": "22cc71e7-c801-4f17-98f2-82fa996e01cb",
+      "name": "Insert rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://csvatendimento.kommo.com/api/v2/salesbot/run",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjM0MjljZmY4NmEwMmQ2NjAzMzg2ZDY1NTc5MDJjOWQ5NDMyM2M2MDRmZjg0Njg5ZjBkZDJmZjFhMWNhYzZhNThkNmFmN2IzNWQ3YmRkNzgwIn0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiIzNDI5Y2ZmODZhMDJkNjYwMzM4NmQ2NTU3OTAyYzlkOTQzMjNjNjA0ZmY4NDY4OWYwZGQyZmYxYTFjYWM2YTU4ZDZhZjdiMzVkN2JkZDc4MCIsImlhdCI6MTc2MjIwMDgxOSwibmJmIjoxNzYyMjAwODE5LCJleHAiOjE3OTUyMTkyMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiJmZGU2ODY0ZC05MGVhLTQzNjYtYmEzMS0xMDkwMTU5NjI2NjUiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.d2ldrFRWry1SNQh-6nJDItCdqMFnwusUyoYQ9GMVoaRKMFm8F0Wsc9x4KF8pQR5x9wyQdVFdAiXglf6kAsQO3444Jmu1IfD6NQcX6xra4Me02CCeo5Itns6gtl3S1YB8Lpz9Wwx3VHbAKdfoXy5zXMeIaP1W2PusyftvQ6B04UwCgUuT4l76Qg_XfN38er14m9RRi40c3guUsP4mCPnrveLOLXNWoXy_H5FgUVoEt_2CDGUBN3-U9PzIt_R0ea4-pgcd0zWplp6fdIl4nK8k36ZW5srdd4a8YgqnFZQHGwaYz2hn_1IssP2gxuP8jcgzqxDajvOaI-hnn5Vvsx-c5w"
             }
           ]
-        }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=[\n  {\n    \"entity_type\": \"2\",\n    \"entity_id\": \"{{ $json._embedded.leads[0].id }}\",\n    \"bot_id\": 47105\n  }\n]\n",
+        "options": {}
       },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        -672,
-        80
+        1040,
+        -368
       ],
-      "id": "780d09a4-e1b5-488d-8e74-7e8a85cd5b30",
-      "name": "atualiza1",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "notes",
-        "operation": "createNotes",
-        "notes": {
-          "common": [
-            {
-              "entity_id": "={{ $json._embedded.leads[0].id }}",
-              "text": "DADOS DE ACESSO GERADOS, ENVIAR AO ALUNO. "
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -448,
-        80
-      ],
-      "id": "f3478b2e-c68a-4356-a4a6-042d8d06b5e4",
-      "name": "Create new notes",
-      "credentials": {
-        "kommoOAuth2Api": {
-          "id": "UJXbFUmZVweNcdbc",
-          "name": "Kommo Academico CSV"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        -896,
-        80
-      ],
-      "id": "d60863e6-1d47-49d9-a8e5-762dae956adb",
-      "name": "Merge"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        -1120,
-        272
-      ],
-      "id": "b1cb489f-faa8-4cba-a0b7-56b9e39bd4c7",
-      "name": "Merge1"
-    },
-    {
-      "parameters": {
-        "amount": 10
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        -896,
-        272
-      ],
-      "id": "dc4e9eb1-c27c-41be-a46c-143819a09c5a",
-      "name": "Wait",
-      "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+      "id": "cbc7929c-c78e-4890-9c76-4adb7b749a3f",
+      "name": "HTTP Request"
     },
     {
       "parameters": {
@@ -543,8 +593,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1792,
-        80
+        -80,
+        -176
       ],
       "id": "84aaab26-6b5e-4b2a-a2d8-5bc9d0a3f285",
       "name": "Insert rows in a table",
@@ -557,34 +607,599 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://csvatendimento.kommo.com/api/v2/salesbot/run",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        816,
+        16
+      ],
+      "id": "dc4e9eb1-c27c-41be-a46c-143819a09c5a",
+      "name": "Wait",
+      "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        592,
+        16
+      ],
+      "id": "b1cb489f-faa8-4cba-a0b7-56b9e39bd4c7",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        816,
+        -176
+      ],
+      "id": "d60863e6-1d47-49d9-a8e5-762dae956adb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
             {
-              "name": "accept",
-              "value": "application/json"
+              "entity_id": "={{ $json._embedded.leads[0].id }}",
+              "text": "DADOS DE ACESSO GERADOS, ENVIAR AO ALUNO. "
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        -176
+      ],
+      "id": "f3478b2e-c68a-4356-a4a6-042d8d06b5e4",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json._embedded.leads[0].id }}",
+              "pipeline_id": 6961711,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        -176
+      ],
+      "id": "780d09a4-e1b5-488d-8e74-7e8a85cd5b30",
+      "name": "atualiza1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst output = [];\n\nfor (const lead of inputData) {\n  const campos = {};\n\n  if (lead.custom_fields_values) {\n    for (const field of lead.custom_fields_values) {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    }\n  }\n\n  // Campo \"Matrícula\" formatado (Unix → DD/MM/YYYY)\n  let matriculaFormatada = null;\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000);\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  output.push({\n    json: {\n      id: lead.id,\n      name: lead.name,\n      pipeline_id: lead.pipeline_id,\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? null,\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? null,\n      matriculaFormatada\n    }\n  });\n}\n\n// Retorna um array de itens, cada um separado (forma esperada pelo n8n)\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -304,
+        -176
+      ],
+      "id": "db9b9c17-93fe-403b-8b95-1a0b99634462",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "query": "={{ $('Code1').item.json.campos[\"Telefone Comercial\"].values[0].value }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -176
+      ],
+      "id": "0b55f02b-c5cd-4d4f-85cc-3a9336ad16b4",
+      "name": "search leads - acad",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "id": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -176
+      ],
+      "id": "931ce390-ef20-4081-bfdc-6b430b209a4d",
+      "name": "get lead info comercial",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "446aab4a-3a2e-42c5-b3d8-4593aed52382",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        -176
+      ],
+      "id": "11c071ad-8471-4055-ade6-429d144389e6",
+      "name": "Webhook",
+      "webhookId": "446aab4a-3a2e-42c5-b3d8-4593aed52382"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $json._embedded.leads[0].id }}",
+              "pipeline_id": 6961711,
+              "status_id": 0,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -368
+      ],
+      "id": "51053e34-ebd1-4a53-8d33-040b8f377946",
+      "name": "atualiza",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "06889e10-ecff-478a-8e0a-f1787943cde9",
+              "leftValue": "={{ $json._embedded.leads[0].pipeline_id }}",
+              "rightValue": 6961711,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        -272
+      ],
+      "id": "bf671784-f9de-4402-a806-2477d646694d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json._embedded.leads[0].id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "ddfe7e8e-f862-4b82-afdf-54ee403390b3"
+                  }
+                ],
+                "combinator": "and"
+              }
             },
             {
-              "name": "authorization",
-              "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJhMGQ2YzIyNTY1ODhlM2E5MTMyZjU4MWExNzg5NmY0YzhlMzU3MWVkMWQ3NDI5NDFlNTc5OGNkYzU2M2NkYzE5OTBmNjcxYTA1MTYwYzA3In0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiJiYTBkNmMyMjU2NTg4ZTNhOTEzMmY1ODFhMTc4OTZmNGM4ZTM1NzFlZDFkNzQyOTQxZTU3OThjZGM1NjNjZGMxOTkwZjY3MWEwNTE2MGMwNyIsImlhdCI6MTc1MzQ3NzQ1NCwibmJmIjoxNzUzNDc3NDU0LCJleHAiOjE4MzM3NTM2MDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiIyZDFmNzk5Ny03N2NlLTRiZjItYWNmNi1iMzIzMzRkMzliMzIiLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.n7LPcr4m83wRD8F3ArZuPi4F-6uJv3H7YIhazh82DX6fYnDaflvKWPUM_RITkn4UTQ5CAVeZHapVleGnoPNmgrrJDTYY1ni_V2QGYZ2RCFwSPXYXD0bIHtc2ZoYOg6OCc8DiScZfwNQMoYo-x_XI2B2_QXm2ScflBjNsHxVvd-FFTrRhZRN9r6qhueQz2kzCAimYSBI1wK0Nhx4b8faSouuMW6vUU4xb_jr5W5CTJ8l5f5MJwIV167vf6zvo4ojHssOyHVM7oSAwXH9C-z2GbQdXuPXnmDHD5YbtFGk5kUfbIpkCRsNjYudWJeVvA-1afWIw69jYz3Kosm09rHX46Q"
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "986baac2-90b6-48e4-ac4f-c54ebf200c06",
+                    "leftValue": "={{ $json.json }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "=[\n  {\n    \"entity_type\": \"2\",\n    \"entity_id\": \"{{ $json._embedded.leads[0].id }}\",\n    \"bot_id\": 47105\n  }\n]\n",
         "options": {}
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
       "position": [
-        -672,
-        -112
+        368,
+        -176
       ],
-      "id": "cbc7929c-c78e-4890-9c76-4adb7b749a3f",
-      "name": "HTTP Request"
+      "id": "6604cb59-56dd-42e2-8fd7-7e9aafc1427d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Code1').item.json.id }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":288546,\"type\":\"multitext\"}",
+                    "value": "={{ $('Code1').item.json.campos['Telefone Comercial'].values[0].value }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        16
+      ],
+      "id": "6d4f39c1-dd0a-4e8b-9783-90320b6af306",
+      "name": "Cria contato",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Code1').item.json.name }}",
+              "pipeline_id": 6961711,
+              "status_id": 58205935,
+              "loss_reason_id": "=",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":330926,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.CPF.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":330992,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Polo.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":330876,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.RGM.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1014523,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":1029777,\"type\":\"text\"}",
+                    "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                  },
+                  {
+                    "data": "{\"id\":330988,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Formação'].raw.values[0].value || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":330990,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Modalidade_Curso2.raw.values[0].value || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":331044,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos['Turma de Ingresso'].raw.values[0].value || ''}}"
+                  },
+                  {
+                    "data": "{\"id\":330938,\"type\":\"text\"}",
+                    "value": "={{ $('Code1').item.json.campos.Curso.raw.values[0].value }}"
+                  },
+                  {
+                    "data": "{\"id\":330930,\"type\":\"date\"}",
+                    "value": "={{ $('Code1').item.json.campos['Matrícula'].raw.values[0].value || ''}}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}",
+                          "is_main": false
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        16
+      ],
+      "id": "8523444c-2d14-4fdb-be3f-67d765cc8473",
+      "name": "Cria Lead",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "UJXbFUmZVweNcdbc",
+          "name": "Kommo Academico CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.count }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "notEquals"
+                    },
+                    "id": "ddfe7e8e-f862-4b82-afdf-54ee403390b3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "986baac2-90b6-48e4-ac4f-c54ebf200c06",
+                    "leftValue": "={{ $json.count }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2320,
+        2032
+      ],
+      "id": "a7ce4b8c-5444-421c-b60e-e17114cf0f10",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "criacaoaluno",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -3440,
+        2032
+      ],
+      "id": "19d4b0fb-998f-40b6-a5d0-0c4f3fe8ccd0",
+      "name": "Webhook2",
+      "webhookId": "446aab4a-3a2e-42c5-b3d8-4593aed52382"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "id": "={{ $json.body['leads[add][0][id]'] }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -3216,
+        2032
+      ],
+      "id": "3515ef4b-f5f0-48b2-99e9-6cf09d6783d2",
+      "name": "get lead info comercial2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "nwQNgfBiNqLrzKlG",
+          "name": "Kommo Comercial CSV"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst output = [];\n\nfor (const lead of inputData) {\n  const campos = {};\n\n  if (lead.custom_fields_values) {\n    for (const field of lead.custom_fields_values) {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    }\n  }\n\n  // Campo \"Matrícula\" formatado (Unix → DD/MM/YYYY)\n  let matriculaFormatada = null;\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000);\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  output.push({\n    json: {\n      id: lead.id,\n      name: lead.name,\n      pipeline_id: lead.pipeline_id,\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? null,\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? null,\n      matriculaFormatada\n    }\n  });\n}\n\n// Retorna um array de itens, cada um separado (forma esperada pelo n8n)\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2992,
+        2032
+      ],
+      "id": "a5849982-cba7-46fa-9a79-1b1b6797991c",
+      "name": "Code2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1648,
+        2032
+      ],
+      "id": "011f755d-df3e-4714-a97a-2139402028a3",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2096,
+        2224
+      ],
+      "id": "70d64295-9501-4538-850b-3b8a52d776c4",
+      "name": "Merge5"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1872,
+        2224
+      ],
+      "id": "c804155c-4adb-4709-a4b6-4732ebe2a3e2",
+      "name": "Wait6",
+      "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
     },
     {
       "parameters": {
@@ -595,17 +1210,18 @@
         },
         "table": {
           "__rl": true,
-          "value": "novos_matriculados_academico",
+          "value": "leads_ganhos",
           "mode": "list",
-          "cachedResultName": "novos_matriculados_academico"
+          "cachedResultName": "leads_ganhos"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id_lead": "={{ $('atualiza').item.json._embedded.leads[0].id }}",
-            "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
-            "Horario": "={{ $now }}\n",
-            "1_ativação": "Sim"
+            "RGM": "={{ $json.campos.RGM.raw.values[0].value }}",
+            "id_lead": "={{ $json.id }}",
+            "id_responsavel": "={{ $('get lead info comercial2').item.json._embedded.leads[0].responsible_user_id }}",
+            "curso": "={{ $json.campos.Curso.raw.values[0].value }}",
+            "data_matricula": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") + \"Z\" }}"
           },
           "matchingColumns": [
             "id"
@@ -629,6 +1245,229 @@
               "display": true,
               "type": "number",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "curso",
+              "displayName": "curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_responsavel",
+              "displayName": "id_responsavel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RGM",
+              "displayName": "RGM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_matricula",
+              "displayName": "data_matricula",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2768,
+        2032
+      ],
+      "id": "cf2eb690-01c6-477f-9dcd-3bb46b09ab98",
+      "name": "Insert rows in a table9",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "search": "={{ $('Code2').item.json.campos['Telefone Comercial'].values[0].value }}",
+          "filters": []
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        2032
+      ],
+      "id": "f1db403c-5115-49f1-bc1b-8cad7b8c4922",
+      "name": "Buscar todos os leads1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "options": {
+          "search": "={{ $('Code2').item.json.campos['Telefone Comercial'].raw.values[0].value }}"
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -2096,
+        1936
+      ],
+      "id": "947f8174-c3bd-4be0-8de0-0ac868bab8b0",
+      "name": "Buscar todos os negócios1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $json.data[0].id }}",
+        "additionalFieldId": "731bd2fd-7cfa-49af-ab24-2e55e0374798",
+        "value": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        2032
+      ],
+      "id": "0a999f35-06c4-45a1-9698-cf941171c22b",
+      "name": "Definir valor de campo adicional6",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1200,
+        2032
+      ],
+      "id": "a943cc3e-32ec-4de3-bf5e-64f9b30dbaef",
+      "name": "Wait7",
+      "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+        "additionalFieldId": "cccb3046-1906-4465-901d-329ef2fe08dc",
+        "value": "={{(() => {\n  const campos = $('Code2').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        2032
+      ],
+      "id": "669145b8-3b6d-4845-a194-3cf27d235fdb",
+      "name": "Definir valor de campo adicional7",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -752,
+        2032
+      ],
+      "id": "42306ccb-7a95-4274-84f4-a76ae1167766",
+      "name": "Wait8",
+      "webhookId": "30e54746-7872-4171-8b8e-5e58d2ba9b98"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "novos_matriculados_academico",
+          "mode": "list",
+          "cachedResultName": "novos_matriculados_academico"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "rgm": "={{ $('Insert rows in a table9').item.json.RGM }}",
+            "Horario": "={{ $now }}\n",
+            "1_ativação": "Sim",
+            "id_lead_uuid": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_lead",
+              "displayName": "id_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "rgm",
@@ -659,6 +1498,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "id_lead_uuid",
+              "displayName": "id_lead_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -669,15 +1518,220 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -480,
-        -112
+        -304,
+        2032
       ],
-      "id": "22cc71e7-c801-4f17-98f2-82fa996e01cb",
-      "name": "Insert rows in a table1",
+      "id": "088c59db-c6e7-44a7-96f5-867220303cab",
+      "name": "Insert rows in a table18",
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
           "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id_uuid": "={{ $json.id_lead_uuid }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id_uuid",
+              "displayName": "lead_id_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -80,
+        2032
+      ],
+      "id": "3910c747-23e9-4527-a026-0afccdba8e4c",
+      "name": "Insert rows in a table19",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "annotations",
+        "operation": "create",
+        "leadId": "={{ $('Buscar todos os negócios1').item.json.data[0].leadId }}",
+        "note": "DADOS DE ACESSO GERADOS, ENVIAR AO ALUNO. "
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        2032
+      ],
+      "id": "59bce012-f762-413c-8aaa-4983a49e27ed",
+      "name": "Adicionar comentário ao lead1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "name": "={{ $('Code2').item.json.campos.Nome.raw.values[0].value }}",
+        "email": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].raw.values[0].value }}",
+        "phone": "={{ $('Code2').item.json.campos['Telefone Comercial'].values[0].value }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -1648,
+        2224
+      ],
+      "id": "ef86de56-4719-45ee-9fab-6987b15e12b6",
+      "name": "Criar um novo lead1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "deals",
+        "operation": "create",
+        "leadId": "={{ $json.id }}",
+        "pipelineId": "b067d289-0963-4593-b7f4-307b967230f4",
+        "stageId": "49f75a84-3155-4f94-be95-9d94aa0012af",
+        "attendantId": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        2224
+      ],
+      "id": "1b7ad18a-968b-4627-818f-9404ac063659",
+      "name": "Criar um novo negócio1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $json.id }}",
+        "additionalFieldId": "731bd2fd-7cfa-49af-ab24-2e55e0374798",
+        "value": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        2224
+      ],
+      "id": "819e2a81-49df-4e81-99ed-93307ab2047b",
+      "name": "Definir valor de campo adicional8",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -976,
+        2224
+      ],
+      "id": "e54cb066-8872-4633-8853-de3848788348",
+      "name": "Wait9",
+      "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $('Criar um novo negócio1').item.json.id }}",
+        "additionalFieldId": "cccb3046-1906-4465-901d-329ef2fe08dc",
+        "value": "={{(() => {\n  const campos = $('Code2').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        2224
+      ],
+      "id": "e8698fd1-6500-45dd-b175-86a89f859226",
+      "name": "Definir valor de campo adicional9",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
         }
       }
     },
@@ -697,10 +1751,10 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id_lead": "={{ $json._embedded.leads[0].id }}",
-            "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
-            "Horario": "={{ $now }}\n",
-            "1_ativação": "Sim"
+            "rgm": "={{ $('Insert rows in a table9').item.json.RGM }}",
+            "Horario": "={{ $now }}",
+            "1_ativação": "Sim",
+            "id_lead_uuid": "={{ $('Criar um novo negócio1').item.json.id }}"
           },
           "matchingColumns": [
             "id"
@@ -719,11 +1773,12 @@
             {
               "id": "id_lead",
               "displayName": "id_lead",
-              "required": true,
+              "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "rgm",
@@ -754,6 +1809,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "id_lead_uuid",
+              "displayName": "id_lead_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -764,17 +1829,131 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -208,
-        272
+        -80,
+        2224
       ],
-      "id": "db05ae02-5fad-45e9-8b91-7466465492c3",
-      "name": "Insert rows in a table2",
+      "id": "b9ef1571-1237-4c11-9ed1-ec2ccf8eaf2d",
+      "name": "Insert rows in a table20",
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
           "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
         }
       }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contador_leads",
+          "mode": "list",
+          "cachedResultName": "contador_leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id_uuid": "={{ $json.id_lead_uuid }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "contador_id",
+              "displayName": "contador_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id_uuid",
+              "displayName": "lead_id_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        144,
+        2224
+      ],
+      "id": "14dec46a-9921-48a6-9f54-64ee3dbc7143",
+      "name": "Insert rows in a table21",
+      "credentials": {
+        "postgres": {
+          "id": "g8XvGl4ZXekfufXq",
+          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data[0].stage.pipeline.id }}",
+                    "rightValue": "7d1b30e3-b554-4225-8523-d2d21ffc7c35",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "49d07e2e-2d61-4a1d-9feb-39cb4ec7dd82"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "atendimento"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -1872,
+        1936
+      ],
+      "id": "70374089-d96d-4bb4-8092-446ea28d76e9",
+      "name": "Switch4"
     },
     {
       "parameters": {
@@ -792,10 +1971,10 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id_lead": "={{ $('atualiza1').item.json._embedded.leads[0].id }}",
-            "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
-            "Horario": "={{ $now }}\n",
-            "1_ativação": "Sim"
+            "rgm": "={{ $('Insert rows in a table9').item.json.RGM }}",
+            "Horario": "={{ $now }}",
+            "1_ativação": "Sim",
+            "id_lead_uuid": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}"
           },
           "matchingColumns": [
             "id"
@@ -814,11 +1993,12 @@
             {
               "id": "id_lead",
               "displayName": "id_lead",
-              "required": true,
+              "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "rgm",
@@ -849,6 +2029,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "id_lead_uuid",
+              "displayName": "id_lead_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -859,11 +2049,11 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -240,
-        80
+        -752,
+        1840
       ],
-      "id": "0c6da9e2-ce93-48e6-8c56-441aeefbdc00",
-      "name": "Insert rows in a table3",
+      "id": "b674f1b1-628d-4912-acd1-e9c05ec43913",
+      "name": "Insert rows in a table8",
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
@@ -887,7 +2077,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "lead_id": "={{ $('atualiza').item.json._embedded.leads[0].id }}"
+            "lead_id_uuid": "={{ $json.id_lead_uuid }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -904,11 +2094,22 @@
             {
               "id": "lead_id",
               "displayName": "lead_id",
-              "required": true,
+              "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "lead_id_uuid",
+              "displayName": "lead_id_uuid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -919,11 +2120,11 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -272,
-        -112
+        -528,
+        1840
       ],
-      "id": "f00c8fae-b512-4652-a98f-8feb8a7efb58",
-      "name": "Insert rows in a table4",
+      "id": "7f022137-49c7-4f32-adbf-a65b2c9693d9",
+      "name": "Insert rows in a table11",
       "credentials": {
         "postgres": {
           "id": "g8XvGl4ZXekfufXq",
@@ -933,149 +2134,286 @@
     },
     {
       "parameters": {
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "contador_leads",
-          "mode": "list",
-          "cachedResultName": "contador_leads"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "lead_id": "={{ $('atualiza1').item.json._embedded.leads[0].id }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "contador_id",
-              "displayName": "contador_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "lead_id",
-              "displayName": "lead_id",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $json.data[0].id }}",
+        "additionalFieldId": "731bd2fd-7cfa-49af-ab24-2e55e0374798",
+        "value": "={{ $('Code2').item.json.campos['Email Acadêmico'].values[0].value }}"
       },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
       "position": [
-        -32,
-        80
+        -1648,
+        1840
       ],
-      "id": "b9f550e5-180f-4856-b25c-7f469c3277ce",
-      "name": "Insert rows in a table5",
+      "id": "084161ac-9117-4867-83f8-d42230ac83ea",
+      "name": "Definir valor de campo adicional",
       "credentials": {
-        "postgres": {
-          "id": "g8XvGl4ZXekfufXq",
-          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1424,
+        1840
+      ],
+      "id": "45542c94-f19b-41f7-849c-95847b8a6db1",
+      "name": "Wait2",
+      "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+    },
+    {
+      "parameters": {
+        "resource": "additionalFields",
+        "operation": "setValue",
+        "scope": "deal",
+        "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+        "additionalFieldId": "cccb3046-1906-4465-901d-329ef2fe08dc",
+        "value": "={{(() => {\n  const campos = $('Code2').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        1840
+      ],
+      "id": "e78bcd99-c029-4bdf-88ee-383dc80b9d25",
+      "name": "Definir valor de campo adicional1",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
         }
       }
     },
     {
       "parameters": {
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "contador_leads",
-          "mode": "list",
-          "cachedResultName": "contador_leads"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "lead_id": "={{ $('Cria Lead').item.json._embedded.leads[0].id }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "contador_id",
-              "displayName": "contador_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "lead_id",
-              "displayName": "lead_id",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
+        "resource": "deals",
+        "operation": "update",
+        "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+        "leadId": "={{ $('Buscar todos os negócios1').item.json.data[0].leadId }}",
+        "pipelineId": "fae865c0-fa41-449b-95a9-22c0a73f633e",
+        "stageId": "d0c749df-d862-4c9f-b5b0-0ac2f06af7a2",
+        "additionalFields": {}
       },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
       "position": [
-        16,
-        272
+        -976,
+        1840
       ],
-      "id": "82ee8006-1514-45fb-b632-9d47753fc6af",
-      "name": "Insert rows in a table6",
+      "id": "faf47ed8-e63b-43b5-a6c7-4076650c233c",
+      "name": "Atualizar um negócio existente",
       "credentials": {
-        "postgres": {
-          "id": "g8XvGl4ZXekfufXq",
-          "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "leadId": "={{ $('Criar um novo lead1').item.json.id }}",
+        "name": "={{ $('Code2').item.json.campos.Nome.raw.values[0].value }}",
+        "email": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].raw.values[0].value }}",
+        "phone": "={{ $('Code2').item.json.campos['Telefone Comercial'].values[0].value }}",
+        "additionalFields": {
+          "tags": [
+            "dc34ff2a-154e-4e30-a3d8-169e4cf89c4c"
+          ]
+        }
+      },
+      "type": "n8n-nodes-datacrazy.dataCrazy",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        2224
+      ],
+      "id": "b60eaf63-6608-42d6-a034-bd61b0eaea9d",
+      "name": "Atualizar um lead existente",
+      "credentials": {
+        "dataCrazyCredentials": {
+          "id": "lAs1WsQHuKNQW4MS",
+          "name": "Credenciais DataCrazy account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -528,
+        2224
+      ],
+      "id": "764dfd47-e089-4bdd-8f4b-57e233fd0e46",
+      "name": "Wait10",
+      "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
     }
   ],
   "connections": {
-    "Cria contato": {
+    "Insert rows in a table3": {
       "main": [
         [
           {
-            "node": "Cria Lead",
+            "node": "Insert rows in a table5",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Switch": {
+    "Insert rows in a table2": {
       "main": [
         [
           {
-            "node": "If",
+            "node": "Insert rows in a table6",
             "type": "main",
             "index": 0
           }
-        ],
+        ]
+      ]
+    },
+    "Insert rows in a table1": {
+      "main": [
         [
           {
-            "node": "Merge1",
+            "node": "Insert rows in a table4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "search leads - acad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Cria contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "atualiza1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza1": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search leads - acad": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get lead info comercial": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "atualiza": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -1100,121 +2438,29 @@
         ]
       ]
     },
-    "atualiza": {
+    "Switch": {
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Webhook": {
+    "Cria contato": {
       "main": [
         [
           {
-            "node": "get lead info comercial",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get lead info comercial": {
-      "main": [
-        [
-          {
-            "node": "Code1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "search leads - acad": {
-      "main": [
-        [
-          {
-            "node": "Switch",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code1": {
-      "main": [
-        [
-          {
-            "node": "Insert rows in a table",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "atualiza1": {
-      "main": [
-        [
-          {
-            "node": "Create new notes",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "atualiza1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge1": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait": {
-      "main": [
-        [
-          {
-            "node": "Cria contato",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Insert rows in a table": {
-      "main": [
-        [
-          {
-            "node": "search leads - acad",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Insert rows in a table1",
+            "node": "Cria Lead",
             "type": "main",
             "index": 0
           }
@@ -1232,44 +2478,344 @@
         ]
       ]
     },
-    "Create new notes": {
+    "Switch3": {
       "main": [
         [
           {
-            "node": "Insert rows in a table3",
+            "node": "Buscar todos os negócios1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge5",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Insert rows in a table1": {
+    "get lead info comercial2": {
       "main": [
         [
           {
-            "node": "Insert rows in a table4",
+            "node": "Code2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Insert rows in a table3": {
+    "Code2": {
       "main": [
         [
           {
-            "node": "Insert rows in a table5",
+            "node": "Insert rows in a table9",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Insert rows in a table2": {
+    "Merge4": {
       "main": [
         [
           {
-            "node": "Insert rows in a table6",
+            "node": "Definir valor de campo adicional6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge5": {
+      "main": [
+        [
+          {
+            "node": "Wait6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait6": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table9": {
+      "main": [
+        [
+          {
+            "node": "Buscar todos os leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os leads1": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir valor de campo adicional6": {
+      "main": [
+        [
+          {
+            "node": "Wait7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait7": {
+      "main": [
+        [
+          {
+            "node": "Definir valor de campo adicional7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir valor de campo adicional7": {
+      "main": [
+        [
+          {
+            "node": "Wait8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait8": {
+      "main": [
+        [
+          {
+            "node": "Adicionar comentário ao lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table18": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table19",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adicionar comentário ao lead1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table18",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo lead1": {
+      "main": [
+        [
+          {
+            "node": "Criar um novo negócio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar um novo negócio1": {
+      "main": [
+        [
+          {
+            "node": "Definir valor de campo adicional8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir valor de campo adicional8": {
+      "main": [
+        [
+          {
+            "node": "Wait9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait9": {
+      "main": [
+        [
+          {
+            "node": "Definir valor de campo adicional9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir valor de campo adicional9": {
+      "main": [
+        [
+          {
+            "node": "Wait10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table20": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "get lead info comercial2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar todos os negócios1": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "Definir valor de campo adicional",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table8": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir valor de campo adicional": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Definir valor de campo adicional1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir valor de campo adicional1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um negócio existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um negócio existente": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar um lead existente": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait10": {
+      "main": [
+        [
+          {
+            "node": "Atualizar um lead existente",
             "type": "main",
             "index": 0
           }
@@ -1281,14 +2827,15 @@
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
     "errorWorkflow": "dCpCqA316QocWWea",
-    "timezone": "America/Sao_Paulo"
+    "timezone": "America/Sao_Paulo",
+    "availableInMCP": false
   },
   "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {
-    "Webhook": [
+    "Webhook2": [
       {
         "json": {
           "headers": {
@@ -1297,7 +2844,7 @@
             "content-length": "191",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "59da77d3-e4b3-44e7-9ad2-f84e7be8ee4d",
+            "x-amocrm-requestid": "b2d5549e-e09f-4050-bd7a-b0b16fb0a6e9",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
             "x-forwarded-port": "443",
@@ -1308,20 +2855,21 @@
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "19456471",
+            "leads[add][0][id]": "19665767",
             "leads[add][0][status_id]": "142",
             "leads[add][0][pipeline_id]": "5481944",
             "account[id]": "30214568",
             "account[subdomain]": "admamoeduitcombr"
           },
-          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/446aab4a-3a2e-42c5-b3d8-4593aed52382",
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/criacaoaluno",
           "executionMode": "production"
         }
       }
     ]
   },
-  "versionId": "2e2e4e2e-bda6-4753-bf79-10e903722ccb",
-  "triggerCount": 1,
+  "versionId": "1d3cf0ba-926a-4924-bc3b-78d5ac2922dc",
+  "activeVersionId": "1d3cf0ba-926a-4924-bc3b-78d5ac2922dc",
+  "triggerCount": 2,
   "shared": [
     {
       "updatedAt": "2025-07-25T20:00:54.797Z",
@@ -1331,6 +2879,2834 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-11T17:51:12.546Z",
+    "createdAt": "2025-12-11T17:51:12.546Z",
+    "versionId": "1d3cf0ba-926a-4924-bc3b-78d5ac2922dc",
+    "workflowId": "zi5SJlenVGiNj64Z",
+    "nodes": [
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id": "={{ $('Cria Lead').item.json._embedded.leads[0].id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1728,
+          16
+        ],
+        "id": "82ee8006-1514-45fb-b632-9d47753fc6af",
+        "name": "Insert rows in a table6",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id": "={{ $('atualiza1').item.json._embedded.leads[0].id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1680,
+          -176
+        ],
+        "id": "b9f550e5-180f-4856-b25c-7f469c3277ce",
+        "name": "Insert rows in a table5",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id": "={{ $('atualiza').item.json._embedded.leads[0].id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1440,
+          -368
+        ],
+        "id": "f00c8fae-b512-4652-a98f-8feb8a7efb58",
+        "name": "Insert rows in a table4",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "novos_matriculados_academico",
+            "mode": "list",
+            "cachedResultName": "novos_matriculados_academico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $('atualiza1').item.json._embedded.leads[0].id }}",
+              "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
+              "Horario": "={{ $now }}\n",
+              "1_ativação": "Sim"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "rgm",
+                "displayName": "rgm",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "1_ativação",
+                "displayName": "1_ativação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1472,
+          -176
+        ],
+        "id": "0c6da9e2-ce93-48e6-8c56-441aeefbdc00",
+        "name": "Insert rows in a table3",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "novos_matriculados_academico",
+            "mode": "list",
+            "cachedResultName": "novos_matriculados_academico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $json._embedded.leads[0].id }}",
+              "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
+              "Horario": "={{ $now }}\n",
+              "1_ativação": "Sim"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "rgm",
+                "displayName": "rgm",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "1_ativação",
+                "displayName": "1_ativação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1504,
+          16
+        ],
+        "id": "db05ae02-5fad-45e9-8b91-7466465492c3",
+        "name": "Insert rows in a table2",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "novos_matriculados_academico",
+            "mode": "list",
+            "cachedResultName": "novos_matriculados_academico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id_lead": "={{ $('atualiza').item.json._embedded.leads[0].id }}",
+              "rgm": "={{ $('Insert rows in a table').item.json.RGM }}",
+              "Horario": "={{ $now }}\n",
+              "1_ativação": "Sim"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "rgm",
+                "displayName": "rgm",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "1_ativação",
+                "displayName": "1_ativação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1232,
+          -368
+        ],
+        "id": "22cc71e7-c801-4f17-98f2-82fa996e01cb",
+        "name": "Insert rows in a table1",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://csvatendimento.kommo.com/api/v2/salesbot/run",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              },
+              {
+                "name": "authorization",
+                "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjM0MjljZmY4NmEwMmQ2NjAzMzg2ZDY1NTc5MDJjOWQ5NDMyM2M2MDRmZjg0Njg5ZjBkZDJmZjFhMWNhYzZhNThkNmFmN2IzNWQ3YmRkNzgwIn0.eyJhdWQiOiJkOWYzZjc1OC1kMzYzLTQ1NmUtOWFhMy1hZGY0ZGQ1NDljYTUiLCJqdGkiOiIzNDI5Y2ZmODZhMDJkNjYwMzM4NmQ2NTU3OTAyYzlkOTQzMjNjNjA0ZmY4NDY4OWYwZGQyZmYxYTFjYWM2YTU4ZDZhZjdiMzVkN2JkZDc4MCIsImlhdCI6MTc2MjIwMDgxOSwibmJmIjoxNzYyMjAwODE5LCJleHAiOjE3OTUyMTkyMDAsInN1YiI6IjgyNjE4MzciLCJncmFudF90eXBlIjoiIiwiYWNjb3VudF9pZCI6MzEzNzA1MTEsImJhc2VfZG9tYWluIjoia29tbW8uY29tIiwidmVyc2lvbiI6Miwic2NvcGVzIjpbImNybSIsImZpbGVzIiwiZmlsZXNfZGVsZXRlIiwibm90aWZpY2F0aW9ucyIsInB1c2hfbm90aWZpY2F0aW9ucyJdLCJoYXNoX3V1aWQiOiJmZGU2ODY0ZC05MGVhLTQzNjYtYmEzMS0xMDkwMTU5NjI2NjUiLCJ1c2VyX2ZsYWdzIjowLCJhcGlfZG9tYWluIjoiYXBpLWcua29tbW8uY29tIn0.d2ldrFRWry1SNQh-6nJDItCdqMFnwusUyoYQ9GMVoaRKMFm8F0Wsc9x4KF8pQR5x9wyQdVFdAiXglf6kAsQO3444Jmu1IfD6NQcX6xra4Me02CCeo5Itns6gtl3S1YB8Lpz9Wwx3VHbAKdfoXy5zXMeIaP1W2PusyftvQ6B04UwCgUuT4l76Qg_XfN38er14m9RRi40c3guUsP4mCPnrveLOLXNWoXy_H5FgUVoEt_2CDGUBN3-U9PzIt_R0ea4-pgcd0zWplp6fdIl4nK8k36ZW5srdd4a8YgqnFZQHGwaYz2hn_1IssP2gxuP8jcgzqxDajvOaI-hnn5Vvsx-c5w"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "=[\n  {\n    \"entity_type\": \"2\",\n    \"entity_id\": \"{{ $json._embedded.leads[0].id }}\",\n    \"bot_id\": 47105\n  }\n]\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1040,
+          -368
+        ],
+        "id": "cbc7929c-c78e-4890-9c76-4adb7b749a3f",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads_ganhos",
+            "mode": "list",
+            "cachedResultName": "leads_ganhos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "RGM": "={{ $json.campos.RGM.raw.values[0].value }}",
+              "id_lead": "={{ $json.id }}",
+              "id_responsavel": "={{ $('get lead info comercial').item.json._embedded.leads[0].responsible_user_id }}",
+              "curso": "={{ $json.campos.Curso.raw.values[0].value }}",
+              "data_matricula": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") + \"Z\" }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "curso",
+                "displayName": "curso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_responsavel",
+                "displayName": "id_responsavel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RGM",
+                "displayName": "RGM",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data_matricula",
+                "displayName": "data_matricula",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -80,
+          -176
+        ],
+        "id": "84aaab26-6b5e-4b2a-a2d8-5bc9d0a3f285",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          816,
+          16
+        ],
+        "id": "dc4e9eb1-c27c-41be-a46c-143819a09c5a",
+        "name": "Wait",
+        "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          592,
+          16
+        ],
+        "id": "b1cb489f-faa8-4cba-a0b7-56b9e39bd4c7",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          816,
+          -176
+        ],
+        "id": "d60863e6-1d47-49d9-a8e5-762dae956adb",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "resource": "notes",
+          "operation": "createNotes",
+          "notes": {
+            "common": [
+              {
+                "entity_id": "={{ $json._embedded.leads[0].id }}",
+                "text": "DADOS DE ACESSO GERADOS, ENVIAR AO ALUNO. "
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1264,
+          -176
+        ],
+        "id": "f3478b2e-c68a-4356-a4a6-042d8d06b5e4",
+        "name": "Create new notes",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json._embedded.leads[0].id }}",
+                "pipeline_id": 6961711,
+                "status_id": 0,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":1014523,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":1029777,\"type\":\"text\"}",
+                      "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          -176
+        ],
+        "id": "780d09a4-e1b5-488d-8e74-7e8a85cd5b30",
+        "name": "atualiza1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst output = [];\n\nfor (const lead of inputData) {\n  const campos = {};\n\n  if (lead.custom_fields_values) {\n    for (const field of lead.custom_fields_values) {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    }\n  }\n\n  // Campo \"Matrícula\" formatado (Unix → DD/MM/YYYY)\n  let matriculaFormatada = null;\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000);\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  output.push({\n    json: {\n      id: lead.id,\n      name: lead.name,\n      pipeline_id: lead.pipeline_id,\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? null,\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? null,\n      matriculaFormatada\n    }\n  });\n}\n\n// Retorna um array de itens, cada um separado (forma esperada pelo n8n)\nreturn output;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -304,
+          -176
+        ],
+        "id": "db9b9c17-93fe-403b-8b95-1a0b99634462",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $('Code1').item.json.campos[\"Telefone Comercial\"].values[0].value }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          },
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          144,
+          -176
+        ],
+        "id": "0b55f02b-c5cd-4d4f-85cc-3a9336ad16b4",
+        "name": "search leads - acad",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {},
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -528,
+          -176
+        ],
+        "id": "931ce390-ef20-4081-bfdc-6b430b209a4d",
+        "name": "get lead info comercial",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "446aab4a-3a2e-42c5-b3d8-4593aed52382",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -752,
+          -176
+        ],
+        "id": "11c071ad-8471-4055-ade6-429d144389e6",
+        "name": "Webhook",
+        "webhookId": "446aab4a-3a2e-42c5-b3d8-4593aed52382"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json._embedded.leads[0].id }}",
+                "pipeline_id": 6961711,
+                "status_id": 0,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":1014523,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":1029777,\"type\":\"text\"}",
+                      "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          816,
+          -368
+        ],
+        "id": "51053e34-ebd1-4a53-8d33-040b8f377946",
+        "name": "atualiza",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "06889e10-ecff-478a-8e0a-f1787943cde9",
+                "leftValue": "={{ $json._embedded.leads[0].pipeline_id }}",
+                "rightValue": 6961711,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          592,
+          -272
+        ],
+        "id": "bf671784-f9de-4402-a806-2477d646694d",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json._embedded.leads[0].id }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "number",
+                        "operation": "notEmpty",
+                        "singleValue": true
+                      },
+                      "id": "ddfe7e8e-f862-4b82-afdf-54ee403390b3"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "986baac2-90b6-48e4-ac4f-c54ebf200c06",
+                      "leftValue": "={{ $json.json }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "string",
+                        "operation": "exists",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          368,
+          -176
+        ],
+        "id": "6604cb59-56dd-42e2-8fd7-7e9aafc1427d",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $('Code1').item.json.id }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":288546,\"type\":\"multitext\"}",
+                      "value": "={{ $('Code1').item.json.campos['Telefone Comercial'].values[0].value }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          16
+        ],
+        "id": "6d4f39c1-dd0a-4e8b-9783-90320b6af306",
+        "name": "Cria contato",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Code1').item.json.name }}",
+                "pipeline_id": 6961711,
+                "status_id": 58205935,
+                "loss_reason_id": "=",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":330926,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos.CPF.raw.values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":330992,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos.Polo.raw.values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":330876,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos.RGM.raw.values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":1014523,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos['Email Acadêmico'].raw.values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":1029777,\"type\":\"text\"}",
+                      "value": "={{(() => {\n  const campos = $('Code1').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+                    },
+                    {
+                      "data": "{\"id\":330988,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos['Formação'].raw.values[0].value || ''}}"
+                    },
+                    {
+                      "data": "{\"id\":330990,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos.Modalidade_Curso2.raw.values[0].value || ''}}"
+                    },
+                    {
+                      "data": "{\"id\":331044,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos['Turma de Ingresso'].raw.values[0].value || ''}}"
+                    },
+                    {
+                      "data": "{\"id\":330938,\"type\":\"text\"}",
+                      "value": "={{ $('Code1').item.json.campos.Curso.raw.values[0].value }}"
+                    },
+                    {
+                      "data": "{\"id\":330930,\"type\":\"date\"}",
+                      "value": "={{ $('Code1').item.json.campos['Matrícula'].raw.values[0].value || ''}}"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}",
+                            "is_main": false
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1264,
+          16
+        ],
+        "id": "8523444c-2d14-4fdb-be3f-67d765cc8473",
+        "name": "Cria Lead",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "UJXbFUmZVweNcdbc",
+            "name": "Kommo Academico CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.count }}",
+                      "rightValue": 0,
+                      "operator": {
+                        "type": "number",
+                        "operation": "notEquals"
+                      },
+                      "id": "ddfe7e8e-f862-4b82-afdf-54ee403390b3"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "986baac2-90b6-48e4-ac4f-c54ebf200c06",
+                      "leftValue": "={{ $json.count }}",
+                      "rightValue": 0,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -2320,
+          2032
+        ],
+        "id": "a7ce4b8c-5444-421c-b60e-e17114cf0f10",
+        "name": "Switch3"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "criacaoaluno",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -3440,
+          2032
+        ],
+        "id": "19d4b0fb-998f-40b6-a5d0-0c4f3fe8ccd0",
+        "name": "Webhook2",
+        "webhookId": "446aab4a-3a2e-42c5-b3d8-4593aed52382"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body['leads[add][0][id]'] }}"
+          },
+          "options": {},
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -3216,
+          2032
+        ],
+        "id": "3515ef4b-f5f0-48b2-99e9-6cf09d6783d2",
+        "name": "get lead info comercial2",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const inputData = items[0].json._embedded.leads;\n\nconst output = [];\n\nfor (const lead of inputData) {\n  const campos = {};\n\n  if (lead.custom_fields_values) {\n    for (const field of lead.custom_fields_values) {\n      campos[field.field_name] = {\n        field_id: field.field_id,\n        field_type: field.field_type,\n        values: field.values ?? [],\n        raw: field\n      };\n    }\n  }\n\n  // Campo \"Matrícula\" formatado (Unix → DD/MM/YYYY)\n  let matriculaFormatada = null;\n  const matriculaRaw = campos[\"Matrícula\"]?.raw?.values?.[0]?.value;\n\n  if (matriculaRaw && !isNaN(matriculaRaw)) {\n    const timestamp = Number(matriculaRaw);\n    const date = new Date(timestamp * 1000);\n    const brasiliaDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);\n\n    const pad = n => n.toString().padStart(2, '0');\n    matriculaFormatada = `${pad(brasiliaDate.getDate())}/${pad(brasiliaDate.getMonth() + 1)}/${brasiliaDate.getFullYear()}`;\n  }\n\n  output.push({\n    json: {\n      id: lead.id,\n      name: lead.name,\n      pipeline_id: lead.pipeline_id,\n      campos,\n      telefone: campos[\"Telefone Comercial\"]?.values?.[0]?.value ?? null,\n      email: campos[\"E-mail\"]?.values?.[0]?.value ?? null,\n      matriculaFormatada\n    }\n  });\n}\n\n// Retorna um array de itens, cada um separado (forma esperada pelo n8n)\nreturn output;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2992,
+          2032
+        ],
+        "id": "a5849982-cba7-46fa-9a79-1b1b6797991c",
+        "name": "Code2"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          -1648,
+          2032
+        ],
+        "id": "011f755d-df3e-4714-a97a-2139402028a3",
+        "name": "Merge4"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          -2096,
+          2224
+        ],
+        "id": "70d64295-9501-4538-850b-3b8a52d776c4",
+        "name": "Merge5"
+      },
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1872,
+          2224
+        ],
+        "id": "c804155c-4adb-4709-a4b6-4732ebe2a3e2",
+        "name": "Wait6",
+        "webhookId": "d4f202da-e843-48b5-b1f7-6a4a24f3689c"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads_ganhos",
+            "mode": "list",
+            "cachedResultName": "leads_ganhos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "RGM": "={{ $json.campos.RGM.raw.values[0].value }}",
+              "id_lead": "={{ $json.id }}",
+              "id_responsavel": "={{ $('get lead info comercial2').item.json._embedded.leads[0].responsible_user_id }}",
+              "curso": "={{ $json.campos.Curso.raw.values[0].value }}",
+              "data_matricula": "={{ new Date().toLocaleString(\"sv-SE\", { timeZone: \"America/Sao_Paulo\" }).replace(\" \", \"T\") + \"Z\" }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "curso",
+                "displayName": "curso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id_responsavel",
+                "displayName": "id_responsavel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RGM",
+                "displayName": "RGM",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "data_matricula",
+                "displayName": "data_matricula",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -2768,
+          2032
+        ],
+        "id": "cf2eb690-01c6-477f-9dcd-3bb46b09ab98",
+        "name": "Insert rows in a table9",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {
+            "search": "={{ $('Code2').item.json.campos['Telefone Comercial'].values[0].value }}",
+            "filters": []
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -2544,
+          2032
+        ],
+        "id": "f1db403c-5115-49f1-bc1b-8cad7b8c4922",
+        "name": "Buscar todos os leads1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "options": {
+            "search": "={{ $('Code2').item.json.campos['Telefone Comercial'].raw.values[0].value }}"
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -2096,
+          1936
+        ],
+        "id": "947f8174-c3bd-4be0-8de0-0ac868bab8b0",
+        "name": "Buscar todos os negócios1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $json.data[0].id }}",
+          "additionalFieldId": "731bd2fd-7cfa-49af-ab24-2e55e0374798",
+          "value": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -1424,
+          2032
+        ],
+        "id": "0a999f35-06c4-45a1-9698-cf941171c22b",
+        "name": "Definir valor de campo adicional6",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1200,
+          2032
+        ],
+        "id": "a943cc3e-32ec-4de3-bf5e-64f9b30dbaef",
+        "name": "Wait7",
+        "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+          "additionalFieldId": "cccb3046-1906-4465-901d-329ef2fe08dc",
+          "value": "={{(() => {\n  const campos = $('Code2').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -976,
+          2032
+        ],
+        "id": "669145b8-3b6d-4845-a194-3cf27d235fdb",
+        "name": "Definir valor de campo adicional7",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -752,
+          2032
+        ],
+        "id": "42306ccb-7a95-4274-84f4-a76ae1167766",
+        "name": "Wait8",
+        "webhookId": "30e54746-7872-4171-8b8e-5e58d2ba9b98"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "novos_matriculados_academico",
+            "mode": "list",
+            "cachedResultName": "novos_matriculados_academico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "rgm": "={{ $('Insert rows in a table9').item.json.RGM }}",
+              "Horario": "={{ $now }}\n",
+              "1_ativação": "Sim",
+              "id_lead_uuid": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "rgm",
+                "displayName": "rgm",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "1_ativação",
+                "displayName": "1_ativação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id_lead_uuid",
+                "displayName": "id_lead_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -304,
+          2032
+        ],
+        "id": "088c59db-c6e7-44a7-96f5-867220303cab",
+        "name": "Insert rows in a table18",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id_uuid": "={{ $json.id_lead_uuid }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id_uuid",
+                "displayName": "lead_id_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -80,
+          2032
+        ],
+        "id": "3910c747-23e9-4527-a026-0afccdba8e4c",
+        "name": "Insert rows in a table19",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "annotations",
+          "operation": "create",
+          "leadId": "={{ $('Buscar todos os negócios1').item.json.data[0].leadId }}",
+          "note": "DADOS DE ACESSO GERADOS, ENVIAR AO ALUNO. "
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -528,
+          2032
+        ],
+        "id": "59bce012-f762-413c-8aaa-4983a49e27ed",
+        "name": "Adicionar comentário ao lead1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "name": "={{ $('Code2').item.json.campos.Nome.raw.values[0].value }}",
+          "email": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].raw.values[0].value }}",
+          "phone": "={{ $('Code2').item.json.campos['Telefone Comercial'].values[0].value }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -1648,
+          2224
+        ],
+        "id": "ef86de56-4719-45ee-9fab-6987b15e12b6",
+        "name": "Criar um novo lead1",
+        "alwaysOutputData": true,
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "create",
+          "leadId": "={{ $json.id }}",
+          "pipelineId": "b067d289-0963-4593-b7f4-307b967230f4",
+          "stageId": "49f75a84-3155-4f94-be95-9d94aa0012af",
+          "attendantId": "=",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -1424,
+          2224
+        ],
+        "id": "1b7ad18a-968b-4627-818f-9404ac063659",
+        "name": "Criar um novo negócio1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $json.id }}",
+          "additionalFieldId": "731bd2fd-7cfa-49af-ab24-2e55e0374798",
+          "value": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].values[0].value }}"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -1200,
+          2224
+        ],
+        "id": "819e2a81-49df-4e81-99ed-93307ab2047b",
+        "name": "Definir valor de campo adicional8",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -976,
+          2224
+        ],
+        "id": "e54cb066-8872-4633-8853-de3848788348",
+        "name": "Wait9",
+        "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $('Criar um novo negócio1').item.json.id }}",
+          "additionalFieldId": "cccb3046-1906-4465-901d-329ef2fe08dc",
+          "value": "={{(() => {\n  const campos = $('Code2').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -752,
+          2224
+        ],
+        "id": "e8698fd1-6500-45dd-b175-86a89f859226",
+        "name": "Definir valor de campo adicional9",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "novos_matriculados_academico",
+            "mode": "list",
+            "cachedResultName": "novos_matriculados_academico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "rgm": "={{ $('Insert rows in a table9').item.json.RGM }}",
+              "Horario": "={{ $now }}",
+              "1_ativação": "Sim",
+              "id_lead_uuid": "={{ $('Criar um novo negócio1').item.json.id }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "rgm",
+                "displayName": "rgm",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "1_ativação",
+                "displayName": "1_ativação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id_lead_uuid",
+                "displayName": "id_lead_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -80,
+          2224
+        ],
+        "id": "b9ef1571-1237-4c11-9ed1-ec2ccf8eaf2d",
+        "name": "Insert rows in a table20",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id_uuid": "={{ $json.id_lead_uuid }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id_uuid",
+                "displayName": "lead_id_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          144,
+          2224
+        ],
+        "id": "14dec46a-9921-48a6-9f54-64ee3dbc7143",
+        "name": "Insert rows in a table21",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.data[0].stage.pipeline.id }}",
+                      "rightValue": "7d1b30e3-b554-4225-8523-d2d21ffc7c35",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "49d07e2e-2d61-4a1d-9feb-39cb4ec7dd82"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "atendimento"
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -1872,
+          1936
+        ],
+        "id": "70374089-d96d-4bb4-8092-446ea28d76e9",
+        "name": "Switch4"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "novos_matriculados_academico",
+            "mode": "list",
+            "cachedResultName": "novos_matriculados_academico"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "rgm": "={{ $('Insert rows in a table9').item.json.RGM }}",
+              "Horario": "={{ $now }}",
+              "1_ativação": "Sim",
+              "id_lead_uuid": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id_lead",
+                "displayName": "id_lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "rgm",
+                "displayName": "rgm",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "1_ativação",
+                "displayName": "1_ativação",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id_lead_uuid",
+                "displayName": "id_lead_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -752,
+          1840
+        ],
+        "id": "b674f1b1-628d-4912-acd1-e9c05ec43913",
+        "name": "Insert rows in a table8",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contador_leads",
+            "mode": "list",
+            "cachedResultName": "contador_leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "lead_id_uuid": "={{ $json.id_lead_uuid }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "contador_id",
+                "displayName": "contador_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id",
+                "displayName": "lead_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "lead_id_uuid",
+                "displayName": "lead_id_uuid",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -528,
+          1840
+        ],
+        "id": "7f022137-49c7-4f32-adbf-a65b2c9693d9",
+        "name": "Insert rows in a table11",
+        "credentials": {
+          "postgres": {
+            "id": "g8XvGl4ZXekfufXq",
+            "name": "POSTGRES - AGENTE COMERCIAL CRUZEIRO"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $json.data[0].id }}",
+          "additionalFieldId": "731bd2fd-7cfa-49af-ab24-2e55e0374798",
+          "value": "={{ $('Code2').item.json.campos['Email Acadêmico'].values[0].value }}"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -1648,
+          1840
+        ],
+        "id": "084161ac-9117-4867-83f8-d42230ac83ea",
+        "name": "Definir valor de campo adicional",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1424,
+          1840
+        ],
+        "id": "45542c94-f19b-41f7-849c-95847b8a6db1",
+        "name": "Wait2",
+        "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+      },
+      {
+        "parameters": {
+          "resource": "additionalFields",
+          "operation": "setValue",
+          "scope": "deal",
+          "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+          "additionalFieldId": "cccb3046-1906-4465-901d-329ef2fe08dc",
+          "value": "={{(() => {\n  const campos = $('Code2').item.json.campos;\n\n  const nome = campos.Nome?.values?.[0]?.value || '';\n  const rgm = campos.RGM?.values?.[0]?.value || '';\n  const cpf = campos.CPF?.values?.[0]?.value || '';\n\n  const nomeFormatado = nome.charAt(0).toUpperCase() + nome.slice(1, 3).toLowerCase();\n  const rgmParte = rgm.slice(0, 3);\n  const cpfParte = cpf.slice(0, 4);\n\n  return `${nomeFormatado}@${rgmParte}${cpfParte}`;\n})()}}\n"
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -1200,
+          1840
+        ],
+        "id": "e78bcd99-c029-4bdf-88ee-383dc80b9d25",
+        "name": "Definir valor de campo adicional1",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "deals",
+          "operation": "update",
+          "dealId": "={{ $('Buscar todos os negócios1').item.json.data[0].id }}",
+          "leadId": "={{ $('Buscar todos os negócios1').item.json.data[0].leadId }}",
+          "pipelineId": "fae865c0-fa41-449b-95a9-22c0a73f633e",
+          "stageId": "d0c749df-d862-4c9f-b5b0-0ac2f06af7a2",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -976,
+          1840
+        ],
+        "id": "faf47ed8-e63b-43b5-a6c7-4076650c233c",
+        "name": "Atualizar um negócio existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "leadId": "={{ $('Criar um novo lead1').item.json.id }}",
+          "name": "={{ $('Code2').item.json.campos.Nome.raw.values[0].value }}",
+          "email": "={{ $('Code2').item.json.campos[\"Email Acadêmico\"].raw.values[0].value }}",
+          "phone": "={{ $('Code2').item.json.campos['Telefone Comercial'].values[0].value }}",
+          "additionalFields": {
+            "tags": [
+              "dc34ff2a-154e-4e30-a3d8-169e4cf89c4c"
+            ]
+          }
+        },
+        "type": "n8n-nodes-datacrazy.dataCrazy",
+        "typeVersion": 1,
+        "position": [
+          -304,
+          2224
+        ],
+        "id": "b60eaf63-6608-42d6-a034-bd61b0eaea9d",
+        "name": "Atualizar um lead existente",
+        "credentials": {
+          "dataCrazyCredentials": {
+            "id": "lAs1WsQHuKNQW4MS",
+            "name": "Credenciais DataCrazy account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -528,
+          2224
+        ],
+        "id": "764dfd47-e089-4bdd-8f4b-57e233fd0e46",
+        "name": "Wait10",
+        "webhookId": "7472d844-8f30-4894-9a70-2f13b1b63a4d"
+      }
+    ],
+    "connections": {
+      "Insert rows in a table3": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table2": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table": {
+        "main": [
+          [
+            {
+              "node": "search leads - acad",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Cria contato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "atualiza1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new notes": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "atualiza1": {
+        "main": [
+          [
+            {
+              "node": "Create new notes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "search leads - acad": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get lead info comercial": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          []
+        ]
+      },
+      "atualiza": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "atualiza",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cria contato": {
+        "main": [
+          [
+            {
+              "node": "Cria Lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cria Lead": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch3": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os negócios1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get lead info comercial2": {
+        "main": [
+          [
+            {
+              "node": "Code2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code2": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge4": {
+        "main": [
+          [
+            {
+              "node": "Definir valor de campo adicional6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge5": {
+        "main": [
+          [
+            {
+              "node": "Wait6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait6": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo lead1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table9": {
+        "main": [
+          [
+            {
+              "node": "Buscar todos os leads1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os leads1": {
+        "main": [
+          [
+            {
+              "node": "Switch3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Definir valor de campo adicional6": {
+        "main": [
+          [
+            {
+              "node": "Wait7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait7": {
+        "main": [
+          [
+            {
+              "node": "Definir valor de campo adicional7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Definir valor de campo adicional7": {
+        "main": [
+          [
+            {
+              "node": "Wait8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait8": {
+        "main": [
+          [
+            {
+              "node": "Adicionar comentário ao lead1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table18": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table19",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Adicionar comentário ao lead1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table18",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo lead1": {
+        "main": [
+          [
+            {
+              "node": "Criar um novo negócio1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Criar um novo negócio1": {
+        "main": [
+          [
+            {
+              "node": "Definir valor de campo adicional8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Definir valor de campo adicional8": {
+        "main": [
+          [
+            {
+              "node": "Wait9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait9": {
+        "main": [
+          [
+            {
+              "node": "Definir valor de campo adicional9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Definir valor de campo adicional9": {
+        "main": [
+          [
+            {
+              "node": "Wait10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table20": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table21",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook2": {
+        "main": [
+          [
+            {
+              "node": "get lead info comercial2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar todos os negócios1": {
+        "main": [
+          [
+            {
+              "node": "Switch4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch4": {
+        "main": [
+          [
+            {
+              "node": "Definir valor de campo adicional",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert rows in a table8": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Definir valor de campo adicional": {
+        "main": [
+          [
+            {
+              "node": "Wait2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait2": {
+        "main": [
+          [
+            {
+              "node": "Definir valor de campo adicional1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Definir valor de campo adicional1": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um negócio existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um negócio existente": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Atualizar um lead existente": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table20",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait10": {
+        "main": [
+          [
+            {
+              "node": "Atualizar um lead existente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": [
     {
       "updatedAt": "2025-07-25T20:00:36.295Z",
