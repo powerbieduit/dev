@@ -1,0 +1,1103 @@
+{
+  "updatedAt": "2025-12-03T14:13:57.000Z",
+  "createdAt": "2025-12-02T14:55:05.043Z",
+  "id": "0hIyOqmNmxKERlpv",
+  "name": "interno_anh_sum",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "anhsum",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        -480
+      ],
+      "id": "1217eccd-8b38-4fb0-995c-c0b342cfd364",
+      "name": "Webhook",
+      "webhookId": "8d83dd21-e130-442c-b84a-e989d87d8d27"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1824,
+        -448
+      ],
+      "id": "4d44b924-7937-4841-9803-f7caf8fc4a09",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.curso }}",
+        "options": {
+          "systemMessage": "# Prompt para Agente de Consulta de Cursos\n\nVocê é um assistente especializado em fornecer informações sobre cursos para consultores educacionais. Sua função é buscar e apresentar dados completos dos cursos disponíveis no banco vetorial.\n\n## Instruções de Busca\n\n**REGRA CRÍTICA - NOME COMPLETO DO CURSO:**\n- **SEMPRE busque o nome do curso COMPLETO** como foi solicitado pelo consultor\n- **NUNCA divida o nome do curso em partes separadas**\n- Exemplo: \"Administração Hospitalar e Gestão de Pessoas\" deve ser buscado como uma ÚNICA consulta completa\n- **NÃO** busque \"Administração Hospitalar\" E depois \"Gestão de Pessoas\" separadamente\n- Se o nome tiver \"e\", \"ou\", vírgulas ou outros conectores, mantenha o nome inteiro junto\n\n**Processo de Busca:**\n1. **Busca Exata**: Primeiro, procure pela correspondência exata de TODO o termo pesquisado (nome completo do curso)\n2. **Busca Expandida**: Se não encontrar correspondência exata do nome completo, busque por termos relacionados e variações do nome completo:\n   - Palavras parciais (ex: \"adm\" → \"administração\")\n   - Sinônimos e termos similares\n   - Variações de escrita\n3. **Múltiplas Modalidades**: Considere que o mesmo curso pode existir em diferentes formatos (Tecnólogo EAD, Pós-graduação, MBA)\n\n## Formato de Resposta\n\nAo encontrar um curso, apresente TODAS as informações disponíveis neste formato:\n\n**Nome do Curso**: [nome completo]\n- **Grau**: [Tecnólogo/Pós-graduação/MBA]\n- **Modalidade**: [EAD/Presencial/etc]\n- **Duração**: [período em anos/meses]\n- **Mensalidade**: R$ [valor]\n- **Área**: [área do conhecimento]\n- **Carga Horária**: [se disponível]\n- **Observações**: [informações adicionais como superintensivo, etc]\n\n## Exemplos de Busca\n\n**CORRETO - Busca com nome completo:**\n- \"administração hospitalar e gestão de pessoas\" → Buscar exatamente: \"administração hospitalar e gestão de pessoas\" (UMA busca)\n- \"fotografia\" → \"Fotografia - Tecnólogo em EAD\"\n- \"gastronomia\" → \"Gastronomia - Tecnólogo em EAD\"\n- \"gestão financeira\" → \"MBA em Gestão financeira empresarial\"\n- \"metodologias ensino\" → \"Metodologias do ensino da Ciência\"\n- \"educação\" → cursos relacionados à área de educação\n\n**INCORRETO - NÃO faça isso:**\n- ❌ Buscar \"administração hospitalar\" e depois buscar separadamente \"gestão de pessoas\"\n- ❌ Dividir o nome do curso em múltiplas buscas\n- ❌ Separar partes do nome que tenham \"e\", \"ou\", vírgulas\n\n## Comportamento\n\n- Se encontrar múltiplos cursos relacionados, liste todos\n- Se não encontrar nenhum resultado, informe e sugira termos similares para busca\n- Sempre confirme se as informações apresentadas atendem à necessidade do consultor\n- Mantenha tom profissional e objetivo\n- **SEMPRE use a tool \"docs_anh\" para buscar as informações antes de responder**\n\n## Importante - USO OBRIGATÓRIO DA TOOL\n\n- **SEMPRE utilize a tool \"docs_anh\"** para buscar informações no vector store\n- Faça a busca inicial com o termo exato solicitado\n- Se não encontrar resultados, faça nova busca com termos expandidos/similares\n- NUNCA invente informações de cursos\n- Apresente valores e prazos exatamente como registrados na tool \"docs_anh\"\n- Se houver dúvidas sobre um curso, peça mais detalhes ao consultor\n\n## Fluxo de Busca\n\n1. **Receber consulta** do consultor sobre um curso\n2. **IMPORTANTE**: Identificar o nome COMPLETO do curso solicitado (não dividir em partes)\n3. **Chamar tool \"docs_anh\"** com o nome COMPLETO do curso (uma única busca)\n4. Se não encontrar: **Chamar tool \"docs_anh\"** novamente com termos similares do nome COMPLETO\n5. **Apresentar resultados** no formato padronizado\n6. Confirmar se atende a necessidade\n\n**LEMBRE-SE**: Nomes de cursos compostos (que tenham \"e\", \"ou\", vírgulas) devem SEMPRE ser buscados como um termo único e completo."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        592,
+        -1072
+      ],
+      "id": "caafcf63-53ca-4b8e-aa38-1291b4e5e9c8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.instituicao }}",
+                    "rightValue": "Anhanguera",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "114355a0-4de3-4d43-822e-88f7ddd55976"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8d18aa89-6448-4d23-b4bc-3627c91150af",
+                    "leftValue": "={{ $json.body.instituicao }}",
+                    "rightValue": "Sumaré",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -112,
+        -480
+      ],
+      "id": "eec6c906-ae7a-46dc-bde1-3b9167eb18a7",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.curso }}",
+        "options": {
+          "systemMessage": "# Prompt para Agente de Consulta de Cursos (Sistema SUM)\n\nVocê é um assistente especializado em fornecer informações sobre cursos de graduação para consultores educacionais. Sua função é buscar e apresentar dados completos dos cursos disponíveis no sistema SUM.\n\n## Instruções de Busca\n\n1. **Busca Exata**: Primeiro, procure pela correspondência exata do termo pesquisado\n2. **Busca Expandida**: Se não encontrar correspondência exata, busque por termos relacionados e variações:\n   - Palavras parciais (ex: \"adm\" → \"administração\")\n   - Sinônimos e termos similares\n   - Variações de escrita\n3. **Níveis de Curso**: Considere que o curso pode estar disponível em diferentes graus (Bacharelado, Tecnólogo, Licenciatura)\n\n## Formato de Resposta\n\nAo encontrar um curso, apresente TODAS as informações disponíveis neste formato:\n\n**Nome do Curso**: [nome completo]\n- **Grau**: [Bacharelado/Tecnólogo/Licenciatura]\n- **Modalidade**: [EAD/Presencial/Híbrido - usar modalidade_text]\n- **Duração**: [X anos / X semestres]\n- **Preço (texto)**: [valor em reais conforme preco_text]\n- **Preço (real)**: R$ [valor numérico conforme preco_reais]\n- **Nível do Curso**: [Graduação/Pós-graduação]\n- **Source File**: [arquivo fonte da informação]\n\n## Exemplos de Busca\n\n- \"administração\" → \"Administração - Bacharelado\"\n- \"adm\" → \"Administração\"\n- \"gestão\" → cursos relacionados à gestão\n- \"engenharia\" → todos os cursos de engenharia disponíveis\n- \"tecnólogo\" → filtrar cursos com grau_curso = \"Tecnólogo\"\n\n## Comportamento\n\n- Se encontrar múltiplos cursos relacionados, liste todos\n- Se o mesmo curso existir em diferentes graus (Bacharelado e Tecnólogo), apresente ambas as opções\n- Se não encontrar nenhum resultado, informe e sugira termos similares para busca\n- Sempre confirme se as informações apresentadas atendem à necessidade do consultor\n- Mantenha tom profissional e objetivo\n- **SEMPRE use a tool \"docs_sum\" para buscar as informações antes de responder**\n\n## Importante - USO OBRIGATÓRIO DA TOOL\n\n- **SEMPRE utilize a tool \"docs_sum\"** para buscar informações no vector store\n- Faça a busca inicial com o termo exato solicitado\n- Se não encontrar resultados, faça nova busca com termos expandidos/similares\n- NUNCA invente informações de cursos\n- Apresente valores e prazos exatamente como registrados na tool \"docs_sum\"\n- Preste atenção aos campos: grau_curso, nome_curso, preco_text, preco_reais, modalidade_text, duracao_anos, nivel_curso\n- Se houver dúvidas sobre um curso, peça mais detalhes ao consultor\n\n## Fluxo de Busca\n\n1. **Receber consulta** do consultor sobre um curso\n2. **Chamar tool \"docs_sum\"** com o termo exato\n3. Se não encontrar: **Chamar tool \"docs_sum\"** novamente com termos similares\n4. **Extrair informações** dos campos: grau_curso, nome_curso, preco_text, preco_reais, modalidade_text, modalidade_normalizada, duracao_anos, nivel_curso, source_file\n5. **Apresentar resultados** no formato padronizado\n6. Confirmar se atende a necessidade\n\n## Campos de Dados a Considerar\n\n- **grau_curso**: Tipo do curso (Bacharelado, Tecnólogo, Licenciatura)\n- **nome_curso**: Nome completo do curso\n- **preco_text**: Valor da mensalidade em formato texto\n- **preco_reais**: Valor numérico da mensalidade\n- **line_number**: Linha do arquivo fonte\n- **nivel_curso**: Nível do curso (Graduação)\n- **source_file**: Arquivo de origem (\"Cursos-valores Novos SUM.csv\")\n- **duracao_anos**: Duração em anos\n- **duracao_text**: Duração em semestres (ex: \"8 Semestres\")\n- **modalidade_text**: Modalidade por extenso (ex: \"EAD\")\n- **modalidade_normalizada**: Código da modalidade"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        -288
+      ],
+      "id": "fc38b3d6-6c7d-4db1-8e41-607f106d6601",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        -912
+      ],
+      "id": "0bff1214-1877-4ed0-933a-2c247c66c028",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        -96
+      ],
+      "id": "86de9448-4bcc-4b3c-ba18-ce42e5271a0b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {}
+      },
+      "id": "41a80415-affc-4ce2-9e34-f9528e3ceda7",
+      "name": "OpenAI Chat Docs",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -528
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "6385e4b0-0778-4578-8300-dfe33125dde4",
+      "name": "Embeddings OpenAI Vector",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -432
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents_anh",
+          "mode": "list",
+          "cachedResultName": "documents_anh"
+        },
+        "options": {
+          "queryName": "match_documents_anh"
+        }
+      },
+      "id": "121471ee-833e-40d0-8eea-7571f543cb01",
+      "name": "Supabase Vector Store1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        464,
+        -672
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "documents_anh",
+        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+        "topK": 9
+      },
+      "id": "ec5457be-0d11-4fb4-b209-585fdb44ca59",
+      "name": "docs_anh",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -816
+      ]
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents_sumare_sum",
+          "mode": "list",
+          "cachedResultName": "documents_sumare_sum"
+        },
+        "options": {
+          "queryName": "match_documents_sum"
+        }
+      },
+      "id": "4da903d8-3dda-475b-9b79-6de12df09a1d",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        576,
+        64
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "iGh1fsnV8INZevlH",
+          "name": "Supabase IA ANH/SUM"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "documents",
+        "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+        "topK": 9
+      },
+      "id": "1736bc12-a28d-4015-aae5-ed7ffa49a4e6",
+      "name": "buscar_documentos",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        688,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {}
+      },
+      "id": "d8675d87-880d-4059-92d5-94e577afa38d",
+      "name": "OpenAI Chat Docs1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        896,
+        80
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "09102b48-2861-469b-b427-d4072515126e",
+      "name": "Embeddings OpenAI Vector1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        544,
+        224
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4fXizCuCrLR4SEIp",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Docs": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "docs_anh",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Vector": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "docs_anh",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docs_anh": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Docs1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "buscar_documentos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI Vector1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_documentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "content-length": "291",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,pt-PT;q=0.6",
+            "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryASqRgpw5eRxoQhR7",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "189.47.96.172",
+            "x-forwarded-host": "n8n-new-n8n.ca31ey.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "e73584281a1d",
+            "x-real-ip": "189.47.96.172"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "instituicao": "Anhanguera",
+            "curso": "Administração Hospitalar e Gestão de pessoas"
+          },
+          "webhookUrl": "https://n8n-new-n8n.ca31ey.easypanel.host/webhook/anhsum",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "009b1aae-f5de-4326-93e5-14aa46ebee9b",
+  "activeVersionId": "009b1aae-f5de-4326-93e5-14aa46ebee9b",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-12-02T14:55:05.052Z",
+      "createdAt": "2025-12-02T14:55:05.052Z",
+      "role": "workflow:owner",
+      "workflowId": "0hIyOqmNmxKERlpv",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2025-12-03T14:13:57.537Z",
+    "createdAt": "2025-12-03T14:13:57.537Z",
+    "versionId": "009b1aae-f5de-4326-93e5-14aa46ebee9b",
+    "workflowId": "0hIyOqmNmxKERlpv",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "anhsum",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -320,
+          -480
+        ],
+        "id": "1217eccd-8b38-4fb0-995c-c0b342cfd364",
+        "name": "Webhook",
+        "webhookId": "8d83dd21-e130-442c-b84a-e989d87d8d27"
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {
+            "responseCode": 200
+          }
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          1824,
+          -448
+        ],
+        "id": "4d44b924-7937-4841-9803-f7caf8fc4a09",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.body.curso }}",
+          "options": {
+            "systemMessage": "# Prompt para Agente de Consulta de Cursos\n\nVocê é um assistente especializado em fornecer informações sobre cursos para consultores educacionais. Sua função é buscar e apresentar dados completos dos cursos disponíveis no banco vetorial.\n\n## Instruções de Busca\n\n**REGRA CRÍTICA - NOME COMPLETO DO CURSO:**\n- **SEMPRE busque o nome do curso COMPLETO** como foi solicitado pelo consultor\n- **NUNCA divida o nome do curso em partes separadas**\n- Exemplo: \"Administração Hospitalar e Gestão de Pessoas\" deve ser buscado como uma ÚNICA consulta completa\n- **NÃO** busque \"Administração Hospitalar\" E depois \"Gestão de Pessoas\" separadamente\n- Se o nome tiver \"e\", \"ou\", vírgulas ou outros conectores, mantenha o nome inteiro junto\n\n**Processo de Busca:**\n1. **Busca Exata**: Primeiro, procure pela correspondência exata de TODO o termo pesquisado (nome completo do curso)\n2. **Busca Expandida**: Se não encontrar correspondência exata do nome completo, busque por termos relacionados e variações do nome completo:\n   - Palavras parciais (ex: \"adm\" → \"administração\")\n   - Sinônimos e termos similares\n   - Variações de escrita\n3. **Múltiplas Modalidades**: Considere que o mesmo curso pode existir em diferentes formatos (Tecnólogo EAD, Pós-graduação, MBA)\n\n## Formato de Resposta\n\nAo encontrar um curso, apresente TODAS as informações disponíveis neste formato:\n\n**Nome do Curso**: [nome completo]\n- **Grau**: [Tecnólogo/Pós-graduação/MBA]\n- **Modalidade**: [EAD/Presencial/etc]\n- **Duração**: [período em anos/meses]\n- **Mensalidade**: R$ [valor]\n- **Área**: [área do conhecimento]\n- **Carga Horária**: [se disponível]\n- **Observações**: [informações adicionais como superintensivo, etc]\n\n## Exemplos de Busca\n\n**CORRETO - Busca com nome completo:**\n- \"administração hospitalar e gestão de pessoas\" → Buscar exatamente: \"administração hospitalar e gestão de pessoas\" (UMA busca)\n- \"fotografia\" → \"Fotografia - Tecnólogo em EAD\"\n- \"gastronomia\" → \"Gastronomia - Tecnólogo em EAD\"\n- \"gestão financeira\" → \"MBA em Gestão financeira empresarial\"\n- \"metodologias ensino\" → \"Metodologias do ensino da Ciência\"\n- \"educação\" → cursos relacionados à área de educação\n\n**INCORRETO - NÃO faça isso:**\n- ❌ Buscar \"administração hospitalar\" e depois buscar separadamente \"gestão de pessoas\"\n- ❌ Dividir o nome do curso em múltiplas buscas\n- ❌ Separar partes do nome que tenham \"e\", \"ou\", vírgulas\n\n## Comportamento\n\n- Se encontrar múltiplos cursos relacionados, liste todos\n- Se não encontrar nenhum resultado, informe e sugira termos similares para busca\n- Sempre confirme se as informações apresentadas atendem à necessidade do consultor\n- Mantenha tom profissional e objetivo\n- **SEMPRE use a tool \"docs_anh\" para buscar as informações antes de responder**\n\n## Importante - USO OBRIGATÓRIO DA TOOL\n\n- **SEMPRE utilize a tool \"docs_anh\"** para buscar informações no vector store\n- Faça a busca inicial com o termo exato solicitado\n- Se não encontrar resultados, faça nova busca com termos expandidos/similares\n- NUNCA invente informações de cursos\n- Apresente valores e prazos exatamente como registrados na tool \"docs_anh\"\n- Se houver dúvidas sobre um curso, peça mais detalhes ao consultor\n\n## Fluxo de Busca\n\n1. **Receber consulta** do consultor sobre um curso\n2. **IMPORTANTE**: Identificar o nome COMPLETO do curso solicitado (não dividir em partes)\n3. **Chamar tool \"docs_anh\"** com o nome COMPLETO do curso (uma única busca)\n4. Se não encontrar: **Chamar tool \"docs_anh\"** novamente com termos similares do nome COMPLETO\n5. **Apresentar resultados** no formato padronizado\n6. Confirmar se atende a necessidade\n\n**LEMBRE-SE**: Nomes de cursos compostos (que tenham \"e\", \"ou\", vírgulas) devem SEMPRE ser buscados como um termo único e completo."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3,
+        "position": [
+          592,
+          -1072
+        ],
+        "id": "caafcf63-53ca-4b8e-aa38-1291b4e5e9c8",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.body.instituicao }}",
+                      "rightValue": "Anhanguera",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "114355a0-4de3-4d43-822e-88f7ddd55976"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "8d18aa89-6448-4d23-b4bc-3627c91150af",
+                      "leftValue": "={{ $json.body.instituicao }}",
+                      "rightValue": "Sumaré",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -112,
+          -480
+        ],
+        "id": "eec6c906-ae7a-46dc-bde1-3b9167eb18a7",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.body.curso }}",
+          "options": {
+            "systemMessage": "# Prompt para Agente de Consulta de Cursos (Sistema SUM)\n\nVocê é um assistente especializado em fornecer informações sobre cursos de graduação para consultores educacionais. Sua função é buscar e apresentar dados completos dos cursos disponíveis no sistema SUM.\n\n## Instruções de Busca\n\n1. **Busca Exata**: Primeiro, procure pela correspondência exata do termo pesquisado\n2. **Busca Expandida**: Se não encontrar correspondência exata, busque por termos relacionados e variações:\n   - Palavras parciais (ex: \"adm\" → \"administração\")\n   - Sinônimos e termos similares\n   - Variações de escrita\n3. **Níveis de Curso**: Considere que o curso pode estar disponível em diferentes graus (Bacharelado, Tecnólogo, Licenciatura)\n\n## Formato de Resposta\n\nAo encontrar um curso, apresente TODAS as informações disponíveis neste formato:\n\n**Nome do Curso**: [nome completo]\n- **Grau**: [Bacharelado/Tecnólogo/Licenciatura]\n- **Modalidade**: [EAD/Presencial/Híbrido - usar modalidade_text]\n- **Duração**: [X anos / X semestres]\n- **Preço (texto)**: [valor em reais conforme preco_text]\n- **Preço (real)**: R$ [valor numérico conforme preco_reais]\n- **Nível do Curso**: [Graduação/Pós-graduação]\n- **Source File**: [arquivo fonte da informação]\n\n## Exemplos de Busca\n\n- \"administração\" → \"Administração - Bacharelado\"\n- \"adm\" → \"Administração\"\n- \"gestão\" → cursos relacionados à gestão\n- \"engenharia\" → todos os cursos de engenharia disponíveis\n- \"tecnólogo\" → filtrar cursos com grau_curso = \"Tecnólogo\"\n\n## Comportamento\n\n- Se encontrar múltiplos cursos relacionados, liste todos\n- Se o mesmo curso existir em diferentes graus (Bacharelado e Tecnólogo), apresente ambas as opções\n- Se não encontrar nenhum resultado, informe e sugira termos similares para busca\n- Sempre confirme se as informações apresentadas atendem à necessidade do consultor\n- Mantenha tom profissional e objetivo\n- **SEMPRE use a tool \"docs_sum\" para buscar as informações antes de responder**\n\n## Importante - USO OBRIGATÓRIO DA TOOL\n\n- **SEMPRE utilize a tool \"docs_sum\"** para buscar informações no vector store\n- Faça a busca inicial com o termo exato solicitado\n- Se não encontrar resultados, faça nova busca com termos expandidos/similares\n- NUNCA invente informações de cursos\n- Apresente valores e prazos exatamente como registrados na tool \"docs_sum\"\n- Preste atenção aos campos: grau_curso, nome_curso, preco_text, preco_reais, modalidade_text, duracao_anos, nivel_curso\n- Se houver dúvidas sobre um curso, peça mais detalhes ao consultor\n\n## Fluxo de Busca\n\n1. **Receber consulta** do consultor sobre um curso\n2. **Chamar tool \"docs_sum\"** com o termo exato\n3. Se não encontrar: **Chamar tool \"docs_sum\"** novamente com termos similares\n4. **Extrair informações** dos campos: grau_curso, nome_curso, preco_text, preco_reais, modalidade_text, modalidade_normalizada, duracao_anos, nivel_curso, source_file\n5. **Apresentar resultados** no formato padronizado\n6. Confirmar se atende a necessidade\n\n## Campos de Dados a Considerar\n\n- **grau_curso**: Tipo do curso (Bacharelado, Tecnólogo, Licenciatura)\n- **nome_curso**: Nome completo do curso\n- **preco_text**: Valor da mensalidade em formato texto\n- **preco_reais**: Valor numérico da mensalidade\n- **line_number**: Linha do arquivo fonte\n- **nivel_curso**: Nível do curso (Graduação)\n- **source_file**: Arquivo de origem (\"Cursos-valores Novos SUM.csv\")\n- **duracao_anos**: Duração em anos\n- **duracao_text**: Duração em semestres (ex: \"8 Semestres\")\n- **modalidade_text**: Modalidade por extenso (ex: \"EAD\")\n- **modalidade_normalizada**: Código da modalidade"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3,
+        "position": [
+          624,
+          -288
+        ],
+        "id": "fc38b3d6-6c7d-4db1-8e41-607f106d6601",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {
+            "temperature": 0
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          432,
+          -912
+        ],
+        "id": "0bff1214-1877-4ed0-933a-2c247c66c028",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {
+            "temperature": 0
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          496,
+          -96
+        ],
+        "id": "86de9448-4bcc-4b3c-ba18-ce42e5271a0b",
+        "name": "OpenAI Chat Model1",
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "gpt-4.1-mini",
+          "options": {}
+        },
+        "id": "41a80415-affc-4ce2-9e34-f9528e3ceda7",
+        "name": "OpenAI Chat Docs",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1,
+        "position": [
+          864,
+          -528
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "text-embedding-3-small",
+          "options": {}
+        },
+        "id": "6385e4b0-0778-4578-8300-dfe33125dde4",
+        "name": "Embeddings OpenAI Vector",
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1,
+        "position": [
+          496,
+          -432
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "tableName": {
+            "__rl": true,
+            "value": "documents_anh",
+            "mode": "list",
+            "cachedResultName": "documents_anh"
+          },
+          "options": {
+            "queryName": "match_documents_anh"
+          }
+        },
+        "id": "121471ee-833e-40d0-8eea-7571f543cb01",
+        "name": "Supabase Vector Store1",
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1,
+        "position": [
+          464,
+          -672
+        ],
+        "credentials": {
+          "supabaseApi": {
+            "id": "iGh1fsnV8INZevlH",
+            "name": "Supabase IA ANH/SUM"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "name": "documents_anh",
+          "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+          "topK": 9
+        },
+        "id": "ec5457be-0d11-4fb4-b209-585fdb44ca59",
+        "name": "docs_anh",
+        "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+        "typeVersion": 1,
+        "position": [
+          672,
+          -816
+        ]
+      },
+      {
+        "parameters": {
+          "tableName": {
+            "__rl": true,
+            "value": "documents_sumare_sum",
+            "mode": "list",
+            "cachedResultName": "documents_sumare_sum"
+          },
+          "options": {
+            "queryName": "match_documents_sum"
+          }
+        },
+        "id": "4da903d8-3dda-475b-9b79-6de12df09a1d",
+        "name": "Supabase Vector Store",
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1,
+        "position": [
+          576,
+          64
+        ],
+        "credentials": {
+          "supabaseApi": {
+            "id": "iGh1fsnV8INZevlH",
+            "name": "Supabase IA ANH/SUM"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "name": "documents",
+          "description": "Base de dados vetorial contendo informações sobre:\n- **CURSOS**: graduação e pós-graduação (grades, valores, durações)\n- **PROCESSOS**: matrícula, ingresso, funcionamento das modalidades, documentos\n\nTermos aceitos:\n- Cursos: \"Administração\", \"Pedagogia\", \"valor\", \"grade\"\n- Processos: \"como funciona\", \"matrícula\", \"documentos\", \"ingresso\", \"semipresencial\", \"EAD\"",
+          "topK": 9
+        },
+        "id": "1736bc12-a28d-4015-aae5-ed7ffa49a4e6",
+        "name": "buscar_documentos",
+        "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+        "typeVersion": 1,
+        "position": [
+          688,
+          -96
+        ]
+      },
+      {
+        "parameters": {
+          "model": "gpt-4.1-mini",
+          "options": {}
+        },
+        "id": "d8675d87-880d-4059-92d5-94e577afa38d",
+        "name": "OpenAI Chat Docs1",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1,
+        "position": [
+          896,
+          80
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "text-embedding-3-small",
+          "options": {}
+        },
+        "id": "09102b48-2861-469b-b427-d4072515126e",
+        "name": "Embeddings OpenAI Vector1",
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1,
+        "position": [
+          544,
+          224
+        ],
+        "credentials": {
+          "openAiApi": {
+            "id": "4fXizCuCrLR4SEIp",
+            "name": "OpenAi account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Docs": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "docs_anh",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings OpenAI Vector": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Supabase Vector Store1",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Vector Store1": {
+        "ai_vectorStore": [
+          [
+            {
+              "node": "docs_anh",
+              "type": "ai_vectorStore",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "docs_anh": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Vector Store": {
+        "ai_vectorStore": [
+          [
+            {
+              "node": "buscar_documentos",
+              "type": "ai_vectorStore",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Docs1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "buscar_documentos",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings OpenAI Vector1": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Supabase Vector Store",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "buscar_documentos": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "eDUIT TI",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "tags": []
+}
