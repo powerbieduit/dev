@@ -1394,6 +1394,7 @@
     ]
   },
   "versionId": "68e46f84-c5d8-43ea-86a6-4f1f76a0a94e",
+  "activeVersionId": "68e46f84-c5d8-43ea-86a6-4f1f76a0a94e",
   "triggerCount": 1,
   "shared": [
     {
@@ -1404,5 +1405,1355 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "68e46f84-c5d8-43ea-86a6-4f1f76a0a94e",
+    "workflowId": "HtWqp3eaGhFjZoO5",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "e56c6bc5-0bd0-4f42-82c5-5f5741534ff4",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          176,
+          0
+        ],
+        "id": "333f0c3c-5a5e-4221-b66e-1a09aee0ea25",
+        "name": "Webhook",
+        "webhookId": "e56c6bc5-0bd0-4f42-82c5-5f5741534ff4"
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "filter": {
+            "query": "=+55{{ $('Webhook').item.json.body.celular }}"
+          },
+          "options": {
+            "with": [
+              "leads"
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          624,
+          0
+        ],
+        "id": "6b561618-d4fd-4cb3-b40a-00290d17e94f",
+        "name": "Get list of contacts",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const contatos = $json._embedded?.contacts || [];\n\nconst resultado = contatos.map(contato => {\n  // Busca o campo \"Phone\" nos custom_fields_values\n  let telefone = \"\";\n  const phoneField = (contato.custom_fields_values || []).find(\n    f => f.field_name === \"Phone\"\n  );\n  if (phoneField?.values?.[0]?.value) {\n    telefone = phoneField.values[0].value;\n  }\n\n  return {\n    id: contato.id,\n    name: contato.name || \"\",\n    telefone\n  };\n});\n\nreturn [{\n  json: {\n    total_encontrado: resultado.length,\n    contatos: resultado\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          832,
+          0
+        ],
+        "id": "5a322264-69ca-4045-abaf-990ba73f38bb",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "3c75b5d3-4305-472e-92d6-bf3053e38cd1",
+                "leftValue": "={{ $json.total_encontrado }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1040,
+          0
+        ],
+        "id": "31a91574-bdd4-40b2-b31a-63bfe9f4f880",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "query": "={{ $json.contatos[0].telefone }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1216,
+          -224
+        ],
+        "id": "a96199db-2ae6-4a9b-a678-fa92f0c28975",
+        "name": "Get list of leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1232,
+          192
+        ],
+        "id": "61ff2951-c269-4e45-baa5-e739a976b827",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                "pipeline_id": 5481944,
+                "status_id": 48539246,
+                "responsible_user_id": "={{ $('Edit Fields').item.json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":304628,\"type\":\"text\"}",
+                      "value": "={{ $('Webhook').item.json.body.nome }}"
+                    },
+                    {
+                      "data": "{\"id\":190582,\"type\":\"text\"}",
+                      "value": "=+55{{ $('Webhook').item.json.body.celular }}"
+                    },
+                    {
+                      "data": "{\"id\":686585,\"type\":\"select\"}",
+                      "value": "Presencial/Telefone"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "tags": [
+                    {
+                      "id": [
+                        174587
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1840,
+          112
+        ],
+        "id": "0ebdb035-2e09-4312-9bc8-00e0dfec49b5",
+        "name": "Create new leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const leads = $json._embedded?.leads || [];\n\n// Se nenhum lead foi encontrado\nif (leads.length === 0) {\n  return [{\n    json: {\n      total_encontrado: 0,\n      id_mais_recente: null,\n      status_id_mais_recente: null\n    }\n  }];\n}\n\n// Ordena os leads por ID (maior ID é o mais recente)\nconst leadMaisRecente = leads.reduce((a, b) => a.id > b.id ? a : b);\n\n// Retorna a quantidade e dados do mais recente\nreturn [{\n  json: {\n    total_encontrado: leads.length,\n    id_mais_recente: leadMaisRecente.id,\n    status_id_mais_recente: leadMaisRecente.status_id || null\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1408,
+          -224
+        ],
+        "id": "3d3cde01-ef72-4eb7-a41b-f6979084ba48",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.status_id_mais_recente }}",
+                      "rightValue": 48539243,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      },
+                      "id": "f6e00c86-c99a-4d8b-8fb4-9f8a04b9beaa"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bff21cdc-730d-49ed-ac4f-98da2ef976d6",
+                      "leftValue": "={{ $json.status_id_mais_recente }}",
+                      "rightValue": 74941508,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "50100c64-0219-4e6d-b099-bcfd97626df0",
+                      "leftValue": "={{ $json.status_id_mais_recente }}",
+                      "rightValue": 143,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "07242004-e24d-4126-8fe5-fd40f7899576",
+                      "leftValue": "",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1824,
+          -224
+        ],
+        "id": "a6fec326-e705-4ef8-925d-25620111a1f3",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.total_encontrado }}",
+                      "rightValue": 0,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      },
+                      "id": "b30aed5d-5210-490e-8f7e-6abccf27038c"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1600,
+          -224
+        ],
+        "id": "f8c7122c-ef0c-406b-8562-a7d1dd1eafb6",
+        "name": "Switch1"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json.id_mais_recente }}",
+                "name": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                "pipeline_id": 5481944,
+                "status_id": 48539246,
+                "responsible_user_id": "={{ $('Edit Fields').first().json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":304628,\"type\":\"text\"}",
+                      "value": "={{ $('Webhook').first().json.body.nome }}"
+                    },
+                    {
+                      "data": "{\"id\":190582,\"type\":\"text\"}",
+                      "value": "=+55{{ $('Webhook').first().json.body.celular }}"
+                    },
+                    {
+                      "data": "{\"id\":686585,\"type\":\"select\"}",
+                      "value": "Presencial/Telefone"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2560,
+          -272
+        ],
+        "id": "eb669a9a-288e-4f87-ba9b-7e814ec07efc",
+        "name": "Update leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          2112,
+          16
+        ],
+        "id": "229cedd7-852d-4884-88e4-faea330d79f1",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          2064,
+          -192
+        ],
+        "id": "7a2be5a1-c5cc-4a54-955f-6fee0a554c08",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $('Webhook').item.json.body.nome }}",
+                "responsible_user_id": "={{ $('Edit Fields').item.json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":15846,\"type\":\"multitext\"}",
+                      "value": "=+55{{ $('Webhook').item.json.body.celular }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1648,
+          112
+        ],
+        "id": "c3ec9dec-4464-4b0c-a655-87b48de4d60d",
+        "name": "Create new contacts",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "139e619f-1923-4f71-bc3b-f249f79aebe9",
+                "name": "body.tipo",
+                "value": "={{ $json.body.tipo }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          400,
+          0
+        ],
+        "id": "4d1f904d-9aa2-4236-ad8f-eb49e1a6fb88",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                "pipeline_id": 5481944,
+                "status_id": 48539246,
+                "responsible_user_id": "={{ $('Edit Fields').item.json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":304628,\"type\":\"text\"}",
+                      "value": "={{ $('Webhook').item.json.body.nome }}"
+                    },
+                    {
+                      "data": "{\"id\":190582,\"type\":\"text\"}",
+                      "value": "=+55{{ $('Webhook').item.json.body.celular }}"
+                    },
+                    {
+                      "data": "{\"id\":686585,\"type\":\"select\"}",
+                      "value": "Indicação"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $('Code').item.json.contatos[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "tags": [
+                    {
+                      "id": [
+                        174587
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2016,
+          -432
+        ],
+        "id": "4b067655-de30-497e-b327-8c071609d592",
+        "name": "Create new leads1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "updateContacts",
+          "collection": {
+            "contact": [
+              {
+                "id": "={{ $('Get list of leads').first().json._embedded.leads[0]._embedded.contacts[0].id }}",
+                "responsible_user_id": "={{ $('Edit Fields').first().json.body.tipo }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2784,
+          -272
+        ],
+        "id": "f44e73ef-141c-416c-925a-3c9932cbd1d0",
+        "name": "Update contacts",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "updateContacts",
+          "collection": {
+            "contact": [
+              {
+                "id": "={{ $('Code').item.json.contatos[0].id }}",
+                "responsible_user_id": "={{ $('Edit Fields').first().json.body.tipo }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2208,
+          -432
+        ],
+        "id": "1e3d9813-8d88-49f5-beb2-f65e4d405e63",
+        "name": "Update contacts1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                "pipeline_id": 5481944,
+                "status_id": 48539246,
+                "responsible_user_id": "={{ $('Edit Fields').item.json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":304628,\"type\":\"text\"}",
+                      "value": "={{ $('Webhook').item.json.body.nome }}"
+                    },
+                    {
+                      "data": "{\"id\":190582,\"type\":\"text\"}",
+                      "value": "=+55{{ $('Webhook').item.json.body.celular }}"
+                    },
+                    {
+                      "data": "{\"id\":686585,\"type\":\"select\"}",
+                      "value": "Indicação"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "tags": [
+                    {
+                      "id": [
+                        174587
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1856,
+          272
+        ],
+        "id": "3c0f91cb-5bdb-4e79-b50a-1285c36ff555",
+        "name": "Create new leads2",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $('Webhook').item.json.body.nome }}",
+                "responsible_user_id": "={{ $('Edit Fields').item.json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":15846,\"type\":\"multitext\"}",
+                      "value": "=+55{{ $('Webhook').item.json.body.celular }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1648,
+          272
+        ],
+        "id": "88d914ce-dca8-45f6-b052-7c2d2e8e6f82",
+        "name": "Create new contacts1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                      "rightValue": "Presencial/Telefone",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "e1b65443-b23b-4137-80d5-e613187f11d4"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3ed347d6-4873-4a2a-88f1-a659e86df2fa",
+                      "leftValue": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                      "rightValue": "Indicação",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1776,
+          -528
+        ],
+        "id": "a4f851ba-9276-4e35-8ffa-541912a67289",
+        "name": "Switch3"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "name": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                "pipeline_id": 5481944,
+                "status_id": 48539246,
+                "responsible_user_id": "={{ $('Edit Fields').item.json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":304628,\"type\":\"text\"}",
+                      "value": "={{ $('Webhook').item.json.body.nome }}"
+                    },
+                    {
+                      "data": "{\"id\":190582,\"type\":\"text\"}",
+                      "value": "=+55{{ $('Webhook').item.json.body.celular }}"
+                    },
+                    {
+                      "data": "{\"id\":686585,\"type\":\"select\"}",
+                      "value": "Presencial/Telefone"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $('Code').item.json.contatos[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "tags": [
+                    {
+                      "id": [
+                        174587
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2016,
+          -592
+        ],
+        "id": "41fd5cc6-6f53-45dc-ac95-9443a3e5ec49",
+        "name": "Create new leads3",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "updateContacts",
+          "collection": {
+            "contact": [
+              {
+                "id": "={{ $('Code').item.json.contatos[0].id }}",
+                "responsible_user_id": "={{ $('Edit Fields').first().json.body.tipo }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2208,
+          -592
+        ],
+        "id": "f38d4eaf-7a24-437b-93e0-b1ea4b416d8a",
+        "name": "Update contacts2",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                      "rightValue": "Presencial/Telefone",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "e1b65443-b23b-4137-80d5-e613187f11d4"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3ed347d6-4873-4a2a-88f1-a659e86df2fa",
+                      "leftValue": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                      "rightValue": "Indicação",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1424,
+          192
+        ],
+        "id": "351d941d-62fc-4a8d-822b-4ff7047e235a",
+        "name": "Switch4"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $json.id_mais_recente }}",
+                "name": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                "pipeline_id": 5481944,
+                "status_id": 48539246,
+                "responsible_user_id": "={{ $('Edit Fields').first().json.body.tipo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":304628,\"type\":\"text\"}",
+                      "value": "={{ $('Webhook').first().json.body.nome }}"
+                    },
+                    {
+                      "data": "{\"id\":190582,\"type\":\"text\"}",
+                      "value": "=+55{{ $('Webhook').first().json.body.celular }}"
+                    },
+                    {
+                      "data": "{\"id\":686585,\"type\":\"select\"}",
+                      "value": "Indicação"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2560,
+          -80
+        ],
+        "id": "20725488-7c5d-4d38-9f11-2a443f5f1f1b",
+        "name": "Update leads1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "updateContacts",
+          "collection": {
+            "contact": [
+              {
+                "id": "={{ $('Get list of leads').first().json._embedded.leads[0]._embedded.contacts[0].id }}",
+                "responsible_user_id": "={{ $('Edit Fields').first().json.body.tipo }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          2784,
+          -80
+        ],
+        "id": "ac16b895-b277-4c13-aa1c-e32f3b5e60e1",
+        "name": "Update contacts3",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "nwQNgfBiNqLrzKlG",
+            "name": "Kommo Comercial CSV"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                      "rightValue": "Presencial/Telefone",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "e1b65443-b23b-4137-80d5-e613187f11d4"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3ed347d6-4873-4a2a-88f1-a659e86df2fa",
+                      "leftValue": "={{ $('Webhook').item.json.body.radioGroup1 }}",
+                      "rightValue": "Indicação",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          2320,
+          -192
+        ],
+        "id": "feedee50-a73d-44aa-b916-48cc5c78cdc2",
+        "name": "Switch5"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of contacts": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Get list of leads",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of leads": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Switch4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "Switch1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 1
+            }
+          ],
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch1": {
+        "main": [
+          [
+            {
+              "node": "Switch3",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "Switch5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new contacts": {
+        "main": [
+          [
+            {
+              "node": "Create new leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Get list of contacts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update leads": {
+        "main": [
+          [
+            {
+              "node": "Update contacts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new leads1": {
+        "main": [
+          [
+            {
+              "node": "Update contacts1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new contacts1": {
+        "main": [
+          [
+            {
+              "node": "Create new leads2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch3": {
+        "main": [
+          [
+            {
+              "node": "Create new leads3",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Create new leads1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new leads3": {
+        "main": [
+          [
+            {
+              "node": "Update contacts2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch4": {
+        "main": [
+          [
+            {
+              "node": "Create new contacts",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Create new contacts1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update leads1": {
+        "main": [
+          [
+            {
+              "node": "Update contacts3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch5": {
+        "main": [
+          [
+            {
+              "node": "Update leads",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Update leads1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
