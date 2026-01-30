@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2025-11-03T16:50:18.000Z",
+  "updatedAt": "2025-12-08T16:43:08.000Z",
   "createdAt": "2025-08-19T17:52:50.272Z",
   "id": "AdorfGfiq50Ph1tg",
   "name": "criacao_leads_soead V2",
-  "active": true,
-  "isArchived": false,
+  "active": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {},
@@ -1588,7 +1588,8 @@
       }
     ]
   },
-  "versionId": "5a656ed9-5b8f-432f-950f-f29e712c9360",
+  "versionId": "56aa28d0-13db-4635-90a4-6929ce34b291",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -1599,5 +1600,6 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
