@@ -39,6 +39,7 @@
   },
   "pinData": {},
   "versionId": "c499e75f-4716-437f-b4eb-a83703176840",
+  "activeVersionId": "c499e75f-4716-437f-b4eb-a83703176840",
   "triggerCount": 1,
   "shared": [
     {
@@ -49,5 +50,40 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "c499e75f-4716-437f-b4eb-a83703176840",
+    "workflowId": "YBJMYCh4xnsLolgj",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "vilamariana",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "b15d46c6-6036-4106-a84f-d519da5be381",
+        "name": "Webhook",
+        "webhookId": "85f017a6-d77b-451d-ab50-9d08d2e3517b"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
