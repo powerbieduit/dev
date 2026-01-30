@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-08-25T15:45:21.000Z",
+  "updatedAt": "2025-11-17T16:30:13.000Z",
   "createdAt": "2025-07-25T19:54:42.891Z",
   "id": "0yCY00gWknlDKweJ",
   "name": "whatsapp_api_erro_24h_csv_acad",
@@ -226,6 +226,7 @@
   },
   "pinData": {},
   "versionId": "0b8668db-0560-4c84-97db-c6401dcacccc",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -236,5 +237,6 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
