@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2025-08-22T21:11:20.000Z",
+  "updatedAt": "2025-12-16T19:55:59.000Z",
   "createdAt": "2025-07-25T20:00:37.121Z",
   "id": "BGwS0VUSWDtIeDgT",
   "name": "criacao_lead_preco_csv",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -975,7 +975,8 @@
       }
     ]
   },
-  "versionId": "19b2dd36-cc7a-4f64-b9ab-620c3a826c51",
+  "versionId": "662b960a-0e3b-465f-a2c0-a02a745a2d9c",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -986,6 +987,7 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": null,
   "tags": [
     {
       "updatedAt": "2025-07-25T20:00:36.295Z",
