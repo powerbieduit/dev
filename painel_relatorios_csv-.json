@@ -117,6 +117,7 @@
   },
   "pinData": {},
   "versionId": "10fd4da7-a3c8-4406-a22a-26c9b2d5941a",
+  "activeVersionId": "10fd4da7-a3c8-4406-a22a-26c9b2d5941a",
   "triggerCount": 1,
   "shared": [
     {
@@ -127,5 +128,118 @@
       "projectId": "TjZRFTZS7ptjaNGj"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-11-28T13:27:31.530Z",
+    "createdAt": "2025-11-28T13:27:31.530Z",
+    "versionId": "10fd4da7-a3c8-4406-a22a-26c9b2d5941a",
+    "workflowId": "BF3Jclknpaw5arXj",
+    "nodes": [
+      {
+        "parameters": {
+          "path": "endpointrelatorios",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "239e4767-56f8-49d1-a625-5e3689da2dae",
+        "name": "Webhook",
+        "webhookId": "e1cd0bf2-7e65-4917-9ade-35eef84f1d7a"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  id_responsavel,\n  nome_responsavel,\n  tipo,\n  COUNT(*) AS total_distribuidos\nFROM historico_dashboard\nWHERE data_distribuicao BETWEEN $1 AND $2\nGROUP BY id_responsavel, nome_responsavel, tipo\nORDER BY total_distribuidos DESC;\n\n",
+          "options": {
+            "queryReplacement": "={{$json[\"data_inicio\"]}},{{$json[\"data_fim\"]}}"
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          448,
+          0
+        ],
+        "id": "2d33759c-dab9-425b-addf-c70ee6ac49d8",
+        "name": "Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "qYUQEV9RiMUYy4S5",
+            "name": "Distribuição Acadêmico"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "allIncomingItems",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          672,
+          0
+        ],
+        "id": "d27ec071-1b27-4bf5-a237-7e1c3311012a",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Pega as datas da query do webhook\nlet data_inicio = $json.query?.data_inicio || $json.data_inicio || \"\";\nlet data_fim = $json.query?.data_fim || $json.data_fim || \"\";\n\n// Se não vier, aplica um default (opcional)\nif (!data_inicio || data_inicio === \"\") data_inicio = \"2025-01-01 00:00:00\";\nif (!data_fim || data_fim === \"\") data_fim = \"2099-12-31 23:59:59\";\n\n// ids_responsaveis também pode estar na query!\nlet ids_responsaveis = $json.query?.ids_responsaveis || $json.ids_responsaveis || null;\n\nif (ids_responsaveis) {\n  ids_responsaveis = ids_responsaveis.split(\",\").map(id => id.trim());\n} else {\n  ids_responsaveis = null;\n}\n\nconsole.log(\"DEBUG data_inicio:\", data_inicio, \"data_fim:\", data_fim);\n\nreturn [{\n  json: {\n    data_inicio,\n    data_fim,\n    ids_responsaveis,\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "id": "c72d1c3d-406a-4f46-9e4a-2797b8e9d1dc",
+        "name": "Code"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
   "tags": []
 }
