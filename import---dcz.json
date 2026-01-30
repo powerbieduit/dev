@@ -1,0 +1,259 @@
+{
+  "updatedAt": "2025-12-17T19:12:56.000Z",
+  "createdAt": "2025-11-28T15:47:37.918Z",
+  "id": "1pWn1rgwAMXhNN6C",
+  "name": "import - dcz",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2432,
+        384
+      ],
+      "id": "0e8fc81e-c2b3-4fa6-8b55-26b82a024313",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.email,\n        ae.todas_colunas->>'Celular' as celular,\n        ae.curso,\n        ae.tipo_aluno,\n        ae.tipo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        ae.ciclo\n    FROM alunos_excel ae\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND NOT EXISTS (\n          SELECT 1 FROM leads l \n          WHERE REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n              = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n      )\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        -208
+      ],
+      "id": "adc45b23-73af-4f02-89e1-504830f49ec4",
+      "name": "fora do crm",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.curso,\n        ae.tipo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        l.id as lead_id,\n        l.name as nome_crm\n    FROM alunos_excel ae\n    LEFT JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                       = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND LOWER(COALESCE(ae.todas_colunas->>'Situacao', '')) LIKE '%cancelad%'\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        240
+      ],
+      "id": "c4fcd31f-f388-4db1-aa4f-7586831077d4",
+      "name": "cancelados",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.curso,\n        ae.tipo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        l.id as lead_id,\n        l.name as nome_crm\n    FROM alunos_excel ae\n    LEFT JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                       = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND LOWER(COALESCE(ae.todas_colunas->>'Situacao', '')) LIKE '%tranc%'\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        464
+      ],
+      "id": "17e0de64-f9c1-4d9f-bcee-c46330f412dd",
+      "name": "trancados",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.curso,\n        ae.tipo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        l.id as lead_id,\n        l.name as nome_crm\n    FROM alunos_excel ae\n    LEFT JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                       = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND LOWER(COALESCE(ae.todas_colunas->>'Situacao', '')) LIKE '%transfer%'\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        16
+      ],
+      "id": "670b4f8c-01ac-45c2-b27d-3256c0adf116",
+      "name": "transferidos",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.email,\n        ae.todas_colunas->>'Celular' as celular,\n        ae.curso,\n        ae.tipo_aluno,\n        ae.tipo,\n        ae.ciclo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        l.id as lead_id,\n        CASE WHEN l.id IS NULL THEN 'CRIAR LEAD' ELSE 'ATUALIZAR' END as acao\n    FROM alunos_excel ae\n    LEFT JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                       = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND (LOWER(COALESCE(ae.tipo_aluno, '')) LIKE '%ingress%' \n           OR LOWER(COALESCE(ae.tipo_aluno, '')) LIKE '%calouro%')\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        688
+      ],
+      "id": "f3d3b8ac-fe69-4575-86fc-4ba44f581fed",
+      "name": "alunos novos",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.curso,\n        ae.tipo_aluno,\n        ae.tipo,\n        ae.ciclo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        l.id as lead_id,\n        l.name as nome_crm\n    FROM alunos_excel ae\n    LEFT JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                       = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND LOWER(COALESCE(ae.tipo_aluno, '')) LIKE '%veteran%'\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        -432
+      ],
+      "id": "a5736f30-b00d-43e5-a4be-4241e8ed5577",
+      "name": "veteranos",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        l.id as lead_id,\n        l.name as nome_crm,\n        l.phone as telefone_crm,\n        ae.todas_colunas->>'Celular' as telefone_excel,\n        ae.cpf,\n        ae.rgm\n    FROM alunos_excel ae\n    INNER JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                        = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND ae.todas_colunas->>'Celular' IS NOT NULL\n      AND ae.todas_colunas->>'Celular' != ''\n      AND REGEXP_REPLACE(COALESCE(l.phone, ''), '[^0-9]', '', 'g') \n          != REGEXP_REPLACE(ae.todas_colunas->>'Celular', '[^0-9]', '', 'g')\n    ORDER BY l.name\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        1136
+      ],
+      "id": "dc19563d-006c-4fb6-86f1-51c4d11e87cf",
+      "name": "telefones divergentes",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_agg(dados) as resultado\nFROM (\n    SELECT \n        ae.rgm,\n        ae.cpf,\n        ae.nome,\n        ae.curso,\n        ae.tipo_aluno,\n        ae.tipo,\n        ae.ciclo,\n        ae.todas_colunas->>'Situacao' as situacao,\n        l.id as lead_id\n    FROM alunos_excel ae\n    LEFT JOIN leads l ON REGEXP_REPLACE(COALESCE(l.json_completo->>'taxId', l.cpf, ''), '[^0-9]', '', 'g') \n                       = REGEXP_REPLACE(ae.cpf, '[^0-9]', '', 'g')\n    WHERE ae.sumiu_excel = FALSE \n      AND ae.rgm != 'RGM'\n      AND (LOWER(COALESCE(ae.todas_colunas->>'Situacao', '')) LIKE '%em curso%'\n           OR LOWER(COALESCE(ae.todas_colunas->>'Situacao', '')) LIKE '%matriculad%')\n    ORDER BY ae.nome\n) dados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1520,
+        912
+      ],
+      "id": "798d3fc2-6367-4bfa-bf01-8813027eaf8a",
+      "name": "em curso",
+      "credentials": {
+        "postgres": {
+          "id": "dHx7Kgm2CegjASpN",
+          "name": "Sync_dcz"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "fora do crm",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "cancelados",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "trancados",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "transferidos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "alunos novos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "veteranos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "telefones divergentes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "em curso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5714c88a-d62f-4ab6-8d39-7c6db4bc0b31",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-28T15:47:37.924Z",
+      "createdAt": "2025-11-28T15:47:37.924Z",
+      "role": "workflow:owner",
+      "workflowId": "1pWn1rgwAMXhNN6C",
+      "projectId": "TjZRFTZS7ptjaNGj"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
